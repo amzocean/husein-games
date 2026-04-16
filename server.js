@@ -481,6 +481,59 @@ ludoNs.on('connection', (socket) => {
     resetGame();
   });
 
+  // Exit game: player removes themselves
+  socket.on('exit_game', (sessionId) => {
+    if (!game || game.phase !== 'playing') return;
+    const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
+    if (playerIdx < 0) return;
+    const player = game.players[playerIdx];
+    log(`EXIT_GAME: ${player.name}(${player.color}) left the game`);
+
+    // Remove their tokens
+    delete game.tokens[player.color];
+    game.players.splice(playerIdx, 1);
+
+    // If only 1 player left, they win
+    if (game.players.length <= 1) {
+      if (game.players.length === 1) {
+        game.winner = game.players[0].color;
+        log(`  ${game.players[0].name} wins by default (all others left)`);
+      }
+      game.phase = 'finished';
+      clearTimeout(game.idleTimer);
+      clearTimeout(game.turnTimer);
+      clearTimeout(game.autoPlayTimer);
+      broadcastState();
+      return;
+    }
+
+    // Fix currentPlayerIndex
+    if (game.currentPlayerIndex >= game.players.length) {
+      game.currentPlayerIndex = 0;
+    } else if (playerIdx < game.currentPlayerIndex) {
+      game.currentPlayerIndex--;
+    } else if (playerIdx === game.currentPlayerIndex) {
+      // It was the exiting player's turn — move to next
+      if (game.currentPlayerIndex >= game.players.length) game.currentPlayerIndex = 0;
+      game.diceRolled = false;
+      game.diceValue = null;
+      clearTimeout(game.autoPlayTimer);
+      startAutoPlayTimer();
+    }
+    broadcastState();
+  });
+
+  // End game: only creator can force-end
+  socket.on('end_game', (sessionId) => {
+    if (!game) return;
+    if (game.players[0]?.sessionId !== sessionId) {
+      socket.emit('error_msg', 'Only the game creator can end the game.');
+      return;
+    }
+    log(`END_GAME: creator ${game.players[0].name} ended the game`);
+    resetGame();
+  });
+
   socket.on('debug_roll', ({ sessionId, value }) => {
     if (!game || game.phase !== 'playing') return;
     const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);

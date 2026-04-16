@@ -92,6 +92,10 @@ button:active { transform: scale(0.95); }
   background: #fff; color: #2c2c2c; cursor: pointer; font-weight: 600;
 }
 .btn-debug:active { background: #fce4ec; }
+.btn-exit { padding:8px 16px; font-size:0.85rem; border-radius:10px; border:1px solid rgba(196,69,105,0.25); background:#fff; color:#c44569; cursor:pointer; font-weight:600; }
+.btn-exit:active { background:#fce4ec; }
+.btn-end { padding:8px 16px; font-size:0.85rem; border-radius:10px; border:1px solid #c44569; background:#c44569; color:#fff; cursor:pointer; font-weight:600; }
+.btn-end:active { background:#9b1b4a; }
 </style>
 </head>
 <body>
@@ -138,10 +142,9 @@ button:active { transform: scale(0.95); }
     <div id="pickHint" class="pick-hint" style="display:none;">Tap a highlighted token to move</div>
     <div id="noMoveHint" class="pick-hint" style="display:none;">No valid moves — passing...</div>
     <div id="captureBanner" class="capture-banner" style="display:none;"></div>
-    <!-- Debug panel (toggle with 🔧) -->
-    <div style="margin-top:8px;">
-      <button class="btn-secondary" style="padding:6px 12px;font-size:0.8rem;" onclick="toggleDebug()">🔧 Debug</button>
-    </div>
+    <!-- Game controls: Exit / End -->
+    <div id="gameControls" style="margin-top:10px;display:flex;gap:8px;justify-content:center;"></div>
+    <!-- Debug panel (hidden, activated by 5-tap on dice area) -->
     <div id="debugPanel" style="display:none;margin:8px 0;padding:8px;background:#fff;border:1px solid rgba(196,69,105,0.12);border-radius:10px;">
       <div style="font-size:0.8rem;color:#b8860b;margin-bottom:4px;">Force dice value (your turn only):</div>
       <div style="display:flex;gap:4px;justify-content:center;">
@@ -707,6 +710,15 @@ function renderPlaying() {
   } else {
     captureBanner.style.display = 'none';
   }
+
+  // Exit / End game buttons
+  const gcEl = document.getElementById('gameControls');
+  const isCreator = state.players[0] && state.players[0].sessionId === mySessionId;
+  const isPlayer = state.players.some(p => p.sessionId === mySessionId);
+  let btns = '';
+  if (isPlayer) btns += '<button class="btn-exit" onclick="exitGame()">🚪 Exit Game</button>';
+  if (isCreator) btns += '<button class="btn-end" onclick="endGame()">⛔ End Game</button>';
+  gcEl.innerHTML = btns;
 }
 
 function renderFinished() {
@@ -803,13 +815,36 @@ function resetAll() {
   mySessionId = null;
 }
 
-function toggleDebug() {
-  const p = document.getElementById('debugPanel');
-  p.style.display = p.style.display === 'none' ? 'block' : 'none';
-}
+// Secret debug: 5 rapid taps on dice area
+let debugTapCount = 0;
+let debugTapTimer = null;
+document.getElementById('diceArea').addEventListener('click', () => {
+  debugTapCount++;
+  if (debugTapTimer) clearTimeout(debugTapTimer);
+  debugTapTimer = setTimeout(() => { debugTapCount = 0; }, 1500);
+  if (debugTapCount >= 5) {
+    debugTapCount = 0;
+    const p = document.getElementById('debugPanel');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  }
+});
 
 function debugRoll(value) {
   socket.emit('debug_roll', { sessionId: mySessionId, value });
+}
+
+function exitGame() {
+  if (confirm('Leave this game? Your tokens will be removed.')) {
+    socket.emit('exit_game', mySessionId);
+    localStorage.removeItem('ludo_session');
+    mySessionId = null;
+  }
+}
+
+function endGame() {
+  if (confirm('End the game for everyone?')) {
+    socket.emit('end_game', mySessionId);
+  }
 }
 
 function escHtml(s) {
