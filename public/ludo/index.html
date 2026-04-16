@@ -880,6 +880,19 @@ socket.on('connect', () => {
   }
 });
 
+// Force reconnect when mobile tab becomes visible again
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && mySessionId) {
+    if (!socket.connected) {
+      console.log('Tab visible again — reconnecting socket');
+      socket.connect();
+    } else {
+      // Already connected, just re-send rejoin to refresh state
+      socket.emit('rejoin', mySessionId);
+    }
+  }
+});
+
 // Handle resize
 window.addEventListener('resize', () => {
   if (state.phase === 'playing' && boardCanvas) {
