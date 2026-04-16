@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const crypto = require('crypto');
 
@@ -8,7 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 // Serve static files (landing page, tiles, valentines, ludo)
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ============================================================
 // LUDO GAME SERVER (Socket.IO namespace: /ludo)
