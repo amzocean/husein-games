@@ -639,17 +639,23 @@ function renderPlaying() {
   const current = state.players[state.currentPlayerIndex];
   const turnEl = document.getElementById('turnInfo');
   const myTurn = isItMyTurn();
+  const isSpectator = !state.players.some(p => p.sessionId === mySessionId);
 
-  if (myTurn) {
+  if (isSpectator) {
+    turnEl.innerHTML = `👀 Spectating — <span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn`;
+  } else if (myTurn) {
     turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">Your turn!</span>`;
   } else {
     turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn`;
   }
 
+  // Hide controls for spectators
+  document.getElementById('diceArea').style.display = isSpectator ? 'none' : '';
+  document.getElementById('pickHint').style.display = (!isSpectator && myTurn && state.diceRolled && getValidTokenIndices().length > 0) ? 'block' : 'none';
+  document.getElementById('noMoveHint').style.display = (!isSpectator && myTurn && state.diceRolled && getValidTokenIndices().length === 0) ? 'block' : 'none';
+
   const diceBtn = document.getElementById('diceBtn');
   const diceDisplay = document.getElementById('diceDisplay');
-  const pickHint = document.getElementById('pickHint');
-  const noMoveHint = document.getElementById('noMoveHint');
 
   diceBtn.disabled = !myTurn || state.diceRolled;
 
@@ -658,10 +664,6 @@ function renderPlaying() {
   } else {
     diceDisplay.textContent = '';
   }
-
-  const validMoves = getValidTokenIndices();
-  pickHint.style.display = (myTurn && state.diceRolled && validMoves.length > 0) ? 'block' : 'none';
-  noMoveHint.style.display = (myTurn && state.diceRolled && validMoves.length === 0) ? 'block' : 'none';
 
   // Capture banner — auto-hide after 3 seconds
   const captureBanner = document.getElementById('captureBanner');
