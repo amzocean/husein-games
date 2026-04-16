@@ -346,18 +346,23 @@ ludoNs.on('connection', (socket) => {
         }
       }, TURN_SKIP_DELAY);
     } else if (movable.length === 1) {
-      const captured = moveToken(player.color, movable[0], value);
-      if (checkWin(player.color)) {
-        game.phase = 'finished';
-        game.winner = player.color;
-        log(`GAME OVER: ${player.name}(${player.color}) wins!`);
-        broadcastState();
-        setTimeout(resetGame, 30000);
-      } else {
-        const extra = value === 6 || captured;
-        log(`  auto-move token ${movable[0]}, extra turn: ${extra}`);
-        nextTurn(extra);
-      }
+      // Show dice value first, then auto-move after a short delay
+      broadcastState();
+      game.turnTimer = setTimeout(() => {
+        if (!game || game.phase !== 'playing') return;
+        const captured = moveToken(player.color, movable[0], value);
+        if (checkWin(player.color)) {
+          game.phase = 'finished';
+          game.winner = player.color;
+          log(`GAME OVER: ${player.name}(${player.color}) wins!`);
+          broadcastState();
+          setTimeout(resetGame, 30000);
+        } else {
+          const extra = value === 6 || captured;
+          log(`  auto-move token ${movable[0]}, extra turn: ${extra}`);
+          nextTurn(extra);
+        }
+      }, 1000);
     } else {
       broadcastState();
     }
