@@ -3,57 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Ludo</title>
+<title>Ludo — Husein & Fatema's Game Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #1a1a2e;
-  color: #eee;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fff5f5;
+  color: #2c2c2c;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   overflow-x: hidden;
 }
-h1 { font-size: 1.4rem; margin: 10px 0 5px; color: #e94560; }
-#ui { width: 100%; max-width: 420px; padding: 0 10px; text-align: center; }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(196,69,105,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(184,134,11,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.5rem; margin: 10px 0 5px; color: #c44569;
+}
+#ui { width: 100%; max-width: 420px; padding: 0 10px; text-align: center; position: relative; z-index: 1; }
 .screen { display: none; }
 .screen.active { display: block; }
-canvas { display: block; margin: 5px auto; border-radius: 8px; touch-action: none; }
+canvas { display: block; margin: 5px auto; border-radius: 12px; touch-action: none; box-shadow: 0 2px 16px rgba(196,69,105,0.10); }
 input[type="text"] {
-  padding: 10px; font-size: 1rem; border-radius: 8px; border: 2px solid #444;
-  background: #16213e; color: #eee; width: 80%; max-width: 250px; text-align: center;
-  margin: 8px 0;
+  padding: 10px; font-size: 1rem; border-radius: 10px; border: 1.5px solid rgba(196,69,105,0.25);
+  background: #fff; color: #2c2c2c; width: 80%; max-width: 250px; text-align: center;
+  margin: 8px 0; font-family: 'Inter', sans-serif;
 }
+input[type="text"]::placeholder { color: #c4a882; }
+input[type="text"]:focus { outline: none; border-color: #c44569; box-shadow: 0 0 0 3px rgba(196,69,105,0.10); }
 button {
-  padding: 12px 28px; font-size: 1rem; border: none; border-radius: 8px;
-  cursor: pointer; margin: 6px 4px; font-weight: 600; transition: transform 0.1s;
+  padding: 12px 28px; font-size: 1rem; border: none; border-radius: 10px;
+  cursor: pointer; margin: 6px 4px; font-weight: 600; transition: transform 0.1s, box-shadow 0.15s;
+  font-family: 'Inter', sans-serif;
 }
 button:active { transform: scale(0.95); }
-.btn-primary { background: #e94560; color: #fff; }
-.btn-secondary { background: #0f3460; color: #fff; }
-.btn-dice { background: #f5f5f5; color: #222; font-size: 1.6rem; min-width: 60px; padding: 10px 20px; }
-.btn-dice:disabled { opacity: 0.4; }
+.btn-primary { background: #c44569; color: #fff; box-shadow: 0 2px 8px rgba(196,69,105,0.20); }
+.btn-primary:hover { box-shadow: 0 4px 16px rgba(196,69,105,0.30); }
+.btn-secondary { background: #b8860b; color: #fff; box-shadow: 0 2px 8px rgba(184,134,11,0.15); }
+.btn-secondary:hover { box-shadow: 0 4px 16px rgba(184,134,11,0.25); }
+.btn-dice {
+  background: #fff; color: #2c2c2c; font-size: 1.6rem; min-width: 60px; padding: 10px 20px;
+  border: 1.5px solid rgba(196,69,105,0.20); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.btn-dice:disabled { opacity: 0.35; }
 .players-list { margin: 8px 0; text-align: left; }
 .players-list div {
-  padding: 6px 12px; margin: 4px 0; border-radius: 6px; font-weight: 500;
+  padding: 8px 14px; margin: 4px 0; border-radius: 10px; font-weight: 500;
   display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.7); border: 1px solid rgba(196,69,105,0.08);
 }
-.color-dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; border: 2px solid #fff; }
+.color-dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
 .status-bar {
-  margin: 6px 0; padding: 8px 12px; border-radius: 8px;
-  background: #16213e; font-size: 0.95rem;
+  margin: 6px 0; padding: 10px 14px; border-radius: 12px;
+  background: #fff; font-size: 0.95rem;
+  border: 1px solid rgba(196,69,105,0.10);
+  box-shadow: 0 1px 6px rgba(196,69,105,0.06);
 }
 .turn-indicator { font-weight: 700; font-size: 1.05rem; }
-.error-msg { color: #ff6b6b; font-size: 0.9rem; margin: 4px 0; }
+.error-msg { color: #c44569; font-size: 0.9rem; margin: 4px 0; }
 #diceArea { margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 12px; }
 #diceDisplay { font-size: 2.2rem; min-width: 50px; }
-.pick-hint { font-size: 0.85rem; color: #aaa; margin-top: 4px; }
+.pick-hint { font-size: 0.85rem; color: #b8860b; margin-top: 4px; font-weight: 400; }
 .disconnected { opacity: 0.5; }
 .capture-banner {
-  margin: 6px 0; padding: 10px 14px; border-radius: 8px;
-  background: #ff6b6b; color: #fff; font-weight: 700; font-size: 1rem;
+  margin: 6px 0; padding: 10px 14px; border-radius: 10px;
+  background: #c44569; color: #fff; font-weight: 700; font-size: 1rem;
   animation: capturePulse 0.6s ease-out;
 }
 @keyframes capturePulse {
@@ -61,21 +88,21 @@ button:active { transform: scale(0.95); }
   100% { transform: scale(1); opacity: 1; }
 }
 .btn-debug {
-  padding: 8px 14px; font-size: 1rem; border: 1px solid #555; border-radius: 6px;
-  background: #0f3460; color: #fff; cursor: pointer; font-weight: 600;
+  padding: 8px 14px; font-size: 1rem; border: 1px solid rgba(196,69,105,0.20); border-radius: 8px;
+  background: #fff; color: #2c2c2c; cursor: pointer; font-weight: 600;
 }
-.btn-debug:active { background: #e94560; }
+.btn-debug:active { background: #fce4ec; }
 </style>
 </head>
 <body>
-<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:6px;">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;position:relative;z-index:1;">
   <h1>🎲 Ludo</h1>
   <button id="soundToggle" onclick="toggleSound()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;padding:4px;">🔊</button>
 </div>
 <div id="ui">
   <!-- IDLE screen -->
   <div id="screen-idle" class="screen">
-    <p style="margin:12px 0;">No game running.</p>
+    <p style="margin:12px 0;color:#888;">No game running.</p>
     <input type="text" id="nameInput" placeholder="Your name" maxlength="15">
     <br>
     <button class="btn-primary" onclick="createGame()">Create Game</button>
@@ -83,7 +110,7 @@ button:active { transform: scale(0.95); }
 
   <!-- LOBBY screen -->
   <div id="screen-lobby" class="screen">
-    <p style="margin:8px 0;font-size:1.1rem;">Waiting for players...</p>
+    <p style="margin:8px 0;font-size:1.1rem;color:#b8860b;">Waiting for players...</p>
     <div id="lobbyPlayers" class="players-list"></div>
     <div id="lobbyJoin" style="display:none;">
       <input type="text" id="joinNameInput" placeholder="Your name" maxlength="15">
@@ -115,8 +142,8 @@ button:active { transform: scale(0.95); }
     <div style="margin-top:8px;">
       <button class="btn-secondary" style="padding:6px 12px;font-size:0.8rem;" onclick="toggleDebug()">🔧 Debug</button>
     </div>
-    <div id="debugPanel" style="display:none;margin:8px 0;padding:8px;background:#16213e;border-radius:8px;">
-      <div style="font-size:0.8rem;color:#aaa;margin-bottom:4px;">Force dice value (your turn only):</div>
+    <div id="debugPanel" style="display:none;margin:8px 0;padding:8px;background:#fff;border:1px solid rgba(196,69,105,0.12);border-radius:10px;">
+      <div style="font-size:0.8rem;color:#b8860b;margin-bottom:4px;">Force dice value (your turn only):</div>
       <div style="display:flex;gap:4px;justify-content:center;">
         <button class="btn-debug" onclick="debugRoll(1)">1</button>
         <button class="btn-debug" onclick="debugRoll(2)">2</button>
@@ -131,7 +158,7 @@ button:active { transform: scale(0.95); }
   <!-- FINISHED screen -->
   <div id="screen-finished" class="screen">
     <canvas id="boardFinished"></canvas>
-    <div id="winnerMsg" style="margin:16px 0;font-size:1.3rem;font-weight:700;"></div>
+    <div id="winnerMsg" style="margin:16px 0;font-size:1.3rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;color:#c44569;"></div>
     <button class="btn-secondary" onclick="resetAll()">New Game</button>
   </div>
 </div>
@@ -244,10 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
 const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
 const COLORS = {
-  red:    { fill: '#D32F2F', light: '#EF5350', dark: '#B71C1C' },
-  green:  { fill: '#388E3C', light: '#66BB6A', dark: '#1B5E20' },
-  yellow: { fill: '#F9A825', light: '#FDD835', dark: '#F57F17' },
-  blue:   { fill: '#1565C0', light: '#42A5F5', dark: '#0D47A1' }
+  red:    { fill: '#c44569', light: '#f8a5c2', dark: '#9b1b4a' },   // Rose
+  green:  { fill: '#b8860b', light: '#f0d58c', dark: '#8a6508' },   // Gold
+  yellow: { fill: '#2a9d8f', light: '#76d7c4', dark: '#1a7568' },   // Teal
+  blue:   { fill: '#7b2d8e', light: '#c39bd3', dark: '#5b1f6a' }    // Plum
 };
 
 // Board geometry
@@ -414,7 +441,7 @@ function drawBoard(ctx, canvasEl) {
       ctx.globalAlpha = alpha * 0.6;
       ctx.beginPath();
       ctx.arc(cx, cy, expandRadius, 0, Math.PI * 2);
-      ctx.fillStyle = '#ff0000';
+      ctx.fillStyle = '#c44569';
       ctx.fill();
       // X mark
       ctx.globalAlpha = alpha;
@@ -672,7 +699,7 @@ function renderPlaying() {
     const victim = state.players.find(p => p.color === state.lastCapture.victim);
     captureBanner.innerHTML = `💥 ${escHtml(attacker?.name || state.lastCapture.by)} captured ${escHtml(victim?.name || state.lastCapture.victim)}!`;
     captureBanner.style.display = 'block';
-    captureBanner.style.background = COLORS[state.lastCapture.by]?.fill || '#ff6b6b';
+    captureBanner.style.background = COLORS[state.lastCapture.by]?.fill || '#c44569';
     if (window._captureBannerTimer) clearTimeout(window._captureBannerTimer);
     window._captureBannerTimer = setTimeout(() => {
       captureBanner.style.display = 'none';
