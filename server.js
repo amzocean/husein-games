@@ -19,7 +19,7 @@ const ludoNs = io.of('/ludo');
 const COLORS = ['red', 'green', 'yellow', 'blue'];
 const IDLE_TIMEOUT = 30 * 60 * 1000;
 const TURN_SKIP_DELAY = 1500;
-const DISCONNECT_GRACE = 3 * 60 * 1000; // 3 minutes — mobile tabs suspend sockets
+const DISCONNECT_GRACE = 15 * 60 * 1000; // 15 minutes — mobile tabs suspend sockets
 
 function log(msg, data) {
   const ts = new Date().toISOString().slice(11, 23);
