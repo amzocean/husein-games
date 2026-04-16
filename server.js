@@ -209,7 +209,7 @@ function startAutoPlayTimer() {
     if (!player) return;
 
     if (!game.diceRolled) {
-      // Auto-roll the dice
+      // Auto-roll + auto-move in one shot
       const value = rollDice(player.color);
       game.diceValue = value;
       game.diceRolled = true;
@@ -225,28 +225,25 @@ function startAutoPlayTimer() {
         game.turnTimer = setTimeout(() => {
           if (game && game.phase === 'playing') nextTurn(false);
         }, TURN_SKIP_DELAY);
-      } else if (movable.length === 1) {
-        broadcastState();
-        game.turnTimer = setTimeout(() => {
-          if (!game || game.phase !== 'playing') return;
-          const captured = moveToken(player.color, movable[0], value);
-          if (checkWin(player.color)) {
-            game.phase = 'finished';
-            game.winner = player.color;
-            log(`GAME OVER: ${player.name}(${player.color}) wins!`);
-            broadcastState();
-            setTimeout(resetGame, 30000);
-          } else {
-            nextTurn(value === 6 || captured);
-          }
-        }, 1000);
       } else {
-        // Multiple tokens — show dice, then wait another minute for token pick
-        broadcastState();
-        startAutoPlayTimer();
+        const pick = movable.length === 1 ? movable[0] : movable[Math.floor(Math.random() * movable.length)];
+        log(`AUTO-PLAY: moved token ${pick} for ${player.name}(${player.color})`);
+        const captured = moveToken(player.color, pick, value);
+        if (checkWin(player.color)) {
+          game.phase = 'finished';
+          game.winner = player.color;
+          log(`GAME OVER: ${player.name}(${player.color}) wins!`);
+          broadcastState();
+          setTimeout(resetGame, 30000);
+        } else {
+          broadcastState();
+          game.turnTimer = setTimeout(() => {
+            if (game && game.phase === 'playing') nextTurn(value === 6 || captured);
+          }, 1000);
+        }
       }
     } else {
-      // Dice rolled but player hasn't picked a token — auto-pick random movable
+      // Dice already rolled but no token picked — auto-pick random
       const movable = [];
       for (let i = 0; i < 4; i++) {
         if (canMoveToken(player.color, i, game.diceValue)) movable.push(i);
@@ -403,8 +400,7 @@ ludoNs.on('connection', (socket) => {
     if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
     if (game.diceRolled) return;
 
-    // Player acted — reset auto-play timer
-    if (game.autoPlayTimer) { clearTimeout(game.autoPlayTimer); game.autoPlayTimer = null; }
+    // Player rolled — don't reset timer, it covers the whole turn (roll + pick)
 
     const player = game.players[playerIdx];
     const value = rollDice(player.color);
@@ -444,9 +440,8 @@ ludoNs.on('connection', (socket) => {
         }
       }, 1000);
     } else {
-      // Multiple tokens movable — start auto-play timer for token pick
+      // Multiple tokens movable — original auto-play timer still ticking
       broadcastState();
-      startAutoPlayTimer();
     }
   });
 
