@@ -1,0 +1,451 @@
+/* style.css — Mobile-first elegant design for Fatema Tiles */
+
+/* ============ Reset & Base ============ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f2f2f7;
+  --color-card: rgba(0, 0, 0, 0.03);
+  --color-brand: #b8860b;
+  --color-accent: #c44569;
+  --color-text: #1c1c1e;
+  --color-text-muted: #8e8e93;
+  --color-success: #34c759;
+  --color-selected: #e8b731;
+  --color-no-match: #ff3b30;
+  --tile-gap: 4px;
+  --board-padding: 8px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: 0.25s ease;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  height: 100%;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ============ Top Bar ============ */
+#top-bar {
+  flex-shrink: 0;
+  padding: 10px 16px 8px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.top-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  letter-spacing: 2.5px;
+  text-transform: lowercase;
+}
+
+.new-game-btn {
+  background: rgba(184, 134, 11, 0.1);
+  border: 1px solid rgba(184, 134, 11, 0.3);
+  color: var(--color-brand);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.new-game-btn:active {
+  background: rgba(184, 134, 11, 0.22);
+  border-color: var(--color-brand);
+}
+
+/* ============ Score Bar ============ */
+#score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.score-pill {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.3px;
+}
+
+.score-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+.score-dot {
+  color: rgba(0, 0, 0, 0.15);
+  font-size: 0.7rem;
+}
+
+/* ============ Board ============ */
+#board-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--board-padding);
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  grid-template-rows: repeat(var(--rows, 6), 1fr);
+  gap: var(--tile-gap);
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 5 / 6;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  /* Photo reveal background */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--color-surface);
+}
+
+/* ============ Tiles ============ */
+.tile {
+  position: relative;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.4s ease;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.tile:active {
+  transform: scale(0.95);
+}
+
+.tile.selected {
+  box-shadow: 0 0 0 3px var(--color-selected), 0 0 14px rgba(232, 183, 49, 0.5);
+  transform: scale(1.04);
+  z-index: 2;
+  animation: selectedPulse 1.2s ease-in-out infinite;
+}
+
+.tile.match-flash {
+  animation: matchGlow 0.5s ease;
+  z-index: 3;
+}
+
+.tile.no-match-flash {
+  animation: noMatchShake 0.5s ease;
+  z-index: 3;
+}
+
+.tile.cleared {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s, background 0.3s ease;
+}
+
+.tile-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Attribute layer removal animation */
+.attr-layer {
+  transition: opacity 0.3s ease;
+}
+
+.attr-layer.attr-removing {
+  opacity: 0;
+}
+
+/* ============ Animations ============ */
+@keyframes selectedPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px var(--color-selected), 0 0 14px rgba(232, 183, 49, 0.5);
+    transform: scale(1.04);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--color-selected), 0 0 22px rgba(232, 183, 49, 0.7);
+    transform: scale(1.06);
+  }
+}
+
+@keyframes matchGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(106, 177, 135, 0.8); transform: scale(1); }
+  40%  { box-shadow: 0 0 0 8px rgba(106, 177, 135, 0.5); transform: scale(1.08); }
+  100% { box-shadow: 0 0 0 0 rgba(106, 177, 135, 0); transform: scale(1); }
+}
+
+@keyframes noMatchShake {
+  0%, 100% { transform: translateX(0); box-shadow: none; }
+  10%  { transform: translateX(-5px); box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.6); }
+  30%  { transform: translateX(5px);  box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.6); }
+  50%  { transform: translateX(-4px); box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.4); }
+  70%  { transform: translateX(4px);  box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.4); }
+  90%  { transform: translateX(-2px); box-shadow: 0 0 0 1px rgba(239, 83, 80, 0.2); }
+}
+
+@keyframes tileEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+.tile {
+  animation: tileEnter 0.35s ease backwards;
+  animation-delay: calc(var(--tile-i, 0) * 0.02s);
+}
+
+/* ============ Win Banner — between header and board ============ */
+#win-banner {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-brand);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+  padding: 0 16px;
+  background: #ffffff;
+}
+
+#win-banner.visible {
+  max-height: 40px;
+  opacity: 1;
+  padding: 8px 16px 4px;
+}
+
+/* ============ Falling Hearts — confined to header area ============ */
+.falling-heart {
+  position: fixed;
+  top: -24px;
+  z-index: 50;
+  pointer-events: none;
+  animation: heartFall var(--heart-dur, 2s) ease-out var(--heart-delay, 0s) forwards;
+  font-size: var(--heart-size, 1rem);
+}
+
+@keyframes heartFall {
+  0%   { opacity: 0; transform: translateY(0) scale(0.3) rotate(0deg); }
+  12%  { opacity: 1; transform: translateY(12px) scale(1) rotate(15deg); }
+  65%  { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(110px) scale(0.4) rotate(40deg); }
+}
+
+/* ============ Photo Modal ============ */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+}
+
+.modal.visible .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px;
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 1;
+}
+
+.modal-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--color-brand);
+}
+
+.modal-body {
+  padding: 8px 20px 24px;
+}
+
+.modal-hint {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px;
+  background: var(--color-card);
+  border: 2px dashed rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.upload-btn:active {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+#photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.photo-thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-thumb .delete-photo {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#no-photos-msg {
+  text-align: center;
+  padding: 24px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+#no-photos-msg.hidden {
+  display: none;
+}
+
+/* ============ Utility ============ */
+.hidden {
+  display: none !important;
+}
+
+/* ============ Responsive — larger phones ============ */
+@media (min-height: 700px) {
+  :root {
+    --tile-gap: 5px;
+    --board-padding: 12px;
+  }
+  .brand {
+    font-size: 1.6rem;
+  }
+}
+
+/* ============ Landscape fallback ============ */
+@media (orientation: landscape) and (max-height: 500px) {
+  #top-bar { padding: 4px 12px 4px; }
+  .brand { font-size: 1.1rem; }
+  .top-bar-row { margin-bottom: 2px; }
+  #score-bar { gap: 6px; }
+  .score-pill { font-size: 0.65rem; }
+  .score-value { font-size: 0.75rem; }
+  :root { --tile-gap: 3px; --board-padding: 6px; }
+}

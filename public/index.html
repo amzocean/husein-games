@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Husein's Game Room 🎮</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  header {
+    text-align: center;
+    padding: 40px 20px 20px;
+  }
+  header h1 {
+    font-size: 2.2em;
+    background: linear-gradient(90deg, #f093fb, #f5576c, #fda085);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 1em;
+  }
+  .games {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 30px 20px;
+    max-width: 500px;
+    width: 100%;
+  }
+  @media (min-width: 700px) {
+    .games {
+      grid-template-columns: 1fr 1fr;
+      max-width: 700px;
+    }
+  }
+  .game-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+  }
+  .game-card:hover, .game-card:active {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.14);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .game-icon {
+    font-size: 3.5em;
+    margin-bottom: 12px;
+  }
+  .game-card h2 {
+    font-size: 1.3em;
+    margin-bottom: 6px;
+  }
+  .game-card p {
+    font-size: 0.85em;
+    color: #bbb;
+    line-height: 1.4;
+  }
+  .tag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .tag-multiplayer { background: #f5576c; }
+  .tag-solo { background: #4facfe; }
+  .tag-story { background: #f093fb; }
+  footer {
+    margin-top: auto;
+    padding: 30px 20px;
+    color: #555;
+    font-size: 0.8em;
+    text-align: center;
+  }
+  footer span { color: #f5576c; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Husein's Game Room</h1>
+  <p>Pick a game and have fun 🎲</p>
+</header>
+
+<div class="games">
+
+  <a class="game-card" href="/valentines/">
+    <div class="game-icon">💌</div>
+    <h2>Valentines</h2>
+    <p>A love-letter puzzle adventure through levels of memories</p>
+    <span class="tag tag-story">Story</span>
+  </a>
+
+  <a class="game-card" href="/tiles/">
+    <div class="game-icon">🧩</div>
+    <h2>Photo Tiles</h2>
+    <p>Sliding tile puzzle with your favorite photos</p>
+    <span class="tag tag-solo">Solo</span>
+  </a>
+
+  <a class="game-card" href="/ludo/">
+    <div class="game-icon">🎲</div>
+    <h2>Ludo</h2>
+    <p>Classic board game — 2 to 4 players on the same WiFi</p>
+    <span class="tag tag-multiplayer">Multiplayer</span>
+  </a>
+
+</div>
+
+<footer>
+  Made with <span>♥</span> by Husein
+</footer>
+
+</body>
+</html>

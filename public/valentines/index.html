@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Valentine’s Day ❤️</title>
+
+  <!--
+    ===========================
+    QUICK EDIT GUIDE
+    ===========================
+    1) Images (already matching your folder):
+       images/level1.jpg
+       images/level2.jpg
+       images/level3.jpg
+       images/level4.jpg
+       images/level5.jpg
+       images/final.jpg
+
+    2) Captions + Letter:
+       Edit CONFIG.levels[].caption and CONFIG.finalLetter below.
+
+    3) Behavior:
+       Speeds are in CONFIG.levels[].speed.
+       Level 6 has "magnet" behavior (heart gently drifts toward cursor/finger).
+  -->
+
+  <style>
+    :root{
+      --bg1:#fff5f5;
+      --bg2:#fff0f0;
+      --ink:#1f2430;
+      --muted:#6b7280;
+      --card:#ffffffcc;
+      --border: rgba(0,0,0,.10);
+      --shadow: 0 16px 50px rgba(0,0,0,.12);
+      --accent:#dc2626;
+      --accent2:#ef4444;
+      --good:#22c55e;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% 10%, var(--bg1), transparent 60%),
+                  radial-gradient(1000px 700px at 80% 20%, #ffe4e4, transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 18px 30px;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    .title{
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      line-height: 1.05;
+    }
+    .subtitle{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor:pointer;
+      background: rgba(220,38,38,.12);
+      color: #b91c1c;
+      box-shadow: 0 4px 12px rgba(220,38,38,.10);
+      border: 1px solid rgba(220,38,38,.22);
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.ghost{
+      background: rgba(220,38,38,.10);
+      color: #b91c1c;
+      box-shadow:none;
+      border:1px solid rgba(220,38,38,.22);
+    }
+    .btn.small{ padding: 8px 10px; border-radius: 10px; font-size: 13px; }
+
+    .hud{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin: 10px 0 14px;
+    }
+
+    .pill{
+      background: rgba(17,24,39,.06);
+      border:1px solid rgba(17,24,39,.10);
+      color:#111827;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .hearts{
+      display:flex;
+      gap:6px;
+      align-items:center;
+      font-size: 16px;
+      user-select:none;
+    }
+    .hearts span{
+      width: 22px;
+      height: 22px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 6px;
+      background: rgba(255,255,255,.5);
+      border:1px solid var(--border);
+      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    }
+
+    .board{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .playTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.35));
+    }
+    .hint{
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .status{
+      font-weight:900;
+      font-size: 13px;
+      color:#111827;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(220,38,38,.12);
+      border: 1px solid rgba(220,38,38,.22);
+    }
+
+    .arenaWrap{
+      padding: 14px;
+    }
+
+    .arena{
+      position: relative;
+      width: 100%;
+      height: min(62vh, 520px);
+      min-height: 340px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.08);
+      background:
+        radial-gradient(800px 420px at 20% 20%, rgba(220,38,38,.08), transparent 60%),
+        radial-gradient(700px 420px at 80% 35%, rgba(239,68,68,.08), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.20));
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    .heart{
+      position:absolute;
+      width: 86px;
+      height: 86px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      border-radius: 22px;
+      transform: translate3d(0,0,0);
+      will-change: transform, left, top;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.18));
+    }
+
+    /* Heart look */
+    .heartInner{
+      width: 86px;
+      height: 86px;
+      border-radius: 22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), rgba(255,255,255,.2) 35%, transparent 60%),
+                  linear-gradient(135deg, rgba(239,68,68,.95), rgba(185,28,28,.90));
+      border: 1px solid rgba(255,255,255,.55);
+      position:relative;
+      overflow:hidden;
+      animation: floaty 2.8s ease-in-out infinite;
+    }
+
+    .heartEmoji{
+      font-size: 44px;
+      transform: translateY(-1px);
+      text-shadow: 0 10px 18px rgba(0,0,0,.18);
+    }
+
+    /* Level 6 special glow */
+    .heart.level6 .heartInner{
+      box-shadow: 0 0 0 1px rgba(255,255,255,.65),
+                  0 0 40px rgba(220,38,38,.35),
+                  0 0 65px rgba(239,68,68,.22);
+    }
+
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-5px) scale(1.02); }
+    }
+
+    /* Catch animation */
+    .pop{
+      animation: pop 420ms ease forwards;
+    }
+    @keyframes pop{
+      0%{ transform: scale(1); opacity:1; }
+      55%{ transform: scale(1.25); opacity:1; }
+      100%{ transform: scale(.7); opacity:0; }
+    }
+
+    /* Overlay */
+    .overlay{
+      position: fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      background: rgba(17,24,39,.52);
+      backdrop-filter: blur(6px);
+      z-index: 50;
+    }
+    .overlay.show{ display:flex; }
+
+    .modal{
+      width: min(920px, 96vw);
+      max-height: 94vh;
+      overflow-y: auto;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+      transform: translateY(8px);
+      animation: rise 220ms ease forwards;
+    }
+    @keyframes rise{
+      to { transform: translateY(0); }
+    }
+    .modalHead{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.45));
+    }
+    .modalTitle{
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .modalBody{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1.2fr .9fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .modalBody{ grid-template-columns: 1fr; }
+    }
+
+    .photo{
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.10);
+      overflow:hidden;
+      background: #f3f4f6;
+      min-height: 240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--muted);
+      position:relative;
+    }
+    .photo img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .captionBox{
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,240,240,.75);
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .caption{
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+    .subcap{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .modalFoot{
+      padding: 14px 16px;
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      border-top: 1px solid rgba(0,0,0,.06);
+      background: linear-gradient(0deg, rgba(255,255,255,.95), rgba(255,255,255,.8));
+      position: sticky;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    /* Letter modal */
+    .letter{
+      white-space: pre-wrap;
+      font-size: 15px;
+      line-height: 1.65;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.08);
+      color:#111827;
+    }
+
+    .spark{
+      position:absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.85);
+      filter: drop-shadow(0 6px 10px rgba(220,38,38,.25));
+      pointer-events:none;
+      opacity:.0;
+    }
+
+    /* Intro overlay */
+    .intro{
+      position: fixed;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      background: radial-gradient(1200px 700px at 20% 20%, rgba(220,38,38,.22), transparent 55%),
+                  radial-gradient(1200px 700px at 80% 30%, rgba(239,68,68,.18), transparent 55%),
+                  rgba(17,24,39,.55);
+      backdrop-filter: blur(7px);
+      z-index: 60;
+    }
+    .introCard{
+      width: min(760px, 96vw);
+      border-radius: 20px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.6);
+      box-shadow: 0 26px 80px rgba(0,0,0,.4);
+      overflow:hidden;
+    }
+    .introInner{
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items:center;
+    }
+    @media (max-width: 860px){
+      .introInner{ grid-template-columns: 1fr; }
+    }
+    .introH{
+      font-size: 26px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      line-height: 1.1;
+    }
+    .introP{
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .introTag{
+      margin-top:10px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(220,38,38,.12);
+      border: 1px solid rgba(220,38,38,.22);
+      color:#b91c1c;
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .introArt{
+      border-radius: 16px;
+      border:1px solid rgba(0,0,0,.08);
+      background:
+        radial-gradient(220px 160px at 30% 30%, rgba(220,38,38,.15), transparent 60%),
+        radial-gradient(220px 160px at 70% 55%, rgba(239,68,68,.12), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.35));
+      height: 240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .introBigHeart{
+      font-size: 76px;
+      filter: drop-shadow(0 16px 20px rgba(0,0,0,.16));
+      animation: introPulse 1.9s ease-in-out infinite;
+    }
+    @keyframes introPulse{
+      0%,100%{ transform: scale(1); }
+      50%{ transform: scale(1.06); }
+    }
+    .introFoot{
+      padding: 14px 18px;
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      border-top: 1px solid rgba(0,0,0,.06);
+      background: linear-gradient(0deg, rgba(255,255,255,.8), rgba(255,255,255,.35));
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="title">Happy Valentine’s Day! ❤️</div>
+        <div class="subtitle">A tiny Valentine from Husein to Fatema</div>
+      </div>
+      <div class="controls">
+        <button id="musicBtn" class="btn ghost small" type="button">🎵 Music Off</button>
+        <button id="resetBtn" class="btn ghost small" type="button">Start Over</button>
+      </div>
+    </header>
+
+    <div class="hud">
+      <div class="hearts" id="heartsRow" aria-label="Hearts collected"></div>
+      <div class="pill" id="progressPill">0 / 6 hearts</div>
+    </div>
+
+    <div class="board">
+      <div class="playTop">
+        <div class="hint" id="hintText">Tap the heart to catch it!</div>
+        <div class="status" id="statusChip">Ready</div>
+      </div>
+
+      <div class="arenaWrap">
+        <div class="arena" id="arena" aria-label="Game area">
+          <div class="heart" id="heart" role="button" aria-label="Heart">
+            <div class="heartInner">
+              <div class="heartEmoji">❤️</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro" id="intro">
+    <div class="introCard">
+      <div class="introInner">
+        <div>
+          <div class="introH">Hi Fatema ❤️</div>
+          <div class="introP">
+            Catch the moving heart.<br />
+            Each catch unlocks a memory from last year.<br />
+            Six hearts… and then your Valentine’s letter.
+          </div>
+          <div class="introTag">No rush. Just us ❤️</div>
+        </div>
+        <div class="introArt" aria-hidden="true">
+          <div class="introBigHeart">❤️</div>
+        </div>
+      </div>
+      <div class="introFoot">
+        <button id="startBtn" class="btn" type="button">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reward overlay -->
+  <div class="overlay" id="rewardOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Memory unlocked">
+      <div class="modalHead">
+        <div class="modalTitle" id="rewardTitle">Heart caught ❤️</div>
+        <button class="btn ghost small" id="closeRewardBtn" type="button">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="photo" id="rewardPhoto">
+          <div id="photoPlaceholder">Add your image in <b>images/</b></div>
+        </div>
+        <div class="captionBox">
+          <div class="caption" id="rewardCaption"></div>
+          <div class="subcap" id="rewardSub"></div>
+          <div id="finalLetterBlock" style="display:none;">
+            <div style="font-weight:900; margin: 6px 0 6px;">Your Valentine 💌</div>
+            <div class="letter" id="letterText"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modalFoot">
+        <button id="nextBtn" class="btn" type="button">Next Heart</button>
+      </div>
+    </div>
+  </div>
+
+<audio id="bgMusic" src="music.mp3" loop preload="auto"></audio>
+
+<script>
+// ========== Music Player (audio file) ==========
+const MusicPlayer = (() => {
+  const audio = document.getElementById('bgMusic');
+  audio.volume = 0.5;
+
+  function start() {
+    audio.play().catch(() => {});
+  }
+  function stop() {
+    audio.pause();
+  }
+  function toggle() {
+    if (audio.paused) { start(); } else { stop(); }
+    return !audio.paused;
+  }
+  function isPlaying() { return !audio.paused; }
+
+  return { start, stop, toggle, isPlaying };
+})();
+
+// Music button handler
+document.getElementById('musicBtn').addEventListener('click', () => {
+  const on = MusicPlayer.toggle();
+  document.getElementById('musicBtn').textContent = on ? '🎵 Music Off' : '🎵 Music On';
+});
+
+(() => {
+  const CONFIG = {
+    totalLevels: 6,
+    // Speeds are pixels/second baseline
+    levels: [
+      {
+        name: "Moon",
+        image: "images/level1.jpg",
+        caption: "Even the moon had competition that night…\nbut you still stole all my attention.",
+        sub: "First heart caught ❤️",
+        speed: 150,
+        magnet: false
+      },
+      {
+        name: "Waking up with you",
+        image: "images/level2.jpg",
+        caption: "My favorite mornings aren’t about sleep…\nthey’re about waking up next to you.",
+        sub: "Second heart caught ❤️",
+        speed: 190,
+        magnet: false
+      },
+      {
+        name: "Mecca",
+        image: "images/level3.jpg",
+        caption: "Of all the blessings in my life…\nyou will always be my favorite one.",
+        sub: "Third heart caught ❤️",
+        speed: 230,
+        magnet: false
+      },
+      {
+        name: "Bus stop",
+        image: "images/level4.jpg",
+        caption: "Doesn’t matter where we’re going…\nevery place feels right with you.",
+        sub: "Fourth heart caught ❤️",
+        speed: 280,
+        magnet: false
+      },
+      {
+        name: "Ice cream",
+        image: "images/level5.jpg",
+        caption: "Life with you is my favorite flavor 😌❤️",
+        sub: "Fifth heart caught ❤️",
+        speed: 340,
+        magnet: false
+      },
+      {
+        name: "Final (Restaurant)",
+        image: "images/final.jpg",
+        caption: "You didn’t just catch my heart…\n\nYou keep it.",
+        sub: "You caught them all ❤️",
+        speed: 300,       // keep catchable
+        magnet: true      // special behavior
+      }
+    ],
+    finalLetter:
+`Fatema,
+
+Even across time zones, you’re the best part of my day.
+I love our calls, our little rituals, and the way you make distance feel smaller.
+Thank you for the laughter, the comfort, and the way you make ordinary moments feel unforgettable.
+
+I miss you more than words can explain…
+but I love you even more than that.
+
+Happy Valentine’s Day, my love ❤️
+
+— Husein`
+  };
+
+  // ---------- State + Storage ----------
+  const STORAGE_KEY = "catch_my_heart_v1";
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return { started:false, level:1, completed: [] };
+      const s = JSON.parse(raw);
+      return {
+        started: !!s.started,
+        level: Math.min(Math.max(1, s.level || 1), CONFIG.totalLevels),
+        completed: Array.isArray(s.completed) ? s.completed : []
+      };
+    } catch {
+      return { started:false, level:1, completed: [] };
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function resetState() {
+    state = { started:false, level:1, completed: [] };
+    saveState();
+  }
+
+  let state = loadState();
+
+  // ---------- DOM ----------
+  const intro = document.getElementById("intro");
+  const startBtn = document.getElementById("startBtn");
+  const resetBtn = document.getElementById("resetBtn");
+
+  const progressPill = document.getElementById("progressPill");
+  const heartsRow = document.getElementById("heartsRow");
+
+  const arena = document.getElementById("arena");
+  const heart = document.getElementById("heart");
+  const hintText = document.getElementById("hintText");
+  const statusChip = document.getElementById("statusChip");
+
+  const rewardOverlay = document.getElementById("rewardOverlay");
+  const rewardTitle = document.getElementById("rewardTitle");
+  const rewardCaption = document.getElementById("rewardCaption");
+  const rewardSub = document.getElementById("rewardSub");
+  const rewardPhoto = document.getElementById("rewardPhoto");
+  const photoPlaceholder = document.getElementById("photoPlaceholder");
+  const nextBtn = document.getElementById("nextBtn");
+  const closeRewardBtn = document.getElementById("closeRewardBtn");
+
+  const finalLetterBlock = document.getElementById("finalLetterBlock");
+  const letterText = document.getElementById("letterText");
+
+  // ---------- Game Physics ----------
+  let raf = null;
+  let paused = false;
+  let lastT = 0;
+
+  // Heart position/velocity in pixels
+  const obj = {
+    x: 60, y: 60,
+    vx: 1, vy: 1,
+    size: 86
+  };
+
+  // Pointer target (for Level 6 magnet)
+  let target = { x: null, y: null };
+
+  function randSign() { return Math.random() < 0.5 ? -1 : 1; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  function arenaBounds() {
+    const r = arena.getBoundingClientRect();
+    return { w: r.width, h: r.height };
+  }
+
+  function setHeartClassForLevel(levelIdx) {
+    heart.classList.toggle("level6", levelIdx === 5);
+  }
+
+  function initLevel(levelNumber) {
+    const idx = levelNumber - 1;
+    const cfg = CONFIG.levels[idx];
+    setHeartClassForLevel(idx);
+
+    // position near center
+    const { w, h } = arenaBounds();
+    obj.x = (w - obj.size) / 2 + (Math.random() * 40 - 20);
+    obj.y = (h - obj.size) / 2 + (Math.random() * 40 - 20);
+
+    // random direction with chosen speed
+    const ang = Math.random() * Math.PI * 2;
+    obj.vx = Math.cos(ang) * cfg.speed;
+    obj.vy = Math.sin(ang) * cfg.speed;
+
+    // UI
+    statusChip.textContent = "Catch it!";
+    hintText.textContent = (idx === 5)
+      ? "Last one… it might come to you ❤️"
+      : "Tap the heart to catch it!";
+
+    // render immediately
+    renderHeart();
+  }
+
+  function renderHeart() {
+    heart.style.left = `${obj.x}px`;
+    heart.style.top  = `${obj.y}px`;
+  }
+
+  function step(t) {
+    if (!lastT) lastT = t;
+    const dt = (t - lastT) / 1000;
+    lastT = t;
+
+    if (!paused && !rewardOverlay.classList.contains("show")) {
+      const levelIdx = state.level - 1;
+      const cfg = CONFIG.levels[levelIdx];
+      const { w, h } = arenaBounds();
+
+      // Magnet behavior (Level 6)
+      if (cfg.magnet && target.x !== null && target.y !== null) {
+        // Heart center
+        const cx = obj.x + obj.size / 2;
+        const cy = obj.y + obj.size / 2;
+
+        // Vector toward pointer
+        const dx = target.x - cx;
+        const dy = target.y - cy;
+        const dist = Math.hypot(dx, dy) || 1;
+
+        // Desired direction with gentle pull
+        const pullStrength = 220; // px/s^2 feel
+        const ax = (dx / dist) * pullStrength;
+        const ay = (dy / dist) * pullStrength;
+
+        // Apply acceleration (soft)
+        obj.vx += ax * dt;
+        obj.vy += ay * dt;
+
+        // Clamp speed so it stays catchable
+        const maxSpeed = 420;
+        const sp = Math.hypot(obj.vx, obj.vy);
+        if (sp > maxSpeed) {
+          obj.vx = (obj.vx / sp) * maxSpeed;
+          obj.vy = (obj.vy / sp) * maxSpeed;
+        }
+      }
+
+      // Move
+      obj.x += obj.vx * dt;
+      obj.y += obj.vy * dt;
+
+      // Bounce edges
+      if (obj.x <= 0) { obj.x = 0; obj.vx = Math.abs(obj.vx); }
+      if (obj.y <= 0) { obj.y = 0; obj.vy = Math.abs(obj.vy); }
+      if (obj.x + obj.size >= w) { obj.x = w - obj.size; obj.vx = -Math.abs(obj.vx); }
+      if (obj.y + obj.size >= h) { obj.y = h - obj.size; obj.vy = -Math.abs(obj.vy); }
+
+      // Small playful jitter on level 5 only (clamped so speed can't spiral)
+      if (state.level === 5) {
+        const maxSp = cfg.speed * 1.3;
+        if (Math.random() < 0.02) obj.vx *= (0.85 + Math.random() * 0.3);
+        if (Math.random() < 0.02) obj.vy *= (0.85 + Math.random() * 0.3);
+        const sp = Math.hypot(obj.vx, obj.vy);
+        if (sp > maxSp) {
+          obj.vx = (obj.vx / sp) * maxSp;
+          obj.vy = (obj.vy / sp) * maxSp;
+        }
+      }
+
+      renderHeart();
+
+      // Optional sparkles on level 6
+      if (cfg.magnet && Math.random() < 0.12) spawnSpark();
+    }
+
+    raf = requestAnimationFrame(step);
+  }
+
+  // ---------- Sparkles (Level 6 polish) ----------
+  function spawnSpark() {
+    const s = document.createElement("div");
+    s.className = "spark";
+    const { w, h } = arenaBounds();
+    const x = obj.x + obj.size/2 + (Math.random()*40 - 20);
+    const y = obj.y + obj.size/2 + (Math.random()*40 - 20);
+    s.style.left = `${clamp(x, 6, w-6)}px`;
+    s.style.top  = `${clamp(y, 6, h-6)}px`;
+    s.style.opacity = "0.9";
+    arena.appendChild(s);
+
+    // animate out
+    const dx = (Math.random()*60 - 30);
+    const dy = (Math.random()*60 - 30);
+    s.animate([
+      { transform:`translate(0,0) scale(1)`, opacity:0.9 },
+      { transform:`translate(${dx}px,${dy}px) scale(0.2)`, opacity:0 }
+    ], { duration: 550, easing: "ease-out" });
+
+    setTimeout(() => s.remove(), 600);
+  }
+
+  // ---------- UI ----------
+  function updateHUD() {
+    const completedCount = state.completed.length;
+    progressPill.textContent = `${completedCount} / ${CONFIG.totalLevels} hearts`;
+
+    heartsRow.innerHTML = "";
+    for (let i = 1; i <= CONFIG.totalLevels; i++) {
+      const span = document.createElement("span");
+      const filled = state.completed.includes(i);
+      span.textContent = filled ? "❤️" : "♡";
+      span.title = filled ? `Heart ${i} caught` : `Heart ${i}`;
+      heartsRow.appendChild(span);
+    }
+  }
+
+  function showIntroIfNeeded() {
+    if (!state.started) {
+      intro.style.display = "flex";
+    } else {
+      intro.style.display = "none";
+    }
+  }
+
+  function setOverlay(show) {
+    rewardOverlay.classList.toggle("show", show);
+    rewardOverlay.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+
+  function setRewardPhoto(src) {
+    rewardPhoto.innerHTML = "";
+    const img = new Image();
+    img.alt = "Memory photo";
+    img.src = src;
+    img.onload = () => {
+      rewardPhoto.innerHTML = "";
+      rewardPhoto.appendChild(img);
+    };
+    img.onerror = () => {
+      rewardPhoto.innerHTML = "";
+      const ph = document.createElement("div");
+      ph.style.padding = "14px";
+      ph.style.textAlign = "center";
+      ph.style.color = "#6b7280";
+      ph.innerHTML = `Couldn't load <b>${src}</b><br/>Make sure the file exists.`;
+      rewardPhoto.appendChild(ph);
+    };
+  }
+
+  function showReward(levelNumber) {
+    const idx = levelNumber - 1;
+    const cfg = CONFIG.levels[idx];
+
+    const funLabels = [
+      "Catch me again 😘",
+      "One more… I dare you 💋",
+      "You're getting closer 🥰",
+      "Almost mine… keep going 😏",
+      "Last one before the surprise 🤭"
+    ];
+
+    rewardTitle.textContent = cfg.sub;
+
+    const isFinal = (levelNumber === CONFIG.totalLevels);
+
+    // For final level, hide caption area — just show photo + letter
+    if (isFinal) {
+      rewardCaption.style.display = "none";
+      rewardSub.style.display = "none";
+    } else {
+      rewardCaption.style.display = "";
+      rewardSub.style.display = "";
+      rewardCaption.textContent = cfg.caption;
+      rewardSub.textContent = "";
+    }
+
+    setRewardPhoto(cfg.image);
+
+    // Final letter block only on level 6
+    finalLetterBlock.style.display = isFinal ? "block" : "none";
+    letterText.textContent = CONFIG.finalLetter;
+
+    nextBtn.textContent = isFinal ? "Replay ❤️" : funLabels[levelNumber - 1] || "Next Heart";
+    setOverlay(true);
+  }
+
+  function completeLevel(levelNumber) {
+    if (!state.completed.includes(levelNumber)) {
+      state.completed.push(levelNumber);
+      state.completed.sort((a,b) => a-b);
+    }
+    saveState();
+    updateHUD();
+  }
+
+  function advance() {
+    const isFinal = state.completed.includes(CONFIG.totalLevels);
+
+    if (isFinal) {
+      // Replay
+      resetState();
+      state.started = true; // keep started so it doesn't re-show intro unless you want
+      saveState();
+      paused = false;
+      updateHUD();
+      setOverlay(false);
+      initLevel(state.level);
+      statusChip.textContent = "Ready";
+      return;
+    }
+
+    // Level was already advanced in the heart click handler
+    saveState();
+    updateHUD();
+    setOverlay(false);
+    initLevel(state.level);
+  }
+
+  // ---------- Events ----------
+  startBtn.addEventListener("click", () => {
+    state.started = true;
+    saveState();
+    showIntroIfNeeded();
+    updateHUD();
+    initLevel(state.level);
+    // Auto-start romantic music
+    if (!MusicPlayer.isPlaying()) {
+      MusicPlayer.start();
+      document.getElementById('musicBtn').textContent = '🎵 Music Off';
+    }
+  });
+
+  resetBtn.addEventListener("click", () => {
+    resetState();
+    paused = false;
+    updateHUD();
+    showIntroIfNeeded();
+    setOverlay(false);
+    statusChip.textContent = "Ready";
+    initLevel(state.level);
+  });
+
+  closeRewardBtn.addEventListener("click", () => {
+    setOverlay(false);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    advance();
+  });
+
+  // Catch heart
+  heart.addEventListener("click", () => {
+    if (paused) return;
+    if (rewardOverlay.classList.contains("show")) return;
+
+    // pop animation
+    heart.classList.add("pop");
+    statusChip.textContent = "Caught ❤️";
+
+    const caughtLevel = state.level;
+
+    setTimeout(() => {
+      heart.classList.remove("pop");
+      completeLevel(caughtLevel);
+      showReward(caughtLevel);
+
+      // If not final, prep next level behind the overlay
+      if (caughtLevel < CONFIG.totalLevels) {
+        // move to next level state now so HUD shows correctly after closing overlay
+        state.level = Math.min(caughtLevel + 1, CONFIG.totalLevels);
+        saveState();
+        updateHUD();
+        initLevel(state.level);
+      } else {
+        // final completed; keep level at 6
+        state.level = CONFIG.totalLevels;
+        saveState();
+        updateHUD();
+      }
+    }, 260);
+  });
+
+  // Track pointer for magnet level
+  function updateTargetFromEvent(e) {
+    const rect = arena.getBoundingClientRect();
+    const x = (e.clientX ?? 0) - rect.left;
+    const y = (e.clientY ?? 0) - rect.top;
+    target.x = clamp(x, 0, rect.width);
+    target.y = clamp(y, 0, rect.height);
+  }
+
+  arena.addEventListener("mousemove", (e) => updateTargetFromEvent(e));
+  arena.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    updateTargetFromEvent(e.touches[0]);
+  }, { passive:true });
+  arena.addEventListener("touchmove", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    updateTargetFromEvent(e.touches[0]);
+  }, { passive:true });
+
+  // Close reward overlay by clicking outside modal (optional)
+  rewardOverlay.addEventListener("click", (e) => {
+    if (e.target === rewardOverlay) setOverlay(false);
+  });
+
+  // ---------- Init ----------
+  function boot() {
+    updateHUD();
+    showIntroIfNeeded();
+
+    // If already started, don't block
+    if (state.started) {
+      intro.style.display = "none";
+      initLevel(state.level);
+    } else {
+      // init position anyway so it looks good behind intro
+      initLevel(state.level);
+    }
+
+    // Start animation loop
+    raf = requestAnimationFrame(step);
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
