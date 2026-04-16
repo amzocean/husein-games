@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const ludoNs = io.of('/ludo');
 
 const COLORS = ['red', 'green', 'yellow', 'blue'];
-const IDLE_TIMEOUT = 15 * 60 * 1000;
+const IDLE_TIMEOUT = 30 * 60 * 1000;
 const TURN_SKIP_DELAY = 1500;
 const DISCONNECT_GRACE = 15000;
 
