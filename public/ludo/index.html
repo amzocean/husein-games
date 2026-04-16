@@ -271,10 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
 const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
 const COLORS = {
-  red:    { fill: '#c44569', light: '#f8a5c2', dark: '#9b1b4a' },   // Rose
-  green:  { fill: '#b8860b', light: '#f0d58c', dark: '#8a6508' },   // Gold
-  yellow: { fill: '#2a9d8f', light: '#76d7c4', dark: '#1a7568' },   // Teal
-  blue:   { fill: '#7b2d8e', light: '#c39bd3', dark: '#5b1f6a' }    // Plum
+  red:    { fill: '#c44569', light: '#fce4ec', dark: '#8e1942' },   // Rose
+  green:  { fill: '#b8860b', light: '#faf0d0', dark: '#6d5006' },   // Gold
+  yellow: { fill: '#2a9d8f', light: '#d5f0eb', dark: '#176b60' },   // Teal
+  blue:   { fill: '#7b2d8e', light: '#ecdff1', dark: '#4e1a5b' }    // Plum
 };
 
 // Board geometry
@@ -504,7 +504,7 @@ function drawCenter(ctx) {
   const r = cellSize * 0.7;
 
   // Draw the 4 triangles pointing to center
-  const colors = ['#D32F2F', '#388E3C', '#F9A825', '#1565C0'];
+  const colors = [COLORS.red.fill, COLORS.green.fill, COLORS.yellow.fill, COLORS.blue.fill];
   const corners = [
     [6 * cellSize, 6 * cellSize], // top-left
     [9 * cellSize, 6 * cellSize], // top-right
