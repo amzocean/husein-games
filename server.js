@@ -363,7 +363,7 @@ ludoNs.on('connection', (socket) => {
     }
   });
 
-  socket.on('move', ({ sessionId, tokenIdx }) => {
+  socket.on('move', ({ sessionId, tokenIndex: tokenIdx }) => {
     if (!game || game.phase !== 'playing') return;
     const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
     if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
