@@ -4,106 +4,148 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Husein and Fatema's Game Room 🎮</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff5f5;
     min-height: 100vh;
-    color: #fff;
+    color: #2c2c2c;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    overflow-x: hidden;
   }
+
+  /* Soft floating hearts background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(196,69,105,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 85% 30%, rgba(184,134,11,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 50% 80%, rgba(245,87,108,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   header {
     text-align: center;
-    padding: 40px 20px 20px;
+    padding: 50px 20px 10px;
+    position: relative;
+    z-index: 1;
   }
   header h1 {
-    font-size: 2.2em;
-    background: linear-gradient(90deg, #f093fb, #f5576c, #fda085);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #c44569;
+    letter-spacing: -0.02em;
   }
   header p {
-    color: #aaa;
+    font-family: 'Inter', sans-serif;
+    color: #b8860b;
     margin-top: 8px;
     font-size: 1em;
+    font-weight: 400;
+    letter-spacing: 0.03em;
   }
+
   .games {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 18px;
     padding: 30px 20px;
-    max-width: 500px;
+    max-width: 460px;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
   @media (min-width: 700px) {
     .games {
       grid-template-columns: 1fr 1fr;
-      max-width: 700px;
+      max-width: 680px;
     }
   }
+
   .game-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
-    padding: 28px 24px;
+    background: #ffffff;
+    border: 1px solid rgba(196,69,105,0.12);
+    border-radius: 20px;
+    padding: 30px 24px;
     text-decoration: none;
-    color: #fff;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    color: #2c2c2c;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     cursor: pointer;
+    box-shadow: 0 2px 12px rgba(196,69,105,0.06);
   }
   .game-card:hover, .game-card:active {
-    transform: translateY(-4px);
-    background: rgba(255,255,255,0.14);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    border-color: rgba(196,69,105,0.25);
+    box-shadow: 0 12px 36px rgba(196,69,105,0.12);
   }
   .game-icon {
-    font-size: 3.5em;
-    margin-bottom: 12px;
+    font-size: 3.2em;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
   }
   .game-card h2 {
+    font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.3em;
+    font-weight: 600;
+    color: #333;
     margin-bottom: 6px;
   }
   .game-card p {
     font-size: 0.85em;
-    color: #bbb;
-    line-height: 1.4;
+    color: #888;
+    line-height: 1.5;
+    font-weight: 300;
   }
+
   .tag {
     display: inline-block;
-    margin-top: 10px;
-    padding: 3px 10px;
+    margin-top: 12px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.7em;
+    font-size: 0.65em;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
   }
-  .tag-multiplayer { background: #f5576c; }
-  .tag-solo { background: #4facfe; }
-  .tag-story { background: #f093fb; }
+  .tag-multiplayer { background: #c44569; }
+  .tag-solo { background: #b8860b; }
+  .tag-story { background: #e8a0bf; }
+
   footer {
     margin-top: auto;
     padding: 30px 20px;
-    color: #555;
+    color: #c4a882;
     font-size: 0.8em;
     text-align: center;
+    position: relative;
+    z-index: 1;
+    font-weight: 300;
   }
-  footer span { color: #f5576c; }
+  footer span { color: #c44569; font-size: 1.1em; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Husein and Fatema's Game Room</h1>
-  <p>Pick a game and have fun 🎲</p>
+  <h1>Husein & Fatema's Game Room</h1>
+  <p>pick a game and play together ♡</p>
 </header>
 
 <div class="games">
@@ -125,14 +167,14 @@
   <a class="game-card" href="/ludo/">
     <div class="game-icon">🎲</div>
     <h2>Ludo</h2>
-    <p>Classic board game — 2 to 4 players on the same WiFi</p>
+    <p>Classic board game — 2 to 4 players, anywhere</p>
     <span class="tag tag-multiplayer">Multiplayer</span>
   </a>
 
 </div>
 
 <footer>
-  Made with <span>♥</span> by Husein and Fatema
+  Made with <span>♥</span> by Husein & Fatema
 </footer>
 
 </body>
