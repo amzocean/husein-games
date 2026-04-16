@@ -1,4 +1,4 @@
-# Husein's Game Portal — Complete Project Documentation
+# Husein and Fatema's Game Room — Complete Project Documentation
 
 ## Quick Resume Checklist
 - **Local project**: `C:\Users\huseinm\Downloads\husein-games\`
@@ -82,6 +82,12 @@ eb02939 Increase idle timeout to 30 minutes
 657be8f Single 1-min auto-play timer covers entire turn (roll + pick)
 4665d51 Auto-hide capture banner after 3 seconds
 f5482dd Add spectator mode: non-players see live board without controls
+...      Documentation, name change, theme commits
+b096486 Ludo romantic retheme with rose/gold/teal/plum player colors
+06ca0ea Fix color contrast: much lighter lights, darker darks, update center triangles
+5226c8e Hide debug behind 5-tap secret, add Exit Game + End Game (creator only)
+10dbaea Disable debug panel activation (code preserved, commented out)
+b07d8a6 Change plum to indigo blue for better contrast with rose
 ```
 
 ### DNS (NOT YET DONE)
@@ -94,9 +100,13 @@ f5482dd Add spectator mode: non-players see live board without controls
 
 ## 3. Landing Page (`public/index.html`)
 
-- Dark gradient background (`#0f0c29 → #302b63 → #24243e`)
+- **Title**: "Husein and Fatema's Game Room"
+- **Theme**: Romantic blush — background `#fff5f5` with subtle radial glows
+- **Fonts**: Playfair Display (headings) + Inter (body) from Google Fonts
+- **Colors**: Rose `#c44569` headings, gold `#b8860b` subtitle, warm pastel tag backgrounds
+- **Cards**: White with rose-tinted borders and soft shadows, hover scale effect
 - Responsive grid: 1 column on mobile, 2 columns on 700px+
-- Three game cards with hover effects:
+- Three game cards:
   1. **💌 Valentines** → `/valentines/` (tag: Story)
   2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
   3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
@@ -166,7 +176,20 @@ A sliding tile puzzle (like a 15-puzzle but 6×5 = 30 tiles). Match tiles by 4 v
 ## 6. Ludo Game — Detailed Reference
 
 ### Overview
-Classic Ludo board game, 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, and spectator mode.
+Classic Ludo board game, 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, spectator mode, and exit/end game controls.
+
+### Visual Theme
+- **Romantic blush** — background `#fff5f5`, white cards with rose-tinted borders
+- **Fonts**: Playfair Display (heading) + Inter (body), matching the landing page
+- **Player colors** (mapped from internal keys red/green/yellow/blue):
+  | Key | Display Name | Fill | Light (base/path) | Dark (borders) |
+  |-----|-------------|------|-------------------|----------------|
+  | red | Rose | `#c44569` | `#fce4ec` | `#8e1942` |
+  | green | Gold | `#b8860b` | `#faf0d0` | `#6d5006` |
+  | yellow | Teal | `#2a9d8f` | `#d5f0eb` | `#176b60` |
+  | blue | Indigo | `#3355a0` | `#dce4f5` | `#1a2d5e` |
+- Center HOME triangle uses same `COLORS[x].fill` values
+- Capture flash uses Rose `#c44569`
 
 ### Client: `public/ludo/index.html` (915 lines)
 
@@ -175,8 +198,8 @@ Single file containing all HTML, CSS, and JavaScript.
 #### Screens (CSS class `.screen`, toggled via `.active`)
 1. **`screen-idle`** — No game running. Shows "Create Game" button with name input.
 2. **`screen-lobby`** — Game created, waiting for players. Shows player list with color dots, join form, and start button (creator only, 2+ players required).
-3. **`screen-playing`** — Active game. Canvas board, dice button, turn indicator, pick/no-move hints, capture banner, debug panel.
-4. **`screen-finished`** — Game over. Shows final board state and winner message.
+3. **`screen-playing`** — Active game. Canvas board, dice button, turn indicator, pick/no-move hints, capture banner, exit/end game buttons. Debug panel exists in HTML but is hidden (activation code commented out).
+4. **`screen-finished`** — Game over. Shows final board state, winner message, and "New Game" button.
 
 #### Board Geometry (15×15 grid, Canvas)
 - Common path: 52 cells, `PATH[0]` = (13,6), goes clockwise
@@ -219,9 +242,22 @@ Single file containing all HTML, CSS, and JavaScript.
 - `visibilitychange` listener: forces reconnect when tab becomes visible again
 
 #### Debug Panel
-- Toggle with 🔧 button
+- HTML and JS code preserved but **disabled** in production
+- Activation code (5 rapid taps on dice area) is commented out in the JS
+- To re-enable: uncomment the `debugTapCount` / `addEventListener` block (~line 818)
 - Force dice value buttons (1-6) — only works on your turn
 - Sends `debug_roll` event to server
+
+#### Exit & End Game Controls
+- **🚪 Exit Game** — visible to all players during gameplay
+  - Removes the player from the game (tokens deleted, player array spliced)
+  - If only 1 player remains, they win by default
+  - Adjusts `currentPlayerIndex` correctly if exiting player was mid-turn
+  - Requires confirmation dialog
+- **⛔ End Game** — visible only to the game creator (players[0])
+  - Force-ends the game for everyone, resets to idle
+  - Server validates that only `players[0].sessionId` can trigger this
+  - Requires confirmation dialog
 
 ### Server: Ludo section of `server.js` (lines 14-583)
 
@@ -270,6 +306,8 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 | `roll` | `sessionId` | Roll dice (current player only) |
 | `move` | `{ sessionId, tokenIndex }` | Move a token (current player only) |
 | `debug_roll` | `{ sessionId, value }` | Force dice value (debug) |
+| `exit_game` | `sessionId` | Player leaves mid-game |
+| `end_game` | `sessionId` | Creator force-ends game |
 | `reset` | (none) | Force reset game |
 
 **Server → Client:**
@@ -354,13 +392,11 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 
 2. **Single game at a time**: Only one Ludo game can run globally. By design — "not very sophisticated, just have one game running at any point."
 
-3. **No authentication**: Players identified by UUID sessionId stored in JS variable (not even localStorage). Refreshing the page = new session (but `visibilitychange` handles tab suspension without full refresh).
+3. **No authentication**: Players identified by UUID sessionId stored in localStorage (`ludo_session`). Refreshing reloads sessionId from localStorage; `visibilitychange` handles tab suspension.
 
-4. **Debug panel visible in production**: The 🔧 Debug button with force-dice is accessible to all players. Consider hiding for production.
+4. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
 
-5. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
-
-6. **GoDaddy DNS not configured**: huseinlovesyou.com still points to Netlify.
+5. **GoDaddy DNS not configured**: huseinlovesyou.com still points to Netlify.
 
 ---
 
@@ -426,3 +462,6 @@ const AUTO_PLAY_DELAY = 60 * 1000;         // Auto-play idle player's turn
 | Auto-move too fast, no dice feedback | Single token auto-moved instantly | Added 1s delay: broadcast state first, then auto-move |
 | Capture banner stays forever | `lastCapture` never cleared server-side | Client auto-hides banner after 3 seconds |
 | Cross-color token overlap on board | Position grouping was per-color | Changed to global position grouping across all colors |
+| Pink and purple too similar | Plum `#7b2d8e` too close to Rose `#c44569` | Changed 4th color to Indigo `#3355a0` |
+| Home center triangles old colors | Hardcoded `#D32F2F` etc in drawCenter() | Updated to use `COLORS[x].fill` dynamically |
+| Light/dark variants indistinguishable | Light/dark hex values too close to fill | Widened gap: lights are near-white pastels, darks are deep saturated |
