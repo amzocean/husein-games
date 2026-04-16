@@ -20,6 +20,7 @@ const COLORS = ['red', 'green', 'yellow', 'blue'];
 const IDLE_TIMEOUT = 30 * 60 * 1000;
 const TURN_SKIP_DELAY = 1500;
 const DISCONNECT_GRACE = 15 * 60 * 1000; // 15 minutes — mobile tabs suspend sockets
+const AUTO_PLAY_DELAY = 60 * 1000; // 1 minute — auto-play if player is idle
 
 function log(msg, data) {
   const ts = new Date().toISOString().slice(11, 23);
@@ -50,13 +51,15 @@ function newGame(creatorSession, creatorName) {
     winner: null,
     lastCapture: null,
     idleTimer: null,
-    turnTimer: null
+    turnTimer: null,
+    autoPlayTimer: null
   };
 }
 
 function resetGame() {
   if (game && game.idleTimer) clearTimeout(game.idleTimer);
   if (game && game.turnTimer) clearTimeout(game.turnTimer);
+  if (game && game.autoPlayTimer) clearTimeout(game.autoPlayTimer);
   game = null;
   log('Game reset to idle');
   broadcastState();
@@ -172,6 +175,7 @@ function checkWin(color) {
 
 function nextTurn(extraTurn) {
   if (game.turnTimer) { clearTimeout(game.turnTimer); game.turnTimer = null; }
+  if (game.autoPlayTimer) { clearTimeout(game.autoPlayTimer); game.autoPlayTimer = null; }
   resetIdleTimer();
   game.diceValue = null;
   game.diceRolled = false;
@@ -193,6 +197,78 @@ function nextTurn(extraTurn) {
   }
   log(`Turn: ${game.players[game.currentPlayerIndex].name}(${game.players[game.currentPlayerIndex].color})`);
   broadcastState();
+  startAutoPlayTimer();
+}
+
+function startAutoPlayTimer() {
+  if (!game || game.phase !== 'playing') return;
+  if (game.autoPlayTimer) clearTimeout(game.autoPlayTimer);
+  game.autoPlayTimer = setTimeout(() => {
+    if (!game || game.phase !== 'playing') return;
+    const player = game.players[game.currentPlayerIndex];
+    if (!player) return;
+
+    if (!game.diceRolled) {
+      // Auto-roll the dice
+      const value = rollDice(player.color);
+      game.diceValue = value;
+      game.diceRolled = true;
+      log(`AUTO-PLAY: rolled ${value} for ${player.name}(${player.color})`);
+
+      const movable = [];
+      for (let i = 0; i < 4; i++) {
+        if (canMoveToken(player.color, i, value)) movable.push(i);
+      }
+
+      if (movable.length === 0) {
+        broadcastState();
+        game.turnTimer = setTimeout(() => {
+          if (game && game.phase === 'playing') nextTurn(false);
+        }, TURN_SKIP_DELAY);
+      } else if (movable.length === 1) {
+        broadcastState();
+        game.turnTimer = setTimeout(() => {
+          if (!game || game.phase !== 'playing') return;
+          const captured = moveToken(player.color, movable[0], value);
+          if (checkWin(player.color)) {
+            game.phase = 'finished';
+            game.winner = player.color;
+            log(`GAME OVER: ${player.name}(${player.color}) wins!`);
+            broadcastState();
+            setTimeout(resetGame, 30000);
+          } else {
+            nextTurn(value === 6 || captured);
+          }
+        }, 1000);
+      } else {
+        // Multiple tokens — show dice, then wait another minute for token pick
+        broadcastState();
+        startAutoPlayTimer();
+      }
+    } else {
+      // Dice rolled but player hasn't picked a token — auto-pick random movable
+      const movable = [];
+      for (let i = 0; i < 4; i++) {
+        if (canMoveToken(player.color, i, game.diceValue)) movable.push(i);
+      }
+      if (movable.length > 0) {
+        const pick = movable[Math.floor(Math.random() * movable.length)];
+        log(`AUTO-PLAY: moved token ${pick} for ${player.name}(${player.color})`);
+        const captured = moveToken(player.color, pick, game.diceValue);
+        if (checkWin(player.color)) {
+          game.phase = 'finished';
+          game.winner = player.color;
+          log(`GAME OVER: ${player.name}(${player.color}) wins!`);
+          broadcastState();
+          setTimeout(resetGame, 30000);
+        } else {
+          nextTurn(game.diceValue === 6 || captured);
+        }
+      } else {
+        nextTurn(false);
+      }
+    }
+  }, AUTO_PLAY_DELAY);
 }
 
 function resetIdleTimer() {
@@ -318,6 +394,7 @@ ludoNs.on('connection', (socket) => {
     log(`GAME STARTED with ${game.players.length} players:`,
       game.players.map(p => `${p.name}(${p.color})`));
     broadcastState();
+    startAutoPlayTimer();
   });
 
   socket.on('roll', (sessionId) => {
@@ -325,6 +402,9 @@ ludoNs.on('connection', (socket) => {
     const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
     if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
     if (game.diceRolled) return;
+
+    // Player acted — reset auto-play timer
+    if (game.autoPlayTimer) { clearTimeout(game.autoPlayTimer); game.autoPlayTimer = null; }
 
     const player = game.players[playerIdx];
     const value = rollDice(player.color);
@@ -364,7 +444,9 @@ ludoNs.on('connection', (socket) => {
         }
       }, 1000);
     } else {
+      // Multiple tokens movable — start auto-play timer for token pick
       broadcastState();
+      startAutoPlayTimer();
     }
   });
 
@@ -373,6 +455,9 @@ ludoNs.on('connection', (socket) => {
     const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
     if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
     if (!game.diceRolled || game.diceValue === null) return;
+
+    // Player acted — clear auto-play timer
+    if (game.autoPlayTimer) { clearTimeout(game.autoPlayTimer); game.autoPlayTimer = null; }
 
     const player = game.players[playerIdx];
     if (!canMoveToken(player.color, tokenIdx, game.diceValue)) {
