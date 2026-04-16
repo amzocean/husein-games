@@ -815,19 +815,19 @@ function resetAll() {
   mySessionId = null;
 }
 
-// Secret debug: 5 rapid taps on dice area
-let debugTapCount = 0;
-let debugTapTimer = null;
-document.getElementById('diceArea').addEventListener('click', () => {
-  debugTapCount++;
-  if (debugTapTimer) clearTimeout(debugTapTimer);
-  debugTapTimer = setTimeout(() => { debugTapCount = 0; }, 1500);
-  if (debugTapCount >= 5) {
-    debugTapCount = 0;
-    const p = document.getElementById('debugPanel');
-    p.style.display = p.style.display === 'none' ? 'block' : 'none';
-  }
-});
+// DEBUG PANEL — disabled in production. Uncomment to enable 5-tap activation.
+// let debugTapCount = 0;
+// let debugTapTimer = null;
+// document.getElementById('diceArea').addEventListener('click', () => {
+//   debugTapCount++;
+//   if (debugTapTimer) clearTimeout(debugTapTimer);
+//   debugTapTimer = setTimeout(() => { debugTapCount = 0; }, 1500);
+//   if (debugTapCount >= 5) {
+//     debugTapCount = 0;
+//     const p = document.getElementById('debugPanel');
+//     p.style.display = p.style.display === 'none' ? 'block' : 'none';
+//   }
+// });
 
 function debugRoll(value) {
   socket.emit('debug_roll', { sessionId: mySessionId, value });
