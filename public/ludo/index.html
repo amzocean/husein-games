@@ -663,7 +663,7 @@ function renderPlaying() {
   pickHint.style.display = (myTurn && state.diceRolled && validMoves.length > 0) ? 'block' : 'none';
   noMoveHint.style.display = (myTurn && state.diceRolled && validMoves.length === 0) ? 'block' : 'none';
 
-  // Capture banner
+  // Capture banner — auto-hide after 3 seconds
   const captureBanner = document.getElementById('captureBanner');
   if (state.lastCapture) {
     const attacker = state.players.find(p => p.color === state.lastCapture.by);
@@ -671,6 +671,10 @@ function renderPlaying() {
     captureBanner.innerHTML = `💥 ${escHtml(attacker?.name || state.lastCapture.by)} captured ${escHtml(victim?.name || state.lastCapture.victim)}!`;
     captureBanner.style.display = 'block';
     captureBanner.style.background = COLORS[state.lastCapture.by]?.fill || '#ff6b6b';
+    if (window._captureBannerTimer) clearTimeout(window._captureBannerTimer);
+    window._captureBannerTimer = setTimeout(() => {
+      captureBanner.style.display = 'none';
+    }, 3000);
   } else {
     captureBanner.style.display = 'none';
   }
