@@ -70,33 +70,33 @@ function renderBg(attr) {
              `<circle cx="50" cy="50" r="25" fill="${c}" opacity="${o*0.2}"/>`;
     // ── Garden ──
     case 'polkadots': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let r = 0; r < 4; r++) for (let col = 0; col < 4; col++) {
         s += `<circle cx="${16 + col * 23}" cy="${16 + r * 23}" r="6" fill="${c}" opacity="${o}"/>`;
       }
       return s;
     }
     case 'stripes':
-      return Array.from({length:5}, (_,i) =>
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + Array.from({length:5}, (_,i) =>
         `<rect x="4" y="${8 + i*18}" width="92" height="9" rx="2" fill="${c}" opacity="${o}"/>`
       ).join('');
     case 'crosshatch':
-      return `<path d="M4,4 L96,96 M4,28 L72,96 M28,4 L96,72 M4,52 L48,96 M52,4 L96,48 M4,76 L24,96 M76,4 L96,24" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + `<path d="M4,4L96,96 M4,28 L72,96 M28,4 L96,72 M4,52 L48,96 M52,4 L96,48 M4,76 L24,96 M76,4 L96,24" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
              `<path d="M96,4 L4,96 M96,28 L28,96 M72,4 L4,72 M96,52 L52,96 M48,4 L4,48 M96,76 L76,96 M24,4 L4,24" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>`;
     case 'petals':
-      return `<ellipse cx="50" cy="30" rx="10" ry="22" fill="${c}" opacity="${o*0.5}" transform="rotate(0,50,50)"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + `<ellipsecx="50" cy="30" rx="10" ry="22" fill="${c}" opacity="${o*0.5}" transform="rotate(0,50,50)"/>` +
              `<ellipse cx="50" cy="30" rx="10" ry="22" fill="${c}" opacity="${o*0.5}" transform="rotate(90,50,50)"/>` +
              `<ellipse cx="50" cy="30" rx="10" ry="22" fill="${c}" opacity="${o*0.5}" transform="rotate(45,50,50)"/>` +
              `<ellipse cx="50" cy="30" rx="10" ry="22" fill="${c}" opacity="${o*0.5}" transform="rotate(135,50,50)"/>`;
     case 'meadow': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const items = [[15,25,5],[35,15,4],[60,20,6],[80,30,3],[25,50,5],[50,45,4],[75,55,5],[15,70,4],[40,75,6],[65,80,3],[85,70,5],[30,90,4]];
       for (const [x,y,r] of items) s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity="${o*0.45}"/>`;
       return s;
     }
     // ── Deco ──
     case 'fan': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 5; i++) {
         const r = 25 + i * 15;
         s += `<path d="M50,96 m-${r},0 a${r},${r} 0 0,1 ${r*2},0" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.5}"/>`;
@@ -104,7 +104,7 @@ function renderBg(attr) {
       return s;
     }
     case 'sunray': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 9; i++) {
         const angle = -180 + i * 22.5;
         const rad = angle * Math.PI / 180;
@@ -115,11 +115,11 @@ function renderBg(attr) {
       return s;
     }
     case 'chevron':
-      return `<path d="M4,25 L50,10 L96,25" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + `<path d="M4,25L50,10 L96,25" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
              `<path d="M4,50 L50,35 L96,50" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.7}"/>` +
              `<path d="M4,75 L50,60 L96,75" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.4}"/>`;
     case 'scales': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let row = 0; row < 4; row++) {
         for (let col = 0; col < 4; col++) {
           const x = 10 + col * 24 + (row % 2 ? 12 : 0);
@@ -130,7 +130,7 @@ function renderBg(attr) {
       return s;
     }
     case 'zigzag':
-      return `<path d="M4,20 L16,10 L28,20 L40,10 L52,20 L64,10 L76,20 L88,10 L96,17" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + `<path d="M4,20L16,10 L28,20 L40,10 L52,20 L64,10 L76,20 L88,10 L96,17" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
              `<path d="M4,50 L16,40 L28,50 L40,40 L52,50 L64,40 L76,50 L88,40 L96,47" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.7}"/>` +
              `<path d="M4,80 L16,70 L28,80 L40,70 L52,80 L64,70 L76,80 L88,70 L96,77" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.4}"/>`;
     // ── Mosaic ──
@@ -144,7 +144,7 @@ function renderBg(attr) {
       return s;
     }
     case 'hexgrid': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const pts = (cx,cy,r) => Array.from({length:6},(_,i)=>{const a=i*60-30;return `${(cx+r*Math.cos(a*Math.PI/180)).toFixed(1)},${(cy+r*Math.sin(a*Math.PI/180)).toFixed(1)}`;}).join(' ');
       const positions = [[25,20],[55,20],[85,20],[10,45],[40,45],[70,45],[25,70],[55,70],[85,70]];
       for (const [x,y] of positions) s += `<polygon points="${pts(x,y,13)}" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>`;
@@ -167,7 +167,7 @@ function renderBg(attr) {
              `<polygon points="50,50 80,90 50,90" fill="${c}" opacity="${o*0.6}"/>` +
              `<polygon points="50,50 10,80 10,50" fill="${c}" opacity="${o*0.45}"/>`;
     case 'terrazzo': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const pieces = [[15,20,8,'c'],[40,12,6,'r'],[70,25,7,'c'],[88,45,5,'r'],[25,55,9,'c'],[55,50,6,'r'],[75,70,8,'c'],[20,85,5,'r'],[50,80,7,'c'],[85,88,6,'r']];
       for (const [x,y,r,t] of pieces) {
         if (t==='c') s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity="${o*0.4}"/>`;
@@ -177,13 +177,13 @@ function renderBg(attr) {
     }
     // ── Candy ──
     case 'sprinkles': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const sp = [[12,15,30],[30,25,-45],[50,10,60],[72,20,-20],[88,35,45],[18,45,-60],[42,40,15],[65,50,-35],[82,60,70],[10,70,-15],[35,75,50],[55,65,-40],[75,80,25],[90,90,-55],[25,90,40]];
       for (const [x,y,a] of sp) s += `<rect x="${x-4}" y="${y-1.5}" width="8" height="3" rx="1.5" fill="${c}" opacity="${o}" transform="rotate(${a},${x},${y})"/>`;
       return s;
     }
     case 'swirl': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 1; i <= 4; i++) {
         const r = i * 12;
         s += `<circle cx="50" cy="50" r="${r}" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="${i*8} ${i*6}" opacity="${o*0.4}" transform="rotate(${i*30},50,50)"/>`;
@@ -211,7 +211,7 @@ function renderBg(attr) {
              `<rect x="12" y="12" width="76" height="76" rx="6" fill="${c}" opacity="${o*0.15}"/>`;
     // ── Noir ──
     case 'halftone': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let r = 0; r < 6; r++) for (let col = 0; col < 6; col++) {
         const radius = 2 + ((r + col) % 3) * 1.5;
         s += `<circle cx="${10 + col * 16}" cy="${10 + r * 16}" r="${radius}" fill="${c}" opacity="${o * 0.6}"/>`;
@@ -219,13 +219,14 @@ function renderBg(attr) {
       return s;
     }
     case 'film-grain': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const grains = [[8,12],[22,8],[38,18],[52,6],[68,14],[82,10],[15,32],[30,28],[48,38],[62,26],[78,34],[92,28],[10,52],[25,48],[42,56],[58,44],[72,54],[88,46],[18,72],[34,68],[50,78],[66,64],[80,74],[12,88],[28,82],[46,92],[60,86],[76,90],[90,80],[40,10]];
       for (const [x,y] of grains) s += `<rect x="${x}" y="${y}" width="2" height="2" fill="${c}" opacity="${o*0.5}"/>`;
       return s;
     }
     case 'scanlines':
-      return Array.from({length:10}, (_,i) =>
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:10}, (_,i) =>
         `<rect x="4" y="${6 + i*9}" width="92" height="1.5" fill="${c}" opacity="${o*0.4}"/>`
       ).join('');
     case 'gradient-fade':
@@ -244,7 +245,7 @@ function renderBg(attr) {
              `<line x1="6" y1="45" x2="94" y2="44" stroke="${c}" stroke-width="0.5" opacity="${o*0.2}"/>` +
              `<line x1="10" y1="70" x2="90" y2="71" stroke="${c}" stroke-width="0.5" opacity="${o*0.2}"/>`;
     case 'woodgrain': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 7; i++) {
         const y = 8 + i * 13;
         s += `<path d="M4,${y} Q25,${y-4} 50,${y} Q75,${y+4} 96,${y}" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.35}"/>`;
@@ -252,7 +253,7 @@ function renderBg(attr) {
       return s;
     }
     case 'linen': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       for (let i = 0; i < 12; i++) {
         s += `<line x1="4" y1="${6+i*8}" x2="96" y2="${6+i*8}" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
         s += `<line x1="${6+i*8}" y1="4" x2="${6+i*8}" y2="96" stroke="${c}" stroke-width="0.8" opacity="${o*0.15}"/>`;
@@ -260,7 +261,8 @@ function renderBg(attr) {
       return s;
     }
     case 'coffee-stain':
-      return `<circle cx="55" cy="50" r="30" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.25}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>` +
+             `<circle cx="55"cy="50" r="30" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.25}"/>` +
              `<circle cx="55" cy="50" r="28" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.15}"/>` +
              `<ellipse cx="45" cy="55" rx="18" ry="15" fill="${c}" opacity="${o*0.1}"/>`;
     case 'aged-paper':
@@ -270,7 +272,7 @@ function renderBg(attr) {
              `<path d="M96,4 Q85,12 96,22" fill="${c}" opacity="${o*0.15}"/>`;
     // ── Neon ──
     case 'grid-lines': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i <= 8; i++) {
         const p = 4 + i * 11.5;
         s += `<line x1="${p}" y1="4" x2="${p}" y2="96" stroke="${c}" stroke-width="0.8" opacity="${o*0.35}"/>`;
@@ -279,7 +281,7 @@ function renderBg(attr) {
       return s;
     }
     case 'circuit': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const paths = [
         'M10,20 L30,20 L30,40', 'M70,15 L70,35 L90,35',
         'M15,60 L35,60 L35,80 L55,80', 'M60,55 L80,55 L80,75',
@@ -291,18 +293,18 @@ function renderBg(attr) {
       return s;
     }
     case 'pixel-blocks': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const blocks = [[8,10],[28,8],[52,14],[76,6],[88,22],[12,34],[40,30],[64,38],[84,44],[18,52],[48,56],[72,50],[8,68],[36,72],[60,66],[82,78],[24,88],[56,84],[78,92],[44,48]];
       for (const [x,y] of blocks) s += `<rect x="${x}" y="${y}" width="8" height="8" fill="${c}" opacity="${o*0.4}"/>`;
       return s;
     }
     case 'laser-beams':
-      return `<line x1="4" y1="4" x2="96" y2="96" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` + `<line x1="4"y1="4" x2="96" y2="96" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
              `<line x1="96" y1="4" x2="4" y2="96" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
              `<line x1="4" y1="50" x2="96" y2="50" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>` +
              `<line x1="50" y1="4" x2="50" y2="96" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>`;
     case 'digital-rain': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const cols = [10, 22, 34, 46, 58, 70, 82];
       const heights = [60, 40, 75, 30, 55, 45, 65];
       for (let i = 0; i < cols.length; i++) {
@@ -315,12 +317,13 @@ function renderBg(attr) {
     }
     // ── Tropical ──
     case 'waves':
-      return `<path d="M4,20 Q20,12 35,20 Q50,28 65,20 Q80,12 96,20" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.5}"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             `<path d="M4,20Q20,12 35,20 Q50,28 65,20 Q80,12 96,20" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.5}"/>` +
              `<path d="M4,40 Q20,32 35,40 Q50,48 65,40 Q80,32 96,40" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.45}"/>` +
              `<path d="M4,60 Q20,52 35,60 Q50,68 65,60 Q80,52 96,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.4}"/>` +
              `<path d="M4,80 Q20,72 35,80 Q50,88 65,80 Q80,72 96,80" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.35}"/>`;
     case 'palm-fronds': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 7; i++) {
         const angle = -70 + i * 20;
         const rad = angle * Math.PI / 180;
@@ -331,7 +334,7 @@ function renderBg(attr) {
       return s;
     }
     case 'sand-ripples': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       for (let i = 0; i < 6; i++) {
         const y = 12 + i * 15;
         s += `<path d="M4,${y} Q25,${y-4} 50,${y} Q75,${y+4} 96,${y}" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.35}"/>`;
@@ -339,7 +342,7 @@ function renderBg(attr) {
       return s;
     }
     case 'bamboo': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const cols = [18, 40, 62, 84];
       for (const x of cols) {
         s += `<rect x="${x-3}" y="4" width="6" height="92" rx="3" fill="${c}" opacity="${o*0.25}"/>`;
@@ -355,7 +358,7 @@ function renderBg(attr) {
 
     // ── Indian ──
     case 'rangoli': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 8; i++) {
         const a = i * 45 * Math.PI / 180;
         const x2 = (50 + 42 * Math.cos(a)).toFixed(1);
@@ -373,7 +376,7 @@ function renderBg(attr) {
       return s;
     }
     case 'paisley': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const rng = mulberry32(c.charCodeAt(1));
       for (let i = 0; i < 6; i++) {
         const x = 10 + rng() * 75, y = 10 + rng() * 75, sc = 0.6 + rng() * 0.4;
@@ -383,8 +386,8 @@ function renderBg(attr) {
       return s;
     }
     case 'mehndi-swirls': {
-      let s = '';
-      s += `<path d="M20,80 Q20,20 50,20 Q80,20 80,50" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.4}"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<path d="M20,80Q20,20 50,20 Q80,20 80,50" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.4}"/>`;
       s += `<path d="M30,85 Q30,35 50,35 Q70,35 70,55" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>`;
       s += `<circle cx="80" cy="50" r="3" fill="${c}" opacity="${o*0.5}"/>`;
       s += `<circle cx="70" cy="55" r="2" fill="${c}" opacity="${o*0.4}"/>`;
@@ -395,7 +398,7 @@ function renderBg(attr) {
       return s;
     }
     case 'block-print': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       const sz = 18;
       for (let r = 0; r < 5; r++) {
         for (let col = 0; col < 5; col++) {
@@ -409,7 +412,7 @@ function renderBg(attr) {
       return s;
     }
     case 'jali-lattice': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let r = 0; r < 4; r++) {
         for (let col = 0; col < 4; col++) {
           const cx = 16 + col * 24, cy = 16 + r * 24;
@@ -432,7 +435,7 @@ function renderBg(attr) {
              `<circle cx="50" cy="50" r="16" fill="${c}" opacity="${o*0.3}"/>`;
     }
     case 'sequins': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
       const rng = mulberry32(c.charCodeAt(1));
       for (let i = 0; i < 25; i++) {
         const x = 6 + rng() * 86, y = 6 + rng() * 86, r = 2 + rng() * 4;
@@ -451,7 +454,7 @@ function renderBg(attr) {
       return s;
     }
     case 'curtain-drapes': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
       for (let i = 0; i < 6; i++) {
         const x = 4 + i * 18;
         s += `<path d="M${x},4 Q${x+9},50 ${x},96" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o*0.3}"/>`;
