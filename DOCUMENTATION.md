@@ -555,99 +555,7 @@ const AUTO_PLAY_DELAY = 60 * 1000;         // Auto-play idle player's turn
 
 ---
 
-## 9. Original Source Locations
-
-| Game | Original Location | Notes |
-|------|-------------------|-------|
-| Valentines | `C:\Users\huseinm\OneDrive - Microsoft\Documents\ValenineSite` | Copied to public/valentines/ |
-| Photo Tiles | `C:\Users\huseinm\Downloads\fatema-tiles` | Copied to public/tiles/ |
-| Ludo | `C:\Users\huseinm\ludo-game\` | Original standalone version (may still exist). Portal version modified for /ludo namespace. |
-
----
-
-## 10. Future Ideas — Photo Tiles Theme Expansion
-
-### Vision
-The game now has 14 diverse themes spanning colorful playful styles (Candy, Tropical, Bollywood) to sophisticated restrained palettes (Noir, Sepia, Arithmetic). Future expansion should explore two directions: (1) **Pattern Mode** — a fundamentally different engine mode for monochrome themes, and (2) **structural redesigns** that change what the 4 tile dimensions represent.
-
-### Two Engine Modes
-
-The current engine uses **Color Mode**: `5 patterns x 3 colors = 15` per dimension. This works great for colorful themes but limits monochrome designs (repeating the same color makes tiles visually identical but with different IDs, breaking solvability).
-
-A new **Pattern Mode** would use: `15 unique patterns x 1 color = 15` per dimension. All differentiation comes from shapes, line work, and geometric complexity — not color.
-
-`buildPools()` would need a `monochrome: true` flag (or similar) to switch between the two generation strategies.
-
-### Inspiration & Aesthetic References
-
-| Style | Description | Color Palette |
-|-------|------------|---------------|
-| **Moorish/Moroccan** | Compass stars, diamond frames, geometric interlocking | Black + gold on white |
-| **Portuguese Azulejo (v2)** | Intricate line art tiles, floral & geometric | Blue on white (monochrome rework of current Azulejo) |
-| **Noir (v2)** | Intricate line art, stipple, crosshatch in Pattern Mode | White on black |
-| **Sepia (v2)** | Vintage engraving style, ornate frames in Pattern Mode | Brown on parchment |
-
-Key aesthetic principles observed from reference images:
-- Rich geometric complexity within each tile
-- Restrained color palette (1-3 colors max)
-- Pattern variety does all the heavy lifting
-- Tile-like / architectural / artisan feel
-
-### Other Theme Directions to Explore
-
-**Structural redesigns** (change what the 4 dimensions ARE):
-- **Nested Squares** (Albers-style) — outer/middle/inner square color + border style
-- **Concentric Circles** (pop-art) — ring colors at 3 depths + outline style
-- **Quadrant Tiles** — 4 colored quadrants, each is a dimension
-
-**Thematic skins** (same mechanics, different feel):
-- **Emoji Tiles** — use emoji as the shape dimension
-- **Seasonal** — cherry blossoms, snowflakes, autumn leaves as shapes
-
-### Implementation Effort for Pattern Mode
-
-Per pattern-mode theme, requires:
-- **15 unique backgrounds** (full-tile patterns)
-- **15 unique ring styles** (border treatments)
-- **15 unique center shapes** (geometric motifs)
-- **15 unique corner accents** (decorative details)
-- Total: **~60 new SVG rendering cases per theme**
-
-Engine changes:
-1. Add `monochrome: true` flag to theme definitions
-2. Modify `buildPools()` to handle 15x1 pool generation
-3. Each pattern-mode theme needs 15 entries per dimension array (instead of 5+3)
-
-This is a significant but worthwhile effort — the result would be visually stunning and truly set the game apart.
-
----
-
-## 11. Key Bug Fixes History
-
-| Bug | Root Cause | Fix |
-|-----|-----------|-----|
-| Game ends randomly mid-play | Aggressive 15s disconnect grace — mobile suspends sockets | Increased to 15 min + added visibilitychange auto-reconnect |
-| "Not Found" on subgame pages (Render) | `express.static('public')` — relative path fails on Render | Changed to `path.join(__dirname, 'public')` |
-| Tokens won't leave base after rolling 6 | Client sends `tokenIndex`, server expected `tokenIdx` | Destructuring rename in move handler |
-| Auto-move too fast, no dice feedback | Single token auto-moved instantly | Added 1s delay: broadcast state first, then auto-move |
-| Capture banner stays forever | `lastCapture` never cleared server-side | Client auto-hides banner after 3 seconds |
-| Cross-color token overlap on board | Position grouping was per-color | Changed to global position grouping across all colors |
-| Pink and purple too similar | Plum `#7b2d8e` too close to Rose `#c44569` | Changed 4th color to Indigo `#3355a0` |
-| Home center triangles old colors | Hardcoded `#D32F2F` etc in drawCenter() | Updated to use `COLORS[x].fill` dynamically |
-| Light/dark variants indistinguishable | Light/dark hex values too close to fill | Widened gap: lights are near-white pastels, darks are deep saturated |
-| **Home/base color mismatch** | Romantic theme colors (Rose/Gold/Teal/Indigo) created mismatch — key says "red" but token looks pink. Display name abstraction added confusion. | **Reverted to standard RGBY** (Material Design primaries). Eliminated the display name layer entirely — what the code calls "red" now IS red. |
-| **No extra turn on reaching home** | Extra turn only granted for rolling 6 or capturing. Token reaching home (step 57) gave no reward. | Added `reachedHome` check at all 5 move-completion code paths. Pattern: `const reachedHome = game.tokens[color][tokenIdx] === 57;` appended to existing extra-turn condition. |
-| **Capture banner keeps reappearing** | `game.lastCapture` set on capture but NEVER cleared. Every `broadcastState()` re-sent stale capture data, re-triggering the client banner in an infinite show/hide loop. | Added `game.lastCapture = null;` immediately after `broadcastState()` in `nextTurn()`. Ensures exactly-once delivery: banner data included in one broadcast, then gone. |
-| **Mobile serves stale cached HTML after deploy** | `express.static` serves HTML with default caching headers. Mobile browsers (esp. iOS Safari) aggressively cache and don't revalidate. | Added middleware BEFORE `express.static` that sets `Cache-Control: no-cache` on `.html` files and directory paths. Browser still caches but must revalidate via ETag/304 — negligible overhead (~200-500 byte round-trip), guarantees new deploys are picked up. |
-| Tiles blank after Neon/Tropical theme add | Sub-agent placed `default: return '';` but deleted the closing `}` of the switch + function in `renderBg` and `renderRing` — brace count coincidentally balanced | Re-added missing closing braces; added structural validation to catch this |
-| Indian/Bollywood/Arithmetic themes blank tiles | `mulberry32()` PRNG called by 5 patterns (paisley, sequins, disco-floor, chalkboard, sequin-border) but never defined in renderer.js — `ReferenceError` crashed tile rendering | Added `mulberry32` function definition at top of renderer.js |
-| Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
-| Noir/Sepia game unsolvable | Palette had identical repeated colors (e.g. 3x `#212121`) — tiles visually identical but different IDs | Changed to distinct shades within same hue family |
-| **7 themes washed-out / invisible bg** | Light/pastel bg palette colors (lightness 75-95%) rendered at `o=0.6` opacity over the white tile base (`rgba(255,255,255,0.88)` in style.css). Many bg patterns further reduced opacity with multipliers like `o*0.3`. Combined effect: bg colors nearly invisible. Arithmetic & Sky were unaffected because they hardcode solid rect fills at 0.82-0.88 opacity instead of using the shared `o` variable. | Two-pronged fix: (1) Bumped renderer base bg opacity from `0.6` to `0.75` (renderer.js line 18). (2) Darkened bg palette colors for Azulejo, Garden, Deco, Mosaic, Candy, Sepia, Tropical — shifting lightest hex values down 1-2 steps on the Material Design scale. All proposed colors cross-checked against shape/ring/accent palettes to avoid same-color collisions that would break tile solvability. |
-
----
-
-## 12. Standard Process for Adding New Themes
+## 11. Standard Process for Adding New Themes
 
 ### Why This Process Exists
 
@@ -838,6 +746,88 @@ case 'chalkboard': {
 
 ---
 
+## 12. Key Bug Fixes History
+
+| Bug | Root Cause | Fix |
+|-----|-----------|-----|
+| Game ends randomly mid-play | Aggressive 15s disconnect grace — mobile suspends sockets | Increased to 15 min + added visibilitychange auto-reconnect |
+| "Not Found" on subgame pages (Render) | `express.static('public')` — relative path fails on Render | Changed to `path.join(__dirname, 'public')` |
+| Tokens won't leave base after rolling 6 | Client sends `tokenIndex`, server expected `tokenIdx` | Destructuring rename in move handler |
+| Auto-move too fast, no dice feedback | Single token auto-moved instantly | Added 1s delay: broadcast state first, then auto-move |
+| Capture banner stays forever | `lastCapture` never cleared server-side | Client auto-hides banner after 3 seconds |
+| Cross-color token overlap on board | Position grouping was per-color | Changed to global position grouping across all colors |
+| Pink and purple too similar | Plum `#7b2d8e` too close to Rose `#c44569` | Changed 4th color to Indigo `#3355a0` |
+| Home center triangles old colors | Hardcoded `#D32F2F` etc in drawCenter() | Updated to use `COLORS[x].fill` dynamically |
+| Light/dark variants indistinguishable | Light/dark hex values too close to fill | Widened gap: lights are near-white pastels, darks are deep saturated |
+| **Home/base color mismatch** | Romantic theme colors (Rose/Gold/Teal/Indigo) created mismatch — key says "red" but token looks pink. Display name abstraction added confusion. | **Reverted to standard RGBY** (Material Design primaries). Eliminated the display name layer entirely — what the code calls "red" now IS red. |
+| **No extra turn on reaching home** | Extra turn only granted for rolling 6 or capturing. Token reaching home (step 57) gave no reward. | Added `reachedHome` check at all 5 move-completion code paths. Pattern: `const reachedHome = game.tokens[color][tokenIdx] === 57;` appended to existing extra-turn condition. |
+| **Capture banner keeps reappearing** | `game.lastCapture` set on capture but NEVER cleared. Every `broadcastState()` re-sent stale capture data, re-triggering the client banner in an infinite show/hide loop. | Added `game.lastCapture = null;` immediately after `broadcastState()` in `nextTurn()`. Ensures exactly-once delivery: banner data included in one broadcast, then gone. |
+| **Mobile serves stale cached HTML after deploy** | `express.static` serves HTML with default caching headers. Mobile browsers (esp. iOS Safari) aggressively cache and don't revalidate. | Added middleware BEFORE `express.static` that sets `Cache-Control: no-cache` on `.html` files and directory paths. Browser still caches but must revalidate via ETag/304 — negligible overhead (~200-500 byte round-trip), guarantees new deploys are picked up. |
+| Tiles blank after Neon/Tropical theme add | Sub-agent placed `default: return '';` but deleted the closing `}` of the switch + function in `renderBg` and `renderRing` — brace count coincidentally balanced | Re-added missing closing braces; added structural validation to catch this |
+| Indian/Bollywood/Arithmetic themes blank tiles | `mulberry32()` PRNG called by 5 patterns (paisley, sequins, disco-floor, chalkboard, sequin-border) but never defined in renderer.js — `ReferenceError` crashed tile rendering | Added `mulberry32` function definition at top of renderer.js |
+| Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
+| Noir/Sepia game unsolvable | Palette had identical repeated colors (e.g. 3x `#212121`) — tiles visually identical but different IDs | Changed to distinct shades within same hue family |
+| **7 themes washed-out / invisible bg** | Light/pastel bg palette colors (lightness 75-95%) rendered at `o=0.6` opacity over the white tile base (`rgba(255,255,255,0.88)` in style.css). Many bg patterns further reduced opacity with multipliers like `o*0.3`. Combined effect: bg colors nearly invisible. Arithmetic & Sky were unaffected because they hardcode solid rect fills at 0.82-0.88 opacity instead of using the shared `o` variable. | Two-pronged fix: (1) Bumped renderer base bg opacity from `0.6` to `0.75` (renderer.js line 18). (2) Darkened bg palette colors for Azulejo, Garden, Deco, Mosaic, Candy, Sepia, Tropical — shifting lightest hex values down 1-2 steps on the Material Design scale. All proposed colors cross-checked against shape/ring/accent palettes to avoid same-color collisions that would break tile solvability. |
+
+---
+
+## 13. Future Ideas — Photo Tiles Theme Expansion
+
+### Vision
+The game now has 14 diverse themes spanning colorful playful styles (Candy, Tropical, Bollywood) to sophisticated restrained palettes (Noir, Sepia, Arithmetic). Future expansion should explore two directions: (1) **Pattern Mode** — a fundamentally different engine mode for monochrome themes, and (2) **structural redesigns** that change what the 4 tile dimensions represent.
+
+### Two Engine Modes
+
+The current engine uses **Color Mode**: `5 patterns x 3 colors = 15` per dimension. This works great for colorful themes but limits monochrome designs (repeating the same color makes tiles visually identical but with different IDs, breaking solvability).
+
+A new **Pattern Mode** would use: `15 unique patterns x 1 color = 15` per dimension. All differentiation comes from shapes, line work, and geometric complexity — not color.
+
+`buildPools()` would need a `monochrome: true` flag (or similar) to switch between the two generation strategies.
+
+### Inspiration & Aesthetic References
+
+| Style | Description | Color Palette |
+|-------|------------|---------------|
+| **Moorish/Moroccan** | Compass stars, diamond frames, geometric interlocking | Black + gold on white |
+| **Portuguese Azulejo (v2)** | Intricate line art tiles, floral & geometric | Blue on white (monochrome rework of current Azulejo) |
+| **Noir (v2)** | Intricate line art, stipple, crosshatch in Pattern Mode | White on black |
+| **Sepia (v2)** | Vintage engraving style, ornate frames in Pattern Mode | Brown on parchment |
+
+Key aesthetic principles observed from reference images:
+- Rich geometric complexity within each tile
+- Restrained color palette (1-3 colors max)
+- Pattern variety does all the heavy lifting
+- Tile-like / architectural / artisan feel
+
+### Other Theme Directions to Explore
+
+**Structural redesigns** (change what the 4 dimensions ARE):
+- **Nested Squares** (Albers-style) — outer/middle/inner square color + border style
+- **Concentric Circles** (pop-art) — ring colors at 3 depths + outline style
+- **Quadrant Tiles** — 4 colored quadrants, each is a dimension
+
+**Thematic skins** (same mechanics, different feel):
+- **Emoji Tiles** — use emoji as the shape dimension
+- **Seasonal** — cherry blossoms, snowflakes, autumn leaves as shapes
+
+### Implementation Effort for Pattern Mode
+
+Per pattern-mode theme, requires:
+- **15 unique backgrounds** (full-tile patterns)
+- **15 unique ring styles** (border treatments)
+- **15 unique center shapes** (geometric motifs)
+- **15 unique corner accents** (decorative details)
+- Total: **~60 new SVG rendering cases per theme**
+
+Engine changes:
+1. Add `monochrome: true` flag to theme definitions
+2. Modify `buildPools()` to handle 15x1 pool generation
+3. Each pattern-mode theme needs 15 entries per dimension array (instead of 5+3)
+
+This is a significant but worthwhile effort — the result would be visually stunning and truly set the game apart.
+
+---
+
 ## Appendix A: Theme Palette Reference
 
 Each theme defines: palette (bg/ring/shape/accent colors), 5 bg patterns, 3 ring styles, 5 center shapes, 5 corner accents.
@@ -953,3 +943,13 @@ Each theme defines: palette (bg/ring/shape/accent colors), 5 bg patterns, 3 ring
 - **Ring styles**: cloud-border, rainbow-ring, breeze-dash
 - **Shapes**: airplane, songbird, bright-sun, kite, hot-air-balloon
 - **Accents**: tiny-birds, butterflies, raindrops, drifting-leaves, contrails
+
+---
+
+## Appendix B: Original Source Locations
+
+| Game | Original Location | Notes |
+|------|-------------------|-------|
+| Valentines | `C:\Users\huseinm\OneDrive - Microsoft\Documents\ValenineSite` | Copied to public/valentines/ |
+| Photo Tiles | `C:\Users\huseinm\Downloads\fatema-tiles` | Copied to public/tiles/ |
+| Ludo | `C:\Users\huseinm\ludo-game\` | Original standalone version (may still exist). Portal version modified for /ludo namespace. |
