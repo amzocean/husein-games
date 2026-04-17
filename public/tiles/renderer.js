@@ -339,6 +339,126 @@ function renderBg(attr) {
     case 'sunset-gradient':
       return `<rect x="4" y="4" width="92" height="46" fill="${c}" opacity="${o*0.25}"/>` +
              `<rect x="4" y="50" width="92" height="46" fill="${c}" opacity="${o*0.5}"/>`;
+
+    // ── Indian ──
+    case 'rangoli': {
+      let s = '';
+      for (let i = 0; i < 8; i++) {
+        const a = i * 45 * Math.PI / 180;
+        const x2 = (50 + 42 * Math.cos(a)).toFixed(1);
+        const y2 = (50 + 42 * Math.sin(a)).toFixed(1);
+        s += `<line x1="50" y1="50" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.5" opacity="${o*0.4}"/>`;
+      }
+      s += `<circle cx="50" cy="50" r="30" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>`;
+      s += `<circle cx="50" cy="50" r="18" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.35}"/>`;
+      for (let i = 0; i < 8; i++) {
+        const a = i * 45 * Math.PI / 180;
+        const dx = (50 + 30 * Math.cos(a)).toFixed(1);
+        const dy = (50 + 30 * Math.sin(a)).toFixed(1);
+        s += `<circle cx="${dx}" cy="${dy}" r="3" fill="${c}" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'paisley': {
+      let s = '';
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 6; i++) {
+        const x = 10 + rng() * 75, y = 10 + rng() * 75, sc = 0.6 + rng() * 0.4;
+        const flip = rng() > 0.5 ? -1 : 1;
+        s += `<path d="M${x},${y} C${x+10*sc*flip},${y-15*sc} ${x+18*sc*flip},${y-5*sc} ${x+8*sc*flip},${y+12*sc} C${x+2*sc*flip},${y+6*sc} ${x-2*sc*flip},${y+2*sc} ${x},${y}Z" fill="${c}" opacity="${o*0.35}"/>`;
+      }
+      return s;
+    }
+    case 'mehndi-swirls': {
+      let s = '';
+      s += `<path d="M20,80 Q20,20 50,20 Q80,20 80,50" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.4}"/>`;
+      s += `<path d="M30,85 Q30,35 50,35 Q70,35 70,55" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>`;
+      s += `<circle cx="80" cy="50" r="3" fill="${c}" opacity="${o*0.5}"/>`;
+      s += `<circle cx="70" cy="55" r="2" fill="${c}" opacity="${o*0.4}"/>`;
+      for (let i = 0; i < 5; i++) {
+        const a = i * 72 * Math.PI / 180;
+        s += `<circle cx="${(25 + 8*Math.cos(a)).toFixed(1)}" cy="${(75 + 8*Math.sin(a)).toFixed(1)}" r="2" fill="${c}" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'block-print': {
+      let s = '';
+      const sz = 18;
+      for (let r = 0; r < 5; r++) {
+        for (let col = 0; col < 5; col++) {
+          if ((r + col) % 2 === 0) {
+            const x = 5 + col * sz, y = 5 + r * sz;
+            s += `<rect x="${x+2}" y="${y+2}" width="${sz-4}" height="${sz-4}" fill="${c}" opacity="${o*0.25}"/>`;
+            s += `<circle cx="${x+sz/2}" cy="${y+sz/2}" r="3" fill="${c}" opacity="${o*0.4}"/>`;
+          }
+        }
+      }
+      return s;
+    }
+    case 'jali-lattice': {
+      let s = '';
+      for (let r = 0; r < 4; r++) {
+        for (let col = 0; col < 4; col++) {
+          const cx = 16 + col * 24, cy = 16 + r * 24;
+          s += `<circle cx="${cx}" cy="${cy}" r="8" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.35}"/>`;
+        }
+      }
+      for (let r = 0; r < 3; r++) {
+        for (let col = 0; col < 3; col++) {
+          const cx = 28 + col * 24, cy = 28 + r * 24;
+          s += `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" fill="${c}" opacity="${o*0.2}" transform="rotate(45,${cx},${cy})"/>`;
+        }
+      }
+      return s;
+    }
+
+    // ── Bollywood ──
+    case 'spotlight': {
+      return `<circle cx="50" cy="50" r="44" fill="${c}" opacity="${o*0.15}"/>` +
+             `<circle cx="50" cy="50" r="30" fill="${c}" opacity="${o*0.2}"/>` +
+             `<circle cx="50" cy="50" r="16" fill="${c}" opacity="${o*0.3}"/>`;
+    }
+    case 'sequins': {
+      let s = '';
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 25; i++) {
+        const x = 6 + rng() * 86, y = 6 + rng() * 86, r = 2 + rng() * 4;
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${c}" opacity="${(0.15 + rng()*0.35).toFixed(2)}"/>`;
+      }
+      return s;
+    }
+    case 'film-strip': {
+      let s = '';
+      s += `<rect x="4" y="4" width="14" height="92" fill="${c}" opacity="${o*0.3}"/>`;
+      s += `<rect x="82" y="4" width="14" height="92" fill="${c}" opacity="${o*0.3}"/>`;
+      for (let y = 8; y < 92; y += 14) {
+        s += `<rect x="6" y="${y}" width="10" height="8" rx="1" fill="${c}" opacity="${o*0.15}"/>`;
+        s += `<rect x="84" y="${y}" width="10" height="8" rx="1" fill="${c}" opacity="${o*0.15}"/>`;
+      }
+      return s;
+    }
+    case 'curtain-drapes': {
+      let s = '';
+      for (let i = 0; i < 6; i++) {
+        const x = 4 + i * 18;
+        s += `<path d="M${x},4 Q${x+9},50 ${x},96" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'disco-floor': {
+      let s = '';
+      const sz = 18;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let r = 0; r < 5; r++) {
+        for (let col = 0; col < 5; col++) {
+          const x = 5 + col * sz, y = 5 + r * sz;
+          const bright = 0.15 + rng() * 0.4;
+          s += `<rect x="${x}" y="${y}" width="${sz}" height="${sz}" fill="${c}" opacity="${bright.toFixed(2)}"/>`;
+        }
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -486,11 +606,58 @@ function renderRing(attr) {
       }
       return s;
     }
-    default: return '';
-  }
-}
 
-// ── Shape Zone (center, ~28-72 extent) ──
+    // ── Indian ──
+    case 'zari-border':
+      return `<rect x="4" y="4" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="5" opacity="0.7"/>` +
+             `<rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>`;
+    case 'kolam': {
+      let s = `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+      for (let i = 0; i < 10; i++) {
+        const pos = 10 + i * 9;
+        s += `<circle cx="${pos}" cy="6" r="1.5" fill="${c}" opacity="0.5"/>`;
+        s += `<circle cx="${pos}" cy="94" r="1.5" fill="${c}" opacity="0.5"/>`;
+        s += `<circle cx="6" cy="${pos}" r="1.5" fill="${c}" opacity="0.5"/>`;
+        s += `<circle cx="94" cy="${pos}" r="1.5" fill="${c}" opacity="0.5"/>`;
+      }
+      return s;
+    }
+    case 'thread-wrap':
+      return `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="3" opacity="0.5"/>` +
+             `<rect x="8" y="8" width="84" height="84" rx="2" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>` +
+             `<rect x="11" y="11" width="78" height="78" rx="1" fill="none" stroke="${c}" stroke-width="0.5" opacity="0.2"/>`;
+
+    // ── Bollywood ──
+    case 'marquee-lights': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.4"/>`;
+      for (let i = 0; i < 8; i++) {
+        const pos = 10 + i * 11.5;
+        s += `<circle cx="${pos}" cy="4" r="2.5" fill="${c}" opacity="${i%2===0?0.7:0.3}"/>`;
+        s += `<circle cx="${pos}" cy="96" r="2.5" fill="${c}" opacity="${i%2===0?0.3:0.7}"/>`;
+        s += `<circle cx="4" cy="${pos}" r="2.5" fill="${c}" opacity="${i%2===0?0.7:0.3}"/>`;
+        s += `<circle cx="96" cy="${pos}" r="2.5" fill="${c}" opacity="${i%2===0?0.3:0.7}"/>`;
+      }
+      return s;
+    }
+    case 'bollywood-arch':
+      return `<path d="M10,92 L10,30 Q50,2 90,30 L90,92" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
+             `<path d="M16,92 L16,34 Q50,10 84,34 L84,92" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+    case 'sequin-border': {
+      let s = '';
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 30; i++) {
+        const side = Math.floor(rng() * 4);
+        let x, y;
+        if (side === 0) { x = 6 + rng()*86; y = 3 + rng()*8; }
+        else if (side === 1) { x = 6 + rng()*86; y = 89 + rng()*8; }
+        else if (side === 2) { x = 3 + rng()*8; y = 6 + rng()*86; }
+        else { x = 89 + rng()*8; y = 6 + rng()*86; }
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1+rng()*2).toFixed(1)}" fill="${c}" opacity="${(0.3+rng()*0.5).toFixed(2)}"/>`;
+      }
+      return s;
+    }
+
+    default: return '';// ── Shape Zone (center, ~28-72 extent) ──
 
 function renderShape(attr) {
   const c = attr.color;
@@ -726,6 +893,83 @@ function renderShape(attr) {
       }
       return `<polygon points="${pts.join(' ')}" fill="${c}" opacity="${o}"/>`;
     }
+
+    // ── Indian ──
+    case 'diya':
+      return `<ellipse cx="50" cy="60" rx="14" ry="8" fill="${c}" opacity="${o}"/>` +
+             `<path d="M42,56 Q50,30 58,56" fill="${c}" opacity="${o*0.8}"/>` +
+             `<path d="M48,34 Q50,24 52,34" fill="${c}" opacity="${o*0.9}"/>` +
+             `<ellipse cx="50" cy="28" rx="3" ry="5" fill="${c}" opacity="${o*0.6}"/>`;
+    case 'lotus': {
+      const o2 = o;
+      let s = '';
+      for (let i = 0; i < 7; i++) {
+        const ang = -90 + (i - 3) * 22;
+        const a = ang * Math.PI / 180;
+        const px = (50 + 18 * Math.cos(a)).toFixed(1);
+        const py = (50 + 18 * Math.sin(a)).toFixed(1);
+        s += `<ellipse cx="${px}" cy="${py}" rx="7" ry="14" fill="${c}" opacity="${o2*0.7}" transform="rotate(${ang},${px},${py})"/>`;
+      }
+      return s + `<circle cx="50" cy="50" r="5" fill="white" opacity="0.4"/>`;
+    }
+    case 'elephant':
+      return `<ellipse cx="50" cy="52" rx="16" ry="13" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="38" cy="42" r="10" fill="${c}" opacity="${o}"/>` +
+             `<path d="M30,46 Q26,60 30,70" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o*0.9}"/>` +
+             `<rect x="40" y="63" width="6" height="12" rx="2" fill="${c}" opacity="${o*0.8}"/>` +
+             `<rect x="54" y="63" width="6" height="12" rx="2" fill="${c}" opacity="${o*0.8}"/>` +
+             `<circle cx="35" cy="40" r="2" fill="white" opacity="0.5"/>`;
+    case 'peacock': {
+      let s = '';
+      for (let i = 0; i < 5; i++) {
+        const ang = -90 + (i - 2) * 30;
+        const a = ang * Math.PI / 180;
+        const px = (50 + 20 * Math.cos(a)).toFixed(1);
+        const py = (50 + 20 * Math.sin(a)).toFixed(1);
+        s += `<ellipse cx="${px}" cy="${py}" rx="6" ry="14" fill="${c}" opacity="${o*0.6}" transform="rotate(${ang},${px},${py})"/>`;
+        s += `<circle cx="${(50 + 16*Math.cos(a)).toFixed(1)}" cy="${(50 + 16*Math.sin(a)).toFixed(1)}" r="2.5" fill="white" opacity="0.3"/>`;
+      }
+      s += `<ellipse cx="50" cy="60" rx="8" ry="11" fill="${c}" opacity="${o}"/>`;
+      s += `<circle cx="50" cy="52" r="5" fill="${c}" opacity="${o}"/>`;
+      return s;
+    }
+    case 'mango-paisley':
+      return `<path d="M50,30 C65,30 70,45 65,60 C60,72 50,75 45,68 C38,58 38,35 50,30Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,38 C58,38 62,48 58,56" fill="none" stroke="white" stroke-width="1.5" opacity="0.3"/>`;
+
+    // ── Bollywood ──
+    case 'star': {
+      const pts = [];
+      for (let i = 0; i < 5; i++) {
+        const a1 = (i * 72 - 90) * Math.PI / 180;
+        const a2 = ((i * 72 + 36) - 90) * Math.PI / 180;
+        pts.push(`${(50 + 22 * Math.cos(a1)).toFixed(1)},${(50 + 22 * Math.sin(a1)).toFixed(1)}`);
+        pts.push(`${(50 + 10 * Math.cos(a2)).toFixed(1)},${(50 + 10 * Math.sin(a2)).toFixed(1)}`);
+      }
+      return `<polygon points="${pts.join(' ')}" fill="${c}" opacity="${o}"/>`;
+    }
+    case 'filmi-heart':
+      return `<path d="M50,68 C35,55 28,42 35,35 C42,28 50,35 50,40 C50,35 58,28 65,35 C72,42 65,55 50,68Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M46,38 L54,38 L50,32Z" fill="white" opacity="0.3"/>`;
+    case 'microphone':
+      return `<circle cx="50" cy="38" r="10" fill="${c}" opacity="${o}"/>` +
+             `<rect x="47" y="48" width="6" height="18" rx="2" fill="${c}" opacity="${o*0.9}"/>` +
+             `<line x1="40" y1="70" x2="60" y2="70" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.7}"/>` +
+             `<line x1="50" y1="66" x2="50" y2="70" stroke="${c}" stroke-width="2" opacity="${o*0.7}"/>`;
+    case 'clapperboard':
+      return `<rect x="34" y="42" width="32" height="24" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="36" width="32" height="8" fill="${c}" opacity="${o*0.8}"/>` +
+             `<line x1="40" y1="36" x2="44" y2="44" stroke="white" stroke-width="1.5" opacity="0.4"/>` +
+             `<line x1="48" y1="36" x2="52" y2="44" stroke="white" stroke-width="1.5" opacity="0.4"/>` +
+             `<line x1="56" y1="36" x2="60" y2="44" stroke="white" stroke-width="1.5" opacity="0.4"/>`;
+    case 'dancing-figure':
+      return `<circle cx="50" cy="34" r="5" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="39" x2="50" y2="56" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o}"/>` +
+             `<line x1="50" y1="44" x2="38" y2="38" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>` +
+             `<line x1="50" y1="44" x2="64" y2="50" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>` +
+             `<line x1="50" y1="56" x2="40" y2="70" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>` +
+             `<line x1="50" y1="56" x2="62" y2="68" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>`;
+
     default: return '';
   }
 }
@@ -933,6 +1177,59 @@ function renderAccent(attr) {
                `<line x1="${cx+6}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx}" y1="${cy+6}" x2="${cx}" y2="${cy+4}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx-6}" y1="${cy}" x2="${cx-4}" y2="${cy}" stroke="${c}" stroke-width="1.5"/>`; break;
+
+      // ── Indian ──
+      case 'bindis':
+        out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1.5" fill="white" opacity="0.3"/>`; break;
+      case 'bells':
+        out += `<path d="M${cx-3},${cy-4} Q${cx},${cy-7} ${cx+3},${cy-4} L${cx+4},${cy+2} Q${cx},${cy+5} ${cx-4},${cy+2}Z" fill="${c}" opacity="0.8"/>` +
+               `<circle cx="${cx}" cy="${cy+4}" r="1.5" fill="${c}"/>`; break;
+      case 'bangles':
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="3" fill="none" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
+      case 'om-dots': {
+        const dd = 3;
+        out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>` +
+               `<circle cx="${cx-dd}" cy="${cy-dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+dd}" cy="${cy-dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-dd}" cy="${cy+dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+dd}" cy="${cy+dd}" r="1.2" fill="${c}" opacity="0.6"/>`; break;
+      }
+      case 'marigolds': {
+        let p = '';
+        for (let i = 0; i < 6; i++) {
+          const a = i * 60 * Math.PI / 180;
+          p += `<circle cx="${(cx + 4*Math.cos(a)).toFixed(1)}" cy="${(cy + 4*Math.sin(a)).toFixed(1)}" r="2" fill="${c}" opacity="0.6"/>`;
+        }
+        out += p + `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>`; break;
+      }
+
+      // ── Bollywood ──
+      case 'music-notes':
+        out += `<circle cx="${cx-2}" cy="${cy+2}" r="2.5" fill="${c}"/>` +
+               `<line x1="${cx}" y1="${cy+2}" x2="${cx}" y2="${cy-6}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx}" y1="${cy-6}" x2="${cx+4}" y2="${cy-5}" stroke="${c}" stroke-width="1.5"/>`; break;
+      case 'sparkles':
+        out += `<polygon points="${cx},${cy-6} ${cx+1.5},${cy-1.5} ${cx+6},${cy} ${cx+1.5},${cy+1.5} ${cx},${cy+6} ${cx-1.5},${cy+1.5} ${cx-6},${cy} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.8"/>`; break;
+      case 'cameras':
+        out += `<rect x="${cx-5}" y="${cy-3}" width="10" height="7" rx="1" fill="${c}" opacity="0.8"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.3"/>` +
+               `<rect x="${cx-2}" y="${cy-5}" width="4" height="2" rx="0.5" fill="${c}" opacity="0.6"/>`; break;
+      case 'roses':
+        out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx-2}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.5"/>` +
+               `<circle cx="${cx+2}" cy="${cy+1}" r="2.5" fill="${c}" opacity="0.5"/>`; break;
+      case 'masala-stars': {
+        const sp = [];
+        for (let i = 0; i < 5; i++) {
+          const a1 = (i * 72 - 90) * Math.PI / 180;
+          const a2 = ((i * 72 + 36) - 90) * Math.PI / 180;
+          sp.push(`${(cx + 6*Math.cos(a1)).toFixed(1)},${(cy + 6*Math.sin(a1)).toFixed(1)}`);
+          sp.push(`${(cx + 3*Math.cos(a2)).toFixed(1)},${(cy + 3*Math.sin(a2)).toFixed(1)}`);
+        }
+        out += `<polygon points="${sp.join(' ')}" fill="${c}" opacity="0.8"/>`; break;
+      }
     }
   }
   return out;

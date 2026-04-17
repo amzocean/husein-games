@@ -139,6 +139,32 @@ const THEMES = [
     shapeNames:   ['flamingo', 'pineapple', 'hibiscus', 'surfboard', 'starfish'],
     accentShapes: ['coconuts', 'fish', 'waves-mini', 'shells', 'sun-rays'],
   },
+  {
+    name: 'Indian', emoji: '🪷',
+    palette: {
+      bg:     ['#ff9933', '#138808', '#4a0082'],
+      ring:   ['#d4af37', '#b22222', '#ff6f00', '#1a5276', '#8b0000'],
+      shape:  ['#d4af37', '#b22222', '#138808'],
+      accent: ['#ff9933', '#d4af37', '#e91e63'],
+    },
+    bgPatterns:   ['rangoli', 'paisley', 'mehndi-swirls', 'block-print', 'jali-lattice'],
+    ringStyles:   ['zari-border', 'kolam', 'thread-wrap'],
+    shapeNames:   ['diya', 'lotus', 'elephant', 'peacock', 'mango-paisley'],
+    accentShapes: ['bindis', 'bells', 'bangles', 'om-dots', 'marigolds'],
+  },
+  {
+    name: 'Bollywood', emoji: '🎬',
+    palette: {
+      bg:     ['#e91e63', '#ffd700', '#6a1b9a'],
+      ring:   ['#ff4081', '#ffc107', '#00bcd4', '#e040fb', '#ff5722'],
+      shape:  ['#ff4081', '#ffd700', '#00bcd4'],
+      accent: ['#e040fb', '#ff5722', '#ffc107'],
+    },
+    bgPatterns:   ['spotlight', 'sequins', 'film-strip', 'curtain-drapes', 'disco-floor'],
+    ringStyles:   ['marquee-lights', 'bollywood-arch', 'sequin-border'],
+    shapeNames:   ['star', 'filmi-heart', 'microphone', 'clapperboard', 'dancing-figure'],
+    accentShapes: ['music-notes', 'sparkles', 'cameras', 'roses', 'masala-stars'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)
