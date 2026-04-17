@@ -3,8 +3,7 @@
 ## Quick Resume Checklist
 - **Local project**: `C:\Users\huseinm\Downloads\husein-games\`
 - **GitHub repo**: https://github.com/amzocean/husein-games.git (personal account: amzocean)
-- **Live URL**: https://husein-games.onrender.com
-- **Intended domain**: huseinlovesyou.com (GoDaddy — DNS NOT yet pointed to Render)
+- **Live URL**: https://huseinlovesyou.com (custom domain) / https://husein-games.onrender.com (Render direct)
 - **Render dashboard**: https://dashboard.render.com (free tier, auto-deploys on push to main)
 - **⚠️ DO NOT modify gh CLI auth** — `gh` is linked to work account `huseinm_microsoft`. Git pushes use browser-based credential manager.
 
@@ -62,7 +61,7 @@ husein-games/
 
 ### Render.com
 - **Service**: husein-games (Web Service, free tier)
-- **URL**: https://husein-games.onrender.com
+- **URL**: https://huseinlovesyou.com (custom domain) / https://husein-games.onrender.com (direct)
 - **Auto-deploy**: Connected to GitHub repo, deploys on every push to `main`
 - **Build command**: `npm install`
 - **Start command**: `node server.js`
@@ -90,13 +89,19 @@ b096486 Ludo romantic retheme with rose/gold/teal/plum player colors
 b07d8a6 Change plum to indigo blue for better contrast with rose
 3c3e6fc Documentation update
 3182743 Add 6-theme system to Photo Tiles game
+95216c6 Update documentation with 6-theme Photo Tiles system
 ```
 
-### DNS (NOT YET DONE)
-- Domain: `huseinlovesyou.com` on GoDaddy
-- Currently pointed to Netlify (old)
-- To point to Render: Add CNAME record `huseinlovesyou.com` → `husein-games.onrender.com`
-- Then add custom domain in Render dashboard
+### Custom Domain
+- **Domain**: `huseinlovesyou.com` (registered on GoDaddy)
+- **DNS provider**: GoDaddy (default nameservers)
+- **DNS records**:
+  - `A` record: `@` → `216.24.57.1` (Render's load balancer IP), TTL 600s
+  - `CNAME` record: `www` → `husein-games.onrender.com`, TTL 1hr
+- **Render custom domains**: Both `huseinlovesyou.com` and `www.huseinlovesyou.com` verified with SSL certificates issued (Let's Encrypt)
+- **Routing**: `huseinlovesyou.com` redirects to `www.huseinlovesyou.com`
+- **Previous hosting**: Was on Netlify (removed domain from Netlify to clear Cloudflare DNS interference)
+- **Cache busting**: If users see old cached version, append `?v=2` to URL or clear browser cache
 
 ---
 
