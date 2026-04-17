@@ -15,7 +15,7 @@ function mulberry32(a) {
 
 function renderBg(attr) {
   const c = attr.color;
-  const o = 0.6;
+  const o = 0.75;
   switch (attr.pattern) {
     // ── Azulejo ──
     case 'checkerboard': {

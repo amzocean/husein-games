@@ -12,7 +12,7 @@ const THEMES = [
   {
     name: 'Azulejo', emoji: '🎨',
     palette: {
-      bg:     ['#81C784', '#F48FB1', '#FFD54F'],
+      bg:     ['#66BB6A', '#F06292', '#FFB300'],
       ring:   ['#2E7D32', '#C2185B', '#1565C0', '#6A1B9A', '#E65100'],
       shape:  ['#43A047', '#E91E63', '#1E88E5'],
       accent: ['#FF6D00', '#00ACC1', '#AB47BC'],
@@ -38,7 +38,7 @@ const THEMES = [
   {
     name: 'Garden', emoji: '🌿',
     palette: {
-      bg:     ['#66bb6a', '#ce93d8', '#fff176'],
+      bg:     ['#4caf50', '#ba68c8', '#fbc02d'],
       ring:   ['#2e7d32', '#7b1fa2', '#ef6c00', '#00838f', '#c62828'],
       shape:  ['#43a047', '#ab47bc', '#ff7043'],
       accent: ['#ff6f00', '#00897b', '#d81b60'],
@@ -51,7 +51,7 @@ const THEMES = [
   {
     name: 'Deco', emoji: '✨',
     palette: {
-      bg:     ['#ffd54f', '#80cbc4', '#ef9a9a'],
+      bg:     ['#ffb300', '#4db6ac', '#e57373'],
       ring:   ['#bf360c', '#1b5e20', '#4a148c', '#01579b', '#e65100'],
       shape:  ['#d84315', '#1b5e20', '#283593'],
       accent: ['#ff6f00', '#2e7d32', '#6a1b9a'],
@@ -64,7 +64,7 @@ const THEMES = [
   {
     name: 'Mosaic', emoji: '🏺',
     palette: {
-      bg:     ['#a1887f', '#80cbc4', '#ffe082'],
+      bg:     ['#8d6e63', '#4db6ac', '#ffb74d'],
       ring:   ['#d84315', '#00695c', '#f9a825', '#283593', '#558b2f'],
       shape:  ['#bf360c', '#00897b', '#f57f17'],
       accent: ['#e65100', '#00838f', '#827717'],
@@ -77,7 +77,7 @@ const THEMES = [
   {
     name: 'Candy', emoji: '🍬',
     palette: {
-      bg:     ['#f48fb1', '#a5d6a7', '#ffe0b2'],
+      bg:     ['#f06292', '#81c784', '#ffcc80'],
       ring:   ['#c2185b', '#00897b', '#ff6f00', '#6a1b9a', '#1565c0'],
       shape:  ['#e91e63', '#00bfa5', '#ff9100'],
       accent: ['#d81b60', '#00acc1', '#ff6d00'],
@@ -103,7 +103,7 @@ const THEMES = [
   {
     name: 'Sepia', emoji: '📜',
     palette: {
-      bg:     ['#f5e6d0', '#d4b896', '#a07850'],
+      bg:     ['#d4c4a8', '#c0a080', '#a07850'],
       ring:   ['#3e2723', '#6b4423', '#8b6914', '#a0522d', '#5c3a1e'],
       shape:  ['#3e2723', '#8b6914', '#c49a6c'],
       accent: ['#5c3a1e', '#a0522d', '#d4a574'],
@@ -129,7 +129,7 @@ const THEMES = [
   {
     name: 'Tropical', emoji: '🌴',
     palette: {
-      bg:     ['#00bcd4', '#ff7043', '#ffee58'],
+      bg:     ['#00bcd4', '#ff7043', '#ffca28'],
       ring:   ['#e91e63', '#4caf50', '#ff9800', '#2196f3', '#9c27b0'],
       shape:  ['#e91e63', '#4caf50', '#ff9800'],
       accent: ['#f44336', '#00bcd4', '#ffeb3b'],
