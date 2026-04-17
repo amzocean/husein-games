@@ -97,47 +97,6 @@ husein-games/
 
 ---
 
-## 3. Landing Page (`public/index.html`)
-
-- **Title**: "Husein and Fatema's Game Room"
-- **Theme**: Romantic blush — background `#fff5f5` with subtle radial glows
-- **Fonts**: Playfair Display (headings) + Inter (body) from Google Fonts
-- **Colors**: Rose `#c44569` headings, gold `#b8860b` subtitle, warm pastel tag backgrounds
-- **Cards**: White with rose-tinted borders and soft shadows, hover scale effect
-- Responsive grid: 1 column on mobile, 2 columns on 700px+
-- Three game cards:
-  1. **💌 Valentines** → `/valentines/` (tag: Story)
-  2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
-  3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
-- Footer: "Made with ♥ by Husein"
-
----
-
-## 4. Valentines Game (`public/valentines/`)
-
-### Overview
-A love-letter puzzle adventure through 6 levels. Single-player, fully static (no server needed). Player catches floating hearts/objects to progress through memory photos.
-
-### Files
-- `index.html` — Self-contained: all HTML, CSS, and JS inline
-- `images/level1.jpg` through `level5.jpg`, `final.jpg` — Photos for each level
-- `music.mp3` — Background music
-
-### How It Works
-- 6 levels, each with a photo reveal
-- CONFIG object at top of script defines levels, captions, speeds
-- Level 6 has "magnet" behavior (heart drifts toward cursor/finger)
-- Touch/mobile optimized
-
-### Customization
-Edit the `CONFIG` object in the `<script>` section:
-- `CONFIG.levels[].caption` — Caption text per level
-- `CONFIG.levels[].speed` — Object movement speed
-- `CONFIG.finalLetter` — The letter revealed at the end
-- Replace images in `images/` folder
-
----
-
 ## 5. Photo Tiles Game (`public/tiles/`)
 
 ### Overview
@@ -501,7 +460,48 @@ Every game state change MUST go through `broadcastState()` to reach all clients.
 
 ---
 
-## 7. Known Issues & Limitations
+## 7. Valentines Game (`public/valentines/`)
+
+### Overview
+A love-letter puzzle adventure through 6 levels. Single-player, fully static (no server needed). Player catches floating hearts/objects to progress through memory photos.
+
+### Files
+- `index.html` — Self-contained: all HTML, CSS, and JS inline
+- `images/level1.jpg` through `level5.jpg`, `final.jpg` — Photos for each level
+- `music.mp3` — Background music
+
+### How It Works
+- 6 levels, each with a photo reveal
+- CONFIG object at top of script defines levels, captions, speeds
+- Level 6 has "magnet" behavior (heart drifts toward cursor/finger)
+- Touch/mobile optimized
+
+### Customization
+Edit the `CONFIG` object in the `<script>` section:
+- `CONFIG.levels[].caption` — Caption text per level
+- `CONFIG.levels[].speed` — Object movement speed
+- `CONFIG.finalLetter` — The letter revealed at the end
+- Replace images in `images/` folder
+
+---
+
+## 8. Landing Page (`public/index.html`)
+
+- **Title**: "Husein and Fatema's Game Room"
+- **Theme**: Romantic blush — background `#fff5f5` with subtle radial glows
+- **Fonts**: Playfair Display (headings) + Inter (body) from Google Fonts
+- **Colors**: Rose `#c44569` headings, gold `#b8860b` subtitle, warm pastel tag backgrounds
+- **Cards**: White with rose-tinted borders and soft shadows, hover scale effect
+- Responsive grid: 1 column on mobile, 2 columns on 700px+
+- Three game cards:
+  1. **💌 Valentines** → `/valentines/` (tag: Story)
+  2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
+  3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
+- Footer: "Made with ♥ by Husein"
+
+---
+
+## 9. Known Issues & Limitations
 
 1. **In-memory game state**: Render process restart loses the game. No persistence layer. Free tier can restart anytime (though Socket.IO heartbeats prevent idle shutdown while connected).
 
@@ -513,7 +513,7 @@ Every game state change MUST go through `broadcastState()` to reach all clients.
 
 ---
 
-## 8. Common Tasks
+## 10. Common Tasks
 
 ### Run locally
 ```bash
