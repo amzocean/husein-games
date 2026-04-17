@@ -179,117 +179,7 @@ Each new game randomly selects one of **14 visual themes**. Each theme defines:
 - shape: 5 shapes × 3 colors = 15
 - accent: 5 accents × 3 colors = 15
 
-#### Theme 1: Azulejo 🎨 (original)
-- **Vibe**: Portuguese ceramic tiles
-- **Palette**: bg `#66BB6A, #F06292, #FFB300` / ring `#2E7D32, #C2185B, #1565C0, #6A1B9A, #E65100` / shape `#43A047, #E91E63, #1E88E5` / accent `#FF6D00, #00ACC1, #AB47BC`
-- **Bg patterns**: checkerboard, diagonal, hBars, vBars, solid
-- **Ring styles**: solid, dashed, double
-- **Shapes**: cross, flower, star, diamond, clover
-- **Accents**: circles, diamonds, squares, triangles, dots
-
-#### Theme 2: Celestial 🌙
-- **Vibe**: Night sky, cosmic
-- **Palette**: bg `#1a237e, #4a148c, #ff8f00` / ring `#90a4ae, #ffab00, #00e5ff, #e040fb, #ff6e40` / shape `#00e5ff, #e040fb, #ffab00` / accent `#b0bec5, #00e5ff, #ffd740`
-- **Bg patterns**: starfield, nebula, aurora, cosmic-dust, void
-- **Ring styles**: glow, dotted, eclipse
-- **Shapes**: crescent, starburst, hexagon, saturn, eye
-- **Accents**: tiny-stars, sparks, orbs, carets, moons
-
-#### Theme 3: Garden 🌿
-- **Vibe**: Botanical, floral
-- **Palette**: bg `#4caf50, #ba68c8, #fbc02d` / ring `#2e7d32, #7b1fa2, #ef6c00, #00838f, #c62828` / shape `#43a047, #ab47bc, #ff7043` / accent `#ff6f00, #00897b, #d81b60`
-- **Bg patterns**: polkadots, stripes, crosshatch, petals, meadow
-- **Ring styles**: vine, thorn, ribbon
-- **Shapes**: heart, tulip, leaf, raindrop, sun
-- **Accents**: seeds, dewdrops, buds, rosettes, thorns
-
-#### Theme 4: Deco ✨
-- **Vibe**: Art Deco geometric
-- **Palette**: bg `#ffb300, #4db6ac, #e57373` / ring `#bf360c, #1b5e20, #4a148c, #01579b, #e65100` / shape `#d84315, #1b5e20, #283593` / accent `#ff6f00, #2e7d32, #6a1b9a`
-- **Bg patterns**: fan, sunray, chevron, scales, zigzag
-- **Ring styles**: thick-thin, dotted-line, fillet
-- **Shapes**: arch, bowtie, pentagon, keystone, fan-shape
-- **Accents**: rays, studs, arrows, wings, bolts
-
-#### Theme 5: Mosaic 🏺
-- **Vibe**: Terracotta tessellation
-- **Palette**: bg `#8d6e63, #4db6ac, #ffb74d` / ring `#d84315, #00695c, #f9a825, #283593, #558b2f` / shape `#bf360c, #00897b, #f57f17` / accent `#e65100, #00838f, #827717`
-- **Bg patterns**: triangles, hexgrid, brickwork, pinwheel, terrazzo
-- **Ring styles**: rope, notched, inset
-- **Shapes**: octagon, arrow-shape, hourglass, shield, spiral
-- **Accents**: plus-signs, arrowheads, wedges, pips, nails
-
-#### Theme 6: Candy 🍬
-- **Vibe**: Sweet shop, playful
-- **Palette**: bg `#f06292, #81c784, #ffcc80` / ring `#c2185b, #00897b, #ff6f00, #6a1b9a, #1565c0` / shape `#e91e63, #00bfa5, #ff9100` / accent `#d81b60, #00acc1, #ff6d00`
-- **Bg patterns**: sprinkles, swirl, wafer, gingham, frosted
-- **Ring styles**: frosting, licorice, candy-dots
-- **Shapes**: lollipop, gumdrop, pretzel, donut, bonbon
-- **Accents**: mini-sprinkles, cherries, drops, gumballs, mini-hearts
-
-#### Theme 7: Noir 🖤
-- **Vibe**: Film noir, monochrome
-- **Palette**: bg `#111111, #333333, #666666` / ring `#ffffff, #cccccc, #888888, #555555, #aaaaaa` / shape `#ffffff, #999999, #444444` / accent `#eeeeee, #888888, #333333`
-- **Bg patterns**: halftone, film-grain, scanlines, gradient-fade, ink-blot
-- **Ring styles**: sharp, etched, shadow
-- **Shapes**: spade, crown, bolt-shape, mask, key
-- **Accents**: crosshairs, slashes, corners, pins, xs
-
-#### Theme 8: Sepia 📜
-- **Vibe**: Vintage parchment, antique
-- **Palette**: bg `#d4c4a8, #c0a080, #a07850` / ring `#3e2723, #6b4423, #8b6914, #a0522d, #5c3a1e` / shape `#3e2723, #8b6914, #c49a6c` / accent `#5c3a1e, #a0522d, #d4a574`
-- **Bg patterns**: parchment, woodgrain, linen, coffee-stain, aged-paper
-- **Ring styles**: ornate, worn, gilded
-- **Shapes**: quill, compass, anchor, fleur, lantern
-- **Accents**: filigree, rivets, scrolls, stamps, ink-dots
-
-#### Theme 9: Neon 💡
-- **Vibe**: Cyberpunk, electric glow
-- **Palette**: bg `#0d0221, #1a0533, #2b0845` / ring `#ff00ff, #00ffff, #ff3366, #39ff14, #ffff00` / shape `#ff00ff, #00ffff, #39ff14` / accent `#ff3366, #ffff00, #00ffff`
-- **Bg patterns**: grid-lines, circuit, pixel-blocks, laser-beams, digital-rain
-- **Ring styles**: neon-glow, pulse, wireframe
-- **Shapes**: lightning, pixel-heart, pac-ghost, controller, gem
-- **Accents**: glitch-dots, brackets, pixels, signal-bars, power-icons
-
-#### Theme 10: Tropical 🌴
-- **Vibe**: Island paradise, vibrant nature
-- **Palette**: bg `#00bcd4, #ff7043, #ffca28` / ring `#e91e63, #4caf50, #ff9800, #2196f3, #9c27b0` / shape `#e91e63, #4caf50, #ff9800` / accent `#f44336, #00bcd4, #ffeb3b`
-- **Bg patterns**: waves, palm-fronds, sand-ripples, bamboo, sunset-gradient
-- **Ring styles**: lei, rope-twist, shell-border
-- **Shapes**: flamingo, pineapple, hibiscus, surfboard, starfish
-- **Accents**: coconuts, fish, waves-mini, shells, sun-rays
-
-#### Theme 11: Indian 🪷
-- **Vibe**: Traditional Indian motifs, rich heritage
-- **Palette**: bg `#ff9933, #138808, #4a0082` / ring `#d4af37, #b22222, #ff6f00, #1a5276, #8b0000` / shape `#d4af37, #b22222, #138808` / accent `#ff9933, #d4af37, #e91e63`
-- **Bg patterns**: rangoli, paisley, mehndi-swirls, block-print, jali-lattice
-- **Ring styles**: zari-border, kolam, thread-wrap
-- **Shapes**: diya, lotus, elephant, peacock, mango-paisley
-- **Accents**: bindis, bells, bangles, om-dots, marigolds
-
-#### Theme 12: Bollywood 🎬
-- **Vibe**: Glamorous cinema, sequins and spotlights
-- **Palette**: bg `#e91e63, #ffd700, #6a1b9a` / ring `#ff4081, #ffc107, #00bcd4, #e040fb, #ff5722` / shape `#ff4081, #ffd700, #00bcd4` / accent `#e040fb, #ff5722, #ffc107`
-- **Bg patterns**: spotlight, sequins, film-strip, curtain-drapes, disco-floor
-- **Ring styles**: marquee-lights, bollywood-arch, sequin-border
-- **Shapes**: filmi-star, filmi-heart, microphone, clapperboard, dancing-figure
-- **Accents**: music-notes, sparkles, cameras, roses, masala-stars
-
-#### Theme 13: Arithmetic 🔢
-- **Vibe**: Chalkboard math, classroom nostalgia
-- **Palette**: bg `#2e7d32, #1b5e20, #004d40` / ring `#ffffff, #ffeb3b, #ff7043, #42a5f5, #ef5350` / shape `#ffffff, #ffeb3b, #42a5f5` / accent `#ff7043, #ef5350, #ffffff`
-- **Bg patterns**: graph-paper, chalkboard, notebook-lines, dot-grid, equation-scribbles
-- **Ring styles**: ruler-marks, protractor, bracket-border
-- **Shapes**: plus-sign, divide-symbol, pi-symbol, infinity, abacus
-- **Accents**: equal-signs, percent, tally-marks, decimal-dots, hash-marks
-
-#### Theme 14: Sky 🌈
-- **Vibe**: Daytime sky, clouds and rainbows
-- **Palette**: bg `#64b5f6, #90caf9, #fff176` / ring `#e53935, #ff9800, #4caf50, #7b1fa2, #1565c0` / shape `#e53935, #ff9800, #1565c0` / accent `#4caf50, #f48fb1, #ffb300`
-- **Bg patterns**: sky-gradient, fluffy-clouds, rainbow-arc, cirrus-wisps, sunset-glow
-- **Ring styles**: cloud-border, rainbow-ring, breeze-dash
-- **Shapes**: airplane, songbird, bright-sun, kite, hot-air-balloon
-- **Accents**: tiny-birds, butterflies, raindrops, drifting-leaves, contrails
+> **14 theme palette listings** — see **Appendix A: Theme Palette Reference** at the end of this document.
 
 ### Renderer Architecture
 
@@ -949,3 +839,121 @@ case 'chalkboard': {
 - ✅ Use Material Design color scale as a reference: the 400-600 range gives good saturation without being too dark
 
 **Quick test**: Squint at your tiles. If you can't immediately distinguish every tile from its neighbors, the contrast is too low.
+
+---
+
+## Appendix A: Theme Palette Reference
+
+Each theme defines: palette (bg/ring/shape/accent colors), 5 bg patterns, 3 ring styles, 5 center shapes, 5 corner accents.
+
+#### Theme 1: Azulejo 🎨 (original)
+- **Vibe**: Portuguese ceramic tiles
+- **Palette**: bg `#66BB6A, #F06292, #FFB300` / ring `#2E7D32, #C2185B, #1565C0, #6A1B9A, #E65100` / shape `#43A047, #E91E63, #1E88E5` / accent `#FF6D00, #00ACC1, #AB47BC`
+- **Bg patterns**: checkerboard, diagonal, hBars, vBars, solid
+- **Ring styles**: solid, dashed, double
+- **Shapes**: cross, flower, star, diamond, clover
+- **Accents**: circles, diamonds, squares, triangles, dots
+
+#### Theme 2: Celestial 🌙
+- **Vibe**: Night sky, cosmic
+- **Palette**: bg `#1a237e, #4a148c, #ff8f00` / ring `#90a4ae, #ffab00, #00e5ff, #e040fb, #ff6e40` / shape `#00e5ff, #e040fb, #ffab00` / accent `#b0bec5, #00e5ff, #ffd740`
+- **Bg patterns**: starfield, nebula, aurora, cosmic-dust, void
+- **Ring styles**: glow, dotted, eclipse
+- **Shapes**: crescent, starburst, hexagon, saturn, eye
+- **Accents**: tiny-stars, sparks, orbs, carets, moons
+
+#### Theme 3: Garden 🌿
+- **Vibe**: Botanical, floral
+- **Palette**: bg `#4caf50, #ba68c8, #fbc02d` / ring `#2e7d32, #7b1fa2, #ef6c00, #00838f, #c62828` / shape `#43a047, #ab47bc, #ff7043` / accent `#ff6f00, #00897b, #d81b60`
+- **Bg patterns**: polkadots, stripes, crosshatch, petals, meadow
+- **Ring styles**: vine, thorn, ribbon
+- **Shapes**: heart, tulip, leaf, raindrop, sun
+- **Accents**: seeds, dewdrops, buds, rosettes, thorns
+
+#### Theme 4: Deco ✨
+- **Vibe**: Art Deco geometric
+- **Palette**: bg `#ffb300, #4db6ac, #e57373` / ring `#bf360c, #1b5e20, #4a148c, #01579b, #e65100` / shape `#d84315, #1b5e20, #283593` / accent `#ff6f00, #2e7d32, #6a1b9a`
+- **Bg patterns**: fan, sunray, chevron, scales, zigzag
+- **Ring styles**: thick-thin, dotted-line, fillet
+- **Shapes**: arch, bowtie, pentagon, keystone, fan-shape
+- **Accents**: rays, studs, arrows, wings, bolts
+
+#### Theme 5: Mosaic 🏺
+- **Vibe**: Terracotta tessellation
+- **Palette**: bg `#8d6e63, #4db6ac, #ffb74d` / ring `#d84315, #00695c, #f9a825, #283593, #558b2f` / shape `#bf360c, #00897b, #f57f17` / accent `#e65100, #00838f, #827717`
+- **Bg patterns**: triangles, hexgrid, brickwork, pinwheel, terrazzo
+- **Ring styles**: rope, notched, inset
+- **Shapes**: octagon, arrow-shape, hourglass, shield, spiral
+- **Accents**: plus-signs, arrowheads, wedges, pips, nails
+
+#### Theme 6: Candy 🍬
+- **Vibe**: Sweet shop, playful
+- **Palette**: bg `#f06292, #81c784, #ffcc80` / ring `#c2185b, #00897b, #ff6f00, #6a1b9a, #1565c0` / shape `#e91e63, #00bfa5, #ff9100` / accent `#d81b60, #00acc1, #ff6d00`
+- **Bg patterns**: sprinkles, swirl, wafer, gingham, frosted
+- **Ring styles**: frosting, licorice, candy-dots
+- **Shapes**: lollipop, gumdrop, pretzel, donut, bonbon
+- **Accents**: mini-sprinkles, cherries, drops, gumballs, mini-hearts
+
+#### Theme 7: Noir 🖤
+- **Vibe**: Film noir, monochrome
+- **Palette**: bg `#111111, #333333, #666666` / ring `#ffffff, #cccccc, #888888, #555555, #aaaaaa` / shape `#ffffff, #999999, #444444` / accent `#eeeeee, #888888, #333333`
+- **Bg patterns**: halftone, film-grain, scanlines, gradient-fade, ink-blot
+- **Ring styles**: sharp, etched, shadow
+- **Shapes**: spade, crown, bolt-shape, mask, key
+- **Accents**: crosshairs, slashes, corners, pins, xs
+
+#### Theme 8: Sepia 📜
+- **Vibe**: Vintage parchment, antique
+- **Palette**: bg `#d4c4a8, #c0a080, #a07850` / ring `#3e2723, #6b4423, #8b6914, #a0522d, #5c3a1e` / shape `#3e2723, #8b6914, #c49a6c` / accent `#5c3a1e, #a0522d, #d4a574`
+- **Bg patterns**: parchment, woodgrain, linen, coffee-stain, aged-paper
+- **Ring styles**: ornate, worn, gilded
+- **Shapes**: quill, compass, anchor, fleur, lantern
+- **Accents**: filigree, rivets, scrolls, stamps, ink-dots
+
+#### Theme 9: Neon 💡
+- **Vibe**: Cyberpunk, electric glow
+- **Palette**: bg `#0d0221, #1a0533, #2b0845` / ring `#ff00ff, #00ffff, #ff3366, #39ff14, #ffff00` / shape `#ff00ff, #00ffff, #39ff14` / accent `#ff3366, #ffff00, #00ffff`
+- **Bg patterns**: grid-lines, circuit, pixel-blocks, laser-beams, digital-rain
+- **Ring styles**: neon-glow, pulse, wireframe
+- **Shapes**: lightning, pixel-heart, pac-ghost, controller, gem
+- **Accents**: glitch-dots, brackets, pixels, signal-bars, power-icons
+
+#### Theme 10: Tropical 🌴
+- **Vibe**: Island paradise, vibrant nature
+- **Palette**: bg `#00bcd4, #ff7043, #ffca28` / ring `#e91e63, #4caf50, #ff9800, #2196f3, #9c27b0` / shape `#e91e63, #4caf50, #ff9800` / accent `#f44336, #00bcd4, #ffeb3b`
+- **Bg patterns**: waves, palm-fronds, sand-ripples, bamboo, sunset-gradient
+- **Ring styles**: lei, rope-twist, shell-border
+- **Shapes**: flamingo, pineapple, hibiscus, surfboard, starfish
+- **Accents**: coconuts, fish, waves-mini, shells, sun-rays
+
+#### Theme 11: Indian 🪷
+- **Vibe**: Traditional Indian motifs, rich heritage
+- **Palette**: bg `#ff9933, #138808, #4a0082` / ring `#d4af37, #b22222, #ff6f00, #1a5276, #8b0000` / shape `#d4af37, #b22222, #138808` / accent `#ff9933, #d4af37, #e91e63`
+- **Bg patterns**: rangoli, paisley, mehndi-swirls, block-print, jali-lattice
+- **Ring styles**: zari-border, kolam, thread-wrap
+- **Shapes**: diya, lotus, elephant, peacock, mango-paisley
+- **Accents**: bindis, bells, bangles, om-dots, marigolds
+
+#### Theme 12: Bollywood 🎬
+- **Vibe**: Glamorous cinema, sequins and spotlights
+- **Palette**: bg `#e91e63, #ffd700, #6a1b9a` / ring `#ff4081, #ffc107, #00bcd4, #e040fb, #ff5722` / shape `#ff4081, #ffd700, #00bcd4` / accent `#e040fb, #ff5722, #ffc107`
+- **Bg patterns**: spotlight, sequins, film-strip, curtain-drapes, disco-floor
+- **Ring styles**: marquee-lights, bollywood-arch, sequin-border
+- **Shapes**: filmi-star, filmi-heart, microphone, clapperboard, dancing-figure
+- **Accents**: music-notes, sparkles, cameras, roses, masala-stars
+
+#### Theme 13: Arithmetic 🔢
+- **Vibe**: Chalkboard math, classroom nostalgia
+- **Palette**: bg `#2e7d32, #1b5e20, #004d40` / ring `#ffffff, #ffeb3b, #ff7043, #42a5f5, #ef5350` / shape `#ffffff, #ffeb3b, #42a5f5` / accent `#ff7043, #ef5350, #ffffff`
+- **Bg patterns**: graph-paper, chalkboard, notebook-lines, dot-grid, equation-scribbles
+- **Ring styles**: ruler-marks, protractor, bracket-border
+- **Shapes**: plus-sign, divide-symbol, pi-symbol, infinity, abacus
+- **Accents**: equal-signs, percent, tally-marks, decimal-dots, hash-marks
+
+#### Theme 14: Sky 🌈
+- **Vibe**: Daytime sky, clouds and rainbows
+- **Palette**: bg `#64b5f6, #90caf9, #fff176` / ring `#e53935, #ff9800, #4caf50, #7b1fa2, #1565c0` / shape `#e53935, #ff9800, #1565c0` / accent `#4caf50, #f48fb1, #ffb300`
+- **Bg patterns**: sky-gradient, fluffy-clouds, rainbow-arc, cirrus-wisps, sunset-glow
+- **Ring styles**: cloud-border, rainbow-ring, breeze-dash
+- **Shapes**: airplane, songbird, bright-sun, kite, hot-air-balloon
+- **Accents**: tiny-birds, butterflies, raindrops, drifting-leaves, contrails
