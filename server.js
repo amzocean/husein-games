@@ -113,7 +113,9 @@ const SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
 function rollDice(color) {
   const allInBase = game.tokens[color] && game.tokens[color].every(s => s === 0);
   if (allInBase) {
+    // ~33% chance of 6 when stuck in base; rest split among 1-5
     if (Math.random() < 0.333) return 6;
+    return Math.floor(Math.random() * 5) + 1;
   }
   return Math.floor(Math.random() * 6) + 1;
 }
