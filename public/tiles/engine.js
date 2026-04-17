@@ -162,7 +162,7 @@ const THEMES = [
     },
     bgPatterns:   ['spotlight', 'sequins', 'film-strip', 'curtain-drapes', 'disco-floor'],
     ringStyles:   ['marquee-lights', 'bollywood-arch', 'sequin-border'],
-    shapeNames:   ['star', 'filmi-heart', 'microphone', 'clapperboard', 'dancing-figure'],
+    shapeNames:   ['filmi-star', 'filmi-heart', 'microphone', 'clapperboard', 'dancing-figure'],
     accentShapes: ['music-notes', 'sparkles', 'cameras', 'roses', 'masala-stars'],
   },
   {

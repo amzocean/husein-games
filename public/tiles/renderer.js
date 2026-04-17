@@ -1,6 +1,16 @@
 // renderer.js — SVG tile rendering for Fatema Tiles (azulejo spatial-zone design)
 // viewBox 0 0 100 100 — four spatially distinct zones rendered back-to-front
 
+// Seeded PRNG for deterministic random positions (sprinkles, sequins, etc.)
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
 // ── Background Zone (full tile, 4-96 inset) ──
 
 function renderBg(attr) {
@@ -1009,7 +1019,7 @@ function renderShape(attr) {
              `<path d="M50,38 C58,38 62,48 58,56" fill="none" stroke="white" stroke-width="1.5" opacity="0.3"/>`;
 
     // ── Bollywood ──
-    case 'star': {
+    case 'filmi-star': {
       const pts = [];
       for (let i = 0; i < 5; i++) {
         const a1 = (i * 72 - 90) * Math.PI / 180;
