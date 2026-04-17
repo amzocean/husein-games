@@ -1,5 +1,16 @@
 # Husein and Fatema's Game Room — Complete Project Documentation
 
+## Documentation Method
+
+This document is written from a **developer's perspective** — not as a user guide but as an engineering reference for future sessions (human or AI). The focus is:
+
+- **Design decisions and their rationale** — not just what was built, but WHY this approach was chosen and what alternatives were rejected
+- **Pitfalls and anti-patterns** — mistakes that were actually made in production, documented so they aren't repeated. Each bug fix entry includes the root cause analysis, not just the symptom and fix.
+- **Architecture constraints** — the non-obvious rules that, if violated, cause subtle bugs (e.g., the 5 code paths that must stay in sync, transient state that must be cleared after exactly one broadcast)
+- **Thought process over implementation details** — code is readable on its own; this doc captures the reasoning that code can't express
+
+When updating this documentation: don't just record WHAT changed. Record WHY, what was considered and rejected, and what a future developer would need to know to avoid breaking things.
+
 ## Quick Resume Checklist
 - **Local project**: `C:\Users\huseinm\Downloads\husein-games\`
 - **GitHub repo**: https://github.com/amzocean/husein-games.git (personal account: amzocean)
