@@ -178,6 +178,19 @@ const THEMES = [
     shapeNames:   ['plus-sign', 'divide-symbol', 'pi-symbol', 'infinity', 'abacus'],
     accentShapes: ['equal-signs', 'percent', 'tally-marks', 'decimal-dots', 'hash-marks'],
   },
+  {
+    name: 'Sky', emoji: '🌈',
+    palette: {
+      bg:     ['#64b5f6', '#90caf9', '#fff176'],
+      ring:   ['#e53935', '#ff9800', '#4caf50', '#7b1fa2', '#1565c0'],
+      shape:  ['#e53935', '#ff9800', '#1565c0'],
+      accent: ['#4caf50', '#f48fb1', '#ffb300'],
+    },
+    bgPatterns:   ['sky-gradient', 'fluffy-clouds', 'rainbow-arc', 'cirrus-wisps', 'sunset-glow'],
+    ringStyles:   ['cloud-border', 'rainbow-ring', 'breeze-dash'],
+    shapeNames:   ['airplane', 'songbird', 'bright-sun', 'kite', 'hot-air-balloon'],
+    accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves', 'contrails'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)

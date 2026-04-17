@@ -517,11 +517,51 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Sky ──
+    case 'sky-gradient': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.75"/>`;
+      s += `<rect x="4" y="4" width="92" height="30" rx="6" fill="#fff" opacity="0.18"/>`;
+      s += `<rect x="4" y="66" width="92" height="30" fill="${c}" opacity="0.2"/>`;
+      return s;
+    }
+    case 'fluffy-clouds': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      s += `<circle cx="25" cy="35" r="10" fill="#fff" opacity="0.5"/>`;
+      s += `<circle cx="35" cy="30" r="12" fill="#fff" opacity="0.45"/>`;
+      s += `<circle cx="45" cy="35" r="9" fill="#fff" opacity="0.5"/>`;
+      s += `<circle cx="65" cy="70" r="8" fill="#fff" opacity="0.4"/>`;
+      s += `<circle cx="75" cy="66" r="10" fill="#fff" opacity="0.35"/>`;
+      s += `<circle cx="82" cy="70" r="7" fill="#fff" opacity="0.4"/>`;
+      return s;
+    }
+    case 'rainbow-arc': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.6"/>`;
+      const rc = ['#e53935','#ff9800','#fdd835','#4caf50','#2196f3','#7b1fa2'];
+      for (let i = 0; i < 6; i++) {
+        s += `<path d="M10,85 A${42-i*3},${42-i*3} 0 0,1 90,85" fill="none" stroke="${rc[i]}" stroke-width="2.5" opacity="0.5"/>`;
+      }
+      return s;
+    }
+    case 'cirrus-wisps': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.72"/>`;
+      s += `<path d="M8,20 Q30,15 55,22 T95,18" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.35"/>`;
+      s += `<path d="M5,40 Q25,34 50,42 T92,36" fill="none" stroke="#fff" stroke-width="1" opacity="0.25"/>`;
+      s += `<path d="M10,60 Q35,55 60,62 T96,57" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.3"/>`;
+      s += `<path d="M8,78 Q40,72 70,80 T94,75" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.2"/>`;
+      return s;
+    }
+    case 'sunset-glow': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.6"/>`;
+      s += `<rect x="4" y="55" width="92" height="41" fill="#ff9800" opacity="0.25"/>`;
+      s += `<rect x="4" y="70" width="92" height="26" fill="#e53935" opacity="0.15"/>`;
+      s += `<circle cx="50" cy="75" r="18" fill="#fdd835" opacity="0.2"/>`;
+      s += `<circle cx="50" cy="75" r="10" fill="#ffeb3b" opacity="0.25"/>`;
+      return s;
+    }
+
     default: return '';
   }
 }
-
-// ── Ring Zone (tile edges, decorative border frame) ──
 
 function renderRing(attr) {
   const c = attr.color;
@@ -733,6 +773,35 @@ function renderRing(attr) {
     case 'bracket-border':
       return `<path d="M20,6 L8,6 L8,94 L20,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
              `<path d="M80,6 L92,6 L92,94 L80,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+
+    // ── Sky ──
+    case 'cloud-border': {
+      let s = '';
+      for (let i = 0; i < 8; i++) {
+        const x = 10 + i * 12;
+        s += `<circle cx="${x}" cy="6" r="${4 + (i%2)*2}" fill="${c}" opacity="0.35"/>`;
+        s += `<circle cx="${x}" cy="94" r="${4 + ((i+1)%2)*2}" fill="${c}" opacity="0.35"/>`;
+      }
+      for (let i = 0; i < 7; i++) {
+        const y = 14 + i * 12;
+        s += `<circle cx="6" cy="${y}" r="${3.5 + (i%2)*1.5}" fill="${c}" opacity="0.3"/>`;
+        s += `<circle cx="94" cy="${y}" r="${3.5 + ((i+1)%2)*1.5}" fill="${c}" opacity="0.3"/>`;
+      }
+      return s;
+    }
+    case 'rainbow-ring': {
+      const rc = ['#e53935','#ff9800','#fdd835','#4caf50','#2196f3','#7b1fa2'];
+      let s = '';
+      for (let i = 0; i < 6; i++) {
+        const inset = 4 + i * 1.5;
+        const size = 92 - i * 3;
+        s += `<rect x="${inset}" y="${inset}" width="${size}" height="${size}" rx="3" fill="none" stroke="${rc[i]}" stroke-width="1.2" opacity="0.45"/>`;
+      }
+      return s;
+    }
+    case 'breeze-dash':
+      return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>` +
+             `<rect x="9" y="9" width="82" height="82" rx="3" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="4,6" opacity="0.3"/>`;
 
     default: return '';
   }
@@ -1080,11 +1149,44 @@ function renderShape(attr) {
       return s;
     }
 
+    // ── Sky ──
+    case 'airplane':
+      return `<polygon points="50,28 56,50 74,58 56,54 58,72 50,64 42,72 44,54 26,58 44,50" fill="${c}" opacity="${o}"/>`;
+    case 'songbird': {
+      const o2 = o * 0.9;
+      return `<circle cx="55" cy="46" r="7" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="63" cy="41" r="4.5" fill="${c}" opacity="${o}"/>` +
+             `<path d="M67,40 L73,38 L67,42" fill="${c}" opacity="${o}"/>` +
+             `<path d="M48,46 Q38,34 28,38" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o2}"/>` +
+             `<path d="M48,50 Q40,56 32,54" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o2*0.8}"/>` +
+             `<circle cx="65" cy="40" r="1.2" fill="#333" opacity="0.5"/>`;
+    }
+    case 'bright-sun': {
+      let s = `<circle cx="50" cy="50" r="12" fill="${c}" opacity="${o}"/>`;
+      for (let i = 0; i < 8; i++) {
+        const a = i * 45 * Math.PI / 180;
+        const x1 = 50 + 16 * Math.cos(a), y1 = 50 + 16 * Math.sin(a);
+        const x2 = 50 + 24 * Math.cos(a), y2 = 50 + 24 * Math.sin(a);
+        s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.8}"/>`;
+      }
+      return s;
+    }
+    case 'kite':
+      return `<polygon points="50,30 62,50 50,66 38,50" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="30" x2="50" y2="66" stroke="#fff" stroke-width="1" opacity="0.3"/>` +
+             `<line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="1" opacity="0.3"/>` +
+             `<path d="M50,66 Q46,74 52,78 Q48,82 50,86" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.7}"/>`;
+    case 'hot-air-balloon':
+      return `<ellipse cx="50" cy="42" rx="14" ry="18" fill="${c}" opacity="${o}"/>` +
+             `<path d="M42,30 Q50,24 58,30" fill="none" stroke="#fff" stroke-width="1" opacity="0.3"/>` +
+             `<path d="M38,42 Q50,48 62,42" fill="none" stroke="#fff" stroke-width="1" opacity="0.25"/>` +
+             `<line x1="38" y1="55" x2="44" y2="66" stroke="${c}" stroke-width="1.5" opacity="${o*0.6}"/>` +
+             `<line x1="62" y1="55" x2="56" y2="66" stroke="${c}" stroke-width="1.5" opacity="${o*0.6}"/>` +
+             `<rect x="43" y="65" width="14" height="8" rx="2" fill="${c}" opacity="${o*0.7}"/>`;
+
     default: return '';
   }
 }
-
-// ── Accent Zone (4 corners) ──
 
 const CORNERS = [[16, 16], [84, 16], [16, 84], [84, 84]];
 
@@ -1363,6 +1465,26 @@ function renderAccent(attr) {
                `<line x1="${cx+2}" y1="${cy-5}" x2="${cx+2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy-2}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx-5}" y1="${cy+2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.5"/>`; break;
+
+      // ── Sky ──
+      case 'tiny-birds': {
+        const d = idx < 2 ? 1 : -1;
+        out += `<path d="M${cx-4},${cy} Q${cx-2},${cy-3*d} ${cx},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>` +
+               `<path d="M${cx},${cy} Q${cx+2},${cy-3*d} ${cx+4},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
+      }
+      case 'butterflies': {
+        out += `<ellipse cx="${cx-3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${idx*90+15},${cx},${cy})"/>` +
+               `<ellipse cx="${cx+3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${idx*90-15},${cx},${cy})"/>` +
+               `<line x1="${cx}" y1="${cy-2}" x2="${cx}" y2="${cy+3}" stroke="${c}" stroke-width="0.8"/>`; break;
+      }
+      case 'raindrops':
+        out += `<path d="M${cx},${cy-4} Q${cx+2.5},${cy} ${cx},${cy+4} Q${cx-2.5},${cy} ${cx},${cy-4}" fill="${c}" opacity="0.5"/>`; break;
+      case 'drifting-leaves':
+        out += `<path d="M${cx-4},${cy} Q${cx},${cy-5} ${cx+4},${cy} Q${cx},${cy+2} ${cx-4},${cy}" fill="${c}" opacity="0.5"/>` +
+               `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="#fff" stroke-width="0.6" opacity="0.4"/>`; break;
+      case 'contrails':
+        out += `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>` +
+               `<line x1="${cx-4}" y1="${cy+1}" x2="${cx+4}" y2="${cy+3}" stroke="${c}" stroke-width="0.8" stroke-linecap="round" opacity="0.35"/>`; break;
     }
   }
   return out;
