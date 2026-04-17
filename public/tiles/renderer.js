@@ -459,6 +459,54 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Arithmetic ──
+    case 'graph-paper': {
+      let s = '';
+      for (let i = 0; i <= 9; i++) {
+        const pos = 4 + i * 9.2;
+        s += `<line x1="${pos.toFixed(1)}" y1="4" x2="${pos.toFixed(1)}" y2="96" stroke="${c}" stroke-width="0.5" opacity="${o*0.3}"/>`;
+        s += `<line x1="4" y1="${pos.toFixed(1)}" x2="96" y2="${pos.toFixed(1)}" stroke="${c}" stroke-width="0.5" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'chalkboard': {
+      let s = '';
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 15; i++) {
+        const x = 6 + rng() * 84, y = 6 + rng() * 84;
+        const w = 4 + rng() * 20, a = rng() * 180;
+        s += `<line x1="${x}" y1="${y}" x2="${x + w * Math.cos(a*Math.PI/180)}" y2="${y + w * Math.sin(a*Math.PI/180)}" stroke="${c}" stroke-width="1" opacity="${(o*0.15 + rng()*o*0.2).toFixed(2)}"/>`;
+      }
+      return s;
+    }
+    case 'notebook-lines': {
+      let s = '';
+      for (let y = 14; y < 96; y += 10) {
+        s += `<line x1="4" y1="${y}" x2="96" y2="${y}" stroke="${c}" stroke-width="0.8" opacity="${o*0.3}"/>`;
+      }
+      s += `<line x1="16" y1="4" x2="16" y2="96" stroke="${c}" stroke-width="1" opacity="${o*0.25}"/>`;
+      return s;
+    }
+    case 'dot-grid': {
+      let s = '';
+      for (let r = 0; r < 8; r++) {
+        for (let col = 0; col < 8; col++) {
+          s += `<circle cx="${10 + col * 12}" cy="${10 + r * 12}" r="1.2" fill="${c}" opacity="${o*0.4}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'equation-scribbles': {
+      let s = '';
+      s += `<text x="12" y="25" font-size="12" fill="${c}" opacity="${o*0.2}" font-family="serif">+</text>`;
+      s += `<text x="55" y="20" font-size="10" fill="${c}" opacity="${o*0.15}" font-family="serif">=</text>`;
+      s += `<text x="30" y="55" font-size="14" fill="${c}" opacity="${o*0.2}" font-family="serif">÷</text>`;
+      s += `<text x="70" y="70" font-size="11" fill="${c}" opacity="${o*0.18}" font-family="serif">×</text>`;
+      s += `<text x="15" y="82" font-size="10" fill="${c}" opacity="${o*0.15}" font-family="serif">−</text>`;
+      s += `<text x="75" y="35" font-size="9" fill="${c}" opacity="${o*0.15}" font-family="serif">%</text>`;
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -657,7 +705,30 @@ function renderRing(attr) {
       return s;
     }
 
-    default: return '';// ── Shape Zone (center, ~28-72 extent) ──
+    // ── Arithmetic ──
+    case 'ruler-marks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+      for (let i = 0; i < 10; i++) {
+        const pos = 10 + i * 9;
+        const h = i % 5 === 0 ? 8 : 4;
+        s += `<line x1="${pos}" y1="4" x2="${pos}" y2="${4+h}" stroke="${c}" stroke-width="1" opacity="0.5"/>`;
+        s += `<line x1="${pos}" y1="96" x2="${pos}" y2="${96-h}" stroke="${c}" stroke-width="1" opacity="0.5"/>`;
+      }
+      return s;
+    }
+    case 'protractor':
+      return `<rect x="6" y="6" width="88" height="88" rx="3" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>` +
+             `<path d="M10,90 A56,56 0 0,1 90,90" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
+             `<path d="M20,90 A40,40 0 0,1 80,90" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+    case 'bracket-border':
+      return `<path d="M20,6 L8,6 L8,94 L20,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M80,6 L92,6 L92,94 L80,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+
+    default: return '';
+  }
+}
+
+// ── Shape Zone (center, ~28-72 extent) ──
 
 function renderShape(attr) {
   const c = attr.color;
@@ -970,6 +1041,35 @@ function renderShape(attr) {
              `<line x1="50" y1="56" x2="40" y2="70" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>` +
              `<line x1="50" y1="56" x2="62" y2="68" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.9}"/>`;
 
+    // ── Arithmetic ──
+    case 'plus-sign':
+      return `<rect x="46" y="32" width="8" height="36" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="32" y="46" width="36" height="8" rx="2" fill="${c}" opacity="${o}"/>`;
+    case 'divide-symbol':
+      return `<rect x="32" y="47" width="36" height="6" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="36" r="5" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="64" r="5" fill="${c}" opacity="${o}"/>`;
+    case 'pi-symbol':
+      return `<line x1="32" y1="38" x2="68" y2="38" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/>` +
+             `<line x1="42" y1="38" x2="40" y2="68" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="${o*0.9}"/>` +
+             `<path d="M56,38 Q58,58 62,68" fill="none" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="${o*0.9}"/>`;
+    case 'infinity':
+      return `<path d="M50,50 C40,36 24,36 24,50 C24,64 40,64 50,50 C60,36 76,36 76,50 C76,64 60,64 50,50Z" fill="none" stroke="${c}" stroke-width="3.5" opacity="${o}"/>`;
+    case 'abacus': {
+      let s = '';
+      s += `<rect x="32" y="30" width="2" height="40" fill="${c}" opacity="${o*0.5}"/>`;
+      s += `<rect x="66" y="30" width="2" height="40" fill="${c}" opacity="${o*0.5}"/>`;
+      const rows = [36, 46, 56];
+      const beadCounts = [2, 3, 1];
+      for (let r = 0; r < 3; r++) {
+        s += `<line x1="32" y1="${rows[r]}" x2="68" y2="${rows[r]}" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>`;
+        for (let b = 0; b < beadCounts[r]; b++) {
+          s += `<circle cx="${38 + b * 10}" cy="${rows[r]}" r="4" fill="${c}" opacity="${o}"/>`;
+        }
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1230,6 +1330,29 @@ function renderAccent(attr) {
         }
         out += `<polygon points="${sp.join(' ')}" fill="${c}" opacity="0.8"/>`; break;
       }
+
+      // ── Arithmetic ──
+      case 'equal-signs':
+        out += `<line x1="${cx-4}" y1="${cy-2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="2"/>` +
+               `<line x1="${cx-4}" y1="${cy+2}" x2="${cx+4}" y2="${cy+2}" stroke="${c}" stroke-width="2"/>`; break;
+      case 'percent':
+        out += `<circle cx="${cx-3}" cy="${cy-3}" r="2" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+3}" cy="${cy+3}" r="2" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx+4}" y1="${cy-4}" x2="${cx-4}" y2="${cy+4}" stroke="${c}" stroke-width="1.5"/>`; break;
+      case 'tally-marks':
+        out += `<line x1="${cx-5}" y1="${cy-5}" x2="${cx-5}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx-2}" y1="${cy-5}" x2="${cx-2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx+1}" y1="${cy-5}" x2="${cx+1}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx+4}" y1="${cy-5}" x2="${cx+4}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx-6}" y1="${cy+3}" x2="${cx+5}" y2="${cy-5}" stroke="${c}" stroke-width="1.5" opacity="0.8"/>`; break;
+      case 'decimal-dots':
+        out += `<circle cx="${cx-3}" cy="${cy}" r="2" fill="${c}"/>` +
+               `<circle cx="${cx+3}" cy="${cy}" r="2" fill="${c}" opacity="0.6"/>`; break;
+      case 'hash-marks':
+        out += `<line x1="${cx-2}" y1="${cy-5}" x2="${cx-2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx+2}" y1="${cy-5}" x2="${cx+2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy-2}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx-5}" y1="${cy+2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.5"/>`; break;
     }
   }
   return out;

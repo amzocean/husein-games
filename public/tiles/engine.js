@@ -165,6 +165,19 @@ const THEMES = [
     shapeNames:   ['star', 'filmi-heart', 'microphone', 'clapperboard', 'dancing-figure'],
     accentShapes: ['music-notes', 'sparkles', 'cameras', 'roses', 'masala-stars'],
   },
+  {
+    name: 'Arithmetic', emoji: '🔢',
+    palette: {
+      bg:     ['#2e7d32', '#1b5e20', '#004d40'],
+      ring:   ['#ffffff', '#ffeb3b', '#ff7043', '#42a5f5', '#ef5350'],
+      shape:  ['#ffffff', '#ffeb3b', '#42a5f5'],
+      accent: ['#ff7043', '#ef5350', '#ffffff'],
+    },
+    bgPatterns:   ['graph-paper', 'chalkboard', 'notebook-lines', 'dot-grid', 'equation-scribbles'],
+    ringStyles:   ['ruler-marks', 'protractor', 'bracket-border'],
+    shapeNames:   ['plus-sign', 'divide-symbol', 'pi-symbol', 'infinity', 'abacus'],
+    accentShapes: ['equal-signs', 'percent', 'tally-marks', 'decimal-dots', 'hash-marks'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)
