@@ -83,6 +83,18 @@ husein-games/
 - **Free tier behavior**: Spins down after 15min of no HTTP requests. Socket.IO heartbeats (every 25s) keep it alive while players are connected.
 - **Custom domain**: `huseinlovesyou.com` (GoDaddy) — `A` record → `216.24.57.1` (Render LB), `CNAME www` → `husein-games.onrender.com`. Both verified with Let's Encrypt SSL.
 
+### Caching — Mobile Browsers Are Aggressive
+
+`express.static` serves files with default ETags but no explicit Cache-Control header. Mobile browsers (especially iOS Safari) interpret this as "cache indefinitely" and may serve stale HTML for days.
+
+**Solution**: Middleware before `express.static` sets `Cache-Control: no-cache` on HTML and directory requests. This doesn't disable caching — it forces revalidation. The browser sends an `If-None-Match` header, server responds 304 (Not Modified, no body) if unchanged. Overhead is ~200-500 bytes per page load.
+
+**What NOT to do:**
+- Don't use `no-store` — that disables caching entirely, forcing full re-download every time
+- Don't set `max-age: 0` alone — some browsers treat this differently from `no-cache`
+- Don't add cache-busting query strings to Socket.IO URLs — the library handles its own versioning
+- Don't apply `no-cache` to images/CSS/JS unless they change frequently — those are fine to cache
+
 ---
 
 ## 3. Landing Page (`public/index.html`)
@@ -392,7 +404,7 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 - All three conditions are checked at every code path where a move completes (5 locations — see design note below)
 - Win check runs BEFORE extra turn check, so if the last token reaches home, the game ends rather than granting a useless extra turn
 
-**Design note — why 5 locations**: The extra turn condition (`value === 6 || captured || reachedHome`) appears in 5 separate places in server.js because there are 5 distinct code paths that complete a move: (1) roll handler auto-move (single valid token), (2) move handler (player picks token), (3) auto-play roll+move, (4) auto-play pick-only, (5) debug_roll auto-move. Each has its own variable context (different variable names for the token index). A future refactor could extract a shared `completeMove()` function, but the current approach is explicit and grep-able — search for `reachedHome` to find all 5. If you add a new code path that moves tokens, you MUST add the reachedHome check there too.
+**Design note — why 5 locations**: See "The 5 Code Paths Problem" section below for the full table and rationale.
 
 #### Capture Mechanics
 - Landing on opponent's token on the common path sends them back to base (step 0)
@@ -422,35 +434,19 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 - **Server clears `game.lastCapture = null` immediately after `broadcastState()` in `nextTurn()`** — this ensures the capture info is broadcast exactly once, then all subsequent state broadcasts have `lastCapture: null`
 - Client checks `state.lastCapture` on every state update: non-null shows banner, null hides it
 
-**Design note — why clear AFTER broadcast, not before**: The banner data must survive in game state long enough to be included in one `broadcastState()` call so all clients see it. Clearing it before broadcast would mean no client ever sees it. Clearing it after ensures exactly-once delivery. The previous bug was that `lastCapture` was NEVER cleared — it persisted forever, causing every subsequent broadcast (dice rolls, moves, turn changes) to re-trigger the banner on all clients.
+**Design note — why clear AFTER broadcast, not before**: See "State Lifecycle — When to Clear Transient Fields" section below for the full pattern table.
 
-**Design note — why not clear on client side only**: A client-side-only fix (e.g. tracking "already shown this capture") was considered but rejected. The server is the source of truth — if the server keeps sending stale data, every new client connection (spectators, reconnects) would also see the ghost banner. Fixing at the source is cleaner.
+**Design note — why not clear on client side only**: The server is the source of truth — if the server keeps sending stale data, every new client connection (spectators, reconnects) would also see the ghost banner. Fixing at the source is cleaner.
 
 #### Logging
 - All server events logged with `[LUDO HH:MM:SS.mmm]` prefix
 - Key events: CONNECT, DISCONNECT, REJOIN, CREATE, JOIN, START, ROLL, MOVE, CAPTURE, AUTO-PLAY, GAME OVER, GRACE EXPIRED
 
----
+### Design Pitfalls & Patterns
 
-## 7. Known Issues & Limitations
+Read this BEFORE making Ludo changes to avoid re-introducing fixed bugs.
 
-1. **In-memory game state**: Render process restart loses the game. No persistence layer. Free tier can restart anytime (though Socket.IO heartbeats prevent idle shutdown while connected).
-
-2. **Single game at a time**: Only one Ludo game can run globally. By design — "not very sophisticated, just have one game running at any point."
-
-3. **No authentication**: Players identified by UUID sessionId stored in localStorage (`ludo_session`). Refreshing reloads sessionId from localStorage; `visibilitychange` handles tab suspension.
-
-4. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
-
-5. **GoDaddy DNS not configured**: huseinlovesyou.com still points to Netlify.
-
----
-
-## 7b. Ludo Architecture — Design Pitfalls & Patterns
-
-This section documents recurring design patterns, past mistakes, and the reasoning behind current approaches. Read this BEFORE making Ludo changes to avoid re-introducing fixed bugs.
-
-### The "5 Code Paths" Problem
+#### The "5 Code Paths" Problem
 
 Token movement can complete through 5 distinct code paths in server.js:
 
@@ -466,7 +462,7 @@ Token movement can complete through 5 distinct code paths in server.js:
 
 **Why not extract a shared function?** Each path has different surrounding context (timers, delays, broadcast timing). A shared `completeMove()` would need many parameters and conditionals, making it harder to read than the current explicit approach. The tradeoff is accepted: duplication is the cost of readability. If a 6th path is ever added, consider refactoring.
 
-### State Lifecycle — When to Clear Transient Fields
+#### State Lifecycle — When to Clear Transient Fields
 
 The `game` object holds both persistent state (tokens, players, phase) and transient state (lastCapture, diceValue). Transient fields that trigger client UI effects MUST be cleared after exactly one broadcast:
 
@@ -478,7 +474,7 @@ The `game` object holds both persistent state (tokens, players, phase) and trans
 
 **Pattern**: Clear transient UI-trigger fields AFTER `broadcastState()` if clients need to see them once, or BEFORE if clients should never see stale values. `lastCapture` is the "after" pattern (show once then clear). `diceValue/diceRolled` is the "before" pattern (clean slate for next turn).
 
-### Color System — The COLORS Object is the Single Source of Truth
+#### Color System — The COLORS Object is the Single Source of Truth
 
 All visual color references in both client and server flow through the `COLORS` object in `public/ludo/index.html`. The keys (`red`, `green`, `yellow`, `blue`) match the server's `COLORS` array and player `.color` field.
 
@@ -493,19 +489,7 @@ All visual color references in both client and server flow through the `COLORS` 
 - Ensure the `dark` variant is deeply saturated (for borders) — it should be obviously darker than `fill`
 - Test on both OLED and LCD screens if possible — some color pairs look distinct on one but not the other
 
-### Caching — Mobile Browsers Are Aggressive
-
-`express.static` serves files with default ETags but no explicit Cache-Control header. Mobile browsers (especially iOS Safari) interpret this as "cache indefinitely" and may serve stale HTML for days.
-
-**Solution**: Middleware before `express.static` sets `Cache-Control: no-cache` on HTML and directory requests. This doesn't disable caching — it forces revalidation. The browser sends an `If-None-Match` header, server responds 304 (Not Modified, no body) if unchanged. Overhead is ~200-500 bytes per page load.
-
-**What NOT to do:**
-- Don't use `no-store` — that disables caching entirely, forcing full re-download every time
-- Don't set `max-age: 0` alone — some browsers treat this differently from `no-cache`
-- Don't add cache-busting query strings to Socket.IO URLs — the library handles its own versioning
-- Don't apply `no-cache` to images/CSS/JS unless they change frequently — those are fine to cache
-
-### broadcastState() — The Central Sync Mechanism
+#### broadcastState() — The Central Sync Mechanism
 
 Every game state change MUST go through `broadcastState()` to reach all clients. Common mistakes:
 
@@ -514,6 +498,18 @@ Every game state change MUST go through `broadcastState()` to reach all clients.
 2. **Forgetting to broadcast**: If you change game state but don't call `broadcastState()` or `nextTurn()` (which calls it internally), clients will be out of sync until the next action triggers a broadcast.
 
 3. **Broadcasting too often**: Each `broadcastState()` sends the full game state to all connected clients. Don't call it in a tight loop. The current architecture calls it at natural break points: after roll, after move, after turn change.
+
+---
+
+## 7. Known Issues & Limitations
+
+1. **In-memory game state**: Render process restart loses the game. No persistence layer. Free tier can restart anytime (though Socket.IO heartbeats prevent idle shutdown while connected).
+
+2. **Single game at a time**: Only one Ludo game can run globally. By design — "not very sophisticated, just have one game running at any point."
+
+3. **No authentication**: Players identified by UUID sessionId stored in localStorage (`ludo_session`). Refreshing reloads sessionId from localStorage; `visibilitychange` handles tab suspension.
+
+4. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
 
 ---
 
