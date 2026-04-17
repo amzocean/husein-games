@@ -180,7 +180,7 @@ All rendering is dispatch-on-string via `switch` statements. Adding a new theme 
 ## 6. Ludo Game — Detailed Reference
 
 ### Overview
-Classic Ludo board game, 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, spectator mode, and exit/end game controls.
+Classic Ludo board game ("H&F Ludo"), 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, spectator mode, exit/end game controls, dice roll animation, token step-by-step animation, confetti on win, emoji reactions, turn timer countdown, in-game chat, and per-player board rotation.
 
 ### Visual Theme
 - **Romantic blush** — background `#fff5f5`, white cards with rose-tinted borders
@@ -196,14 +196,14 @@ Classic Ludo board game, 2-4 players, real-time multiplayer via Socket.IO. Mobil
 - Capture banner background uses `COLORS[capturer].fill`
 - **Design note on color choices**: These are Material Design primary colors chosen for maximum distinguishability on both OLED and LCD screens. The romantic theme colors (Rose/Gold/Teal/Indigo) were visually appealing but Gold and Teal were hard to distinguish on some mobile screens, and the "display name" abstraction (red key -> "Rose" label) created confusion when the base color didn't match the token color. Standard RGBY removes that mismatch entirely — the COLORS object key IS the color you see.
 
-### Client: `public/ludo/index.html` (915 lines)
+### Client: `public/ludo/index.html` (~1140 lines)
 
 Single file containing all HTML, CSS, and JavaScript.
 
 #### Screens (CSS class `.screen`, toggled via `.active`)
 1. **`screen-idle`** — No game running. Shows "Create Game" button with name input.
 2. **`screen-lobby`** — Game created, waiting for players. Shows player list with color dots, join form, and start button (creator only, 2+ players required).
-3. **`screen-playing`** — Active game. Canvas board, dice button, turn indicator, pick/no-move hints, capture banner, exit/end game buttons. Debug panel exists in HTML but is hidden (activation code commented out).
+3. **`screen-playing`** — Active game. Canvas board, dice button, turn indicator, pick/no-move hints, capture banner, turn timer bar, emoji reaction bar, chat panel, exit/end game buttons. Debug panel exists in HTML but is hidden (activation code commented out).
 4. **`screen-finished`** — Game over. Shows final board state, winner message, and "New Game" button.
 
 #### Board Geometry (15×15 grid, Canvas)
@@ -223,6 +223,48 @@ Single file containing all HTML, CSS, and JavaScript.
 - Tokens at same position fan out: offset by index, scaled down when stacked
 - Movable tokens get a pulsing golden glow highlight
 - Finished tokens (step 57) shown in center HOME area
+
+#### Dice Roll Animation
+- Dice icon shows a brief CSS tumble animation before revealing the result
+- Pure CSS keyframe animation, no external assets
+
+#### Token Move Animation
+- Tokens animate step-by-step along the path instead of teleporting
+- Canvas tweening with configurable speed per step
+- Handles both normal path movement and home stretch entry
+
+#### Confetti on Win
+- Canvas particle burst when a player wins
+- Random colors, velocities, and gravity simulation
+- Purely cosmetic, auto-clears after animation
+
+#### Emoji Reactions
+- Players can send quick emoji reactions (❤️ 😂 😤 🎉 👋) during gameplay
+- Socket.IO `emoji` event — server validates sender, broadcasts to all
+- Emoji floats above the board briefly then fades out
+- Minimal server logic — no game state impact
+
+#### Turn Timer Countdown Bar
+- Green bar below the turn indicator drains over the 60-second turn window
+- Server sets `game.turnDeadline` at turn start, sends `turnTimeLeft` and `turnDuration` in state
+- Client uses CSS `transition` technique: jump bar width to current %, force reflow, then transition to 0% over remaining time
+- Avoids clock-sync issues by using relative milliseconds, not absolute timestamps
+- Bar resets on each new turn
+
+#### Game Chat
+- Collapsible chat panel at the bottom of the playing screen
+- Toggle via "💬 Chat" button with unread badge counter
+- Server validates sender by sessionId, trims messages to 200 chars, broadcasts `{name, color, text}`
+- Client renders messages color-coded by player, 50-message buffer, auto-scrolls
+- Ephemeral — chat history lost on page refresh (by design, no persistence)
+
+#### Board Rotation (Per-Player View)
+- Each player sees the board rotated so their base is always in the **bottom-left** corner (closest to the dice)
+- Implemented via canvas `ctx.translate(center) → ctx.rotate(θ) → ctx.translate(-center)` wrapper around `drawBoard()`
+- Rotation angles: Red=0, Green=3π/2 (270° CW), Yellow=π (180°), Blue=π/2 (90° CW)
+- Click handling uses inverse rotation transform: `cos(-θ)/sin(-θ)` to map screen coordinates back to logical board coordinates
+- `getBoardRotation(color)` returns the angle; `getMyColor()` determines current player's color from session
+- Spectators see the unrotated (Red=bottom-left) default view
 
 #### Sound Effects (Web Audio API, no external files)
 - `sfxRoll()` — Dice roll sound (noise burst)
@@ -264,7 +306,7 @@ Single file containing all HTML, CSS, and JavaScript.
   - Server validates that only `players[0].sessionId` can trigger this
   - Requires confirmation dialog
 
-### Server: Ludo section of `server.js` (lines 14-583)
+### Server: Ludo section of `server.js` (lines 14-613)
 
 #### Constants
 ```javascript
@@ -295,7 +337,8 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
   lastCapture: { by, victim, tokenIdx, pathIdx } | null,
   idleTimer: timeout,
   turnTimer: timeout,
-  autoPlayTimer: timeout
+  autoPlayTimer: timeout,
+  turnDeadline: number | null     // Date.now() + AUTO_PLAY_DELAY, for client countdown
 }
 ```
 
@@ -314,13 +357,17 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 | `exit_game` | `sessionId` | Player leaves mid-game |
 | `end_game` | `sessionId` | Creator force-ends game |
 | `reset` | (none) | Force reset game |
+| `emoji` | `{ sessionId, emoji }` | Send emoji reaction (❤️ 😂 😤 🎉 👋) |
+| `chat` | `{ sessionId, text }` | Send chat message (max 200 chars) |
 
 **Server → Client:**
 | Event | Payload | Description |
 |-------|---------|-------------|
-| `state` | full game state object | Broadcast after every change |
+| `state` | full game state object | Broadcast after every change (includes `turnTimeLeft`, `turnDuration`) |
 | `session` | `sessionId` | Sent once on create/join |
 | `error_msg` | `string` | Error message |
+| `emoji` | `{ name, color, emoji }` | Broadcast emoji reaction to all clients |
+| `chat` | `{ name, color, text }` | Broadcast chat message to all clients |
 
 #### Game Flow
 1. **Idle** → Someone creates a game → **Lobby**
@@ -329,10 +376,12 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 4. **Finished** → Someone gets all 4 tokens to step 57, or timeout/disconnect
 5. Auto-reset to **Idle** after 30 seconds (10s for idle timeout)
 
-#### Dice Roll Boost
-- When all 4 of a player's tokens are in base (step 0): ~33% chance of rolling 6
+#### Dice Roll Boost (DISABLED)
+- **Currently disabled** (code commented out) — having the boost reduced the negative impact of captures, which was undesirable
+- When enabled: if all 4 of a player's tokens are in base (step 0), ~33% chance of rolling 6
 - Normal: uniform random 1-6
 - Re-evaluates each roll dynamically
+- To re-enable: uncomment the `allInBase` / boosted roll block in the `roll` handler in server.js
 
 #### Turn Logic (`nextTurn()`)
 1. Clear turnTimer and autoPlayTimer
@@ -796,6 +845,7 @@ case 'my-pattern': {
 | **Celestial tiles appear all-white** | `createTileSVG()` starts every tile with `fill="white" opacity="0.1"` base rect. Celestial bg patterns (starfield, nebula, aurora, cosmic-dust, void) only drew tiny decorative elements (2px stars, faint ellipses at 0.25-0.4 opacity) with NO base area fill — the white base showed through. Newer themes (Arithmetic, Sky) correctly start each bg pattern with a solid `<rect>` fill. | Added `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25-0.3}"/>` as the first SVG element in all 5 Celestial bg patterns to provide a visible color base tint. |
 | **36 sparse bg patterns across 10 themes** | Same root cause as Celestial: older bg patterns only drew decorative line work (dots, thin strokes, arcs) without a base area fill. Affected: Garden (5), Deco (5), Neon (5), Indian (5), Tropical (4), Mosaic (2), Candy (2), Noir (3), Sepia (3), Bollywood (2). Patterns with existing area coverage (e.g. checkerboard, gingham, sunset-gradient, disco-floor) were unaffected. | Added base tint `<rect>` as first SVG element in each sparse pattern. Opacity multiplier chosen per-theme: `o*0.25` for patterns with moderate decorative coverage, `o*0.3` for very sparse patterns (scattered dots, thin lines). |
 | **Bg palette hue diversity** | Arctic theme used 3 shades of blue as bg colors — tiles looked monochrome despite technically distinct hex values. Arithmetic had 3 shades of green. | Diversified bg palettes (Arctic: blue+ice-white+lavender; Arithmetic: green+cream+brown). Added validator CHECK 9: bg hue diversity requires 40° minimum hue spread across the 3 bg colors (Noir/Sepia/Neon exempt as intentionally narrow palettes). |
+| **Board rotation Green/Blue swap** | Board rotation feature placed each player's base at bottom-left, but Green (π/2) and Blue (3π/2) angles were swapped. Green base appeared at top-right instead of bottom-left; Blue base appeared at top-left. | Swapped the two values in `getBoardRotation()`: Green=3π/2 (270° CW), Blue=π/2 (90° CW). Verified with 2D rotation math: 3π/2 maps top-left→bottom-left, π/2 maps bottom-right→bottom-left. |
 
 ---
 
