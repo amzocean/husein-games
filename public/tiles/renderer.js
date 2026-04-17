@@ -559,6 +559,88 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Street Food ──
+    case 'checkered-tablecloth': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      for (let r = 0; r < 6; r++) for (let col = 0; col < 6; col++) {
+        if ((r + col) % 2 === 0)
+          s += `<rect x="${8 + col * 14}" y="${8 + r * 14}" width="13" height="13" fill="#fff" opacity="0.18"/>`;
+      }
+      return s;
+    }
+    case 'food-truck-stripe': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      for (let i = 0; i < 5; i++)
+        s += `<rect x="4" y="${12 + i * 18}" width="92" height="6" rx="2" fill="#fff" opacity="0.15"/>`;
+      s += `<rect x="20" y="30" width="60" height="40" rx="8" fill="#fff" opacity="0.08"/>`;
+      return s;
+    }
+    case 'brick-wall': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      for (let r = 0; r < 7; r++) {
+        const off = (r % 2) * 16;
+        for (let col = 0; col < 4; col++)
+          s += `<rect x="${4 + off + col * 28}" y="${6 + r * 13}" width="24" height="10" rx="1.5" fill="#fff" opacity="0.12"/>`;
+      }
+      return s;
+    }
+    case 'napkin-fold': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      s += `<path d="M4,4 L96,96" stroke="#fff" stroke-width="1" opacity="0.15"/>`;
+      s += `<path d="M96,4 L4,96" stroke="#fff" stroke-width="1" opacity="0.15"/>`;
+      s += `<rect x="20" y="20" width="60" height="60" rx="4" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.12"/>`;
+      s += `<rect x="30" y="30" width="40" height="40" rx="3" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.1"/>`;
+      return s;
+    }
+    case 'grease-paper': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.65"/>`;
+      const spots = [[20,25],[55,15],[75,45],[30,70],[65,80],[45,50],[85,20],[15,50]];
+      for (const [sx,sy] of spots)
+        s += `<circle cx="${sx}" cy="${sy}" r="${3 + (sx % 3)}" fill="#fff" opacity="0.1"/>`;
+      return s;
+    }
+    // ── Arctic ──
+    case 'ice-crystals': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      const pts = [[25,30],[70,25],[50,55],[30,80],[75,75]];
+      for (const [px,py] of pts) {
+        for (let a = 0; a < 6; a++) {
+          const ang = a * 60 * Math.PI / 180;
+          s += `<line x1="${px}" y1="${py}" x2="${px + 8 * Math.cos(ang)}" y2="${py + 8 * Math.sin(ang)}" stroke="#fff" stroke-width="0.8" opacity="0.2"/>`;
+        }
+      }
+      return s;
+    }
+    case 'snowfall': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      const flakes = [[15,12],[40,20],[70,10],[25,45],[55,40],[85,35],[10,70],[45,65],[75,60],[30,90],[60,85]];
+      for (const [fx,fy] of flakes)
+        s += `<circle cx="${fx}" cy="${fy}" r="${1 + (fx % 2)}" fill="#fff" opacity="0.25"/>`;
+      return s;
+    }
+    case 'frozen-lake': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      s += `<ellipse cx="50" cy="55" rx="40" ry="28" fill="#fff" opacity="0.1"/>`;
+      s += `<line x1="20" y1="50" x2="55" y2="42" stroke="#fff" stroke-width="0.7" opacity="0.15"/>`;
+      s += `<line x1="45" y1="60" x2="80" y2="48" stroke="#fff" stroke-width="0.5" opacity="0.12"/>`;
+      s += `<line x1="30" y1="65" x2="60" y2="70" stroke="#fff" stroke-width="0.6" opacity="0.1"/>`;
+      return s;
+    }
+    case 'blizzard-wind': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      for (let i = 0; i < 6; i++)
+        s += `<path d="M${5 + i * 4},${15 + i * 13} Q${40 + i * 5},${10 + i * 12} ${90 - i * 3},${18 + i * 13}" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.15"/>`;
+      return s;
+    }
+    case 'glacier-layers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      s += `<path d="M4,30 Q30,25 50,32 Q70,38 96,28" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.15"/>`;
+      s += `<path d="M4,50 Q25,45 50,52 Q75,58 96,48" fill="none" stroke="#fff" stroke-width="1" opacity="0.12"/>`;
+      s += `<path d="M4,70 Q35,64 55,72 Q80,78 96,68" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.1"/>`;
+      s += `<rect x="4" y="78" width="92" height="18" rx="2" fill="#fff" opacity="0.06"/>`;
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -802,6 +884,51 @@ function renderRing(attr) {
     case 'breeze-dash':
       return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>` +
              `<rect x="9" y="9" width="82" height="82" rx="3" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="4,6" opacity="0.3"/>`;
+
+    // ── Street Food ──
+    case 'pretzel-twist':
+      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5"/>` +
+             `<circle cx="15" cy="15" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
+             `<circle cx="85" cy="15" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
+             `<circle cx="15" cy="85" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
+             `<circle cx="85" cy="85" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
+             `<path d="M21,15 Q50,8 79,15" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
+             `<path d="M21,85 Q50,92 79,85" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.35"/>`;
+    case 'sauce-drizzle':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
+             `<path d="M10,10 Q30,6 50,12 Q70,18 90,10" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>` +
+             `<path d="M10,90 Q30,94 50,88 Q70,82 90,90" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>` +
+             `<path d="M10,10 Q6,30 12,50 Q18,70 10,90" fill="none" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>` +
+             `<path d="M90,10 Q94,30 88,50 Q82,70 90,90" fill="none" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>`;
+    case 'chopstick-border':
+      return `<line x1="6" y1="6" x2="94" y2="6" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
+             `<line x1="8" y1="10" x2="92" y2="10" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>` +
+             `<line x1="6" y1="94" x2="94" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
+             `<line x1="8" y1="90" x2="92" y2="90" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>` +
+             `<line x1="6" y1="6" x2="6" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
+             `<line x1="94" y1="6" x2="94" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>`;
+
+    // ── Arctic ──
+    case 'frost-border':
+      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5"/>` +
+             `<path d="M15,5 L15,12 M30,5 L30,10 M50,5 L50,13 M70,5 L70,10 M85,5 L85,12" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
+             `<path d="M15,95 L15,88 M30,95 L30,90 M50,95 L50,87 M70,95 L70,90 M85,95 L85,88" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
+             `<path d="M5,15 L12,15 M5,50 L13,50 M5,85 L12,85" stroke="${c}" stroke-width="1.2" opacity="0.3"/>` +
+             `<path d="M95,15 L88,15 M95,50 L87,50 M95,85 L88,85" stroke="${c}" stroke-width="1.2" opacity="0.3"/>`;
+    case 'icicle-ring':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
+             `<polygon points="15,6 18,16 12,16" fill="${c}" opacity="0.35"/>` +
+             `<polygon points="35,6 38,18 32,18" fill="${c}" opacity="0.3"/>` +
+             `<polygon points="55,6 58,14 52,14" fill="${c}" opacity="0.35"/>` +
+             `<polygon points="75,6 78,17 72,17" fill="${c}" opacity="0.3"/>` +
+             `<polygon points="15,94 18,84 12,84" fill="${c}" opacity="0.3"/>` +
+             `<polygon points="50,94 53,85 47,85" fill="${c}" opacity="0.3"/>` +
+             `<polygon points="80,94 83,86 77,86" fill="${c}" opacity="0.3"/>`;
+    case 'snowdrift-edge':
+      return `<path d="M5,10 Q20,5 35,10 Q50,15 65,8 Q80,3 95,10" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
+             `<path d="M5,90 Q20,95 35,90 Q50,85 65,92 Q80,97 95,90" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
+             `<path d="M10,5 Q5,20 10,35 Q15,50 8,65 Q3,80 10,95" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>` +
+             `<path d="M90,5 Q95,20 90,35 Q85,50 92,65 Q97,80 90,95" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>`;
 
     default: return '';
   }
@@ -1184,6 +1311,91 @@ function renderShape(attr) {
              `<line x1="62" y1="55" x2="56" y2="66" stroke="${c}" stroke-width="1.5" opacity="${o*0.6}"/>` +
              `<rect x="43" y="65" width="14" height="8" rx="2" fill="${c}" opacity="${o*0.7}"/>`;
 
+    // ── Street Food ──
+    case 'pizza-slice':
+      return `<polygon points="50,30 34,70 66,70" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,30 34,70 66,70" fill="none" stroke="#fff" stroke-width="1" opacity="0.3"/>` +
+             `<circle cx="45" cy="52" r="3.5" fill="#e53935" opacity="${o*0.7}"/>` +
+             `<circle cx="55" cy="56" r="3" fill="#e53935" opacity="${o*0.65}"/>` +
+             `<circle cx="50" cy="64" r="2.5" fill="#e53935" opacity="${o*0.6}"/>` +
+             `<path d="M36,68 Q50,72 64,68" fill="none" stroke="#fdd835" stroke-width="2" opacity="0.5"/>`;
+    case 'taco':
+      return `<path d="M30,58 Q50,30 70,58" fill="${c}" opacity="${o}"/>` +
+             `<path d="M30,58 L70,58" stroke="${c}" stroke-width="2" opacity="${o}"/>` +
+             `<path d="M30,58 Q50,30 70,58" fill="none" stroke="#fff" stroke-width="1" opacity="0.3"/>` +
+             `<circle cx="42" cy="50" r="2.5" fill="#4caf50" opacity="0.6"/>` +
+             `<circle cx="52" cy="46" r="2" fill="#ff7043" opacity="0.6"/>` +
+             `<circle cx="58" cy="52" r="2.5" fill="#ffeb3b" opacity="0.5"/>` +
+             `<rect x="35" y="56" width="30" height="4" rx="2" fill="${c}" opacity="${o*0.8}"/>`;
+    case 'boba-cup':
+      return `<path d="M38,32 L34,68 Q50,72 66,68 L62,32 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="36" y="28" width="28" height="6" rx="2" fill="${c}" opacity="${o*0.9}"/>` +
+             `<line x1="50" y1="28" x2="50" y2="20" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.7}"/>` +
+             `<circle cx="42" cy="58" r="3" fill="#fff" opacity="0.35"/>` +
+             `<circle cx="50" cy="62" r="2.5" fill="#fff" opacity="0.3"/>` +
+             `<circle cx="56" cy="56" r="3" fill="#fff" opacity="0.35"/>` +
+             `<circle cx="46" cy="52" r="2" fill="#fff" opacity="0.25"/>`;
+    case 'soft-pretzel':
+      return `<path d="M40,65 Q30,50 40,40 Q50,30 60,40 Q70,50 60,65" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/>` +
+             `<path d="M40,65 Q50,58 60,65" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/>` +
+             `<circle cx="38" cy="48" r="1.5" fill="#fff" opacity="0.4"/>` +
+             `<circle cx="62" cy="48" r="1.5" fill="#fff" opacity="0.4"/>` +
+             `<circle cx="50" cy="35" r="1.5" fill="#fff" opacity="0.4"/>`;
+    case 'dumpling':
+      return `<ellipse cx="50" cy="52" rx="18" ry="13" fill="${c}" opacity="${o}"/>` +
+             `<path d="M32,52 Q38,42 44,46 Q50,50 56,44 Q62,40 68,52" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.35"/>` +
+             `<ellipse cx="50" cy="52" rx="18" ry="13" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.2"/>`;
+
+    // ── Arctic ──
+    case 'snowflake': {
+      let s = '';
+      for (let a = 0; a < 6; a++) {
+        const ang = a * 60 * Math.PI / 180;
+        const x2 = 50 + 18 * Math.cos(ang), y2 = 50 + 18 * Math.sin(ang);
+        s += `<line x1="50" y1="50" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o}"/>`;
+        const bx = 50 + 12 * Math.cos(ang), by = 50 + 12 * Math.sin(ang);
+        const la = ang + 0.6, ra = ang - 0.6;
+        s += `<line x1="${bx}" y1="${by}" x2="${bx + 5 * Math.cos(la)}" y2="${by + 5 * Math.sin(la)}" stroke="${c}" stroke-width="1.2" opacity="${o*0.7}"/>`;
+        s += `<line x1="${bx}" y1="${by}" x2="${bx + 5 * Math.cos(ra)}" y2="${by + 5 * Math.sin(ra)}" stroke="${c}" stroke-width="1.2" opacity="${o*0.7}"/>`;
+      }
+      s += `<circle cx="50" cy="50" r="3" fill="${c}" opacity="${o}"/>`;
+      return s;
+    }
+    case 'penguin':
+      return `<ellipse cx="50" cy="50" rx="14" ry="18" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="50" cy="52" rx="9" ry="13" fill="#fff" opacity="0.6"/>` +
+             `<circle cx="45" cy="43" r="2" fill="#fff" opacity="0.8"/>` +
+             `<circle cx="55" cy="43" r="2" fill="#fff" opacity="0.8"/>` +
+             `<circle cx="45" cy="43" r="1" fill="#111" opacity="0.9"/>` +
+             `<circle cx="55" cy="43" r="1" fill="#111" opacity="0.9"/>` +
+             `<polygon points="50,46 47,50 53,50" fill="#ff9800" opacity="0.8"/>` +
+             `<path d="M36,50 L32,58 L38,56" fill="${c}" opacity="${o*0.8}"/>` +
+             `<path d="M64,50 L68,58 L62,56" fill="${c}" opacity="${o*0.8}"/>` +
+             `<ellipse cx="46" cy="67" rx="4" ry="2" fill="#ff9800" opacity="0.7"/>` +
+             `<ellipse cx="54" cy="67" rx="4" ry="2" fill="#ff9800" opacity="0.7"/>`;
+    case 'igloo':
+      return `<path d="M28,62 Q50,26 72,62 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="28" y="60" width="44" height="8" rx="1" fill="${c}" opacity="${o*0.9}"/>` +
+             `<path d="M30,45 Q50,43 70,45" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.25"/>` +
+             `<path d="M29,52 Q50,50 71,52" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.25"/>` +
+             `<path d="M28,59 Q50,57 72,59" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.25"/>` +
+             `<path d="M44,62 Q44,55 50,55 Q56,55 56,62" fill="#0d47a1" opacity="0.5"/>`;
+    case 'polar-bear':
+      return `<ellipse cx="50" cy="52" rx="16" ry="14" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="38" r="10" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="42" cy="33" r="4" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="58" cy="33" r="4" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="42" cy="33" r="2.5" fill="#fff" opacity="0.3"/>` +
+             `<circle cx="58" cy="33" r="2.5" fill="#fff" opacity="0.3"/>` +
+             `<circle cx="46" cy="37" r="1.5" fill="#111" opacity="0.8"/>` +
+             `<circle cx="54" cy="37" r="1.5" fill="#111" opacity="0.8"/>` +
+             `<ellipse cx="50" cy="41" rx="3" ry="2" fill="#111" opacity="0.7"/>`;
+    case 'aurora':
+      return `<path d="M30,60 Q38,35 50,45 Q62,55 70,32" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/>` +
+             `<path d="M28,65 Q40,40 52,50 Q64,60 72,38" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.6}"/>` +
+             `<path d="M32,55 Q42,32 54,42 Q66,52 74,28" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" opacity="0.4"/>` +
+             `<path d="M26,68 Q36,48 48,55 Q60,62 68,42" fill="none" stroke="#7b1fa2" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>`;
+
     default: return '';
   }
 }
@@ -1486,6 +1698,49 @@ function renderAccent(attr) {
       case 'contrails':
         out += `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>` +
                `<line x1="${cx-4}" y1="${cy+1}" x2="${cx+4}" y2="${cy+3}" stroke="${c}" stroke-width="0.8" stroke-linecap="round" opacity="0.35"/>`; break;
+      // ── Street Food ──
+      case 'sesame-seeds':
+        out += `<ellipse cx="${cx-2}" cy="${cy-2}" rx="1.8" ry="1" transform="rotate(30,${cx-2},${cy-2})" fill="${c}" opacity="0.5"/>` +
+               `<ellipse cx="${cx+3}" cy="${cy+2}" rx="1.8" ry="1" transform="rotate(-20,${cx+3},${cy+2})" fill="${c}" opacity="0.45"/>` +
+               `<ellipse cx="${cx}" cy="${cy+4}" rx="1.5" ry="0.8" transform="rotate(50,${cx},${cy+4})" fill="${c}" opacity="0.4"/>`; break;
+      case 'chili-flakes':
+        out += `<path d="M${cx-3},${cy} Q${cx},${cy-3} ${cx+3},${cy}" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.5"/>` +
+               `<circle cx="${cx+1}" cy="${cy+3}" r="1" fill="${c}" opacity="0.4"/>` +
+               `<circle cx="${cx-2}" cy="${cy+2}" r="0.8" fill="${c}" opacity="0.35"/>`; break;
+      case 'crumbs':
+        out += `<circle cx="${cx-2}" cy="${cy-1}" r="1.2" fill="${c}" opacity="0.45"/>` +
+               `<circle cx="${cx+2}" cy="${cy+2}" r="1" fill="${c}" opacity="0.4"/>` +
+               `<circle cx="${cx+1}" cy="${cy-3}" r="0.8" fill="${c}" opacity="0.35"/>` +
+               `<circle cx="${cx-3}" cy="${cy+3}" r="1.1" fill="${c}" opacity="0.4"/>`; break;
+      case 'steam-wisps':
+        out += `<path d="M${cx},${cy+3} Q${cx-2},${cy} ${cx},${cy-3} Q${cx+2},${cy-6} ${cx},${cy-8}" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round" opacity="0.45"/>` +
+               `<path d="M${cx+2},${cy+2} Q${cx+4},${cy-1} ${cx+2},${cy-4}" fill="none" stroke="${c}" stroke-width="0.7" stroke-linecap="round" opacity="0.3"/>`; break;
+      case 'sauce-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.5"/>` +
+               `<circle cx="${cx-3}" cy="${cy+3}" r="1.2" fill="${c}" opacity="0.35"/>` +
+               `<circle cx="${cx+3}" cy="${cy-2}" r="1" fill="${c}" opacity="0.3"/>`; break;
+      // ── Arctic ──
+      case 'ice-shards':
+        out += `<polygon points="${cx},${cy-5} ${cx+2},${cy} ${cx-1},${cy+4} ${cx-3},${cy-1}" fill="${c}" opacity="0.45"/>` +
+               `<polygon points="${cx+2},${cy-2} ${cx+5},${cy+1} ${cx+1},${cy+3}" fill="${c}" opacity="0.35"/>`; break;
+      case 'snowflakes-tiny': {
+        for (let a = 0; a < 6; a++) {
+          const ang = a * 60 * Math.PI / 180;
+          out += `<line x1="${cx}" y1="${cy}" x2="${cx + 4 * Math.cos(ang)}" y2="${cy + 4 * Math.sin(ang)}" stroke="${c}" stroke-width="0.8" opacity="0.45"/>`;
+        }
+        break;
+      }
+      case 'frost-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.45"/>` +
+               `<circle cx="${cx-3}" cy="${cy-2}" r="1" fill="${c}" opacity="0.3"/>` +
+               `<circle cx="${cx+3}" cy="${cy+2}" r="1" fill="${c}" opacity="0.3"/>` +
+               `<circle cx="${cx+1}" cy="${cy-4}" r="0.8" fill="${c}" opacity="0.25"/>`; break;
+      case 'icicle-drops':
+        out += `<polygon points="${cx},${cy+5} ${cx-2},${cy-2} ${cx+2},${cy-2}" fill="${c}" opacity="0.45"/>` +
+               `<circle cx="${cx}" cy="${cy-3}" r="1.5" fill="${c}" opacity="0.35"/>`; break;
+      case 'wind-swirls':
+        out += `<path d="M${cx-4},${cy} Q${cx},${cy-4} ${cx+4},${cy} Q${cx},${cy+3} ${cx-2},${cy+1}" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round" opacity="0.45"/>` +
+               `<path d="M${cx+1},${cy-2} Q${cx+4},${cy-5} ${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="0.7" stroke-linecap="round" opacity="0.3"/>`; break;
     }
   }
   return out;

@@ -191,6 +191,32 @@ const THEMES = [
     shapeNames:   ['airplane', 'songbird', 'bright-sun', 'kite', 'hot-air-balloon'],
     accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves', 'contrails'],
   },
+  {
+    name: 'Street Food', emoji: '🍕',
+    palette: {
+      bg:     ['#d84315', '#f9a825', '#2e7d32'],
+      ring:   ['#bf360c', '#f57f17', '#1b5e20', '#4e342e', '#e65100'],
+      shape:  ['#ffffff', '#1b5e20', '#bf360c'],
+      accent: ['#ffeb3b', '#ffffff', '#ff6e40'],
+    },
+    bgPatterns:   ['checkered-tablecloth', 'food-truck-stripe', 'brick-wall', 'napkin-fold', 'grease-paper'],
+    ringStyles:   ['pretzel-twist', 'sauce-drizzle', 'chopstick-border'],
+    shapeNames:   ['pizza-slice', 'taco', 'boba-cup', 'soft-pretzel', 'dumpling'],
+    accentShapes: ['sesame-seeds', 'chili-flakes', 'crumbs', 'steam-wisps', 'sauce-dots'],
+  },
+  {
+    name: 'Arctic', emoji: '❄️',
+    palette: {
+      bg:     ['#1565c0', '#4fc3f7', '#e1f5fe'],
+      ring:   ['#0d47a1', '#00838f', '#6a1b9a', '#1b5e20', '#c62828'],
+      shape:  ['#0d47a1', '#c62828', '#1b5e20'],
+      accent: ['#b3e5fc', '#ffffff', '#80deea'],
+    },
+    bgPatterns:   ['ice-crystals', 'snowfall', 'frozen-lake', 'blizzard-wind', 'glacier-layers'],
+    ringStyles:   ['frost-border', 'icicle-ring', 'snowdrift-edge'],
+    shapeNames:   ['snowflake', 'penguin', 'igloo', 'polar-bear', 'aurora'],
+    accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops', 'wind-swirls'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)
