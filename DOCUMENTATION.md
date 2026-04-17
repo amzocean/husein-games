@@ -550,7 +550,69 @@ const AUTO_PLAY_DELAY = 60 * 1000;         // Auto-play idle player's turn
 
 ---
 
-## 10. Key Bug Fixes History
+## 10. Future Ideas — Photo Tiles Theme Expansion
+
+### Vision
+Keep all existing 8 themes (colorful, playful) AND add a new class of **geometric/architectural themes** with limited palettes and rich pattern variety. The game should offer a wide spectrum — from fun colorful themes like Candy and Celestial to sophisticated monochrome pattern-based themes.
+
+### Two Engine Modes
+
+The current engine uses **Color Mode**: `5 patterns x 3 colors = 15` per dimension. This works great for colorful themes but limits monochrome designs (repeating the same color makes tiles visually identical but with different IDs, breaking solvability).
+
+A new **Pattern Mode** would use: `15 unique patterns x 1 color = 15` per dimension. All differentiation comes from shapes, line work, and geometric complexity — not color.
+
+`buildPools()` would need a `monochrome: true` flag (or similar) to switch between the two generation strategies.
+
+### Inspiration & Aesthetic References
+
+| Style | Description | Color Palette |
+|-------|------------|---------------|
+| **Moorish/Moroccan** | Compass stars, diamond frames, geometric interlocking | Black + gold on white |
+| **Portuguese Azulejo** | Intricate line art tiles, floral & geometric | Blue on white |
+| **Noir (reworked)** | Intricate line art, stipple, crosshatch | White on black |
+| **Sepia (reworked)** | Vintage engraving style, ornate frames | Brown on parchment |
+
+Key aesthetic principles observed from reference images:
+- Rich geometric complexity within each tile
+- Restrained color palette (1-3 colors max)
+- Pattern variety does all the heavy lifting
+- Tile-like / architectural / artisan feel
+
+### Other Theme Directions to Explore
+
+**Structural redesigns** (change what the 4 dimensions ARE):
+- **Nested Squares** (Albers-style) — outer/middle/inner square color + border style
+- **Concentric Circles** (pop-art) — ring colors at 3 depths + outline style
+- **Quadrant Tiles** — 4 colored quadrants, each is a dimension
+
+**Palette-only themes** (keep current 4-zone structure, new vibes):
+- **Neon/Cyberpunk** — electric pinks, blacks, glowing greens
+- **Pastel Dreamscape** — soft muted tones
+- **Earth & Clay** — terracotta, olive, sand, stone
+
+**Thematic skins** (same mechanics, different feel):
+- **Emoji Tiles** — use emoji as the shape dimension
+- **Seasonal** — cherry blossoms, snowflakes, autumn leaves as shapes
+
+### Implementation Effort for Pattern Mode
+
+Per pattern-mode theme, requires:
+- **15 unique backgrounds** (full-tile patterns)
+- **15 unique ring styles** (border treatments)
+- **15 unique center shapes** (geometric motifs)
+- **15 unique corner accents** (decorative details)
+- Total: **~60 new SVG rendering cases per theme**
+
+Engine changes:
+1. Add `monochrome: true` flag to theme definitions
+2. Modify `buildPools()` to handle 15x1 pool generation
+3. Each pattern-mode theme needs 15 entries per dimension array (instead of 5+3)
+
+This is a significant but worthwhile effort — the result would be visually stunning and truly set the game apart.
+
+---
+
+## 11. Key Bug Fixes History
 
 | Bug | Root Cause | Fix |
 |-----|-----------|-----|
