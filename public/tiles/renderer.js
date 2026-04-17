@@ -196,6 +196,65 @@ function renderBg(attr) {
     case 'frosted':
       return `<rect x="4" y="4" width="92" height="92" rx="8" fill="${c}" opacity="${o*0.2}"/>` +
              `<rect x="12" y="12" width="76" height="76" rx="6" fill="${c}" opacity="${o*0.15}"/>`;
+    // ── Noir ──
+    case 'halftone': {
+      let s = '';
+      for (let r = 0; r < 6; r++) for (let col = 0; col < 6; col++) {
+        const radius = 2 + ((r + col) % 3) * 1.5;
+        s += `<circle cx="${10 + col * 16}" cy="${10 + r * 16}" r="${radius}" fill="${c}" opacity="${o * 0.6}"/>`;
+      }
+      return s;
+    }
+    case 'film-grain': {
+      let s = '';
+      const grains = [[8,12],[22,8],[38,18],[52,6],[68,14],[82,10],[15,32],[30,28],[48,38],[62,26],[78,34],[92,28],[10,52],[25,48],[42,56],[58,44],[72,54],[88,46],[18,72],[34,68],[50,78],[66,64],[80,74],[12,88],[28,82],[46,92],[60,86],[76,90],[90,80],[40,10]];
+      for (const [x,y] of grains) s += `<rect x="${x}" y="${y}" width="2" height="2" fill="${c}" opacity="${o*0.5}"/>`;
+      return s;
+    }
+    case 'scanlines':
+      return Array.from({length:10}, (_,i) =>
+        `<rect x="4" y="${6 + i*9}" width="92" height="1.5" fill="${c}" opacity="${o*0.4}"/>`
+      ).join('');
+    case 'gradient-fade':
+      return `<rect x="4" y="4" width="92" height="30" fill="${c}" opacity="${o*0.5}"/>` +
+             `<rect x="4" y="34" width="92" height="20" fill="${c}" opacity="${o*0.3}"/>` +
+             `<rect x="4" y="54" width="92" height="20" fill="${c}" opacity="${o*0.15}"/>` +
+             `<rect x="4" y="74" width="92" height="22" fill="${c}" opacity="${o*0.05}"/>`;
+    case 'ink-blot':
+      return `<ellipse cx="40" cy="45" rx="25" ry="20" fill="${c}" opacity="${o*0.35}"/>` +
+             `<ellipse cx="62" cy="55" rx="22" ry="18" fill="${c}" opacity="${o*0.3}"/>` +
+             `<ellipse cx="50" cy="50" rx="15" ry="25" fill="${c}" opacity="${o*0.2}"/>`;
+    // ── Sepia ──
+    case 'parchment':
+      return `<rect x="4" y="4" width="92" height="92" rx="4" fill="${c}" opacity="${o*0.3}"/>` +
+             `<line x1="8" y1="20" x2="92" y2="22" stroke="${c}" stroke-width="0.5" opacity="${o*0.2}"/>` +
+             `<line x1="6" y1="45" x2="94" y2="44" stroke="${c}" stroke-width="0.5" opacity="${o*0.2}"/>` +
+             `<line x1="10" y1="70" x2="90" y2="71" stroke="${c}" stroke-width="0.5" opacity="${o*0.2}"/>`;
+    case 'woodgrain': {
+      let s = '';
+      for (let i = 0; i < 7; i++) {
+        const y = 8 + i * 13;
+        s += `<path d="M4,${y} Q25,${y-4} 50,${y} Q75,${y+4} 96,${y}" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.35}"/>`;
+      }
+      return s;
+    }
+    case 'linen': {
+      let s = '';
+      for (let i = 0; i < 12; i++) {
+        s += `<line x1="4" y1="${6+i*8}" x2="96" y2="${6+i*8}" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
+        s += `<line x1="${6+i*8}" y1="4" x2="${6+i*8}" y2="96" stroke="${c}" stroke-width="0.8" opacity="${o*0.15}"/>`;
+      }
+      return s;
+    }
+    case 'coffee-stain':
+      return `<circle cx="55" cy="50" r="30" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.25}"/>` +
+             `<circle cx="55" cy="50" r="28" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.15}"/>` +
+             `<ellipse cx="45" cy="55" rx="18" ry="15" fill="${c}" opacity="${o*0.1}"/>`;
+    case 'aged-paper':
+      return `<rect x="4" y="4" width="92" height="92" rx="4" fill="${c}" opacity="${o*0.25}"/>` +
+             `<path d="M4,4 Q20,10 4,20" fill="${c}" opacity="${o*0.2}"/>` +
+             `<path d="M96,96 Q80,90 96,80" fill="${c}" opacity="${o*0.2}"/>` +
+             `<path d="M96,4 Q85,12 96,22" fill="${c}" opacity="${o*0.15}"/>`;
     default: return '';
   }
 }
@@ -280,6 +339,29 @@ function renderRing(attr) {
       }
       return s;
     }
+    // ── Noir ──
+    case 'sharp':
+      return `<rect x="3" y="3" width="94" height="94" fill="none" stroke="${c}" stroke-width="4"/>`;
+    case 'etched':
+      return `<rect x="4" y="4" width="92" height="92" fill="none" stroke="${c}" stroke-width="2"/>` +
+             `<rect x="8" y="8" width="84" height="84" fill="none" stroke="${c}" stroke-width="1" opacity="0.5"/>` +
+             `<rect x="12" y="12" width="76" height="76" fill="none" stroke="${c}" stroke-width="0.5" opacity="0.3"/>`;
+    case 'shadow':
+      return `<rect x="6" y="6" width="92" height="92" rx="4" fill="${c}" opacity="0.15"/>` +
+             `<rect x="3" y="3" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="3"/>`;
+    // ── Sepia ──
+    case 'ornate':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3"/>` +
+             `<rect x="10" y="10" width="80" height="80" rx="3" fill="none" stroke="${c}" stroke-width="1" opacity="0.5"/>` +
+             `<circle cx="10" cy="10" r="3" fill="${c}" opacity="0.6"/>` +
+             `<circle cx="90" cy="10" r="3" fill="${c}" opacity="0.6"/>` +
+             `<circle cx="10" cy="90" r="3" fill="${c}" opacity="0.6"/>` +
+             `<circle cx="90" cy="90" r="3" fill="${c}" opacity="0.6"/>`;
+    case 'worn':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="12 3 4 3"/>`;
+    case 'gilded':
+      return `<rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="${c}" stroke-width="5"/>` +
+             `<rect x="8" y="8" width="84" height="84" rx="5" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`;
     default: return '';
   }
 }
@@ -408,6 +490,56 @@ function renderShape(attr) {
       return `<ellipse cx="50" cy="50" rx="20" ry="14" fill="${c}" opacity="${o}"/>` +
              `<polygon points="30,50 22,42 22,58" fill="${c}" opacity="${o*0.6}"/>` +
              `<polygon points="70,50 78,42 78,58" fill="${c}" opacity="${o*0.6}"/>`;
+    // ── Noir ──
+    case 'spade':
+      return `<path d="M50,30 Q62,45 65,55 A12,12 0 0,1 50,65 A12,12 0 0,1 35,55 Q38,45 50,30 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="47" y="62" width="6" height="10" rx="1" fill="${c}" opacity="${o*0.7}"/>`;
+    case 'crown':
+      return `<polygon points="30,60 30,40 38,50 50,35 62,50 70,40 70,60" fill="${c}" opacity="${o}"/>` +
+             `<rect x="30" y="58" width="40" height="6" rx="1" fill="${c}" opacity="${o}"/>`;
+    case 'bolt-shape':
+      return `<polygon points="52,28 40,48 48,48 38,72 62,46 52,46 62,28" fill="${c}" opacity="${o}"/>`;
+    case 'mask':
+      return `<path d="M30,42 Q30,35 50,32 Q70,35 70,42 L70,55 Q70,65 50,68 Q30,65 30,55 Z" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="40" cy="46" rx="6" ry="5" fill="white" opacity="0.6"/>` +
+             `<ellipse cx="60" cy="46" rx="6" ry="5" fill="white" opacity="0.6"/>`;
+    case 'key':
+      return `<circle cx="50" cy="38" r="10" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<rect x="48" y="48" width="4" height="20" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<rect x="52" y="58" width="6" height="3" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<rect x="52" y="64" width="4" height="3" rx="1" fill="${c}" opacity="${o}"/>`;
+    // ── Sepia ──
+    case 'quill':
+      return `<path d="M58,30 Q52,42 48,55 L46,70" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<path d="M58,30 Q68,28 62,38 Q56,44 52,42" fill="${c}" opacity="${o*0.7}"/>` +
+             `<path d="M58,30 Q54,24 60,22" fill="${c}" opacity="${o*0.5}"/>`;
+    case 'compass': {
+      const pts = [];
+      for (let i = 0; i < 4; i++) {
+        const a1 = (i * 90 - 90) * Math.PI / 180;
+        const a2 = ((i * 90 + 45) - 90) * Math.PI / 180;
+        pts.push(`${(50 + 22 * Math.cos(a1)).toFixed(1)},${(50 + 22 * Math.sin(a1)).toFixed(1)}`);
+        pts.push(`${(50 + 8 * Math.cos(a2)).toFixed(1)},${(50 + 8 * Math.sin(a2)).toFixed(1)}`);
+      }
+      return `<polygon points="${pts.join(' ')}" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="50" r="4" fill="white" opacity="0.4"/>`;
+    }
+    case 'anchor':
+      return `<circle cx="50" cy="36" r="6" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<line x1="50" y1="42" x2="50" y2="68" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<path d="M36,62 Q36,70 50,68 Q64,70 64,62" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<line x1="42" y1="50" x2="58" y2="50" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+    case 'fleur':
+      return `<path d="M50,30 Q56,40 50,50 Q44,40 50,30" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,50 Q40,44 30,50 Q40,56 50,50" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,50 Q60,44 70,50 Q60,56 50,50" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,50 Q56,60 50,70 Q44,60 50,50" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="50" r="5" fill="${c}" opacity="${o}"/>`;
+    case 'lantern':
+      return `<rect x="44" y="30" width="12" height="4" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<path d="M40,34 Q40,55 44,60 L56,60 Q60,55 60,34 Z" fill="${c}" opacity="${o*0.7}"/>` +
+             `<rect x="42" y="60" width="16" height="4" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="26" x2="50" y2="30" stroke="${c}" stroke-width="2" opacity="${o}"/>`;
     default: return '';
   }
 }
@@ -532,6 +664,48 @@ function renderAccent(attr) {
                `<circle cx="${cx-2}" cy="${cy-2}" r="2" fill="white" opacity="0.4"/>`; break;
       case 'mini-hearts':
         out += `<path d="M${cx},${cy+4} L${cx-5},${cy-1} A3.5,3.5 0 0,1 ${cx},${cy-3} A3.5,3.5 0 0,1 ${cx+5},${cy-1} Z" fill="${c}"/>`; break;
+      // ── Noir ──
+      case 'crosshairs':
+        out += `<line x1="${cx}" y1="${cy-7}" x2="${cx}" y2="${cy+7}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx-7}" y1="${cy}" x2="${cx+7}" y2="${cy}" stroke="${c}" stroke-width="1.5"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${c}" stroke-width="1"/>`; break;
+      case 'slashes': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<line x1="${cx-4}" y1="${cy+5}" x2="${cx+4}" y2="${cy-5}" stroke="${c}" stroke-width="2"/>` +
+               `<line x1="${cx-4+3*dx}" y1="${cy+5}" x2="${cx+4+3*dx}" y2="${cy-5}" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`; break;
+      }
+      case 'corners': {
+        const dx = cx < 50 ? 1 : -1;
+        const dy = cy < 50 ? 1 : -1;
+        out += `<path d="M${cx-6*dx},${cy} L${cx},${cy} L${cx},${cy+6*dy}" fill="none" stroke="${c}" stroke-width="2.5"/>`; break;
+      }
+      case 'pins':
+        out += `<circle cx="${cx}" cy="${cy-2}" r="3" fill="${c}"/>` +
+               `<line x1="${cx}" y1="${cy+1}" x2="${cx}" y2="${cy+7}" stroke="${c}" stroke-width="1.5"/>`; break;
+      case 'xs':
+        out += `<line x1="${cx-4}" y1="${cy-4}" x2="${cx+4}" y2="${cy+4}" stroke="${c}" stroke-width="2"/>` +
+               `<line x1="${cx+4}" y1="${cy-4}" x2="${cx-4}" y2="${cy+4}" stroke="${c}" stroke-width="2"/>`; break;
+      // ── Sepia ──
+      case 'filigree': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx},${cy-5} Q${cx+6*dx},${cy} ${cx},${cy+5}" fill="none" stroke="${c}" stroke-width="1.5"/>` +
+               `<path d="M${cx},${cy-3} Q${cx+4*dx},${cy} ${cx},${cy+3}" fill="none" stroke="${c}" stroke-width="1" opacity="0.6"/>`; break;
+      }
+      case 'rivets':
+        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.5"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1" fill="white" opacity="0.3"/>`; break;
+      case 'scrolls': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx-4*dx},${cy} Q${cx},${cy-6} ${cx+4*dx},${cy} Q${cx},${cy+4} ${cx-4*dx},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
+      }
+      case 'stamps':
+        out += `<rect x="${cx-5}" y="${cy-5}" width="10" height="10" rx="1" fill="none" stroke="${c}" stroke-width="1.5"/>` +
+               `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" rx="0.5" fill="${c}" opacity="0.4"/>`; break;
+      case 'ink-dots':
+        out += `<circle cx="${cx-2}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+2}" cy="${cy+2}" r="2" fill="${c}" opacity="0.5"/>` +
+               `<circle cx="${cx+3}" cy="${cy-1}" r="1" fill="${c}" opacity="0.3"/>`; break;
     }
   }
   return out;

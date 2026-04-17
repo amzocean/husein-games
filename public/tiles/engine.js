@@ -87,6 +87,32 @@ const THEMES = [
     shapeNames:   ['lollipop', 'gumdrop', 'pretzel', 'donut', 'bonbon'],
     accentShapes: ['mini-sprinkles', 'cherries', 'drops', 'gumballs', 'mini-hearts'],
   },
+  {
+    name: 'Noir', emoji: '🖤',
+    palette: {
+      bg:     ['#2a2a2a', '#555555', '#888888'],
+      ring:   ['#ffffff', '#cccccc', '#999999', '#666666', '#333333'],
+      shape:  ['#ffffff', '#bbbbbb', '#444444'],
+      accent: ['#ffffff', '#888888', '#333333'],
+    },
+    bgPatterns:   ['halftone', 'film-grain', 'scanlines', 'gradient-fade', 'ink-blot'],
+    ringStyles:   ['sharp', 'etched', 'shadow'],
+    shapeNames:   ['spade', 'crown', 'bolt-shape', 'mask', 'key'],
+    accentShapes: ['crosshairs', 'slashes', 'corners', 'pins', 'xs'],
+  },
+  {
+    name: 'Sepia', emoji: '📜',
+    palette: {
+      bg:     ['#f5e6d0', '#d4b896', '#a07850'],
+      ring:   ['#5c3a1e', '#8b6914', '#6b4423', '#a0522d', '#3e2723'],
+      shape:  ['#5c3a1e', '#8b6914', '#3e2723'],
+      accent: ['#6b4423', '#a0522d', '#3e2723'],
+    },
+    bgPatterns:   ['parchment', 'woodgrain', 'linen', 'coffee-stain', 'aged-paper'],
+    ringStyles:   ['ornate', 'worn', 'gilded'],
+    shapeNames:   ['quill', 'compass', 'anchor', 'fleur', 'lantern'],
+    accentShapes: ['filigree', 'rivets', 'scrolls', 'stamps', 'ink-dots'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)
