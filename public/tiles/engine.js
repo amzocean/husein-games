@@ -168,7 +168,7 @@ const THEMES = [
   {
     name: 'Arithmetic', emoji: '🔢',
     palette: {
-      bg:     ['#2e7d32', '#1b5e20', '#004d40'],
+      bg:     ['#2e7d32', '#fff8e1', '#5d4037'],
       ring:   ['#ffffff', '#ffeb3b', '#ff7043', '#42a5f5', '#ef5350'],
       shape:  ['#ffffff', '#ffeb3b', '#42a5f5'],
       accent: ['#ff7043', '#ef5350', '#ffffff'],
@@ -207,7 +207,7 @@ const THEMES = [
   {
     name: 'Arctic', emoji: '❄️',
     palette: {
-      bg:     ['#1565c0', '#4fc3f7', '#e1f5fe'],
+      bg:     ['#1565c0', '#e1f5fe', '#b39ddb'],
       ring:   ['#0d47a1', '#00838f', '#6a1b9a', '#1b5e20', '#c62828'],
       shape:  ['#0d47a1', '#c62828', '#1b5e20'],
       accent: ['#b3e5fc', '#ffffff', '#80deea'],

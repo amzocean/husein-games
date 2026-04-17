@@ -455,11 +455,68 @@ if (THEMES) {
   check(false, '', 'Skipped — could not parse THEMES');
 }
 
-// ── CHECK 9: Undefined variable references in accent cases ──
+// ── CHECK 9: Background hue diversity ──
+// Palette bg colors should not all be shades of the same hue.
+// Exempt: themes intentionally monochrome (Noir, Sepia, Neon) — dark/tonal by design.
+
+console.log(`\n${BOLD}CHECK 9: Background hue diversity${RESET}`);
+if (THEMES) {
+  const MONO_EXEMPT = new Set(['Noir', 'Sepia', 'Neon']);
+
+  function hexToHsl(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    const r = parseInt(hex.slice(0,2),16)/255;
+    const g = parseInt(hex.slice(2,4),16)/255;
+    const b = parseInt(hex.slice(4,6),16)/255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b);
+    const l = (max+min)/2;
+    if (max === min) return { h: 0, s: 0, l };
+    const d = max - min;
+    const s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    let h;
+    if (max === r) h = ((g-b)/d + (g<b?6:0))/6;
+    else if (max === g) h = ((b-r)/d+2)/6;
+    else h = ((r-g)/d+4)/6;
+    return { h: h*360, s, l };
+  }
+
+  function hueDistance(h1, h2) {
+    const d = Math.abs(h1 - h2);
+    return Math.min(d, 360 - d);
+  }
+
+  let anyBad = false;
+  for (const theme of THEMES) {
+    if (MONO_EXEMPT.has(theme.name)) continue;
+    const hsls = theme.palette.bg.map(hexToHsl);
+    // Skip achromatic colors (s < 0.1) for hue comparison
+    const chromatic = hsls.filter(c => c.s >= 0.1);
+    if (chromatic.length < 2) continue;
+    // Check max hue spread — at least one pair must differ by 40+ degrees
+    let maxSpread = 0;
+    for (let i = 0; i < chromatic.length; i++) {
+      for (let j = i+1; j < chromatic.length; j++) {
+        maxSpread = Math.max(maxSpread, hueDistance(chromatic[i].h, chromatic[j].h));
+      }
+    }
+    if (maxSpread < 40) {
+      check(false, '', `${theme.name}: bg palette hues are too similar (max spread ${maxSpread.toFixed(0)}° — need 40°+). Avoid all-same-hue backgrounds.`);
+      anyBad = true;
+    }
+  }
+  if (!anyBad) {
+    check(true, `All ${THEMES.length} themes have diverse bg hues (exempt: ${[...MONO_EXEMPT].join(', ')})`, '');
+  }
+} else {
+  check(false, '', 'Skipped — could not parse THEMES');
+}
+
+// ── CHECK 10: Undefined variable references in accent cases ──
 // The renderAccent loop uses `for (const [cx, cy] of CORNERS)` — only cx, cy, c, out, attr
 // are in scope. Catch any reference to `idx`, `i`, or other loop index variables that don't exist.
 
-console.log(`\n${BOLD}CHECK 9: Undefined variable references in renderer cases${RESET}`);
+console.log(`\n${BOLD}CHECK 10: Undefined variable references in renderer cases${RESET}`);
 {
   // Variables that are in scope inside renderAccent's for-of loop
   const accentScope = new Set(['cx', 'cy', 'c', 'out', 'attr', 'CORNERS']);
