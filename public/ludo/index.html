@@ -522,7 +522,7 @@ function drawBoard(ctx, canvasEl) {
   // Home stretches
   for (const [clr, cells] of Object.entries(HOME_STRETCHES)) {
     for (const [r, c] of cells) {
-      ctx.fillStyle = COLORS[clr].light;
+      ctx.fillStyle = COLORS[clr].fill;
       ctx.fillRect(c * cellSize + 1, r * cellSize + 1, cellSize - 2, cellSize - 2);
       ctx.strokeStyle = COLORS[clr].dark;
       ctx.lineWidth = 1;
@@ -625,7 +625,7 @@ function drawBase(ctx, startRow, startCol, color) {
   const x = startCol * cellSize;
   const y = startRow * cellSize;
   const w = 6 * cellSize;
-  ctx.fillStyle = color.light;
+  ctx.fillStyle = color.fill;
   ctx.fillRect(x + 2, y + 2, w - 4, w - 4);
   ctx.strokeStyle = color.dark;
   ctx.lineWidth = 3;
@@ -647,7 +647,7 @@ function drawCell(ctx, r, c, colorObj, isStar) {
   const y = r * cellSize;
 
   if (colorObj) {
-    ctx.fillStyle = colorObj.light;
+    ctx.fillStyle = colorObj.fill;
     ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
   }
 
@@ -670,7 +670,8 @@ function drawCenter(ctx) {
   const r = cellSize * 0.7;
 
   // Draw the 4 triangles pointing to center
-  const colors = [COLORS.red.fill, COLORS.green.fill, COLORS.yellow.fill, COLORS.blue.fill];
+  // Triangle order: top, right, bottom, left — match the home stretch arriving from that direction
+  const colors = [COLORS.yellow.fill, COLORS.blue.fill, COLORS.red.fill, COLORS.green.fill];
   const corners = [
     [6 * cellSize, 6 * cellSize], // top-left
     [9 * cellSize, 6 * cellSize], // top-right
