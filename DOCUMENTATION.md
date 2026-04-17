@@ -30,10 +30,10 @@ husein-games/
     │   └── music.mp3       # Background music
     ├── tiles/              # Photo tiles game (static, single-player)
     │   ├── index.html      # PWA-capable sliding tile puzzle
-    │   ├── style.css       # Styles
-    │   ├── app.js          # Main controller (ES modules)
-    │   ├── engine.js       # Board generation & game logic (6x5 grid, 30 tiles)
-    │   ├── renderer.js     # SVG tile rendering (azulejo spatial-zone design)
+    │   ├── style.css       # Styles (incl. theme toast)
+    │   ├── app.js          # Main controller (ES modules, theme toast display)
+    │   ├── engine.js       # Board generation, game logic, 6-theme system (~300 lines)
+    │   ├── renderer.js     # SVG tile rendering — 6 themes, ~90 visual elements (~608 lines)
     │   ├── photos.js       # Photo loader from manifest
     │   ├── photos/         # 5 personal photos + manifest.json
     │   ├── manifest.json   # PWA manifest
@@ -88,6 +88,8 @@ b096486 Ludo romantic retheme with rose/gold/teal/plum player colors
 5226c8e Hide debug behind 5-tap secret, add Exit Game + End Game (creator only)
 10dbaea Disable debug panel activation (code preserved, commented out)
 b07d8a6 Change plum to indigo blue for better contrast with rose
+3c3e6fc Documentation update
+3182743 Add 6-theme system to Photo Tiles game
 ```
 
 ### DNS (NOT YET DONE)
@@ -142,19 +144,24 @@ Edit the `CONFIG` object in the `<script>` section:
 ## 5. Photo Tiles Game (`public/tiles/`)
 
 ### Overview
-A sliding tile puzzle (like a 15-puzzle but 6×5 = 30 tiles). Match tiles by 4 visual attributes to clear them. Photos reveal underneath as tiles are cleared. Originally built as "Fatema Tiles" (source: `C:\Users\huseinm\Downloads\fatema-tiles`).
+A pattern-matching tile puzzle (6×5 = 30 tiles). Match tiles by shared visual attributes to clear them. Photos reveal underneath as tiles are cleared. Originally built as "Fatema Tiles" (source: `C:\Users\huseinm\Downloads\fatema-tiles`).
 
 ### Files
-- `index.html` — HTML structure, PWA meta tags, links to CSS/JS
-- `style.css` — Full styling
+- `index.html` — HTML structure, PWA meta tags, links to CSS/JS, theme toast element
+- `style.css` — Full styling including `.theme-pill` toast overlay
 - `app.js` — Main application controller (ES modules, imports engine + renderer + photos)
-- `engine.js` — Board generation & game logic
-  - 6×5 grid (30 tiles), 4 attribute dimensions (bg pattern, ring style, center shape, accent)
-  - Each dimension has 15 possible values → tiles match if they share an attribute
-  - `GameState` class manages board state, matching logic, scoring
-- `renderer.js` — SVG tile rendering with azulejo spatial-zone design
-  - 4 visual zones per tile: background, ring, center shape, accent
+  - Shows theme name + emoji as a toast on each new game (fades after 2s)
+- `engine.js` — Board generation, game logic & **6-theme system** (~300 lines)
+  - `THEMES` array defines all 6 themes (palette, patterns, styles, shapes, accents)
+  - `buildPools(theme)` — generates 4 attribute pools of 15 items each from a theme
+  - `generateBoard()` — picks a random theme, builds pools, creates paired 30-tile board
+  - `GameState` class — manages board, matching, scoring; tracks `currentTheme`
+  - Exports: `GameState`, `ROWS`, `COLS`, `TILE_COUNT`, `THEMES`
+- `renderer.js` — SVG tile rendering with spatial-zone design (~608 lines)
+  - 4 render functions: `renderBg()`, `renderRing()`, `renderShape()`, `renderAccent()`
+  - ~90 visual element cases across all 6 themes
   - `viewBox 0 0 100 100` — four spatially distinct zones rendered back-to-front
+  - Layer order: bg → ring → accent → shape
 - `photos.js` — Loads random photo from `photos/manifest.json`
 - `photos/manifest.json` — Array of photo filenames
 - `photos/` — 5 personal photos (JPGs with UUID-style names + one dated photo)
@@ -162,14 +169,100 @@ A sliding tile puzzle (like a 15-puzzle but 6×5 = 30 tiles). Match tiles by 4 v
 - `sw.js` — Service worker for PWA offline capability
 
 ### Gameplay
-1. Start: 30 randomly generated azulejo-style tiles on a 6×5 grid
-2. Tap two tiles that share at least one visual attribute to match them
-3. Matched tiles disappear, revealing a photo underneath
-4. Track combo streaks and clear all 30 tiles to win
-5. "✨ New" button starts a fresh board with a random photo
+1. Start: 30 randomly generated tiles on a 6×5 grid — theme chosen randomly
+2. Theme name + emoji shown briefly as a toast overlay (e.g. "🌙 Celestial")
+3. Tap two tiles that share at least one visual attribute to match them
+4. Matched tiles disappear, revealing a photo underneath
+5. Track combo streaks and clear all 30 tiles to win
+6. "✨ New" button starts a fresh board with a new random theme + random photo
 
 ### Score Display
 - Current combo, best combo, tiles cleared (X/30)
+
+### Theme System
+
+Each new game randomly selects one of **6 visual themes**. Each theme defines:
+- **Palette**: 3 bg colors, 5 ring colors, 3 shape colors, 3 accent colors
+- **Background patterns** (5): how the tile background is filled
+- **Ring styles** (3): the decorative border frame
+- **Center shapes** (5): the central icon/symbol
+- **Corner accents** (5): small decorations in the 4 corners
+
+**Pool math constraint**: Every attribute pool must produce exactly **15 items** (duplicated to 30 for the board):
+- bg: 5 patterns × 3 colors = 15
+- ring: 5 ring colors × 3 styles = 15
+- shape: 5 shapes × 3 colors = 15
+- accent: 5 accents × 3 colors = 15
+
+#### Theme 1: Azulejo 🎨 (original)
+- **Vibe**: Portuguese ceramic tiles
+- **Palette**: bg `#81C784, #F48FB1, #FFD54F` / ring `#2E7D32, #C2185B, #1565C0, #F57F17, #6A1B9A` / shape `#D32F2F, #1976D2, #388E3C` / accent `#FF6F00, #7B1FA2, #00838F`
+- **Bg patterns**: checkerboard, diagonal, hBars, vBars, solid
+- **Ring styles**: solid, dashed, double
+- **Shapes**: cross, flower, star, diamond, clover
+- **Accents**: circles, diamonds, squares, triangles, dots
+
+#### Theme 2: Celestial 🌙
+- **Vibe**: Night sky, cosmic
+- **Palette**: bg `#1a1a2e, #16213e, #0f3460` / ring `#e94560, #533483, #0f3460, #e9d5a1, #00b4d8` / shape `#e9d5a1, #e94560, #00b4d8` / accent `#e9d5a1, #533483, #e94560`
+- **Bg patterns**: starfield, nebula, aurora, cosmic-dust, void
+- **Ring styles**: glow, dotted, eclipse
+- **Shapes**: crescent, starburst, hexagon, saturn, eye
+- **Accents**: tiny-stars, sparks, orbs, carets, moons
+
+#### Theme 3: Garden 🌿
+- **Vibe**: Botanical, floral
+- **Palette**: bg `#e8f5e9, #fff3e0, #fce4ec` / ring `#2e7d32, #c2185b, #f57f17, #00695c, #6a1b9a` / shape `#c62828, #1565c0, #2e7d32` / accent `#795548, #e65100, #1b5e20`
+- **Bg patterns**: polkadots, stripes, crosshatch, petals, meadow
+- **Ring styles**: vine, thorn, ribbon
+- **Shapes**: heart, tulip, leaf, raindrop, sun
+- **Accents**: seeds, dewdrops, buds, rosettes, thorns
+
+#### Theme 4: Deco ✨
+- **Vibe**: Art Deco geometric
+- **Palette**: bg `#fdf6e3, #1a1a2e, #2c3e50` / ring `#d4af37, #c0392b, #1abc9c, #2c3e50, #8e44ad` / shape `#d4af37, #c0392b, #f5f5f5` / accent `#d4af37, #8e44ad, #1abc9c`
+- **Bg patterns**: fan, sunray, chevron, scales, zigzag
+- **Ring styles**: thick-thin, dotted-line, fillet
+- **Shapes**: arch, bowtie, pentagon, keystone, fan-shape
+- **Accents**: rays, studs, arrows, wings, bolts
+
+#### Theme 5: Mosaic 🏺
+- **Vibe**: Terracotta tessellation
+- **Palette**: bg `#f5e6ca, #d4a373, #ccd5ae` / ring `#6b4226, #bc6c25, #283618, #606c38, #9b2226` / shape `#9b2226, #283618, #bc6c25` / accent `#6b4226, #283618, #9b2226`
+- **Bg patterns**: triangles, hexgrid, brickwork, pinwheel, terrazzo
+- **Ring styles**: rope, notched, inset
+- **Shapes**: octagon, arrow-shape, hourglass, shield, spiral
+- **Accents**: plus-signs, arrowheads, wedges, pips, nails
+
+#### Theme 6: Candy 🍬
+- **Vibe**: Sweet shop, playful
+- **Palette**: bg `#ffe0f0, #e0f7fa, #fff9c4` / ring `#ec407a, #ab47bc, #26c6da, #66bb6a, #ffa726` / shape `#e91e63, #7b1fa2, #00bcd4` / accent `#ff7043, #66bb6a, #fdd835`
+- **Bg patterns**: sprinkles, swirl, wafer, gingham, frosted
+- **Ring styles**: frosting, licorice, candy-dots
+- **Shapes**: lollipop, gumdrop, pretzel, donut, bonbon
+- **Accents**: mini-sprinkles, cherries, drops, gumballs, mini-hearts
+
+### Renderer Architecture
+
+Each tile is an SVG `viewBox 0 0 100 100` with 4 layered zones (back-to-front):
+1. **Background** (full tile, 4-96 inset) — `renderBg(attr)` — 30 pattern cases
+2. **Ring** (border frame) — `renderRing(attr)` — 18 style cases
+3. **Accent** (4 corners at `[[16,16],[84,16],[16,84],[84,84]]`) — `renderAccent(attr)` — 30 accent cases
+4. **Shape** (center, ~28-72 extent) — `renderShape(attr)` — 30 shape cases
+
+All rendering is dispatch-on-string via `switch` statements. Adding a new theme requires:
+1. Define the theme object in the `THEMES` array in `engine.js`
+2. Add `case` entries for each new pattern/style/shape/accent in `renderer.js`
+
+### Adding a New Theme
+1. In `engine.js`, add a new object to the `THEMES` array:
+   ```javascript
+   { name: 'NewTheme', emoji: '🔥',
+     palette: { bg: [3 colors], ring: [5 colors], shape: [3 colors], accent: [3 colors] },
+     bgPatterns: [5 strings], ringStyles: [3 strings], shapeNames: [5 strings], accentShapes: [5 strings] }
+   ```
+2. In `renderer.js`, add matching `case` entries in all 4 render functions
+3. Verify pool math: 5×3=15 for bg, ring, shape, accent
 
 ---
 
