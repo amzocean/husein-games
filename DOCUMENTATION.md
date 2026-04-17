@@ -1,26 +1,43 @@
-# Husein and Fatema's Game Room — Complete Project Documentation
+# Husein and Fatema's Game Room — Developer Documentation
 
-## Documentation Method
+## 1. Introduction & Project Context
 
-This document is written from a **developer's perspective** — not as a user guide but as an engineering reference for future sessions (human or AI). The focus is:
+This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 3 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
+
+**The 3 games:**
+- **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels)
+- **🧩 Photo Tiles** — A pattern-matching tile puzzle with 14 procedurally-rendered SVG themes (single-player, no server logic)
+- **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering
+
+**What a new session needs to know immediately:**
+- The Photo Tiles game is the most actively developed — it has 14 visual themes, each requiring ~18 SVG render cases in `renderer.js` (~1520 lines). Theme work is where most bugs have occurred (see Bug Fixes History and the Standard Process for Adding Themes).
+- Ludo's server logic has **5 separate code paths** that complete a token move. Any change to post-move behavior (extra turns, win checks, captures) MUST be applied to all 5. This is the #1 source of Ludo bugs.
+- The site runs on Render free tier — no persistent storage, auto-deploys on push to `main`, 30s cold starts.
+- Git pushes use the **browser-based credential manager** (personal GitHub account `amzocean`). The `gh` CLI is linked to a work account — do NOT use it for this repo.
+
+## 2. Documentation Method
+
+This document is written for **AI session continuity** — its primary audience is a fresh Copilot session picking up where the last one left off. The focus is:
 
 - **Design decisions and their rationale** — not just what was built, but WHY this approach was chosen and what alternatives were rejected
-- **Pitfalls and anti-patterns** — mistakes that were actually made in production, documented so they aren't repeated. Each bug fix entry includes the root cause analysis, not just the symptom and fix.
+- **Pitfalls and anti-patterns** — mistakes that were actually made in production, documented so they aren't repeated. Each bug fix entry includes the root cause analysis, not just the symptom and fix
 - **Architecture constraints** — the non-obvious rules that, if violated, cause subtle bugs (e.g., the 5 code paths that must stay in sync, transient state that must be cleared after exactly one broadcast)
 - **Thought process and implementation details** — code is readable on its own; this doc captures the reasoning that code can't express
 
 When updating this documentation: don't just record WHAT changed. Record WHY, what was considered and rejected, and what a future developer would need to know to avoid breaking things.
 
-## Quick Resume Checklist
+## 3. Quick Resume Checklist
+
 - **Local project**: `C:\Users\huseinm\Downloads\husein-games\`
 - **GitHub repo**: https://github.com/amzocean/husein-games.git (personal account: amzocean)
 - **Live URL**: https://huseinlovesyou.com (custom domain) / https://husein-games.onrender.com (Render direct)
 - **Render dashboard**: https://dashboard.render.com (free tier, auto-deploys on push to main)
+- **Tiles validator**: `node validate-themes.js` — run before every tiles commit (10 checks, all must pass)
 - **⚠️ DO NOT modify gh CLI auth** — `gh` is linked to work account `huseinm_microsoft`. Git pushes use browser-based credential manager.
 
 ---
 
-## 1. Architecture Overview
+## 4. Architecture Overview
 
 Single Node.js process serving everything:
 - **Express** serves static files from `public/` (landing page + 3 games)
