@@ -625,3 +625,189 @@ This is a significant but worthwhile effort — the result would be visually stu
 | Pink and purple too similar | Plum `#7b2d8e` too close to Rose `#c44569` | Changed 4th color to Indigo `#3355a0` |
 | Home center triangles old colors | Hardcoded `#D32F2F` etc in drawCenter() | Updated to use `COLORS[x].fill` dynamically |
 | Light/dark variants indistinguishable | Light/dark hex values too close to fill | Widened gap: lights are near-white pastels, darks are deep saturated |
+| Tiles blank after Neon/Tropical theme add | Sub-agent placed `default: return '';` but deleted the closing `}` of the switch + function in `renderBg` and `renderRing` — brace count coincidentally balanced | Re-added missing closing braces; added structural validation to catch this |
+| Indian/Bollywood/Arithmetic themes blank tiles | `mulberry32()` PRNG called by 5 patterns (paisley, sequins, disco-floor, chalkboard, sequin-border) but never defined in renderer.js — `ReferenceError` crashed tile rendering | Added `mulberry32` function definition at top of renderer.js |
+| Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
+| Noir/Sepia game unsolvable | Palette had identical repeated colors (e.g. 3x `#212121`) — tiles visually identical but different IDs | Changed to distinct shades within same hue family |
+
+---
+
+## 12. Standard Process for Adding New Themes
+
+### Why This Process Exists
+
+When adding 5 themes in a single session, we hit **4 distinct bug classes** that all shipped to production:
+
+| # | Bug Class | What Happened | Why It Wasn't Caught |
+|---|-----------|--------------|---------------------|
+| 1 | **Missing closing braces** | Sub-agent added switch cases but ate the `}` closing the function | Brace count across the whole file coincidentally balanced |
+| 2 | **Undefined function dependency** | 5 patterns called `mulberry32()` (seeded PRNG) which didn't exist in the file | No runtime test — only syntax checks were done |
+| 3 | **Duplicate switch case labels** | Two themes used `case 'star'` — JS silently uses only the first match | No cross-theme uniqueness check |
+| 4 | **Identical palette colors** | Repeated same hex in palette makes tiles visually indistinguishable → unsolvable | No color distinctness check |
+
+**Root cause**: We had no automated validation. Each bug was only discovered when a user tested the live site. The validator script (`validate-themes.js`) now catches all 4 classes before code is committed.
+
+### Theme Architecture Quick Reference
+
+```
+engine.js (THEMES array)          renderer.js (SVG rendering)
+─────────────────────────         ──────────────────────────
+Theme {                           renderBg(attr)     → case per bgPattern
+  name, emoji,                    renderRing(attr)   → case per ringStyle
+  palette: {                      renderShape(attr)  → case per shapeName
+    bg: [3 colors],               renderAccent(attr) → case per accentShape
+    ring: [5 colors],
+    shape: [3 colors],            Each case returns an SVG string.
+    accent: [3 colors],           Pattern names in engine.js MUST have
+  },                              a matching case in renderer.js.
+  bgPatterns: [5],
+  ringStyles: [3],                Helper functions (e.g. mulberry32 PRNG)
+  shapeNames: [5],                must be defined BEFORE any case that
+  accentShapes: [5],              calls them.
+}
+```
+
+**Pool math**: Each dimension generates `patterns × colors = 15` items (duplicated to 30 for matching pairs). This is non-negotiable — the game requires exactly 15 per pool.
+
+### Step-by-Step Checklist
+
+#### Step 1: Define the Theme Object (engine.js)
+
+Add a new entry to the `THEMES` array:
+
+```javascript
+{
+  name: 'MyTheme', emoji: '🎯',
+  palette: {
+    bg:     ['#hex1', '#hex2', '#hex3'],          // 3 DISTINCT colors
+    ring:   ['#hex1', '#hex2', '#hex3', '#hex4', '#hex5'],  // 5 DISTINCT colors
+    shape:  ['#hex1', '#hex2', '#hex3'],          // 3 DISTINCT colors
+    accent: ['#hex1', '#hex2', '#hex3'],          // 3 DISTINCT colors
+  },
+  bgPatterns:   ['pat1', 'pat2', 'pat3', 'pat4', 'pat5'],   // exactly 5
+  ringStyles:   ['ring1', 'ring2', 'ring3'],                  // exactly 3
+  shapeNames:   ['shape1', 'shape2', 'shape3', 'shape4', 'shape5'],  // exactly 5
+  accentShapes: ['acc1', 'acc2', 'acc3', 'acc4', 'acc5'],    // exactly 5
+}
+```
+
+**Rules:**
+- ✅ Every color within a palette group must be **visually distinct** (no duplicates)
+- ✅ Every pattern/shape/style name must be **globally unique** across ALL themes in that dimension
+- ✅ Count must be exact: 5 bgPatterns, 3 ringStyles, 5 shapeNames, 5 accentShapes
+- ✅ Palette counts must be exact: 3 bg, 5 ring, 3 shape, 3 accent
+
+**How to check name uniqueness:** Search renderer.js for `case 'yourname'`. If it already exists in the same render function, pick a different name (prefix with theme, e.g. `filmi-star` instead of `star`).
+
+#### Step 2: Add Renderer Cases (renderer.js)
+
+For each new pattern name, add a `case` block in the corresponding function:
+
+| Pattern Array | Renderer Function | Cases Needed |
+|--------------|-------------------|-------------|
+| `bgPatterns[5]` | `renderBg()` | 5 new cases |
+| `ringStyles[3]` | `renderRing()` | 3 new cases |
+| `shapeNames[5]` | `renderShape()` | 5 new cases |
+| `accentShapes[5]` | `renderAccent()` | 5 new cases |
+
+**Total: 18 new case blocks per theme.**
+
+**Rules:**
+- ✅ Add cases BEFORE the `default:` line in each function
+- ✅ Every case must `return` an SVG string (never fall through to blank)
+- ✅ Do NOT accidentally delete the closing `}` of the switch or function
+- ✅ If your SVG needs randomness, use `mulberry32(c.charCodeAt(1))` — it's already defined at the top of the file
+- ✅ The SVG viewBox is `0 0 100 100` — keep all coordinates within this space
+
+**Template for each case:**
+```javascript
+    // ── MyTheme ──
+    case 'pat1': {
+      const o = 0.6;
+      return `<rect ... fill="${c}" opacity="${o}"/>`;
+    }
+```
+
+#### Step 3: Run the Validator
+
+```bash
+node validate-themes.js
+```
+
+This script checks ALL of the following automatically:
+
+| Check | What It Catches |
+|-------|----------------|
+| Pool math | Wrong number of patterns/colors (would break board generation) |
+| Cross-theme name uniqueness | Duplicate case labels (second one silently unreachable) |
+| Engine → Renderer coverage | Pattern defined in engine.js but no case in renderer.js (blank tiles) |
+| Duplicate case labels | Same case label appears twice in one function (JS pitfall) |
+| Function dependencies | Calling undefined functions like mulberry32 (ReferenceError) |
+| Syntax check | Missing braces, unclosed strings, malformed JS |
+| Color distinctness | Identical hex codes in same palette group (unsolvable game) |
+| Orphan cases | Cases in renderer with no theme using them (dead code warning) |
+
+**The validator must show all green ✅ before committing.**
+
+#### Step 4: Manual Smoke Test
+
+Even with the validator passing, do a visual check:
+
+1. Run locally: `node server.js` → open `http://localhost:3000/tiles/`
+2. Click through themes until you hit yours
+3. Verify all tiles render (no blank white squares)
+4. Start a game, make a few matches — verify matched tiles disappear correctly
+5. Check mobile viewport (responsive layout)
+
+#### Step 5: Commit and Deploy
+
+```bash
+git add public/tiles/engine.js public/tiles/renderer.js
+git commit -m "Add [ThemeName] theme to Photo Tiles"
+git push
+```
+
+Wait ~2 min for Render auto-deploy. Hard-refresh (Ctrl+Shift+R) the live site to bypass cache.
+
+### Common Pitfalls Reference
+
+| Pitfall | Example | Prevention |
+|---------|---------|-----------|
+| Duplicate case name | Two themes both use `'star'` as a shape | Prefix with theme: `'filmi-star'`, `'celtic-star'` |
+| Missing helper function | Case calls `mulberry32()` but it's not defined | Validator CHECK 6 catches this |
+| Deleted closing brace | Adding cases at end of switch, accidentally removing `}` | Validator syntax check catches this |
+| Identical palette colors | `bg: ['#333', '#333', '#333']` | Validator color check catches this |
+| Wrong pattern count | 4 bgPatterns instead of 5 | Validator pool math catches this |
+| Case with no return | `case 'x': { /* forgot return */ }` | Manual check — look for fall-through |
+| SVG outside viewBox | Coordinates > 100 or < 0 | Keep within 0-100 range |
+| Low contrast / invisible elements | Light shapes on light bg (e.g. white on pastel) | See Contrast Rule below |
+
+### Contrast & Visibility Rule
+
+**Problem**: The Arithmetic theme originally rendered faint green lines on a white tile — shapes like π and ÷ in white/yellow were nearly invisible.
+
+**Rule**: Every tile must have strong visual contrast between its background and its foreground elements (shapes, rings, accents).
+
+Two valid approaches:
+
+| Approach | When to Use | Example |
+|----------|------------|---------|
+| **Dark fill + light elements** | Theme has a "surface" feel (chalkboard, night sky) | Arithmetic: solid dark green bg → white/yellow shapes pop |
+| **Light fill + bold dark elements** | Theme is bright/colorful | Candy: pastel bg → saturated shapes |
+
+**Implementation pattern for dark-bg themes:**
+
+In `renderBg`, start each case with a solid fill before the decorative pattern:
+```javascript
+case 'chalkboard': {
+  // 1. Solid dark fill first (makes the tile dark)
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.85"/>`;
+  // 2. Then light-colored pattern details on top
+  s += `<line ... stroke="#fff" opacity="0.2"/>`;
+  return s;
+}
+```
+
+**Without** the solid fill, `c` (dark green) at `opacity * 0.3 = 0.18` barely tints the white base → everything looks washed out.
+
+**Quick test**: Squint at your tiles. If you can't immediately distinguish every tile from its neighbors, the contrast is too low.

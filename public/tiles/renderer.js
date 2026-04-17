@@ -471,49 +471,49 @@ function renderBg(attr) {
 
     // ── Arithmetic ──
     case 'graph-paper': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.85"/>`;
       for (let i = 0; i <= 9; i++) {
         const pos = 4 + i * 9.2;
-        s += `<line x1="${pos.toFixed(1)}" y1="4" x2="${pos.toFixed(1)}" y2="96" stroke="${c}" stroke-width="0.5" opacity="${o*0.3}"/>`;
-        s += `<line x1="4" y1="${pos.toFixed(1)}" x2="96" y2="${pos.toFixed(1)}" stroke="${c}" stroke-width="0.5" opacity="${o*0.3}"/>`;
+        s += `<line x1="${pos.toFixed(1)}" y1="4" x2="${pos.toFixed(1)}" y2="96" stroke="#fff" stroke-width="0.5" opacity="0.2"/>`;
+        s += `<line x1="4" y1="${pos.toFixed(1)}" x2="96" y2="${pos.toFixed(1)}" stroke="#fff" stroke-width="0.5" opacity="0.2"/>`;
       }
       return s;
     }
     case 'chalkboard': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.88"/>`;
       const rng = mulberry32(c.charCodeAt(1));
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 18; i++) {
         const x = 6 + rng() * 84, y = 6 + rng() * 84;
         const w = 4 + rng() * 20, a = rng() * 180;
-        s += `<line x1="${x}" y1="${y}" x2="${x + w * Math.cos(a*Math.PI/180)}" y2="${y + w * Math.sin(a*Math.PI/180)}" stroke="${c}" stroke-width="1" opacity="${(o*0.15 + rng()*o*0.2).toFixed(2)}"/>`;
+        s += `<line x1="${x}" y1="${y}" x2="${x + w * Math.cos(a*Math.PI/180)}" y2="${y + w * Math.sin(a*Math.PI/180)}" stroke="#fff" stroke-width="1.2" opacity="${(0.08 + rng()*0.12).toFixed(2)}"/>`;
       }
       return s;
     }
     case 'notebook-lines': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.82"/>`;
       for (let y = 14; y < 96; y += 10) {
-        s += `<line x1="4" y1="${y}" x2="96" y2="${y}" stroke="${c}" stroke-width="0.8" opacity="${o*0.3}"/>`;
+        s += `<line x1="4" y1="${y}" x2="96" y2="${y}" stroke="#fff" stroke-width="0.8" opacity="0.2"/>`;
       }
-      s += `<line x1="16" y1="4" x2="16" y2="96" stroke="${c}" stroke-width="1" opacity="${o*0.25}"/>`;
+      s += `<line x1="16" y1="4" x2="16" y2="96" stroke="#ffe0e0" stroke-width="1.2" opacity="0.35"/>`;
       return s;
     }
     case 'dot-grid': {
-      let s = '';
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.85"/>`;
       for (let r = 0; r < 8; r++) {
         for (let col = 0; col < 8; col++) {
-          s += `<circle cx="${10 + col * 12}" cy="${10 + r * 12}" r="1.2" fill="${c}" opacity="${o*0.4}"/>`;
+          s += `<circle cx="${10 + col * 12}" cy="${10 + r * 12}" r="1.4" fill="#fff" opacity="0.3"/>`;
         }
       }
       return s;
     }
     case 'equation-scribbles': {
-      let s = '';
-      s += `<text x="12" y="25" font-size="12" fill="${c}" opacity="${o*0.2}" font-family="serif">+</text>`;
-      s += `<text x="55" y="20" font-size="10" fill="${c}" opacity="${o*0.15}" font-family="serif">=</text>`;
-      s += `<text x="30" y="55" font-size="14" fill="${c}" opacity="${o*0.2}" font-family="serif">÷</text>`;
-      s += `<text x="70" y="70" font-size="11" fill="${c}" opacity="${o*0.18}" font-family="serif">×</text>`;
-      s += `<text x="15" y="82" font-size="10" fill="${c}" opacity="${o*0.15}" font-family="serif">−</text>`;
-      s += `<text x="75" y="35" font-size="9" fill="${c}" opacity="${o*0.15}" font-family="serif">%</text>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.85"/>`;
+      s += `<text x="12" y="25" font-size="14" fill="#fff" opacity="0.15" font-family="serif" font-weight="bold">+</text>`;
+      s += `<text x="55" y="20" font-size="12" fill="#fff" opacity="0.12" font-family="serif" font-weight="bold">=</text>`;
+      s += `<text x="30" y="55" font-size="16" fill="#fff" opacity="0.15" font-family="serif" font-weight="bold">÷</text>`;
+      s += `<text x="70" y="70" font-size="13" fill="#fff" opacity="0.12" font-family="serif" font-weight="bold">×</text>`;
+      s += `<text x="15" y="82" font-size="12" fill="#fff" opacity="0.1" font-family="serif" font-weight="bold">−</text>`;
+      s += `<text x="75" y="35" font-size="11" fill="#fff" opacity="0.1" font-family="serif" font-weight="bold">%</text>`;
       return s;
     }
 
