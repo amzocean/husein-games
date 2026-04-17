@@ -551,6 +551,13 @@ function setupCanvas(canvas) {
 
 function drawBoard(ctx, canvasEl) {
   const size = cellSize * 15;
+  const rotation = getBoardRotation();
+  ctx.save();
+  if (rotation) {
+    ctx.translate(size / 2, size / 2);
+    ctx.rotate(rotation);
+    ctx.translate(-size / 2, -size / 2);
+  }
   // Background
   ctx.fillStyle = '#f5f0e1';
   ctx.fillRect(0, 0, size, size);
@@ -685,6 +692,7 @@ function drawBoard(ctx, canvasEl) {
       ctx.restore();
     }
   }
+  ctx.restore();
 }
 
 function drawBase(ctx, startRow, startCol, color) {
@@ -808,6 +816,15 @@ function getMyColor() {
   if (!state.players || !mySessionId) return null;
   const p = state.players.find(p => p.sessionId === mySessionId);
   return p ? p.color : null;
+}
+
+// Rotation angle so player's base is bottom-left (closest to dice)
+function getBoardRotation() {
+  const color = getMyColor();
+  if (color === 'green') return Math.PI / 2;
+  if (color === 'yellow') return Math.PI;
+  if (color === 'blue') return Math.PI * 3 / 2;
+  return 0; // red or spectator
 }
 
 function getMyPlayerIndex() {
@@ -1003,6 +1020,17 @@ function onBoardClick(e) {
 
 function handleBoardClick(px, py) {
   if (!isItMyTurn() || !state.diceRolled) return;
+
+  // Inverse-rotate click to match un-rotated board coordinates
+  const rotation = getBoardRotation();
+  if (rotation) {
+    const size = cellSize * 15;
+    const cx = size / 2, cy = size / 2;
+    const dx = px - cx, dy = py - cy;
+    const cos = Math.cos(-rotation), sin = Math.sin(-rotation);
+    px = cx + dx * cos - dy * sin;
+    py = cy + dx * sin + dy * cos;
+  }
 
   const color = getMyColor();
   if (!color) return;
