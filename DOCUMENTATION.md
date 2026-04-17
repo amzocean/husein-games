@@ -77,66 +77,11 @@ husein-games/
 - Game state is **in-memory only** — Render process restart = game state lost
 - `process.env.PORT || 3000` — Render assigns its own port
 
----
-
-## 2. Git & Deployment
-
-### GitHub
-- **Repo**: https://github.com/amzocean/husein-games.git
-- **Branch**: `main` (only branch)
-- **Remote**: `origin` → `https://github.com/amzocean/husein-games.git`
-- **Auth**: Browser-based credential manager (NOT gh CLI — that's work account)
-- **Push workflow**: `cd ~/Downloads/husein-games && git add -A && git commit -m "msg" && git push`
-
-### Render.com
-- **Service**: husein-games (Web Service, free tier)
-- **URL**: https://huseinlovesyou.com (custom domain) / https://husein-games.onrender.com (direct)
+### Deployment & Domain
+- **Render build**: `npm install` → **start**: `node server.js`
 - **Auto-deploy**: Connected to GitHub repo, deploys on every push to `main`
-- **Build command**: `npm install`
-- **Start command**: `node server.js`
-- **Environment**: Node.js, uses `process.env.PORT`
 - **Free tier behavior**: Spins down after 15min of no HTTP requests. Socket.IO heartbeats (every 25s) keep it alive while players are connected.
-
-### Git History (oldest → newest)
-```
-703bbd8 Initial commit - game portal with 3 games
-9542985 Fix static file path for Render deployment
-f51500b Fix tokenIndex parameter mismatch in move handler
-e6e9efd Add 1s delay before auto-move so dice value is visible
-eb02939 Increase idle timeout to 30 minutes
-83565fc Fix premature game ending: 3min disconnect grace + auto-reconnect on tab focus
-712d728 Increase disconnect grace to 15 minutes
-0cfa3c2 Auto-play after 1 min idle: auto-roll dice and auto-pick random token
-657be8f Single 1-min auto-play timer covers entire turn (roll + pick)
-4665d51 Auto-hide capture banner after 3 seconds
-f5482dd Add spectator mode: non-players see live board without controls
-...      Documentation, name change, theme commits
-b096486 Ludo romantic retheme with rose/gold/teal/plum player colors
-06ca0ea Fix color contrast: much lighter lights, darker darks, update center triangles
-5226c8e Hide debug behind 5-tap secret, add Exit Game + End Game (creator only)
-10dbaea Disable debug panel activation (code preserved, commented out)
-b07d8a6 Change plum to indigo blue for better contrast with rose
-3c3e6fc Documentation update
-3182743 Add 6-theme system to Photo Tiles game
-95216c6 Update documentation with 6-theme Photo Tiles system
-df501e6 Ludo: RGBY colors, extra turn on home, fix capture banner
-ce899c4 Add no-cache headers for HTML files to prevent stale deploys
-28d159e Documentation: RGBY colors, extra turn on home, capture fix, caching, design pitfalls
-1d89c82 Add Documentation Method header — developer-focused writing guidelines
-3a9e62a Fix wording: thought process AND implementation details
-fe35753 fix(tiles): improve theme contrast for 7 washed-out themes
-```
-
-### Custom Domain
-- **Domain**: `huseinlovesyou.com` (registered on GoDaddy)
-- **DNS provider**: GoDaddy (default nameservers)
-- **DNS records**:
-  - `A` record: `@` → `216.24.57.1` (Render's load balancer IP), TTL 600s
-  - `CNAME` record: `www` → `husein-games.onrender.com`, TTL 1hr
-- **Render custom domains**: Both `huseinlovesyou.com` and `www.huseinlovesyou.com` verified with SSL certificates issued (Let's Encrypt)
-- **Routing**: `huseinlovesyou.com` redirects to `www.huseinlovesyou.com`
-- **Previous hosting**: Was on Netlify (removed domain from Netlify to clear Cloudflare DNS interference)
-- **Cache busting**: If users see old cached version, append `?v=2` to URL or clear browser cache
+- **Custom domain**: `huseinlovesyou.com` (GoDaddy) — `A` record → `216.24.57.1` (Render LB), `CNAME www` → `husein-games.onrender.com`. Both verified with Let's Encrypt SSL.
 
 ---
 
