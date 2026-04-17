@@ -101,6 +101,20 @@ button:active { transform: scale(0.95); }
 .emoji-bar button:active { transform:scale(1.2); }
 .emoji-float { position:fixed; font-size:2rem; pointer-events:none; z-index:100; animation:emojiRise 2s ease-out forwards; }
 @keyframes emojiRise { 0% { opacity:1; transform:translateY(0) scale(1); } 100% { opacity:0; transform:translateY(-120px) scale(1.5); } }
+.turn-timer-bar { height:4px; border-radius:2px; margin:2px 0 0; background:transparent; }
+.turn-timer-inner { height:100%; border-radius:2px; width:0%; }
+.chat-container { margin:8px 0; border:1px solid rgba(196,69,105,0.15); border-radius:10px; background:#fff; overflow:hidden; }
+.chat-header { display:flex; align-items:center; padding:8px 12px; cursor:pointer; font-weight:600; font-size:0.9rem; color:#2c2c2c; user-select:none; }
+.chat-header .badge { background:#c44569; color:#fff; border-radius:10px; padding:1px 7px; font-size:0.75rem; margin-left:6px; display:none; }
+.chat-body { display:none; }
+.chat-body.open { display:block; }
+.chat-messages { max-height:150px; overflow-y:auto; padding:4px 10px; font-size:0.85rem; }
+.chat-msg { margin:3px 0; line-height:1.4; }
+.chat-msg .cname { font-weight:600; margin-right:4px; }
+.chat-input-row { display:flex; gap:4px; padding:6px 8px; border-top:1px solid rgba(196,69,105,0.1); }
+.chat-input-row input { flex:1; padding:6px 10px; font-size:0.85rem; border-radius:8px; border:1px solid rgba(196,69,105,0.2); font-family:'Inter',sans-serif; outline:none; }
+.chat-input-row input:focus { border-color:#c44569; }
+.chat-input-row button { padding:6px 14px; font-size:0.85rem; border:none; border-radius:8px; background:#c44569; color:#fff; cursor:pointer; font-weight:600; font-family:'Inter',sans-serif; }
 </style>
 </head>
 <body>
@@ -138,6 +152,7 @@ button:active { transform: scale(0.95); }
   <div id="screen-playing" class="screen">
     <div class="status-bar">
       <div id="turnInfo" class="turn-indicator"></div>
+      <div class="turn-timer-bar"><div id="turnTimerInner" class="turn-timer-inner"></div></div>
     </div>
     <canvas id="board"></canvas>
     <div id="diceArea">
@@ -156,7 +171,17 @@ button:active { transform: scale(0.95); }
       <button onclick="sendReaction('🎉')">🎉</button>
       <button onclick="sendReaction('👏')">👏</button>
     </div>
-    <!-- Debug panel (hidden, activated by 5-tap on dice area) -->
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-header" onclick="toggleChat()">💬 Chat <span id="chatBadge" class="badge"></span><span style="margin-left:auto;font-size:0.8rem;color:#888;" id="chatToggle">▼</span></div>
+      <div id="chatBody" class="chat-body">
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Type a message..." maxlength="200" onkeydown="if(event.key==='Enter')sendChat()">
+          <button onclick="sendChat()">Send</button>
+        </div>
+      </div>
+    </div>
+    <!-- Debug panel(hidden, activated by 5-tap on dice area) -->
     <div id="debugPanel" style="display:none;margin:8px 0;padding:8px;background:#fff;border:1px solid rgba(196,69,105,0.12);border-radius:10px;">
       <div style="font-size:0.8rem;color:#b8860b;margin-bottom:4px;">Force dice value (your turn only):</div>
       <div style="display:flex;gap:4px;justify-content:center;">
@@ -416,6 +441,47 @@ function spawnEmojiFloat(emoji) {
   el.style.bottom = '20%';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2000);
+}
+
+// ── Chat ──
+let chatMessages = [];
+let chatOpen = false;
+let chatUnread = 0;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatBody').className = chatOpen ? 'chat-body open' : 'chat-body';
+  document.getElementById('chatToggle').textContent = chatOpen ? '▲' : '▼';
+  if (chatOpen) { chatUnread = 0; updateChatBadge(); }
+}
+
+function sendChat() {
+  const inp = document.getElementById('chatInput');
+  const msg = (inp.value || '').trim();
+  if (!msg || !mySessionId) return;
+  socket.emit('chat', { sessionId: mySessionId, message: msg });
+  inp.value = '';
+}
+
+function addChatMessage(name, color, text) {
+  chatMessages.push({ name, color, text });
+  if (chatMessages.length > 50) chatMessages.shift();
+  const box = document.getElementById('chatMessages');
+  if (!box) return;
+  const c = COLORS[color]?.fill || '#333';
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  div.innerHTML = `<span class="cname" style="color:${c}">${escHtml(name)}:</span>${escHtml(text)}`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  if (!chatOpen) { chatUnread++; updateChatBadge(); }
+}
+
+function updateChatBadge() {
+  const badge = document.getElementById('chatBadge');
+  if (!badge) return;
+  if (chatUnread > 0) { badge.textContent = chatUnread; badge.style.display = ''; }
+  else { badge.style.display = 'none'; }
 }
 
 // Dice face unicode
@@ -878,6 +944,21 @@ function renderPlaying() {
     captureBanner.style.display = 'none';
   }
 
+  // Turn timer bar
+  const timerInner = document.getElementById('turnTimerInner');
+  if (timerInner && state.turnTimeLeft != null && state.turnDuration && state.turnTimeLeft > 0 && state.phase === 'playing') {
+    const pct = (state.turnTimeLeft / state.turnDuration) * 100;
+    timerInner.style.transition = 'none';
+    timerInner.style.width = pct + '%';
+    timerInner.style.backgroundColor = COLORS[current.color]?.fill || '#c44569';
+    timerInner.offsetHeight; // force reflow
+    timerInner.style.transition = `width ${state.turnTimeLeft}ms linear`;
+    timerInner.style.width = '0%';
+  } else if (timerInner) {
+    timerInner.style.transition = 'none';
+    timerInner.style.width = '0%';
+  }
+
   // Exit / End game buttons
   const gcEl = document.getElementById('gameControls');
   const isCreator = state.players[0] && state.players[0].sessionId === mySessionId;
@@ -1126,6 +1207,10 @@ socket.on('error_msg', (msg) => {
 
 socket.on('reaction', (data) => {
   if (data.sessionId !== mySessionId) spawnEmojiFloat(data.emoji);
+});
+
+socket.on('chat', (data) => {
+  addChatMessage(data.name, data.color, data.text);
 });
 
 // Reconnection

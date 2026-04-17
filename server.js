@@ -206,6 +206,7 @@ function nextTurn(extraTurn) {
     }
   }
   log(`Turn: ${game.players[game.currentPlayerIndex].name}(${game.players[game.currentPlayerIndex].color})`);
+  game.turnDeadline = Date.now() + AUTO_PLAY_DELAY;
   broadcastState();
   game.lastCapture = null; // Clear after broadcasting so banner shows only once
   startAutoPlayTimer();
@@ -214,6 +215,7 @@ function nextTurn(extraTurn) {
 function startAutoPlayTimer() {
   if (!game || game.phase !== 'playing') return;
   if (game.autoPlayTimer) clearTimeout(game.autoPlayTimer);
+  game.turnDeadline = Date.now() + AUTO_PLAY_DELAY;
   game.autoPlayTimer = setTimeout(() => {
     if (!game || game.phase !== 'playing') return;
     const player = game.players[game.currentPlayerIndex];
@@ -309,7 +311,9 @@ function getClientState() {
     diceRolled: game.diceRolled,
     tokens: game.tokens,
     winner: game.winner,
-    lastCapture: game.lastCapture || null
+    lastCapture: game.lastCapture || null,
+    turnTimeLeft: game.turnDeadline ? Math.max(0, game.turnDeadline - Date.now()) : null,
+    turnDuration: AUTO_PLAY_DELAY
   };
 }
 
@@ -405,6 +409,7 @@ ludoNs.on('connection', (socket) => {
     resetIdleTimer();
     log(`GAME STARTED with ${game.players.length} players:`,
       game.players.map(p => `${p.name}(${p.color})`));
+    game.turnDeadline = Date.now() + AUTO_PLAY_DELAY;
     broadcastState();
     startAutoPlayTimer();
   });
@@ -590,6 +595,15 @@ ludoNs.on('connection', (socket) => {
 
   socket.on('reaction', ({ sessionId, emoji }) => {
     ludoNs.emit('reaction', { sessionId, emoji });
+  });
+
+  socket.on('chat', ({ sessionId, message }) => {
+    if (!game) return;
+    const player = game.players.find(p => p.sessionId === sessionId);
+    if (!player) return;
+    const text = (message || '').trim().slice(0, 200);
+    if (!text) return;
+    ludoNs.emit('chat', { name: player.name, color: player.color, text });
   });
 
   socket.on('disconnect', () => {
