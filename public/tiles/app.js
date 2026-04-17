@@ -11,6 +11,7 @@ const bestEl = document.getElementById('longest-combo');
 const clearedEl = document.getElementById('tiles-cleared');
 const winBanner = document.getElementById('win-banner');
 const btnNewGame = document.getElementById('btn-new-game');
+const themeToast = document.getElementById('theme-toast');
 
 // Game state
 const game = new GameState();
@@ -36,6 +37,13 @@ async function startNewGame() {
   // Generate and render new board
   const board = game.newGame();
   renderBoard(board, boardEl);
+
+  // Show theme name briefly
+  if (board.theme) {
+    themeToast.textContent = `${board.theme.emoji} ${board.theme.name}`;
+    themeToast.classList.add('visible');
+    setTimeout(() => themeToast.classList.remove('visible'), 2000);
+  }
 
   // Update score display
   updateScoreDisplay();

@@ -123,6 +123,29 @@ body {
   font-size: 0.7rem;
 }
 
+/* ============ Theme Toast ============ */
+#theme-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.78);
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 1.2rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 200;
+  white-space: nowrap;
+}
+#theme-toast.visible {
+  opacity: 1;
+}
+
 /* ============ Board ============ */
 #board-container {
   flex: 1;
