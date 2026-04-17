@@ -104,6 +104,10 @@ b07d8a6 Change plum to indigo blue for better contrast with rose
 95216c6 Update documentation with 6-theme Photo Tiles system
 df501e6 Ludo: RGBY colors, extra turn on home, fix capture banner
 ce899c4 Add no-cache headers for HTML files to prevent stale deploys
+28d159e Documentation: RGBY colors, extra turn on home, capture fix, caching, design pitfalls
+1d89c82 Add Documentation Method header — developer-focused writing guidelines
+3a9e62a Fix wording: thought process AND implementation details
+fe35753 fix(tiles): improve theme contrast for 7 washed-out themes
 ```
 
 ### Custom Domain
@@ -170,15 +174,15 @@ A pattern-matching tile puzzle (6×5 = 30 tiles). Match tiles by shared visual a
 - `style.css` — Full styling including `.theme-pill` toast overlay
 - `app.js` — Main application controller (ES modules, imports engine + renderer + photos)
   - Shows theme name + emoji as a toast on each new game (fades after 2s)
-- `engine.js` — Board generation, game logic & **6-theme system** (~300 lines)
-  - `THEMES` array defines all 6 themes (palette, patterns, styles, shapes, accents)
+- `engine.js` — Board generation, game logic & **14-theme system** (~370 lines)
+  - `THEMES` array defines all 14 themes (palette, patterns, styles, shapes, accents)
   - `buildPools(theme)` — generates 4 attribute pools of 15 items each from a theme
   - `generateBoard()` — picks a random theme, builds pools, creates paired 30-tile board
   - `GameState` class — manages board, matching, scoring; tracks `currentTheme`
   - Exports: `GameState`, `ROWS`, `COLS`, `TILE_COUNT`, `THEMES`
-- `renderer.js` — SVG tile rendering with spatial-zone design (~608 lines)
+- `renderer.js` — SVG tile rendering with spatial-zone design (~1520 lines)
   - 4 render functions: `renderBg()`, `renderRing()`, `renderShape()`, `renderAccent()`
-  - ~90 visual element cases across all 6 themes
+  - ~252 visual element cases across all 14 themes
   - `viewBox 0 0 100 100` — four spatially distinct zones rendered back-to-front
   - Layer order: bg → ring → accent → shape
 - `photos.js` — Loads random photo from `photos/manifest.json`
@@ -200,7 +204,7 @@ A pattern-matching tile puzzle (6×5 = 30 tiles). Match tiles by shared visual a
 
 ### Theme System
 
-Each new game randomly selects one of **6 visual themes**. Each theme defines:
+Each new game randomly selects one of **14 visual themes**. Each theme defines:
 - **Palette**: 3 bg colors, 5 ring colors, 3 shape colors, 3 accent colors
 - **Background patterns** (5): how the tile background is filled
 - **Ring styles** (3): the decorative border frame
@@ -215,7 +219,7 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 1: Azulejo 🎨 (original)
 - **Vibe**: Portuguese ceramic tiles
-- **Palette**: bg `#81C784, #F48FB1, #FFD54F` / ring `#2E7D32, #C2185B, #1565C0, #F57F17, #6A1B9A` / shape `#D32F2F, #1976D2, #388E3C` / accent `#FF6F00, #7B1FA2, #00838F`
+- **Palette**: bg `#66BB6A, #F06292, #FFB300` / ring `#2E7D32, #C2185B, #1565C0, #6A1B9A, #E65100` / shape `#43A047, #E91E63, #1E88E5` / accent `#FF6D00, #00ACC1, #AB47BC`
 - **Bg patterns**: checkerboard, diagonal, hBars, vBars, solid
 - **Ring styles**: solid, dashed, double
 - **Shapes**: cross, flower, star, diamond, clover
@@ -223,7 +227,7 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 2: Celestial 🌙
 - **Vibe**: Night sky, cosmic
-- **Palette**: bg `#1a1a2e, #16213e, #0f3460` / ring `#e94560, #533483, #0f3460, #e9d5a1, #00b4d8` / shape `#e9d5a1, #e94560, #00b4d8` / accent `#e9d5a1, #533483, #e94560`
+- **Palette**: bg `#1a237e, #4a148c, #ff8f00` / ring `#90a4ae, #ffab00, #00e5ff, #e040fb, #ff6e40` / shape `#00e5ff, #e040fb, #ffab00` / accent `#b0bec5, #00e5ff, #ffd740`
 - **Bg patterns**: starfield, nebula, aurora, cosmic-dust, void
 - **Ring styles**: glow, dotted, eclipse
 - **Shapes**: crescent, starburst, hexagon, saturn, eye
@@ -231,7 +235,7 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 3: Garden 🌿
 - **Vibe**: Botanical, floral
-- **Palette**: bg `#e8f5e9, #fff3e0, #fce4ec` / ring `#2e7d32, #c2185b, #f57f17, #00695c, #6a1b9a` / shape `#c62828, #1565c0, #2e7d32` / accent `#795548, #e65100, #1b5e20`
+- **Palette**: bg `#4caf50, #ba68c8, #fbc02d` / ring `#2e7d32, #7b1fa2, #ef6c00, #00838f, #c62828` / shape `#43a047, #ab47bc, #ff7043` / accent `#ff6f00, #00897b, #d81b60`
 - **Bg patterns**: polkadots, stripes, crosshatch, petals, meadow
 - **Ring styles**: vine, thorn, ribbon
 - **Shapes**: heart, tulip, leaf, raindrop, sun
@@ -239,7 +243,7 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 4: Deco ✨
 - **Vibe**: Art Deco geometric
-- **Palette**: bg `#fdf6e3, #1a1a2e, #2c3e50` / ring `#d4af37, #c0392b, #1abc9c, #2c3e50, #8e44ad` / shape `#d4af37, #c0392b, #f5f5f5` / accent `#d4af37, #8e44ad, #1abc9c`
+- **Palette**: bg `#ffb300, #4db6ac, #e57373` / ring `#bf360c, #1b5e20, #4a148c, #01579b, #e65100` / shape `#d84315, #1b5e20, #283593` / accent `#ff6f00, #2e7d32, #6a1b9a`
 - **Bg patterns**: fan, sunray, chevron, scales, zigzag
 - **Ring styles**: thick-thin, dotted-line, fillet
 - **Shapes**: arch, bowtie, pentagon, keystone, fan-shape
@@ -247,7 +251,7 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 5: Mosaic 🏺
 - **Vibe**: Terracotta tessellation
-- **Palette**: bg `#f5e6ca, #d4a373, #ccd5ae` / ring `#6b4226, #bc6c25, #283618, #606c38, #9b2226` / shape `#9b2226, #283618, #bc6c25` / accent `#6b4226, #283618, #9b2226`
+- **Palette**: bg `#8d6e63, #4db6ac, #ffb74d` / ring `#d84315, #00695c, #f9a825, #283593, #558b2f` / shape `#bf360c, #00897b, #f57f17` / accent `#e65100, #00838f, #827717`
 - **Bg patterns**: triangles, hexgrid, brickwork, pinwheel, terrazzo
 - **Ring styles**: rope, notched, inset
 - **Shapes**: octagon, arrow-shape, hourglass, shield, spiral
@@ -255,19 +259,83 @@ Each new game randomly selects one of **6 visual themes**. Each theme defines:
 
 #### Theme 6: Candy 🍬
 - **Vibe**: Sweet shop, playful
-- **Palette**: bg `#ffe0f0, #e0f7fa, #fff9c4` / ring `#ec407a, #ab47bc, #26c6da, #66bb6a, #ffa726` / shape `#e91e63, #7b1fa2, #00bcd4` / accent `#ff7043, #66bb6a, #fdd835`
+- **Palette**: bg `#f06292, #81c784, #ffcc80` / ring `#c2185b, #00897b, #ff6f00, #6a1b9a, #1565c0` / shape `#e91e63, #00bfa5, #ff9100` / accent `#d81b60, #00acc1, #ff6d00`
 - **Bg patterns**: sprinkles, swirl, wafer, gingham, frosted
 - **Ring styles**: frosting, licorice, candy-dots
 - **Shapes**: lollipop, gumdrop, pretzel, donut, bonbon
 - **Accents**: mini-sprinkles, cherries, drops, gumballs, mini-hearts
 
+#### Theme 7: Noir 🖤
+- **Vibe**: Film noir, monochrome
+- **Palette**: bg `#111111, #333333, #666666` / ring `#ffffff, #cccccc, #888888, #555555, #aaaaaa` / shape `#ffffff, #999999, #444444` / accent `#eeeeee, #888888, #333333`
+- **Bg patterns**: halftone, film-grain, scanlines, gradient-fade, ink-blot
+- **Ring styles**: sharp, etched, shadow
+- **Shapes**: spade, crown, bolt-shape, mask, key
+- **Accents**: crosshairs, slashes, corners, pins, xs
+
+#### Theme 8: Sepia 📜
+- **Vibe**: Vintage parchment, antique
+- **Palette**: bg `#d4c4a8, #c0a080, #a07850` / ring `#3e2723, #6b4423, #8b6914, #a0522d, #5c3a1e` / shape `#3e2723, #8b6914, #c49a6c` / accent `#5c3a1e, #a0522d, #d4a574`
+- **Bg patterns**: parchment, woodgrain, linen, coffee-stain, aged-paper
+- **Ring styles**: ornate, worn, gilded
+- **Shapes**: quill, compass, anchor, fleur, lantern
+- **Accents**: filigree, rivets, scrolls, stamps, ink-dots
+
+#### Theme 9: Neon 💡
+- **Vibe**: Cyberpunk, electric glow
+- **Palette**: bg `#0d0221, #1a0533, #2b0845` / ring `#ff00ff, #00ffff, #ff3366, #39ff14, #ffff00` / shape `#ff00ff, #00ffff, #39ff14` / accent `#ff3366, #ffff00, #00ffff`
+- **Bg patterns**: grid-lines, circuit, pixel-blocks, laser-beams, digital-rain
+- **Ring styles**: neon-glow, pulse, wireframe
+- **Shapes**: lightning, pixel-heart, pac-ghost, controller, gem
+- **Accents**: glitch-dots, brackets, pixels, signal-bars, power-icons
+
+#### Theme 10: Tropical 🌴
+- **Vibe**: Island paradise, vibrant nature
+- **Palette**: bg `#00bcd4, #ff7043, #ffca28` / ring `#e91e63, #4caf50, #ff9800, #2196f3, #9c27b0` / shape `#e91e63, #4caf50, #ff9800` / accent `#f44336, #00bcd4, #ffeb3b`
+- **Bg patterns**: waves, palm-fronds, sand-ripples, bamboo, sunset-gradient
+- **Ring styles**: lei, rope-twist, shell-border
+- **Shapes**: flamingo, pineapple, hibiscus, surfboard, starfish
+- **Accents**: coconuts, fish, waves-mini, shells, sun-rays
+
+#### Theme 11: Indian 🪷
+- **Vibe**: Traditional Indian motifs, rich heritage
+- **Palette**: bg `#ff9933, #138808, #4a0082` / ring `#d4af37, #b22222, #ff6f00, #1a5276, #8b0000` / shape `#d4af37, #b22222, #138808` / accent `#ff9933, #d4af37, #e91e63`
+- **Bg patterns**: rangoli, paisley, mehndi-swirls, block-print, jali-lattice
+- **Ring styles**: zari-border, kolam, thread-wrap
+- **Shapes**: diya, lotus, elephant, peacock, mango-paisley
+- **Accents**: bindis, bells, bangles, om-dots, marigolds
+
+#### Theme 12: Bollywood 🎬
+- **Vibe**: Glamorous cinema, sequins and spotlights
+- **Palette**: bg `#e91e63, #ffd700, #6a1b9a` / ring `#ff4081, #ffc107, #00bcd4, #e040fb, #ff5722` / shape `#ff4081, #ffd700, #00bcd4` / accent `#e040fb, #ff5722, #ffc107`
+- **Bg patterns**: spotlight, sequins, film-strip, curtain-drapes, disco-floor
+- **Ring styles**: marquee-lights, bollywood-arch, sequin-border
+- **Shapes**: filmi-star, filmi-heart, microphone, clapperboard, dancing-figure
+- **Accents**: music-notes, sparkles, cameras, roses, masala-stars
+
+#### Theme 13: Arithmetic 🔢
+- **Vibe**: Chalkboard math, classroom nostalgia
+- **Palette**: bg `#2e7d32, #1b5e20, #004d40` / ring `#ffffff, #ffeb3b, #ff7043, #42a5f5, #ef5350` / shape `#ffffff, #ffeb3b, #42a5f5` / accent `#ff7043, #ef5350, #ffffff`
+- **Bg patterns**: graph-paper, chalkboard, notebook-lines, dot-grid, equation-scribbles
+- **Ring styles**: ruler-marks, protractor, bracket-border
+- **Shapes**: plus-sign, divide-symbol, pi-symbol, infinity, abacus
+- **Accents**: equal-signs, percent, tally-marks, decimal-dots, hash-marks
+
+#### Theme 14: Sky 🌈
+- **Vibe**: Daytime sky, clouds and rainbows
+- **Palette**: bg `#64b5f6, #90caf9, #fff176` / ring `#e53935, #ff9800, #4caf50, #7b1fa2, #1565c0` / shape `#e53935, #ff9800, #1565c0` / accent `#4caf50, #f48fb1, #ffb300`
+- **Bg patterns**: sky-gradient, fluffy-clouds, rainbow-arc, cirrus-wisps, sunset-glow
+- **Ring styles**: cloud-border, rainbow-ring, breeze-dash
+- **Shapes**: airplane, songbird, bright-sun, kite, hot-air-balloon
+- **Accents**: tiny-birds, butterflies, raindrops, drifting-leaves, contrails
+
 ### Renderer Architecture
 
 Each tile is an SVG `viewBox 0 0 100 100` with 4 layered zones (back-to-front):
-1. **Background** (full tile, 4-96 inset) — `renderBg(attr)` — 30 pattern cases
-2. **Ring** (border frame) — `renderRing(attr)` — 18 style cases
-3. **Accent** (4 corners at `[[16,16],[84,16],[16,84],[84,84]]`) — `renderAccent(attr)` — 30 accent cases
-4. **Shape** (center, ~28-72 extent) — `renderShape(attr)` — 30 shape cases
+1. **Background** (full tile, 4-96 inset) — `renderBg(attr)` — 70 pattern cases (14 themes × 5)
+2. **Ring** (border frame) — `renderRing(attr)` — 42 style cases (14 × 3)
+3. **Accent** (4 corners at `[[16,16],[84,16],[16,84],[84,84]]`) — `renderAccent(attr)` — 70 accent cases (14 × 5)
+4. **Shape** (center, ~28-72 extent) — `renderShape(attr)` — 70 shape cases (14 × 5)
 
 All rendering is dispatch-on-string via `switch` statements. Adding a new theme requires:
 1. Define the theme object in the `THEMES` array in `engine.js`
@@ -652,7 +720,7 @@ const AUTO_PLAY_DELAY = 60 * 1000;         // Auto-play idle player's turn
 ## 10. Future Ideas — Photo Tiles Theme Expansion
 
 ### Vision
-Keep all existing 8 themes (colorful, playful) AND add a new class of **geometric/architectural themes** with limited palettes and rich pattern variety. The game should offer a wide spectrum — from fun colorful themes like Candy and Celestial to sophisticated monochrome pattern-based themes.
+The game now has 14 diverse themes spanning colorful playful styles (Candy, Tropical, Bollywood) to sophisticated restrained palettes (Noir, Sepia, Arithmetic). Future expansion should explore two directions: (1) **Pattern Mode** — a fundamentally different engine mode for monochrome themes, and (2) **structural redesigns** that change what the 4 tile dimensions represent.
 
 ### Two Engine Modes
 
@@ -667,9 +735,9 @@ A new **Pattern Mode** would use: `15 unique patterns x 1 color = 15` per dimens
 | Style | Description | Color Palette |
 |-------|------------|---------------|
 | **Moorish/Moroccan** | Compass stars, diamond frames, geometric interlocking | Black + gold on white |
-| **Portuguese Azulejo** | Intricate line art tiles, floral & geometric | Blue on white |
-| **Noir (reworked)** | Intricate line art, stipple, crosshatch | White on black |
-| **Sepia (reworked)** | Vintage engraving style, ornate frames | Brown on parchment |
+| **Portuguese Azulejo (v2)** | Intricate line art tiles, floral & geometric | Blue on white (monochrome rework of current Azulejo) |
+| **Noir (v2)** | Intricate line art, stipple, crosshatch in Pattern Mode | White on black |
+| **Sepia (v2)** | Vintage engraving style, ornate frames in Pattern Mode | Brown on parchment |
 
 Key aesthetic principles observed from reference images:
 - Rich geometric complexity within each tile
@@ -683,11 +751,6 @@ Key aesthetic principles observed from reference images:
 - **Nested Squares** (Albers-style) — outer/middle/inner square color + border style
 - **Concentric Circles** (pop-art) — ring colors at 3 depths + outline style
 - **Quadrant Tiles** — 4 colored quadrants, each is a dimension
-
-**Palette-only themes** (keep current 4-zone structure, new vibes):
-- **Neon/Cyberpunk** — electric pinks, blacks, glowing greens
-- **Pastel Dreamscape** — soft muted tones
-- **Earth & Clay** — terracotta, olive, sand, stone
 
 **Thematic skins** (same mechanics, different feel):
 - **Emoji Tiles** — use emoji as the shape dimension
@@ -732,6 +795,7 @@ This is a significant but worthwhile effort — the result would be visually stu
 | Indian/Bollywood/Arithmetic themes blank tiles | `mulberry32()` PRNG called by 5 patterns (paisley, sequins, disco-floor, chalkboard, sequin-border) but never defined in renderer.js — `ReferenceError` crashed tile rendering | Added `mulberry32` function definition at top of renderer.js |
 | Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
 | Noir/Sepia game unsolvable | Palette had identical repeated colors (e.g. 3x `#212121`) — tiles visually identical but different IDs | Changed to distinct shades within same hue family |
+| **7 themes washed-out / invisible bg** | Light/pastel bg palette colors (lightness 75-95%) rendered at `o=0.6` opacity over the white tile base (`rgba(255,255,255,0.88)` in style.css). Many bg patterns further reduced opacity with multipliers like `o*0.3`. Combined effect: bg colors nearly invisible. Arithmetic & Sky were unaffected because they hardcode solid rect fills at 0.82-0.88 opacity instead of using the shared `o` variable. | Two-pronged fix: (1) Bumped renderer base bg opacity from `0.6` to `0.75` (renderer.js line 18). (2) Darkened bg palette colors for Azulejo, Garden, Deco, Mosaic, Candy, Sepia, Tropical — shifting lightest hex values down 1-2 steps on the Material Design scale. All proposed colors cross-checked against shape/ring/accent palettes to avoid same-color collisions that would break tile solvability. |
 
 ---
 
@@ -826,7 +890,7 @@ For each new pattern name, add a `case` block in the corresponding function:
 ```javascript
     // ── MyTheme ──
     case 'pat1': {
-      const o = 0.6;
+      const o = 0.75;
       return `<rect ... fill="${c}" opacity="${o}"/>`;
     }
 ```
@@ -887,16 +951,19 @@ Wait ~2 min for Render auto-deploy. Hard-refresh (Ctrl+Shift+R) the live site to
 
 ### Contrast & Visibility Rule
 
-**Problem**: The Arithmetic theme originally rendered faint green lines on a white tile — shapes like π and ÷ in white/yellow were nearly invisible.
+**The problem**: Tiles use `background: rgba(255,255,255,0.88)` in CSS — a near-white base. Background patterns in `renderBg()` are layered ON TOP of this white. If the pattern color is light AND the opacity is low, the bg becomes invisible. This was the single most common visual defect across the 14-theme expansion.
 
-**Rule**: Every tile must have strong visual contrast between its background and its foreground elements (shapes, rings, accents).
+**The compounding factors**:
+1. **Palette lightness** — pastel/light hex values (lightness > 75%) are inherently low-contrast on white
+2. **Base opacity** — `renderBg()` uses `const o = 0.75` as the base. Many patterns further reduce this with multipliers like `o*0.3` or `o*0.2`
+3. **Pattern coverage** — some patterns (stripes, dots) cover only a fraction of the tile, making the remaining area pure white
 
-Two valid approaches:
+**Two categories of themes and their contrast strategy**:
 
-| Approach | When to Use | Example |
-|----------|------------|---------|
-| **Dark fill + light elements** | Theme has a "surface" feel (chalkboard, night sky) | Arithmetic: solid dark green bg → white/yellow shapes pop |
-| **Light fill + bold dark elements** | Theme is bright/colorful | Candy: pastel bg → saturated shapes |
+| Category | Strategy | Example Themes |
+|----------|----------|----------------|
+| **Dark-bg themes** | Solid dark fill first, light pattern details on top | Neon, Celestial, Noir, Arithmetic |
+| **Colorful-bg themes** | Saturated/medium bg palette + the shared `o=0.75` opacity | Azulejo, Garden, Candy, Tropical |
 
 **Implementation pattern for dark-bg themes:**
 
@@ -911,6 +978,12 @@ case 'chalkboard': {
 }
 ```
 
-**Without** the solid fill, `c` (dark green) at `opacity * 0.3 = 0.18` barely tints the white base → everything looks washed out.
+**Without** the solid fill, `c` (dark green) at `opacity * 0.3 = 0.225` barely tints the white base — everything looks washed out. Arithmetic and Sky themes established this as the reference pattern; they look good because they DON'T rely on the shared `o` variable but paint their own solid rect fill first at 0.82-0.88.
+
+**Rules for choosing bg palette colors:**
+- ✅ Keep bg hex values at lightness ≤ 75% for themes using the shared `o=0.75` opacity
+- ✅ If using very light colors (pastels, near-white), the bg pattern MUST paint a solid rect fill at high opacity (0.8+) before adding pattern details
+- ✅ Cross-check new bg colors against shape/ring/accent colors in the same theme — if a bg color matches a shape color, tiles with that combination become unsolvable (same-color bg and foreground)
+- ✅ Use Material Design color scale as a reference: the 400-600 range gives good saturation without being too dark
 
 **Quick test**: Squint at your tiles. If you can't immediately distinguish every tile from its neighbors, the contrast is too low.
