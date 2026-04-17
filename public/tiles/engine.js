@@ -90,10 +90,10 @@ const THEMES = [
   {
     name: 'Noir', emoji: '🖤',
     palette: {
-      bg:     ['#1a1a1a', '#1a1a1a', '#1a1a1a'],
-      ring:   ['#e0e0e0', '#e0e0e0', '#e0e0e0', '#e0e0e0', '#e0e0e0'],
-      shape:  ['#f0f0f0', '#f0f0f0', '#f0f0f0'],
-      accent: ['#cccccc', '#cccccc', '#cccccc'],
+      bg:     ['#111111', '#333333', '#666666'],
+      ring:   ['#ffffff', '#cccccc', '#888888', '#555555', '#aaaaaa'],
+      shape:  ['#ffffff', '#999999', '#444444'],
+      accent: ['#eeeeee', '#888888', '#333333'],
     },
     bgPatterns:   ['halftone', 'film-grain', 'scanlines', 'gradient-fade', 'ink-blot'],
     ringStyles:   ['sharp', 'etched', 'shadow'],
@@ -103,10 +103,10 @@ const THEMES = [
   {
     name: 'Sepia', emoji: '📜',
     palette: {
-      bg:     ['#f5e6d0', '#f5e6d0', '#f5e6d0'],
-      ring:   ['#5c3a1e', '#5c3a1e', '#5c3a1e', '#5c3a1e', '#5c3a1e'],
-      shape:  ['#5c3a1e', '#5c3a1e', '#5c3a1e'],
-      accent: ['#6b4423', '#6b4423', '#6b4423'],
+      bg:     ['#f5e6d0', '#d4b896', '#a07850'],
+      ring:   ['#3e2723', '#6b4423', '#8b6914', '#a0522d', '#5c3a1e'],
+      shape:  ['#3e2723', '#8b6914', '#c49a6c'],
+      accent: ['#5c3a1e', '#a0522d', '#d4a574'],
     },
     bgPatterns:   ['parchment', 'woodgrain', 'linen', 'coffee-stain', 'aged-paper'],
     ringStyles:   ['ornate', 'worn', 'gilded'],
