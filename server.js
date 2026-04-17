@@ -586,6 +586,10 @@ ludoNs.on('connection', (socket) => {
     }
   });
 
+  socket.on('reaction', ({ sessionId, emoji }) => {
+    ludoNs.emit('reaction', { sessionId, emoji });
+  });
+
   socket.on('disconnect', () => {
     log(`DISCONNECT socket=${socket.id}`);
     if (!game) return;
