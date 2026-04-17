@@ -197,6 +197,7 @@ function nextTurn(extraTurn) {
   }
   log(`Turn: ${game.players[game.currentPlayerIndex].name}(${game.players[game.currentPlayerIndex].color})`);
   broadcastState();
+  game.lastCapture = null; // Clear after broadcasting so banner shows only once
   startAutoPlayTimer();
 }
 
@@ -238,7 +239,10 @@ function startAutoPlayTimer() {
         } else {
           broadcastState();
           game.turnTimer = setTimeout(() => {
-            if (game && game.phase === 'playing') nextTurn(value === 6 || captured);
+            if (game && game.phase === 'playing') {
+              const reachedHome = game.tokens[player.color][pick] === 57;
+              nextTurn(value === 6 || captured || reachedHome);
+            }
           }, 1000);
         }
       }
@@ -259,7 +263,8 @@ function startAutoPlayTimer() {
           broadcastState();
           setTimeout(resetGame, 30000);
         } else {
-          nextTurn(game.diceValue === 6 || captured);
+          const reachedHome = game.tokens[player.color][pick] === 57;
+          nextTurn(game.diceValue === 6 || captured || reachedHome);
         }
       } else {
         nextTurn(false);
@@ -434,7 +439,8 @@ ludoNs.on('connection', (socket) => {
           broadcastState();
           setTimeout(resetGame, 30000);
         } else {
-          const extra = value === 6 || captured;
+          const reachedHome = game.tokens[player.color][movable[0]] === 57;
+          const extra = value === 6 || captured || reachedHome;
           log(`  auto-move token ${movable[0]}, extra turn: ${extra}`);
           nextTurn(extra);
         }
@@ -470,7 +476,8 @@ ludoNs.on('connection', (socket) => {
       broadcastState();
       setTimeout(resetGame, 30000);
     } else {
-      const extra = game.diceValue === 6 || captured;
+      const reachedHome = game.tokens[player.color][tokenIdx] === 57;
+      const extra = game.diceValue === 6 || captured || reachedHome;
       log(`  extra turn: ${extra}`);
       nextTurn(extra);
     }
@@ -563,7 +570,8 @@ ludoNs.on('connection', (socket) => {
         broadcastState();
         setTimeout(resetGame, 30000);
       } else {
-        nextTurn(value === 6 || captured);
+        const reachedHome = game.tokens[player.color][movable[0]] === 57;
+        nextTurn(value === 6 || captured || reachedHome);
       }
     } else {
       broadcastState();
