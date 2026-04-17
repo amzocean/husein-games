@@ -8,6 +8,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// Force revalidation for HTML files so new deploys are picked up immediately
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html') || req.path.endsWith('/')) {
+    res.setHeader('Cache-Control', 'no-cache');
+  }
+  next();
+});
+
 // Serve static files (landing page, tiles, valentines, ludo)
 app.use(express.static(path.join(__dirname, 'public')));
 
