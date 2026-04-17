@@ -6,11 +6,11 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 
 **The 3 games:**
 - **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels)
-- **🧩 Photo Tiles** — A pattern-matching tile puzzle with 14 procedurally-rendered SVG themes (single-player, no server logic)
+- **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering
 
 **What a new session needs to know immediately:**
-- The Photo Tiles game is the most actively developed — it has 14 visual themes, each requiring ~18 SVG render cases in `renderer.js` (~1520 lines). Theme work is where most bugs have occurred (see Bug Fixes History and the Standard Process for Adding Themes).
+- The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~18 SVG render cases in `renderer.js` (~1820 lines). Theme work is where most bugs have occurred (see Bug Fixes History and the Standard Process for Adding Themes).
 - Ludo's server logic has **5 separate code paths** that complete a token move. Any change to post-move behavior (extra turns, win checks, captures) MUST be applied to all 5. This is the #1 source of Ludo bugs.
 - The site runs on Render free tier — no persistent storage, auto-deploys on push to `main`, 30s cold starts.
 - Git pushes use the **browser-based credential manager** (personal GitHub account `amzocean`). The `gh` CLI is linked to a work account — do NOT use it for this repo.
@@ -59,12 +59,13 @@ husein-games/
     │   ├── index.html      # PWA-capable sliding tile puzzle
     │   ├── style.css       # Styles (incl. theme toast)
     │   ├── app.js          # Main controller (ES modules, theme toast display)
-    │   ├── engine.js       # Board generation, game logic, 6-theme system (~300 lines)
-    │   ├── renderer.js     # SVG tile rendering — 6 themes, ~90 visual elements (~608 lines)
+    │   ├── engine.js       # Board generation, game logic, 16-theme system (~430 lines)
+    │   ├── renderer.js     # SVG tile rendering — 16 themes, ~288 visual elements (~1820 lines)
     │   ├── photos.js       # Photo loader from manifest
     │   ├── photos/         # 5 personal photos + manifest.json
     │   ├── manifest.json   # PWA manifest
     │   └── sw.js           # Service worker
+    │   └── validate-themes.js  # Pre-commit validator (10 checks)
     └── ludo/
         └── index.html      # Ludo client: HTML + CSS + JS + Canvas (915 lines)
 ```
@@ -107,15 +108,15 @@ A pattern-matching tile puzzle (6×5 = 30 tiles). Match tiles by shared visual a
 - `style.css` — Full styling including `.theme-pill` toast overlay
 - `app.js` — Main application controller (ES modules, imports engine + renderer + photos)
   - Shows theme name + emoji as a toast on each new game (fades after 2s)
-- `engine.js` — Board generation, game logic & **14-theme system** (~370 lines)
-  - `THEMES` array defines all 14 themes (palette, patterns, styles, shapes, accents)
+- `engine.js` — Board generation, game logic & **16-theme system** (~430 lines)
+  - `THEMES` array defines all 16 themes (palette, patterns, styles, shapes, accents)
   - `buildPools(theme)` — generates 4 attribute pools of 15 items each from a theme
   - `generateBoard()` — picks a random theme, builds pools, creates paired 30-tile board
   - `GameState` class — manages board, matching, scoring; tracks `currentTheme`
   - Exports: `GameState`, `ROWS`, `COLS`, `TILE_COUNT`, `THEMES`
-- `renderer.js` — SVG tile rendering with spatial-zone design (~1520 lines)
+- `renderer.js` — SVG tile rendering with spatial-zone design (~1820 lines)
   - 4 render functions: `renderBg()`, `renderRing()`, `renderShape()`, `renderAccent()`
-  - ~252 visual element cases across all 14 themes
+  - ~288 visual element cases across all 16 themes
   - `viewBox 0 0 100 100` — four spatially distinct zones rendered back-to-front
   - Layer order: bg → ring → accent → shape
 - `photos.js` — Loads random photo from `photos/manifest.json`
@@ -137,7 +138,7 @@ A pattern-matching tile puzzle (6×5 = 30 tiles). Match tiles by shared visual a
 
 ### Theme System
 
-Each new game randomly selects one of **14 visual themes**. Each theme defines:
+Each new game randomly selects one of **16 visual themes**. Each theme defines:
 - **Palette**: 3 bg colors, 5 ring colors, 3 shape colors, 3 accent colors
 - **Background patterns** (5): how the tile background is filled
 - **Ring styles** (3): the decorative border frame
@@ -150,15 +151,15 @@ Each new game randomly selects one of **14 visual themes**. Each theme defines:
 - shape: 5 shapes × 3 colors = 15
 - accent: 5 accents × 3 colors = 15
 
-> **14 theme palette listings** — see **Appendix A: Theme Palette Reference** at the end of this document.
+> **16 theme palette listings** — see **Appendix A: Theme Palette Reference** at the end of this document.
 
 ### Renderer Architecture
 
 Each tile is an SVG `viewBox 0 0 100 100` with 4 layered zones (back-to-front):
-1. **Background** (full tile, 4-96 inset) — `renderBg(attr)` — 70 pattern cases (14 themes × 5)
-2. **Ring** (border frame) — `renderRing(attr)` — 42 style cases (14 × 3)
-3. **Accent** (4 corners at `[[16,16],[84,16],[16,84],[84,84]]`) — `renderAccent(attr)` — 70 accent cases (14 × 5)
-4. **Shape** (center, ~28-72 extent) — `renderShape(attr)` — 70 shape cases (14 × 5)
+1. **Background** (full tile, 4-96 inset) — `renderBg(attr)` — 80 pattern cases (16 themes × 5)
+2. **Ring** (border frame) — `renderRing(attr)` — 48 style cases (16 × 3)
+3. **Accent** (4 corners at `[[16,16],[84,16],[16,84],[84,84]]`) — `renderAccent(attr)` — 80 accent cases (16 × 5)
+4. **Shape** (center, ~28-72 extent) — `renderShape(attr)` — 80 shape cases (16 × 5)
 
 All rendering is dispatch-on-string via `switch` statements. Adding a new theme requires:
 1. Define the theme object in the `THEMES` array in `engine.js`
@@ -668,6 +669,7 @@ This script checks ALL of the following automatically:
 | Function dependencies | Calling undefined functions like mulberry32 (ReferenceError) |
 | Syntax check | Missing braces, unclosed strings, malformed JS |
 | Color distinctness | Identical hex codes in same palette group (unsolvable game) |
+| Background hue diversity | All 3 bg colors are shades of same hue (tiles look monochrome). 40° min hue spread required. Noir/Sepia/Neon exempt — intentionally narrow palette |
 | Orphan cases | Cases in renderer with no theme using them (dead code warning) |
 
 **The validator must show all green ✅ before committing.**
@@ -707,7 +709,7 @@ Wait ~2 min for Render auto-deploy. Hard-refresh (Ctrl+Shift+R) the live site to
 
 ### Contrast & Visibility Rule
 
-**The problem**: Tiles use `background: rgba(255,255,255,0.88)` in CSS — a near-white base. Background patterns in `renderBg()` are layered ON TOP of this white. If the pattern color is light AND the opacity is low, the bg becomes invisible. This was the single most common visual defect across the 14-theme expansion.
+**The problem**: Tiles use `background: rgba(255,255,255,0.88)` in CSS — a near-white base. Background patterns in `renderBg()` are layered ON TOP of this white. If the pattern color is light AND the opacity is low, the bg becomes invisible. This was the single most common visual defect across the 16-theme expansion.
 
 **The compounding factors**:
 1. **Palette lightness** — pastel/light hex values (lightness > 75%) are inherently low-contrast on white
@@ -719,7 +721,7 @@ Wait ~2 min for Render auto-deploy. Hard-refresh (Ctrl+Shift+R) the live site to
 | Category | Strategy | Example Themes |
 |----------|----------|----------------|
 | **Dark-bg themes** | Solid dark fill first, light pattern details on top | Neon, Celestial, Noir, Arithmetic |
-| **Colorful-bg themes** | Saturated/medium bg palette + the shared `o=0.75` opacity | Azulejo, Garden, Candy, Tropical |
+| **Colorful-bg themes** | Saturated/medium bg palette + the shared `o=0.75` opacity | Azulejo, Garden, Candy, Tropical, Street Food, Arctic |
 
 **Implementation pattern for dark-bg themes:**
 
@@ -743,6 +745,29 @@ case 'chalkboard': {
 - ✅ Use Material Design color scale as a reference: the 400-600 range gives good saturation without being too dark
 
 **Quick test**: Squint at your tiles. If you can't immediately distinguish every tile from its neighbors, the contrast is too low.
+
+### Base Tint Fill Rule (Mandatory for All bg Patterns)
+
+**Every** bg pattern in `renderBg()` MUST start with a base-color `<rect>` that covers the tile area:
+```javascript
+case 'my-pattern': {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+  // ... decorative elements on top ...
+  return s;
+}
+```
+
+**Why**: `createTileSVG()` starts every tile with `<rect fill="white" opacity="0.1"/>` — a nearly transparent white base. If a bg pattern only draws sparse decorative elements (dots, thin lines, arcs) without first filling the area with the bg color, tiles appear all-white. This bug affected 41 patterns across 11 themes before being caught.
+
+**Opacity multiplier guidelines:**
+- `o*0.25` — patterns with moderate decorative coverage (the base tint is supplementary)
+- `o*0.3` — very sparse patterns (scattered dots, tiny elements — base tint carries the color)
+- `0.6-0.88` — dark-bg themes like Arithmetic/Sky that hardcode solid fills (not using shared `o`)
+
+**Patterns that naturally fill area DON'T need the base rect** (but it doesn't hurt to include it):
+- Checkerboard, diagonal, solid, gingham — filled rects/polygons cover 50-100%
+- Triangles, brickwork, pinwheel — large filled shapes
+- Gradient/sunset patterns — full-width bands
 
 ---
 
@@ -768,13 +793,16 @@ case 'chalkboard': {
 | Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
 | Noir/Sepia game unsolvable | Palette had identical repeated colors (e.g. 3x `#212121`) — tiles visually identical but different IDs | Changed to distinct shades within same hue family |
 | **7 themes washed-out / invisible bg** | Light/pastel bg palette colors (lightness 75-95%) rendered at `o=0.6` opacity over the white tile base (`rgba(255,255,255,0.88)` in style.css). Many bg patterns further reduced opacity with multipliers like `o*0.3`. Combined effect: bg colors nearly invisible. Arithmetic & Sky were unaffected because they hardcode solid rect fills at 0.82-0.88 opacity instead of using the shared `o` variable. | Two-pronged fix: (1) Bumped renderer base bg opacity from `0.6` to `0.75` (renderer.js line 18). (2) Darkened bg palette colors for Azulejo, Garden, Deco, Mosaic, Candy, Sepia, Tropical — shifting lightest hex values down 1-2 steps on the Material Design scale. All proposed colors cross-checked against shape/ring/accent palettes to avoid same-color collisions that would break tile solvability. |
+| **Celestial tiles appear all-white** | `createTileSVG()` starts every tile with `fill="white" opacity="0.1"` base rect. Celestial bg patterns (starfield, nebula, aurora, cosmic-dust, void) only drew tiny decorative elements (2px stars, faint ellipses at 0.25-0.4 opacity) with NO base area fill — the white base showed through. Newer themes (Arithmetic, Sky) correctly start each bg pattern with a solid `<rect>` fill. | Added `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25-0.3}"/>` as the first SVG element in all 5 Celestial bg patterns to provide a visible color base tint. |
+| **36 sparse bg patterns across 10 themes** | Same root cause as Celestial: older bg patterns only drew decorative line work (dots, thin strokes, arcs) without a base area fill. Affected: Garden (5), Deco (5), Neon (5), Indian (5), Tropical (4), Mosaic (2), Candy (2), Noir (3), Sepia (3), Bollywood (2). Patterns with existing area coverage (e.g. checkerboard, gingham, sunset-gradient, disco-floor) were unaffected. | Added base tint `<rect>` as first SVG element in each sparse pattern. Opacity multiplier chosen per-theme: `o*0.25` for patterns with moderate decorative coverage, `o*0.3` for very sparse patterns (scattered dots, thin lines). |
+| **Bg palette hue diversity** | Arctic theme used 3 shades of blue as bg colors — tiles looked monochrome despite technically distinct hex values. Arithmetic had 3 shades of green. | Diversified bg palettes (Arctic: blue+ice-white+lavender; Arithmetic: green+cream+brown). Added validator CHECK 9: bg hue diversity requires 40° minimum hue spread across the 3 bg colors (Noir/Sepia/Neon exempt as intentionally narrow palettes). |
 
 ---
 
 ## 13. Future Ideas — Photo Tiles Theme Expansion
 
 ### Vision
-The game now has 14 diverse themes spanning colorful playful styles (Candy, Tropical, Bollywood) to sophisticated restrained palettes (Noir, Sepia, Arithmetic). Future expansion should explore two directions: (1) **Pattern Mode** — a fundamentally different engine mode for monochrome themes, and (2) **structural redesigns** that change what the 4 tile dimensions represent.
+The game now has 16 diverse themes spanning colorful playful styles (Candy, Tropical, Bollywood, Street Food) to sophisticated restrained palettes (Noir, Sepia, Arithmetic) to cool-toned environments (Arctic, Sky, Celestial). Future expansion should explore two directions: (1) **Pattern Mode** — a fundamentally different engine mode for monochrome themes, and (2) **structural redesigns** that change what the 4 tile dimensions represent.
 
 ### Two Engine Modes
 
@@ -943,6 +971,22 @@ Each theme defines: palette (bg/ring/shape/accent colors), 5 bg patterns, 3 ring
 - **Ring styles**: cloud-border, rainbow-ring, breeze-dash
 - **Shapes**: airplane, songbird, bright-sun, kite, hot-air-balloon
 - **Accents**: tiny-birds, butterflies, raindrops, drifting-leaves, contrails
+
+#### Theme 15: Street Food 🍕
+- **Vibe**: Food trucks, warm spices, playful culinary chaos
+- **Palette**: bg `#d84315, #f9a825, #2e7d32` / ring `#bf360c, #f57f17, #1b5e20, #4e342e, #e65100` / shape `#ffffff, #1b5e20, #bf360c` / accent `#ffeb3b, #ffffff, #ff6e40`
+- **Bg patterns**: checkered-tablecloth, food-truck-stripe, brick-wall, napkin-fold, grease-paper
+- **Ring styles**: pretzel-twist, sauce-drizzle, chopstick-border
+- **Shapes**: pizza-slice, taco, boba-cup, soft-pretzel, dumpling
+- **Accents**: sesame-seeds, chili-flakes, crumbs, steam-wisps, sauce-dots
+
+#### Theme 16: Arctic ❄️
+- **Vibe**: Icy tundra, cool-tone complement to Tropical's warm palette
+- **Palette**: bg `#1565c0, #e1f5fe, #b39ddb` / ring `#0d47a1, #00838f, #6a1b9a, #1b5e20, #c62828` / shape `#0d47a1, #c62828, #1b5e20` / accent `#b3e5fc, #ffffff, #80deea`
+- **Bg patterns**: ice-crystals, snowfall, frozen-lake, blizzard-wind, glacier-layers
+- **Ring styles**: frost-border, icicle-ring, snowdrift-edge
+- **Shapes**: snowflake, penguin, igloo, polar-bear, aurora
+- **Accents**: ice-shards, snowflakes-tiny, frost-dots, icicle-drops, wind-swirls
 
 ---
 
