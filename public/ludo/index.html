@@ -736,7 +736,7 @@ function renderFinished() {
   } else {
     const winner = state.players.find(p => p.color === state.winner);
     const name = winner ? winner.name : state.winner;
-    msgEl.innerHTML = `🏆 <span style="color:${COLORS[state.winner]?.fill || '#fff'}">${escHtml(name)}</span> wins!`;
+    msgEl.innerHTML = `🏆 <span style="color:${COLORS[state.winner]?.fill || '#fff'}">${escHtml(name)}</span> wins the game!<br><span style="font-size:0.85rem;opacity:0.85;margin-top:8px;display:inline-block;">But Husein already won in life because he married Fatema 💕</span>`;
   }
 }
 
