@@ -113,6 +113,32 @@ const THEMES = [
     shapeNames:   ['quill', 'compass', 'anchor', 'fleur', 'lantern'],
     accentShapes: ['filigree', 'rivets', 'scrolls', 'stamps', 'ink-dots'],
   },
+  {
+    name: 'Neon', emoji: '💡',
+    palette: {
+      bg:     ['#0d0221', '#1a0533', '#2b0845'],
+      ring:   ['#ff00ff', '#00ffff', '#ff3366', '#39ff14', '#ffff00'],
+      shape:  ['#ff00ff', '#00ffff', '#39ff14'],
+      accent: ['#ff3366', '#ffff00', '#00ffff'],
+    },
+    bgPatterns:   ['grid-lines', 'circuit', 'pixel-blocks', 'laser-beams', 'digital-rain'],
+    ringStyles:   ['neon-glow', 'pulse', 'wireframe'],
+    shapeNames:   ['lightning', 'pixel-heart', 'pac-ghost', 'controller', 'gem'],
+    accentShapes: ['glitch-dots', 'brackets', 'pixels', 'signal-bars', 'power-icons'],
+  },
+  {
+    name: 'Tropical', emoji: '🌴',
+    palette: {
+      bg:     ['#00bcd4', '#ff7043', '#ffee58'],
+      ring:   ['#e91e63', '#4caf50', '#ff9800', '#2196f3', '#9c27b0'],
+      shape:  ['#e91e63', '#4caf50', '#ff9800'],
+      accent: ['#f44336', '#00bcd4', '#ffeb3b'],
+    },
+    bgPatterns:   ['waves', 'palm-fronds', 'sand-ripples', 'bamboo', 'sunset-gradient'],
+    ringStyles:   ['lei', 'rope-twist', 'shell-border'],
+    shapeNames:   ['flamingo', 'pineapple', 'hibiscus', 'surfboard', 'starfish'],
+    accentShapes: ['coconuts', 'fish', 'waves-mini', 'shells', 'sun-rays'],
+  },
 ];
 
 // Build 4 independent pools of 15 attributes each (total 60, ids 0-59)
