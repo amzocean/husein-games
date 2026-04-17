@@ -455,6 +455,46 @@ if (THEMES) {
   check(false, '', 'Skipped — could not parse THEMES');
 }
 
+// ── CHECK 9: Undefined variable references in accent cases ──
+// The renderAccent loop uses `for (const [cx, cy] of CORNERS)` — only cx, cy, c, out, attr
+// are in scope. Catch any reference to `idx`, `i`, or other loop index variables that don't exist.
+
+console.log(`\n${BOLD}CHECK 9: Undefined variable references in renderer cases${RESET}`);
+{
+  // Variables that are in scope inside renderAccent's for-of loop
+  const accentScope = new Set(['cx', 'cy', 'c', 'out', 'attr', 'CORNERS']);
+  // Common loop index variables that should NOT appear unless declared locally
+  const suspectVars = ['idx', 'i', 'j', 'k', 'n', 'index'];
+
+  // Extract the renderAccent function body
+  const accentMatch = rendererSrc.match(/function\s+renderAccent\s*\([^)]*\)\s*\{([\s\S]*?)^\}/m);
+  let anyUndef = false;
+  if (accentMatch) {
+    const body = accentMatch[1];
+    const lines = body.split('\n');
+    for (let ln = 0; ln < lines.length; ln++) {
+      const line = lines[ln];
+      // Skip lines that declare the variable locally (const/let/var)
+      if (/\b(const|let|var)\b/.test(line)) continue;
+      for (const v of suspectVars) {
+        // Match bare variable references (not inside a string or as part of a longer identifier)
+        const re = new RegExp(`(?<![a-zA-Z_$])${v}(?![a-zA-Z_$0-9])`, 'g');
+        if (re.test(line)) {
+          // Check it's not inside a string literal
+          const stripped = line.replace(/'[^']*'|"[^"]*"|`[^`]*`/g, '');
+          if (new RegExp(`(?<![a-zA-Z_$])${v}(?![a-zA-Z_$0-9])`).test(stripped)) {
+            check(false, '', `renderAccent references undeclared variable '${v}' — line: ${line.trim().substring(0, 80)}`);
+            anyUndef = true;
+          }
+        }
+      }
+    }
+  }
+  if (!anyUndef) {
+    check(true, 'No undefined variable references detected in renderAccent cases', '');
+  }
+}
+
 // ── Summary ──
 
 console.log(`\n${BOLD}═══ Summary ═══${RESET}`);

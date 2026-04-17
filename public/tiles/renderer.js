@@ -1468,13 +1468,14 @@ function renderAccent(attr) {
 
       // ── Sky ──
       case 'tiny-birds': {
-        const d = idx < 2 ? 1 : -1;
+        const d = cy < 50 ? 1 : -1;
         out += `<path d="M${cx-4},${cy} Q${cx-2},${cy-3*d} ${cx},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>` +
                `<path d="M${cx},${cy} Q${cx+2},${cy-3*d} ${cx+4},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
       }
       case 'butterflies': {
-        out += `<ellipse cx="${cx-3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${idx*90+15},${cx},${cy})"/>` +
-               `<ellipse cx="${cx+3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${idx*90-15},${cx},${cy})"/>` +
+        const angle = (cx < 50 ? 0 : 1) + (cy < 50 ? 0 : 2);
+        out += `<ellipse cx="${cx-3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${angle*90+15},${cx},${cy})"/>` +
+               `<ellipse cx="${cx+3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${angle*90-15},${cx},${cy})"/>` +
                `<line x1="${cx}" y1="${cy-2}" x2="${cx}" y2="${cy+3}" stroke="${c}" stroke-width="0.8"/>`; break;
       }
       case 'raindrops':
