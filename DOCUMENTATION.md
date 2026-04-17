@@ -18,7 +18,7 @@ Single Node.js process serving everything:
 
 ```
 husein-games/
-├── server.js              # Express + Socket.IO server (583 lines)
+├── server.js              # Express + Socket.IO server (~595 lines)
 ├── package.json           # express ^4.18.2, socket.io ^4.7.4
 ├── .gitignore             # node_modules, package-lock.json
 └── public/
@@ -44,6 +44,7 @@ husein-games/
 ### Key Technical Decisions
 - Socket.IO namespace `/ludo` (`io.of('/ludo')` on server, `io('/ludo')` on client) — keeps Ludo traffic separate
 - `broadcastState()` uses `ludoNs.emit()` (namespace-scoped, not global)
+- **Cache-busting middleware** runs BEFORE `express.static`: sets `Cache-Control: no-cache` on `.html` files and directory-root requests (`/`, `/ludo/`, etc.). This forces browsers to revalidate on every visit — if the file hasn't changed, server returns 304 (no body, ~200 bytes), so performance cost is negligible. Without this, mobile browsers (esp. iOS Safari) would serve stale HTML for hours/days after a deploy.
 - Static files served with `express.static(path.join(__dirname, 'public'))` — MUST use `path.join` for Render (relative paths fail)
 - Game state is **in-memory only** — Render process restart = game state lost
 - `process.env.PORT || 3000` — Render assigns its own port
@@ -90,6 +91,8 @@ b07d8a6 Change plum to indigo blue for better contrast with rose
 3c3e6fc Documentation update
 3182743 Add 6-theme system to Photo Tiles game
 95216c6 Update documentation with 6-theme Photo Tiles system
+df501e6 Ludo: RGBY colors, extra turn on home, fix capture banner
+ce899c4 Add no-cache headers for HTML files to prevent stale deploys
 ```
 
 ### Custom Domain
@@ -279,15 +282,16 @@ Classic Ludo board game, 2-4 players, real-time multiplayer via Socket.IO. Mobil
 ### Visual Theme
 - **Romantic blush** — background `#fff5f5`, white cards with rose-tinted borders
 - **Fonts**: Playfair Display (heading) + Inter (body), matching the landing page
-- **Player colors** (mapped from internal keys red/green/yellow/blue):
-  | Key | Display Name | Fill | Light (base/path) | Dark (borders) |
-  |-----|-------------|------|-------------------|----------------|
-  | red | Rose | `#c44569` | `#fce4ec` | `#8e1942` |
-  | green | Gold | `#b8860b` | `#faf0d0` | `#6d5006` |
-  | yellow | Teal | `#2a9d8f` | `#d5f0eb` | `#176b60` |
-  | blue | Indigo | `#3355a0` | `#dce4f5` | `#1a2d5e` |
-- Center HOME triangle uses same `COLORS[x].fill` values
-- Capture flash uses Rose `#c44569`
+- **Player colors** — standard RGBY (reverted from romantic Rose/Gold/Teal/Indigo theme):
+  | Key | Fill | Light (base/path) | Dark (borders) |
+  |-----|------|-------------------|----------------|
+  | red | `#D32F2F` | `#FFCDD2` | `#B71C1C` |
+  | green | `#388E3C` | `#C8E6C9` | `#1B5E20` |
+  | yellow | `#F9A825` | `#FFF9C4` | `#F57F17` |
+  | blue | `#1976D2` | `#BBDEFB` | `#0D47A1` |
+- Center HOME triangles use `COLORS[x].fill` dynamically — auto-updates with color changes
+- Capture banner background uses `COLORS[capturer].fill`
+- **Design note on color choices**: These are Material Design primary colors chosen for maximum distinguishability on both OLED and LCD screens. The romantic theme colors (Rose/Gold/Teal/Indigo) were visually appealing but Gold and Teal were hard to distinguish on some mobile screens, and the "display name" abstraction (red key -> "Rose" label) created confusion when the base color didn't match the token color. Standard RGBY removes that mismatch entirely — the COLORS object key IS the color you see.
 
 ### Client: `public/ludo/index.html` (915 lines)
 
@@ -434,7 +438,8 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 4. Advance to next connected player (skip disconnected)
 5. If no connected players → game over
 6. Broadcast state
-7. Start 60-second auto-play timer
+7. **Clear `game.lastCapture = null`** (after broadcast — ensures exactly-once delivery)
+8. Start 60-second auto-play timer
 
 #### Auto-Play Timer (`startAutoPlayTimer()`)
 - Single 60-second timer covers the ENTIRE turn (roll + token pick)
@@ -451,6 +456,12 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 #### Extra Turn Rules
 - Rolling a 6 → extra turn
 - Capturing an opponent → extra turn
+- **Token reaching home (step 57) → extra turn**
+- Extra turn means the same player rolls again immediately (no turn advancement)
+- All three conditions are checked at every code path where a move completes (5 locations — see design note below)
+- Win check runs BEFORE extra turn check, so if the last token reaches home, the game ends rather than granting a useless extra turn
+
+**Design note — why 5 locations**: The extra turn condition (`value === 6 || captured || reachedHome`) appears in 5 separate places in server.js because there are 5 distinct code paths that complete a move: (1) roll handler auto-move (single valid token), (2) move handler (player picks token), (3) auto-play roll+move, (4) auto-play pick-only, (5) debug_roll auto-move. Each has its own variable context (different variable names for the token index). A future refactor could extract a shared `completeMove()` function, but the current approach is explicit and grep-able — search for `reachedHome` to find all 5. If you add a new code path that moves tokens, you MUST add the reachedHome check there too.
 
 #### Capture Mechanics
 - Landing on opponent's token on the common path sends them back to base (step 0)
@@ -477,6 +488,12 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 #### Capture Banner
 - Shows "💥 [attacker] captured [victim]!" with attacker's color background
 - Auto-hides after 3 seconds (client-side timer)
+- **Server clears `game.lastCapture = null` immediately after `broadcastState()` in `nextTurn()`** — this ensures the capture info is broadcast exactly once, then all subsequent state broadcasts have `lastCapture: null`
+- Client checks `state.lastCapture` on every state update: non-null shows banner, null hides it
+
+**Design note — why clear AFTER broadcast, not before**: The banner data must survive in game state long enough to be included in one `broadcastState()` call so all clients see it. Clearing it before broadcast would mean no client ever sees it. Clearing it after ensures exactly-once delivery. The previous bug was that `lastCapture` was NEVER cleared — it persisted forever, causing every subsequent broadcast (dice rolls, moves, turn changes) to re-trigger the banner on all clients.
+
+**Design note — why not clear on client side only**: A client-side-only fix (e.g. tracking "already shown this capture") was considered but rejected. The server is the source of truth — if the server keeps sending stale data, every new client connection (spectators, reconnects) would also see the ghost banner. Fixing at the source is cleaner.
 
 #### Logging
 - All server events logged with `[LUDO HH:MM:SS.mmm]` prefix
@@ -495,6 +512,77 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 4. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
 
 5. **GoDaddy DNS not configured**: huseinlovesyou.com still points to Netlify.
+
+---
+
+## 7b. Ludo Architecture — Design Pitfalls & Patterns
+
+This section documents recurring design patterns, past mistakes, and the reasoning behind current approaches. Read this BEFORE making Ludo changes to avoid re-introducing fixed bugs.
+
+### The "5 Code Paths" Problem
+
+Token movement can complete through 5 distinct code paths in server.js:
+
+| # | Path | Location | Token Variable | When It Runs |
+|---|------|----------|---------------|-------------|
+| 1 | Roll handler auto-move | `socket.on('roll')` | `movable[0]` | Player rolls, only 1 token can move → auto-moved after 1s delay |
+| 2 | Move handler | `socket.on('move')` | `tokenIdx` | Player manually picks a token |
+| 3 | Auto-play roll+move | `startAutoPlayTimer()` first branch | `pick` | 60s timeout, player hasn't rolled yet |
+| 4 | Auto-play pick-only | `startAutoPlayTimer()` second branch | `pick` | 60s timeout, player rolled but hasn't picked |
+| 5 | Debug roll auto-move | `socket.on('debug_roll')` | `movable[0]` | Debug panel forced dice value, single valid token |
+
+**Rule**: Any logic that runs after a move completes (extra turn, win check, capture handling) MUST be duplicated across all 5 paths. If you add something to one path, grep for the others and add it there too. Search for `reachedHome` to find the current pattern.
+
+**Why not extract a shared function?** Each path has different surrounding context (timers, delays, broadcast timing). A shared `completeMove()` would need many parameters and conditionals, making it harder to read than the current explicit approach. The tradeoff is accepted: duplication is the cost of readability. If a 6th path is ever added, consider refactoring.
+
+### State Lifecycle — When to Clear Transient Fields
+
+The `game` object holds both persistent state (tokens, players, phase) and transient state (lastCapture, diceValue). Transient fields that trigger client UI effects MUST be cleared after exactly one broadcast:
+
+| Field | Set By | Cleared By | If Not Cleared |
+|-------|--------|-----------|----------------|
+| `lastCapture` | `checkCapture()` | `nextTurn()` after `broadcastState()` | Banner re-appears on every broadcast forever |
+| `diceValue` | Roll handler | `nextTurn()` before broadcast | Previous dice shows on next player's turn |
+| `diceRolled` | Roll handler | `nextTurn()` before broadcast | Next player can't roll |
+
+**Pattern**: Clear transient UI-trigger fields AFTER `broadcastState()` if clients need to see them once, or BEFORE if clients should never see stale values. `lastCapture` is the "after" pattern (show once then clear). `diceValue/diceRolled` is the "before" pattern (clean slate for next turn).
+
+### Color System — The COLORS Object is the Single Source of Truth
+
+All visual color references in both client and server flow through the `COLORS` object in `public/ludo/index.html`. The keys (`red`, `green`, `yellow`, `blue`) match the server's `COLORS` array and player `.color` field.
+
+**What NOT to do:**
+- Don't hardcode hex values in drawing functions — always reference `COLORS[x].fill/light/dark`
+- Don't add a "display name" abstraction (e.g., mapping "red" → "Rose") — this was tried and caused confusion when base colors didn't match token colors
+- Don't use colors that are too similar (Rose and Plum were nearly indistinguishable on some screens)
+
+**What TO do:**
+- Use Material Design primary colors or similar well-tested palettes
+- Ensure the `light` variant is a near-white pastel (for base/path fill) — it should be obviously lighter than `fill`
+- Ensure the `dark` variant is deeply saturated (for borders) — it should be obviously darker than `fill`
+- Test on both OLED and LCD screens if possible — some color pairs look distinct on one but not the other
+
+### Caching — Mobile Browsers Are Aggressive
+
+`express.static` serves files with default ETags but no explicit Cache-Control header. Mobile browsers (especially iOS Safari) interpret this as "cache indefinitely" and may serve stale HTML for days.
+
+**Solution**: Middleware before `express.static` sets `Cache-Control: no-cache` on HTML and directory requests. This doesn't disable caching — it forces revalidation. The browser sends an `If-None-Match` header, server responds 304 (Not Modified, no body) if unchanged. Overhead is ~200-500 bytes per page load.
+
+**What NOT to do:**
+- Don't use `no-store` — that disables caching entirely, forcing full re-download every time
+- Don't set `max-age: 0` alone — some browsers treat this differently from `no-cache`
+- Don't add cache-busting query strings to Socket.IO URLs — the library handles its own versioning
+- Don't apply `no-cache` to images/CSS/JS unless they change frequently — those are fine to cache
+
+### broadcastState() — The Central Sync Mechanism
+
+Every game state change MUST go through `broadcastState()` to reach all clients. Common mistakes:
+
+1. **Mutating state AFTER broadcast but expecting clients to see it**: If you change `game.foo` after `broadcastState()`, clients won't see it until the next broadcast. This is sometimes intentional (lastCapture clearing) but must be deliberate.
+
+2. **Forgetting to broadcast**: If you change game state but don't call `broadcastState()` or `nextTurn()` (which calls it internally), clients will be out of sync until the next action triggers a broadcast.
+
+3. **Broadcasting too often**: Each `broadcastState()` sends the full game state to all connected clients. Don't call it in a tight loop. The current architecture calls it at natural break points: after roll, after move, after turn change.
 
 ---
 
@@ -625,6 +713,10 @@ This is a significant but worthwhile effort — the result would be visually stu
 | Pink and purple too similar | Plum `#7b2d8e` too close to Rose `#c44569` | Changed 4th color to Indigo `#3355a0` |
 | Home center triangles old colors | Hardcoded `#D32F2F` etc in drawCenter() | Updated to use `COLORS[x].fill` dynamically |
 | Light/dark variants indistinguishable | Light/dark hex values too close to fill | Widened gap: lights are near-white pastels, darks are deep saturated |
+| **Home/base color mismatch** | Romantic theme colors (Rose/Gold/Teal/Indigo) created mismatch — key says "red" but token looks pink. Display name abstraction added confusion. | **Reverted to standard RGBY** (Material Design primaries). Eliminated the display name layer entirely — what the code calls "red" now IS red. |
+| **No extra turn on reaching home** | Extra turn only granted for rolling 6 or capturing. Token reaching home (step 57) gave no reward. | Added `reachedHome` check at all 5 move-completion code paths. Pattern: `const reachedHome = game.tokens[color][tokenIdx] === 57;` appended to existing extra-turn condition. |
+| **Capture banner keeps reappearing** | `game.lastCapture` set on capture but NEVER cleared. Every `broadcastState()` re-sent stale capture data, re-triggering the client banner in an infinite show/hide loop. | Added `game.lastCapture = null;` immediately after `broadcastState()` in `nextTurn()`. Ensures exactly-once delivery: banner data included in one broadcast, then gone. |
+| **Mobile serves stale cached HTML after deploy** | `express.static` serves HTML with default caching headers. Mobile browsers (esp. iOS Safari) aggressively cache and don't revalidate. | Added middleware BEFORE `express.static` that sets `Cache-Control: no-cache` on `.html` files and directory paths. Browser still caches but must revalidate via ETag/304 — negligible overhead (~200-500 byte round-trip), guarantees new deploys are picked up. |
 | Tiles blank after Neon/Tropical theme add | Sub-agent placed `default: return '';` but deleted the closing `}` of the switch + function in `renderBg` and `renderRing` — brace count coincidentally balanced | Re-added missing closing braces; added structural validation to catch this |
 | Indian/Bollywood/Arithmetic themes blank tiles | `mulberry32()` PRNG called by 5 patterns (paisley, sequins, disco-floor, chalkboard, sequin-border) but never defined in renderer.js — `ReferenceError` crashed tile rendering | Added `mulberry32` function definition at top of renderer.js |
 | Bollywood star shape never renders | Duplicate `case 'star'` in renderShape — Azulejo's 8-pointed star (earlier in file) always matched first, Bollywood's was unreachable | Renamed Bollywood's to `case 'filmi-star'` in both engine.js and renderer.js |
