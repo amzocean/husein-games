@@ -61,9 +61,10 @@ First player to complete **3 full property sets** wins. Set sizes vary by color 
 4. **Discard** down to 7 if over hand limit
 
 ### Key Rules
-- **Complete sets are locked** — cannot be stolen or swapped (but CAN be taken by Deal Breaker)
+- **Complete sets are protected** from Steal and Swap, but **CAN be sacrificed** to pay debts (rent, Debt Collector, Birthday) and **CAN be taken** by Deal Breaker
 - **Variable rent** — rent amounts follow the `RENT_TABLE` per color (not just card count)
-- **Rent payment is manual** — target player selects which money/properties to give up. Payment comes from table (bank + properties), NOT from hand.
+- **Rent payment is manual** — target player selects which money/properties to give up from their table (bank + all properties including complete sets). Payment does NOT come from hand.
+- **Confirmation popups** — all card plays require confirmation (property: "Play BLUE property?", money: "Bank $5?", action cards: "Use as Action / Bank for $X / Cancel"). Discard also confirms before removing.
 - **Block** is reactive only — can only be played when an action targets you (15-second timer). Block works against: Rent, Steal, Swap, Debt Collector, Birthday, Deal Breaker.
 - **Wild cards** — player chooses color when played; tracked via `assignedColor` field
 - **Pass Go** — draw 2 extra cards immediately; can be banked for $1 instead
@@ -125,6 +126,7 @@ Single file containing all HTML, CSS, and JavaScript (same pattern as Ludo).
 │   fate charged huse $2 rent     │  ← event banner (gold, animated)
 ├─────────────────────────────────┤
 │ Your turn — 3 plays left        │  ← centered turn info
+│ 📤 Discard to 7 (8/7)           │  ← discard status (only when over limit)
 ├─────────────────────────────────┤
 │ ┌─ Action Prompt ─────────────┐ │
 │ │ Choose color / Pay rent / …  │ │  ← context-sensitive prompts
@@ -160,15 +162,27 @@ The `action-prompt` div renders different UIs based on `state.pendingAction.type
 | `dealbreaker_target` | Acting player | Color buttons for opponent's complete sets |
 | `block_prompt` | Target player | Block 🛡️ / Allow buttons |
 | `block_prompt` | Acting player | "Waiting for response…" message |
-| `rent_pay` | Target player | Selectable money + property cards, running total, Confirm button |
+| `rent_pay` | Target player | Selectable money + property cards (including complete sets), running total, Confirm button |
 | `rent_pay` | Acting player | "Waiting for payment…" message |
+
+### Confirmation Popups
+All card plays require confirmation to prevent accidental taps while scrolling:
+
+| Card Type | Popup Content | Buttons |
+|---|---|---|
+| Property | "Play BLUE property?" | ✅ Play / Cancel |
+| Money | "Bank $5?" | ✅ Bank / Cancel |
+| Action | Choice popup | Use as Action / Bank for $X / Cancel |
+| Discard | "Discard BLUE property?" | 🗑️ Discard / Cancel |
+
+Popups are fixed overlays with centered boxes. Dismissed by Cancel button or clicking backdrop.
 
 ### Hand Rendering
 - Horizontal scrollable row of card elements (64×90px)
 - Cards show icon (emoji) + label (color/value/action name); multi-word labels use line breaks (e.g., "Debt\nCollector")
 - Property cards also show rent tier amounts at the bottom
 - **Playable** when: it's your turn, turnPhase is 'playing', actionsLeft > 0, no pendingAction
-- **Discarding** mode: all cards tappable, clicking discards immediately
+- **Discarding** mode: all cards tappable, clicking shows discard confirmation popup, then discards on confirm
 - **Disabled** state: reduced opacity + no-pointer cursor when not your turn
 
 ### Socket.IO Connection
