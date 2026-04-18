@@ -19,7 +19,7 @@
   --color-selected: #e8b731;
   --color-no-match: #ff3b30;
   --tile-gap: 4px;
-  --board-padding: 8px;
+  --board-padding: 4px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -46,7 +46,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 420px;
+  max-width: 500px;
   margin: 0 auto;
   position: relative;
 }
@@ -164,7 +164,7 @@ body {
   grid-template-rows: repeat(var(--rows, 5), 1fr);
   gap: var(--tile-gap);
   width: 100%;
-  max-width: 400px;
+  max-width: min(95vw, 500px);
   aspect-ratio: 1 / 1;
   position: relative;
   border-radius: var(--radius-md);
@@ -362,7 +362,7 @@ body {
 
 .modal-content {
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
   max-height: 80vh;
   background: var(--color-surface);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
