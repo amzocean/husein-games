@@ -551,7 +551,12 @@
     const isMyTurn = myIndex === state.currentPlayerIndex;
 
     const dblRent = state.doubleRentActive ? ' \u{1f4b0}\u{1f4b0} 2\u00d7 RENT!' : '';
-    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' + dblRent : opp.name + "'s turn" + dblRent;
+    const isDiscarding = state.turnPhase === 'discarding' && isMyTurn;
+    if (isDiscarding) {
+      $('turn-info').textContent = '\u{1f4e4} Discard to 7 (' + (me ? me.hand.length : '?') + '/7) — tap a card to discard';
+    } else {
+      $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' + dblRent : opp.name + "'s turn" + dblRent;
+    }
     if ($('deck-info')) $('deck-info').textContent = 'Deck: ' + state.deckCount;
 
     $('opp-name').textContent = opp.name + '\u2019s Table' + (!opp.connected ? ' (disconnected)' : '');
@@ -571,7 +576,7 @@
       renderSets($('my-sets'), me.properties, false, 'me');
       renderBank($('my-bank'), me.bank);
       renderHand(me.hand, isMyTurn);
-      $('hand-label').textContent = state.turnPhase === 'discarding' && isMyTurn ? 'Discard to 7 (' + me.hand.length + '/7)' : 'My Hand (' + me.hand.length + ')';
+      $('hand-label').textContent = 'My Hand (' + me.hand.length + ')';
     }
   }
 
@@ -839,7 +844,7 @@
     overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;';
     const box = document.createElement('div');
     box.style.cssText = 'background:#fff;border-radius:16px;padding:20px;text-align:center;max-width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
-    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', passgo: 'Pass Go' };
+    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', passgo: 'Pass Go', debtcollector: 'Debt Collector', birthday: 'Birthday', doublerent: 'Double Rent', dealbreaker: 'Deal Breaker' };
     const title = document.createElement('div');
     title.style.cssText = 'font-weight:600;font-size:1em;margin-bottom:12px;color:#2c2c2c;';
     title.textContent = 'Play ' + (labels[card.action] || card.action) + ' card as:';
@@ -856,6 +861,59 @@
     btnBank.textContent = '\u{1f4b0} Bank for $' + card.bankValue;
     btnBank.onclick = () => { document.body.removeChild(overlay); socket.emit('play_card', { sessionId, cardId: card.id, asBank: true }); };
     box.appendChild(btnBank);
+    overlay.appendChild(box);
+    overlay.onclick = (e) => { if (e.target === overlay) document.body.removeChild(overlay); };
+    document.body.appendChild(overlay);
+  }
+
+  function showConfirmPlay(card) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;';
+    const box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:16px;padding:20px;text-align:center;max-width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+    const title = document.createElement('div');
+    title.style.cssText = 'font-weight:600;font-size:1em;margin-bottom:12px;color:#2c2c2c;';
+    title.textContent = card.type === 'money' ? 'Bank $' + card.value + '?' : 'Play ' + (card.color || '').toUpperCase() + ' property?';
+    box.appendChild(title);
+    const btnYes = document.createElement('button');
+    btnYes.className = 'btn btn-sm btn-pink';
+    btnYes.style.cssText = 'width:100%;margin-bottom:8px;padding:10px;font-size:0.95em;';
+    btnYes.textContent = card.type === 'money' ? '\u{1f4b0} Bank it' : '\u{1f3e0} Play it';
+    btnYes.onclick = () => { document.body.removeChild(overlay); socket.emit('play_card', { sessionId, cardId: card.id }); };
+    box.appendChild(btnYes);
+    const btnNo = document.createElement('button');
+    btnNo.className = 'btn btn-sm btn-outline';
+    btnNo.style.cssText = 'width:100%;padding:10px;font-size:0.95em;';
+    btnNo.textContent = 'Cancel';
+    btnNo.onclick = () => document.body.removeChild(overlay);
+    box.appendChild(btnNo);
+    overlay.appendChild(box);
+    overlay.onclick = (e) => { if (e.target === overlay) document.body.removeChild(overlay); };
+    document.body.appendChild(overlay);
+  }
+
+  function showConfirmDiscard(card) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;';
+    const box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:16px;padding:20px;text-align:center;max-width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+    const title = document.createElement('div');
+    title.style.cssText = 'font-weight:600;font-size:1em;margin-bottom:12px;color:#2c2c2c;';
+    const lbl = card.type === 'property' ? (card.color || '').toUpperCase() + ' property' : card.type === 'money' ? '$' + card.value + ' money' : getCardLabel(card).replace(/\n/g, ' ');
+    title.textContent = 'Discard ' + lbl + '?';
+    box.appendChild(title);
+    const btnYes = document.createElement('button');
+    btnYes.className = 'btn btn-sm';
+    btnYes.style.cssText = 'width:100%;margin-bottom:8px;padding:10px;font-size:0.95em;background:#dc2626;color:#fff;';
+    btnYes.textContent = '\u{1f5d1}\ufe0f Discard';
+    btnYes.onclick = () => { document.body.removeChild(overlay); socket.emit('discard_card', { sessionId, cardId: card.id }); };
+    box.appendChild(btnYes);
+    const btnNo = document.createElement('button');
+    btnNo.className = 'btn btn-sm btn-outline';
+    btnNo.style.cssText = 'width:100%;padding:10px;font-size:0.95em;';
+    btnNo.textContent = 'Cancel';
+    btnNo.onclick = () => document.body.removeChild(overlay);
+    box.appendChild(btnNo);
     overlay.appendChild(box);
     overlay.onclick = (e) => { if (e.target === overlay) document.body.removeChild(overlay); };
     document.body.appendChild(overlay);
@@ -939,10 +997,12 @@
       }
 
       if (isDiscarding) {
-        el.onclick = () => socket.emit('discard_card', { sessionId, cardId: card.id });
+        el.onclick = () => showConfirmDiscard(card);
       } else if (canPlay) {
         if (card.type === 'action' && card.bankValue > 0 && card.action !== 'block') {
           el.onclick = () => showActionChoice(card);
+        } else if (card.type === 'property' || card.type === 'money') {
+          el.onclick = () => showConfirmPlay(card);
         } else {
           el.onclick = () => socket.emit('play_card', { sessionId, cardId: card.id });
         }
