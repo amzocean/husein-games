@@ -40,14 +40,14 @@
 
   /* ========= Game Board ========= */
   #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; background: #fff5f5; }
-  .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; font-size: 0.85em; }
-  .top-bar .turn-info { color: #c44569; font-weight: 600; }
+  .top-bar { width: 100%; text-align: right; padding: 4px 8px; font-size: 0.85em; }
   .top-bar .deck-info { color: #8e8e93; }
+  .turn-info { color: #c44569; font-weight: 600; }
 
   /* ========= Opponent Area ========= */
   .opp-area { width: 100%; margin: 6px 0; }
-  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
-  .opp-header .name { font-weight: 600; color: #555; }
+  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(85,85,85,0.15); margin-bottom: 6px; }
+  .opp-header .name { font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
   .opp-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Event Banner ========= */
@@ -62,13 +62,14 @@
 
   /* ========= My Area ========= */
   .my-area { width: 100%; margin: 6px 0; }
-  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
-  .my-header .name { font-weight: 600; color: #27ae60; }
+  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(39,174,96,0.2); margin-bottom: 6px; }
+  .my-header .name { font-weight: 800; color: #27ae60; text-transform: uppercase; letter-spacing: 0.5px; }
   .my-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Property Sets ========= */
   .set-group { background: #fff; border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-  .set-label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.5px; }
+  .set-label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.5px; line-height: 1.4; }
+  .set-detail { font-size: 0.88em; font-weight: 600; opacity: 0.7; text-transform: none; letter-spacing: 0; }
   .set-cards { display: flex; gap: 4px; flex-wrap: wrap; }
   .set-card { width: 30px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s; }
   .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; pointer-events: none; }
@@ -84,7 +85,7 @@
 
   /* ========= Hand ========= */
   .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); }
-  .hand-label { font-size: 0.78em; color: #8e8e93; margin-bottom: 4px; padding-left: 4px; }
+  .hand-label { font-size: 0.88em; color: #b8860b; margin-bottom: 4px; padding: 4px 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(184,134,11,0.2); }
   .hand { display: flex; gap: 8px; overflow-x: auto; padding: 8px 4px 12px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   .hand::-webkit-scrollbar { height: 4px; }
   .hand::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
@@ -122,9 +123,9 @@
   .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 1px rgba(0,0,0,0.2); font-size: 0.78em; letter-spacing: 0.3px; }
   .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; }
   .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; transform: rotate(180deg); }
-  .card .card-rent-tiers { position: absolute; bottom: 4px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 1px; z-index: 1; pointer-events: none; }
-  .card .rent-row { font-size: 0.7em; font-weight: 700; opacity: 0.9; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.35); letter-spacing: 0.3px; }
-  .card .card-prop-title { font-size: 0.85em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.25); margin-top: 4px; }
+  .card .card-rent-tiers { display: flex; flex-direction: column; align-items: center; gap: 0; z-index: 1; pointer-events: none; margin-top: 2px; }
+  .card .rent-row { font-size: 0.72em; font-weight: 700; opacity: 0.95; line-height: 1.35; text-shadow: 0 1px 2px rgba(0,0,0,0.35); letter-spacing: 0.3px; }
+  .card .card-prop-title { font-size: 0.9em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.25); margin-top: 2px; }
 
   .card-blue { background: linear-gradient(160deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%); color: #fff; border-color: #93c5fd; }
   .card-red { background: linear-gradient(160deg, #f87171 0%, #ef4444 50%, #dc2626 100%); color: #fff; border-color: #fca5a5; }
@@ -232,11 +233,6 @@
 
 <!-- ======= GAME ======= -->
 <div id="game-screen" class="screen">
-  <div class="top-bar">
-    <span class="turn-info" id="turn-info"></span>
-    <span class="deck-info" id="deck-info"></span>
-  </div>
-
   <div class="opp-area">
     <div class="opp-header">
       <span class="name" id="opp-name"></span>
@@ -247,6 +243,10 @@
   </div>
 
   <div class="event-banner" id="event-banner"></div>
+
+  <div style="width:100%; text-align:center; padding: 4px 0;">
+    <span class="turn-info" id="turn-info" style="font-size:0.92em;"></span>
+  </div>
 
   <div class="action-prompt" id="action-prompt">
     <div class="prompt-title" id="prompt-title"></div>
@@ -542,10 +542,10 @@
     const opp = state.players[oppI];
     const isMyTurn = myIndex === state.currentPlayerIndex;
 
-    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' action' + (state.actionsLeft!==1?'s':'') + ' left' : state.players[state.currentPlayerIndex].name + "'s turn";
-    $('deck-info').textContent = 'Deck: ' + state.deckCount;
+    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' : opp.name + "'s turn";
+    if ($('deck-info')) $('deck-info').textContent = 'Deck: ' + state.deckCount;
 
-    $('opp-name').textContent = opp.name + (!opp.connected ? ' (disconnected)' : '');
+    $('opp-name').textContent = opp.name + '\u2019s Table' + (!opp.connected ? ' (disconnected)' : '');
     $('opp-hand-count').textContent = '\u{1f0cf} ' + opp.handCount;
     renderSets($('opp-sets'), opp.properties, false, 'opp');
     renderBank($('opp-bank'), opp.bank);
@@ -556,13 +556,13 @@
     $('btn-end-turn').style.display = (isMyTurn && state.turnPhase === 'playing' && !state.pendingAction) ? '' : 'none';
 
     if (me) {
-      $('my-name').textContent = me.name + ' (you)';
+      $('my-name').textContent = 'My Table';
       const bankTotal = me.bank.reduce((s,c) => s + c.value, 0);
       $('my-bank-label').textContent = bankTotal > 0 ? 'Bank: $' + bankTotal : '';
       renderSets($('my-sets'), me.properties, false, 'me');
       renderBank($('my-bank'), me.bank);
       renderHand(me.hand, isMyTurn);
-      $('hand-label').textContent = state.turnPhase === 'discarding' && isMyTurn ? 'Discard to 7 (' + me.hand.length + '/7)' : 'Your hand (' + me.hand.length + ')';
+      $('hand-label').textContent = state.turnPhase === 'discarding' && isMyTurn ? 'Discard to 7 (' + me.hand.length + '/7)' : 'My Hand (' + me.hand.length + ')';
     }
   }
 
@@ -581,7 +581,8 @@
       lbl.className = 'set-label ' + color;
       const rentTbl = state.rentTable && state.rentTable[color];
       const curRent = (rentTbl && rentTbl[props[color].length]) || 0;
-      lbl.textContent = color + ' ' + props[color].length + '/' + setSize + (complete ? ' \u2713' : '') + ' \u2022 $' + curRent;
+      const totalVal = props[color].length; // each property card = $1 value
+      lbl.innerHTML = color.toUpperCase() + ' ' + props[color].length + '/' + setSize + (complete ? ' \u2713' : '') + '<br><span class="set-detail">Rent $' + curRent + ' \u2022 Value $' + totalVal + '</span>';
       grp.appendChild(lbl);
       const sc = document.createElement('div');
       sc.className = 'set-cards';
@@ -623,7 +624,7 @@
     if (!state.lastEvent) { el.textContent = ''; el.classList.remove('animate'); return; }
     const e = state.lastEvent;
     const msgs = {
-      turn_start: e.player + "'s turn",
+      turn_start: '',
       play_property: e.player + ' played a ' + (e.color||'') + ' property',
       play_money: e.player + ' banked $' + (e.value||''),
       play_wild: e.player + ' played wild as ' + (e.color||''),
