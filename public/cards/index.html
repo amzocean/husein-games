@@ -134,6 +134,7 @@
   .card-block { background: linear-gradient(160deg, #cbd5e1 0%, #94a3b8 50%, #64748b 100%); color: #1e293b; border-color: #e2e8f0; }
   .card-yellow { background: linear-gradient(160deg, #fde68a 0%, #fbbf24 50%, #d97706 100%); color: #78350f; border-color: #fef3c7; }
   .card-black { background: linear-gradient(160deg, #4b5563 0%, #1f2937 50%, #111827 100%); color: #f3f4f6; border-color: #6b7280; }
+  .card-passgo { background: linear-gradient(160deg, #86efac 0%, #22c55e 50%, #16a34a 100%); color: #052e16; border-color: #bbf7d0; }
 
   .set-card.blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
   .set-card.red { background: linear-gradient(135deg, #f87171, #ef4444); }
@@ -449,6 +450,8 @@
         case 'steal': playSound('steal'); break;
         case 'swap': playSound('swap'); break;
         case 'blocked': playSound('block'); break;
+        case 'passgo': playSound('draw'); break;
+        case 'bank_action': playSound('money'); break;
         case 'win': playSound('win'); break;
         case 'turn_start':
           if (e.player === (state.players[myIndex]||{}).name) playSound('turn');
@@ -475,8 +478,9 @@
       const opp = state.players[oppI];
       const myComplete = []; const oppComplete = [];
       for (const c of ['blue','red','green','yellow','black']) {
-        if (me.properties[c].length >= 3) myComplete.push(c);
-        if (opp.properties[c].length >= 3) oppComplete.push(c);
+        const csz = (state.setSizes && state.setSizes[c]) || 3;
+        if (me.properties[c].length >= csz) myComplete.push(c);
+        if (opp.properties[c].length >= csz) oppComplete.push(c);
       }
       const newMyComplete = myComplete.filter(c => !prevCompleteSets.me.includes(c));
       const newOppComplete = oppComplete.filter(c => !prevCompleteSets.opp.includes(c));
@@ -564,13 +568,14 @@
     for (const color of ['blue','red','green','yellow','black']) {
       const grp = document.createElement('div');
       grp.className = 'set-group';
-      const complete = props[color].length >= 3;
+      const setSize = (state.setSizes && state.setSizes[color]) || 3;
+      const complete = props[color].length >= setSize;
       const wasComplete = who === 'me' ? prevCompleteSets.me.includes(color) : prevCompleteSets.opp.includes(color);
       if (complete && !wasComplete) grp.classList.add('set-complete-anim');
 
       const lbl = document.createElement('div');
       lbl.className = 'set-label ' + color;
-      lbl.textContent = color + ' ' + props[color].length + '/3 ' + (complete ? '\u2713' : '');
+      lbl.textContent = color + ' ' + props[color].length + '/' + setSize + ' ' + (complete ? '\u2713' : '');
       grp.appendChild(lbl);
       const sc = document.createElement('div');
       sc.className = 'set-cards';
@@ -621,6 +626,8 @@
       steal: e.player + ' stole ' + (e.color||'') + ' from ' + (e.target||''),
       swap: e.player + ' swapped with ' + (e.target||''),
       blocked: e.player + ' blocked ' + (e.actionType||'') + '!',
+      passgo: e.player + ' played Pass Go, drew ' + (e.drew||2) + ' cards',
+      bank_action: e.player + ' banked ' + (e.action||'') + ' for $' + (e.value||''),
       win: '\u{1f3c6} ' + e.player + ' wins!',
     };
     const txt = msgs[e.type] || '';
@@ -667,7 +674,9 @@
       title.textContent = 'Charge rent on which set?';
       pa.validColors.forEach(c => {
         const me = state.players[myIndex];
-        const amt = me.properties[c].length;
+        const count = me.properties[c].length;
+        const rentTbl = state.rentTable && state.rentTable[c];
+        const amt = (rentTbl && rentTbl[count]) || count;
         const b = document.createElement('button');
         b.className = 'btn btn-sm card-' + c;
         b.style.cssText = 'color:#fff; min-width:80px;';
@@ -740,7 +749,8 @@
       }
       let hasProps = false;
       for (const color of ['blue','red','green','yellow','black']) {
-        if (me.properties[color].length > 0 && me.properties[color].length < 3) {
+        const paySetSize = (state.setSizes && state.setSizes[color]) || 3;
+        if (me.properties[color].length > 0 && me.properties[color].length < paySetSize) {
           if (!hasProps) {
             const lbl = document.createElement('div');
             lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#8e8e93; margin:6px 0 2px;';
@@ -769,7 +779,7 @@
           opts.appendChild(row);
         }
       }
-      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green','yellow','black'].reduce((s,c) => s + (me.properties[c].length < 3 ? me.properties[c].length : 0), 0);
+      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green','yellow','black'].reduce((s,c) => { const ss = (state.setSizes && state.setSizes[c]) || 3; return s + (me.properties[c].length < ss ? me.properties[c].length : 0); }, 0);
       const canConfirm = selVal >= pa.amount || selVal >= maxAssets;
       const cb = document.createElement('button');
       cb.className = 'btn btn-sm btn-pink';
@@ -787,6 +797,33 @@
   function handleSelectProperty(cardId) {
     if (!state.pendingAction) return;
     socket.emit('choose', { sessionId, choice: cardId });
+  }
+
+  function showActionChoice(card) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;';
+    const box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:16px;padding:20px;text-align:center;max-width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', passgo: 'Pass Go' };
+    const title = document.createElement('div');
+    title.style.cssText = 'font-weight:600;font-size:1em;margin-bottom:12px;color:#2c2c2c;';
+    title.textContent = 'Play ' + (labels[card.action] || card.action) + ' card as:';
+    box.appendChild(title);
+    const btnPlay = document.createElement('button');
+    btnPlay.className = 'btn btn-sm btn-pink';
+    btnPlay.style.cssText = 'width:100%;margin-bottom:8px;padding:10px;font-size:0.95em;';
+    btnPlay.textContent = '\u26a1 Use as ' + (labels[card.action] || card.action);
+    btnPlay.onclick = () => { document.body.removeChild(overlay); socket.emit('play_card', { sessionId, cardId: card.id }); };
+    box.appendChild(btnPlay);
+    const btnBank = document.createElement('button');
+    btnBank.className = 'btn btn-sm';
+    btnBank.style.cssText = 'width:100%;padding:10px;font-size:0.95em;background:#b8860b;color:#fff;';
+    btnBank.textContent = '\u{1f4b0} Bank for $' + card.bankValue;
+    btnBank.onclick = () => { document.body.removeChild(overlay); socket.emit('play_card', { sessionId, cardId: card.id, asBank: true }); };
+    box.appendChild(btnBank);
+    overlay.appendChild(box);
+    overlay.onclick = (e) => { if (e.target === overlay) document.body.removeChild(overlay); };
+    document.body.appendChild(overlay);
   }
 
   function renderHand(hand, isMyTurn) {
@@ -834,7 +871,11 @@
       if (isDiscarding) {
         el.onclick = () => socket.emit('discard_card', { sessionId, cardId: card.id });
       } else if (canPlay) {
-        el.onclick = () => socket.emit('play_card', { sessionId, cardId: card.id });
+        if (card.type === 'action' && card.bankValue > 0 && card.action !== 'block') {
+          el.onclick = () => showActionChoice(card);
+        } else {
+          el.onclick = () => socket.emit('play_card', { sessionId, cardId: card.id });
+        }
       }
       container.appendChild(el);
     });
@@ -848,19 +889,20 @@
   function getCardIcon(c) {
     if (c.type === 'property') return '\u{1f3e0}';
     if (c.type === 'money') return '\u{1f4b0}';
-    const icons = { rent: '\u{1f4b8}', steal: '\u{1f9f2}', swap: '\u{1f501}', wild: '\u{1f0cf}', block: '\u{1f6e1}\ufe0f' };
+    const icons = { rent: '\u{1f4b8}', steal: '\u{1f9f2}', swap: '\u{1f501}', wild: '\u{1f0cf}', block: '\u{1f6e1}\ufe0f', passgo: '\u{1f3c3}' };
     return icons[c.action] || '\u26a1';
   }
   function getCardLabel(c) {
     if (c.type === 'property') return c.color;
     if (c.type === 'money') return '$' + c.value;
-    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', block: 'Block' };
+    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', block: 'Block', passgo: 'Pass Go' };
     return labels[c.action] || c.action;
   }
   function getCornerValue(c) {
     if (c.type === 'money') return '$' + c.value;
     if (c.type === 'property') { const m = {blue:'B',red:'R',green:'G',yellow:'Y',black:'K'}; return m[c.color] || c.color[0].toUpperCase(); }
-    const abbr = { rent: 'R', steal: 'S', swap: '\u21c4', wild: '\u2606', block: '\u2666' };
+    if (c.bankValue !== undefined && c.bankValue > 0) return '$' + c.bankValue;
+    const abbr = { rent: '$1', steal: '$3', swap: '$3', wild: '\u2606', block: '$4', passgo: '$1' };
     return abbr[c.action] || '';
   }
 

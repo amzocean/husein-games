@@ -656,7 +656,16 @@ ludoNs.on('connection', (socket) => {
 // ============================================================
 const cardsNs = io.of('/cards');
 const CARD_COLORS = ['blue', 'red', 'green', 'yellow', 'black'];
-const SET_SIZE = 3;
+const SET_SIZES = { blue: 2, red: 3, green: 3, yellow: 3, black: 4 };
+const RENT_TABLE = {
+  blue:   [0, 3, 8],
+  red:    [0, 1, 2, 4],
+  green:  [0, 1, 3, 5],
+  yellow: [0, 1, 2, 4],
+  black:  [0, 1, 2, 3, 4],
+};
+const PROP_COUNTS = { blue: 3, red: 6, green: 6, yellow: 6, black: 8 };
+const BANK_VALUES = { rent: 1, steal: 3, swap: 3, wild: 0, block: 4, passgo: 1 };
 const SETS_TO_WIN = 3;
 const HAND_LIMIT = 7;
 const BLOCK_TIMEOUT = 15000;
@@ -681,13 +690,14 @@ function shuffleArr(arr) {
 
 function createDeck() {
   const d = []; let id = 0;
-  for (const c of CARD_COLORS) for (let i = 0; i < 6; i++) d.push({ id: id++, type: 'property', color: c });
-  for (const v of [1,1,1,2,2,2,3,3,5,5]) d.push({ id: id++, type: 'money', value: v });
-  for (let i = 0; i < 6; i++) d.push({ id: id++, type: 'action', action: 'rent' });
-  for (let i = 0; i < 5; i++) d.push({ id: id++, type: 'action', action: 'steal' });
-  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'swap' });
-  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'wild' });
-  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'block' });
+  for (const c of CARD_COLORS) for (let i = 0; i < PROP_COUNTS[c]; i++) d.push({ id: id++, type: 'property', color: c });
+  for (const v of [1,1,1,2,2,2,3,3,5,5,10]) d.push({ id: id++, type: 'money', value: v });
+  for (let i = 0; i < 6; i++) d.push({ id: id++, type: 'action', action: 'rent', bankValue: BANK_VALUES.rent });
+  for (let i = 0; i < 5; i++) d.push({ id: id++, type: 'action', action: 'steal', bankValue: BANK_VALUES.steal });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'swap', bankValue: BANK_VALUES.swap });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'wild', bankValue: BANK_VALUES.wild });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'block', bankValue: BANK_VALUES.block });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'passgo', bankValue: BANK_VALUES.passgo });
   return shuffleArr(d);
 }
 
@@ -705,8 +715,8 @@ function drawCards(n) {
   return drawn;
 }
 
-function setComplete(cards) { return cards.length >= SET_SIZE; }
-function completeSets(p) { return CARD_COLORS.reduce((n, c) => n + (setComplete(p.properties[c]) ? 1 : 0), 0); }
+function setComplete(cards, color) { return cards.length >= (SET_SIZES[color] || 3); }
+function completeSets(p) { return CARD_COLORS.reduce((n, c) => n + (setComplete(p.properties[c], c) ? 1 : 0), 0); }
 function oppIdx(i) { return i === 0 ? 1 : 0; }
 
 function newCardPlayer(sessionId, name) {
@@ -770,6 +780,8 @@ function getCardState(forIdx) {
     deckCount: cardGame.deck.length,
     winner: cardGame.winner,
     lastEvent: cardGame.lastEvent,
+    setSizes: SET_SIZES,
+    rentTable: RENT_TABLE,
   };
 }
 
@@ -789,12 +801,13 @@ function broadcastCG() {
 
 function startCardTurn() {
   const p = cardGame.players[cardGame.currentPlayerIndex];
-  p.hand.push(...drawCards(2));
+  const drawN = p.hand.length === 0 ? 5 : 2;
+  p.hand.push(...drawCards(drawN));
   cardGame.actionsLeft = 3;
   cardGame.turnPhase = 'playing';
   cardGame.pendingAction = null;
   cardGame.lastEvent = { type: 'turn_start', player: p.name };
-  clog(`Turn: ${p.name}, drew 2, hand=${p.hand.length}`);
+  clog(`Turn: ${p.name}, drew ${drawN}, hand=${p.hand.length}`);
   resetCGIdle();
   broadcastCG();
 }
@@ -860,9 +873,13 @@ function payRentManual(target, actor, moneyIds, propertyIds) {
 function totalAssets(player) {
   let total = player.bank.reduce((s, c) => s + c.value, 0);
   for (const c of CARD_COLORS) {
-    if (!setComplete(player.properties[c])) total += player.properties[c].length;
+    if (!setComplete(player.properties[c], c)) total += player.properties[c].length;
   }
   return total;
+}
+
+function getRentAmount(color, count) {
+  return (RENT_TABLE[color] && RENT_TABLE[color][count]) || count;
 }
 
 function startRentPay(actingPlayer, targetPlayer, color, amount) {
@@ -906,7 +923,7 @@ function resolveCardAction() {
     return; // don't clear pendingAction yet
   } else if (pa.actionType === 'steal') {
     for (const c of CARD_COLORS) {
-      if (setComplete(target.properties[c])) continue;
+      if (setComplete(target.properties[c], c)) continue;
       const idx = target.properties[c].findIndex(x => x.id === pa.targetCardId);
       if (idx >= 0) {
         const stolen = target.properties[c].splice(idx, 1)[0];
@@ -985,7 +1002,7 @@ cardsNs.on('connection', (socket) => {
     startCardTurn();
   });
 
-  socket.on('play_card', ({ sessionId, cardId, color }) => {
+  socket.on('play_card', ({ sessionId, cardId, color, asBank }) => {
     if (!cardGame || cardGame.phase !== 'playing') return;
     const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
     if (pi < 0 || pi !== cardGame.currentPlayerIndex) return;
@@ -995,6 +1012,16 @@ cardsNs.on('connection', (socket) => {
     if (ci < 0) return;
     const card = player.hand[ci];
     resetCGIdle();
+
+    // Bank an action card for its money value
+    if (asBank && card.type === 'action' && card.bankValue > 0) {
+      player.hand.splice(ci, 1);
+      player.bank.push({ ...card, type: 'money', value: card.bankValue, originalAction: card.action });
+      cardGame.lastEvent = { type: 'bank_action', player: player.name, action: card.action, value: card.bankValue };
+      clog(`${player.name} banked ${card.action} as $${card.bankValue}`);
+      if (!useCardAction()) broadcastCG();
+      return;
+    }
 
     if (card.type === 'property') {
       player.hand.splice(ci, 1);
@@ -1037,7 +1064,7 @@ cardsNs.on('connection', (socket) => {
       const opp = cardGame.players[oi];
       const targets = [];
       for (const c of CARD_COLORS) {
-        if (!setComplete(opp.properties[c])) opp.properties[c].forEach(pc => targets.push({ ...pc, fromColor: c }));
+        if (!setComplete(opp.properties[c], c)) opp.properties[c].forEach(pc => targets.push({ ...pc, fromColor: c }));
       }
       if (targets.length === 0) { socket.emit('error_msg', 'Nothing to steal.'); return; }
       player.hand.splice(ci, 1);
@@ -1051,8 +1078,8 @@ cardsNs.on('connection', (socket) => {
       const oi = oppIdx(pi);
       const mine = [], theirs = [];
       for (const c of CARD_COLORS) {
-        if (!setComplete(player.properties[c])) player.properties[c].forEach(pc => mine.push({ ...pc, fromColor: c }));
-        if (!setComplete(cardGame.players[oi].properties[c])) cardGame.players[oi].properties[c].forEach(pc => theirs.push({ ...pc, fromColor: c }));
+        if (!setComplete(player.properties[c], c)) player.properties[c].forEach(pc => mine.push({ ...pc, fromColor: c }));
+        if (!setComplete(cardGame.players[oi].properties[c], c)) cardGame.players[oi].properties[c].forEach(pc => theirs.push({ ...pc, fromColor: c }));
       }
       if (mine.length === 0 || theirs.length === 0) { socket.emit('error_msg', 'Not enough to swap.'); return; }
       player.hand.splice(ci, 1);
@@ -1061,6 +1088,15 @@ cardsNs.on('connection', (socket) => {
       cardGame.pendingAction = { type: 'swap_own', actingPlayer: pi, mine, theirs };
       clog(`${player.name} played Swap`);
       broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'passgo') {
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      const drawn = drawCards(2);
+      player.hand.push(...drawn);
+      cardGame.lastEvent = { type: 'passgo', player: player.name, drew: drawn.length };
+      clog(`${player.name} Pass Go, drew ${drawn.length}`);
+      if (!useCardAction()) broadcastCG();
 
     } else if (card.type === 'action' && card.action === 'block') {
       socket.emit('error_msg', 'Block is reactive only.');
@@ -1088,7 +1124,8 @@ cardsNs.on('connection', (socket) => {
 
     } else if (pa.type === 'rent_color' && pi === pa.actingPlayer) {
       if (!pa.validColors.includes(choice)) return;
-      const amount = player.properties[choice].length;
+      const count = player.properties[choice].length;
+      const amount = (RENT_TABLE[choice] && RENT_TABLE[choice][count]) || count;
       const oi = oppIdx(pi);
       const opp = cardGame.players[oi];
       const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
@@ -1107,7 +1144,7 @@ cardsNs.on('connection', (socket) => {
       const opp = cardGame.players[oi];
       let targetColor = null;
       for (const c of CARD_COLORS) {
-        if (!setComplete(opp.properties[c]) && opp.properties[c].some(x => x.id === tid)) { targetColor = c; break; }
+        if (!setComplete(opp.properties[c], c) && opp.properties[c].some(x => x.id === tid)) { targetColor = c; break; }
       }
       if (!targetColor) return;
       const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
@@ -1131,7 +1168,7 @@ cardsNs.on('connection', (socket) => {
     } else if (pa.type === 'swap_own' && pi === pa.actingPlayer) {
       let valid = false;
       for (const c of CARD_COLORS) {
-        if (!setComplete(player.properties[c]) && player.properties[c].some(x => x.id === choice)) { valid = true; break; }
+        if (!setComplete(player.properties[c], c) && player.properties[c].some(x => x.id === choice)) { valid = true; break; }
       }
       if (!valid) return;
       cardGame.pendingAction = { ...pa, type: 'swap_target', myCardId: choice };
@@ -1142,7 +1179,7 @@ cardsNs.on('connection', (socket) => {
       const opp = cardGame.players[oi];
       let targetColor = null;
       for (const c of CARD_COLORS) {
-        if (!setComplete(opp.properties[c]) && opp.properties[c].some(x => x.id === choice)) { targetColor = c; break; }
+        if (!setComplete(opp.properties[c], c) && opp.properties[c].some(x => x.id === choice)) { targetColor = c; break; }
       }
       if (!targetColor) return;
       const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');

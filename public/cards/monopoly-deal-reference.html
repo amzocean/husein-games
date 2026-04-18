@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monopoly Deal - Complete Card &amp; Rules Reference</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff5f5; color: #2c2c2c; line-height: 1.6; padding: 20px; max-width: 1100px; margin: 0 auto; }
+  h1 { color: #c44569; text-align: center; margin-bottom: 6px; font-size: 2em; }
+  .subtitle { text-align: center; color: #8e8e93; margin-bottom: 30px; font-size: 0.95em; }
+  h2 { color: #c44569; border-bottom: 2px solid #c44569; padding-bottom: 6px; margin: 30px 0 14px; font-size: 1.4em; }
+  h3 { color: #b8860b; margin: 18px 0 8px; font-size: 1.15em; }
+  h4 { color: #555; margin: 12px 0 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-radius: 8px; overflow: hidden; }
+  th { background: #c44569; color: #fff; padding: 10px 12px; text-align: left; font-size: 0.9em; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0e6e6; font-size: 0.9em; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) { background: #fef6f6; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin: 14px 0; }
+  .card-box { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #c44569; }
+  .card-box.action { border-left-color: #9333ea; }
+  .card-box.property { border-left-color: #22c55e; }
+  .card-box.money { border-left-color: #d97706; }
+  .card-box.rent { border-left-color: #2563eb; }
+  .card-box.wild { border-left-color: #ec4899; }
+  .card-box h4 { margin-top: 0; color: #2c2c2c; }
+  .card-box .count { font-weight: 700; color: #c44569; }
+  .card-box .value { color: #b8860b; font-weight: 600; }
+  .rule-item { background: #fff; border-radius: 8px; padding: 14px 16px; margin: 10px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .rule-item strong { color: #c44569; }
+  .rule-q { font-weight: 600; color: #2c2c2c; margin-bottom: 6px; }
+  .rule-a { color: #555; }
+  .toc { background: #fff; border-radius: 10px; padding: 16px 20px; margin: 0 0 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .toc a { color: #c44569; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ul { list-style: none; padding-left: 0; }
+  .toc li { padding: 4px 0; }
+  .toc li::before { content: "\25B8 "; color: #b8860b; }
+  .note { background: #fef3c7; border-left: 4px solid #d97706; padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 0.9em; }
+  .source { text-align: center; color: #aaa; font-size: 0.8em; margin-top: 30px; }
+  .prop-color { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+  @media (max-width: 600px) { body { padding: 12px; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>&#127183; Monopoly Deal</h1>
+<p class="subtitle">Complete Card &amp; Rules Reference &mdash; scraped from monopolydealrules.com</p>
+
+<div class="toc">
+  <h3>Table of Contents</h3>
+  <ul>
+    <li><a href="#overview">Game Overview</a></li>
+    <li><a href="#deck">Complete Deck Breakdown (110 cards)</a></li>
+    <li><a href="#property-sets">Property Sets &amp; Counts</a></li>
+    <li><a href="#action-cards">Action Cards Detail</a></li>
+    <li><a href="#money-cards">Money Cards</a></li>
+    <li><a href="#rent-cards">Rent Cards</a></li>
+    <li><a href="#wildcards">Property Wildcards</a></li>
+    <li><a href="#turn-flow">Turn Flow</a></li>
+    <li><a href="#payment-rules">Payment Rules</a></li>
+    <li><a href="#jsn-rules">Just Say No Rules</a></li>
+    <li><a href="#house-hotel">House &amp; Hotel Rules</a></li>
+    <li><a href="#deal-breaker">Deal Breaker Rules</a></li>
+    <li><a href="#property-rules">Property &amp; Wildcard Rules</a></li>
+    <li><a href="#hf-comparison">H&#9829;F Deal vs Monopoly Deal Comparison</a></li>
+  </ul>
+</div>
+
+<!-- ========== OVERVIEW ========== -->
+<h2 id="overview">&#127922; Game Overview</h2>
+<div class="rule-item">
+  <p><strong>Objective:</strong> Be the first player to complete <strong>3 full property sets</strong> on the table.</p>
+  <p><strong>Players:</strong> 2&ndash;5 (use 2 decks for 6+)</p>
+  <p><strong>Setup:</strong> Remove 4 rules cards, shuffle, deal 5 cards each, remaining = draw pile.</p>
+  <p><strong>Turn:</strong> Draw 2 cards &rarr; Play up to 3 cards &rarr; Discard to 7 max hand.</p>
+  <p><strong>Three play zones:</strong> (1) Bank (money/action cards face-up), (2) Property area, (3) Discard pile (used actions).</p>
+</div>
+
+<!-- ========== DECK BREAKDOWN ========== -->
+<h2 id="deck">&#127183; Complete Deck Breakdown (110 cards)</h2>
+<table>
+  <tr><th>Category</th><th>Count</th><th>Details</th></tr>
+  <tr><td>Rules Cards</td><td>4</td><td>Quick-start reference (removed before play)</td></tr>
+  <tr><td>Money Cards</td><td>20</td><td>$1M&times;6, $2M&times;5, $3M&times;3, $4M&times;3, $5M&times;2, $10M&times;1 (total $57M)</td></tr>
+  <tr><td>Action Cards</td><td>34</td><td>See detail below</td></tr>
+  <tr><td>Rent Cards</td><td>13</td><td>5 two-color + 3 wild rent</td></tr>
+  <tr><td>Property Cards</td><td>28</td><td>10 colors, 2&ndash;4 cards each</td></tr>
+  <tr><td>Property Wildcards</td><td>11</td><td>8 two-color + 2 multi-color (10-color) + 1 special</td></tr>
+  <tr style="font-weight:700; background:#fef6f6;"><td>TOTAL</td><td>110</td><td>106 playable + 4 rules</td></tr>
+</table>
+
+<!-- ========== PROPERTY SETS ========== -->
+<h2 id="property-sets">&#127968; Property Sets &amp; Counts</h2>
+<table>
+  <tr><th>Color</th><th>Cards in Deck</th><th>Set Size</th><th>Rent (1/2/full)</th></tr>
+  <tr><td><span class="prop-color" style="background:#8B4513"></span>Brown</td><td>2</td><td>2</td><td>$1M / $2M</td></tr>
+  <tr><td><span class="prop-color" style="background:#87CEEB"></span>Light Blue</td><td>3</td><td>3</td><td>$1M / $2M / $3M</td></tr>
+  <tr><td><span class="prop-color" style="background:#FF69B4"></span>Pink (Magenta)</td><td>3</td><td>3</td><td>$1M / $2M / $4M</td></tr>
+  <tr><td><span class="prop-color" style="background:#FF8C00"></span>Orange</td><td>3</td><td>3</td><td>$1M / $3M / $5M</td></tr>
+  <tr><td><span class="prop-color" style="background:#DC2626"></span>Red</td><td>3</td><td>3</td><td>$2M / $3M / $6M</td></tr>
+  <tr><td><span class="prop-color" style="background:#EAB308"></span>Yellow</td><td>3</td><td>3</td><td>$2M / $4M / $6M</td></tr>
+  <tr><td><span class="prop-color" style="background:#22C55E"></span>Green</td><td>3</td><td>3</td><td>$2M / $4M / $7M</td></tr>
+  <tr><td><span class="prop-color" style="background:#1E3A8A"></span>Dark Blue</td><td>2</td><td>2</td><td>$3M / $8M</td></tr>
+  <tr><td><span class="prop-color" style="background:#6B7280"></span>Utility</td><td>2</td><td>2</td><td>$1M / $2M</td></tr>
+  <tr><td><span class="prop-color" style="background:#1F2937"></span>Railroad</td><td>4</td><td>4</td><td>$1M / $2M / $3M / $4M</td></tr>
+  <tr style="font-weight:700;"><td colspan="2">Total: 28 property cards</td><td colspan="2">10 sets, sizes 2&ndash;4</td></tr>
+</table>
+<div class="note"><strong>Key rule:</strong> You CAN win with 2+ sets of the same color (duplicates allowed). Wild cards can overflow a set &mdash; extras start a new set of that color.</div>
+
+<!-- ========== ACTION CARDS ========== -->
+<h2 id="action-cards">&#9889; Action Cards (34 total)</h2>
+<div class="card-grid">
+  <div class="card-box action">
+    <h4>&#128176; Pass Go</h4>
+    <p><span class="count">10 cards</span> &bull; <span class="value">Bank value: $1M</span></p>
+    <p>Draw 2 extra cards from the draw pile. Can play multiple per turn (watch hand limit).</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#128179; Debt Collector</h4>
+    <p><span class="count">3 cards</span> &bull; <span class="value">Bank value: $3M</span></p>
+    <p>Force ONE opponent to pay you $5M. They choose how to pay (bank, property, or combo).</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#127874; It's My Birthday</h4>
+    <p><span class="count">3 cards</span> &bull; <span class="value">Bank value: $2M</span></p>
+    <p>ALL other players must pay you $2M each.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#128163; Deal Breaker</h4>
+    <p><span class="count">2 cards</span> &bull; <span class="value">Bank value: $5M</span></p>
+    <p>Steal a COMPLETE property set from an opponent (including any house/hotel on it). Wasted if target has no complete set.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#129299; Sly Deal</h4>
+    <p><span class="count">3 cards</span> &bull; <span class="value">Bank value: $3M</span></p>
+    <p>Steal 1 property from opponent's INCOMPLETE set. Cannot take from complete sets.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#128260; Force Deal</h4>
+    <p><span class="count">4 cards</span> &bull; <span class="value">Bank value: $3M</span></p>
+    <p>Swap 1 of your properties for 1 of opponent's (from incomplete sets). No equal value required.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#9940; Just Say No</h4>
+    <p><span class="count">3 cards</span> &bull; <span class="value">Bank value: $4M</span></p>
+    <p>Cancel ANY action against you. Does NOT count as a turn play. Can chain: JSN vs JSN vs JSN.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#127963;&#65039; House</h4>
+    <p><span class="count">3 cards</span> &bull; <span class="value">Bank value: $3M</span></p>
+    <p>Add to a COMPLETE property set. Adds $3M to rent. Required before Hotel. Cannot go on Railroad/Utility.</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#127960;&#65039; Hotel</h4>
+    <p><span class="count">2 cards</span> &bull; <span class="value">Bank value: $4M</span></p>
+    <p>Add to a complete set that ALREADY has a House. Adds $4M to rent (debated: some play $4M replaces $3M house).</p>
+  </div>
+  <div class="card-box action">
+    <h4>&#10006;&#65039;2 Double The Rent</h4>
+    <p><span class="count">2 cards</span> &bull; <span class="value">Bank value: $1M</span></p>
+    <p>Must be played WITH a rent card (same turn). Doubles the rent amount. Counts as 1 of your 3 plays. JSN cancels only the double (original rent still owed).</p>
+  </div>
+</div>
+
+<!-- ========== MONEY CARDS ========== -->
+<h2 id="money-cards">&#128176; Money Cards (20 total, $57M)</h2>
+<table>
+  <tr><th>Denomination</th><th>Count</th><th>Subtotal</th></tr>
+  <tr><td>$1M</td><td>6</td><td>$6M</td></tr>
+  <tr><td>$2M</td><td>5</td><td>$10M</td></tr>
+  <tr><td>$3M</td><td>3</td><td>$9M</td></tr>
+  <tr><td>$4M</td><td>3</td><td>$12M</td></tr>
+  <tr><td>$5M</td><td>2</td><td>$10M</td></tr>
+  <tr><td>$10M</td><td>1</td><td>$10M</td></tr>
+  <tr style="font-weight:700;"><td>Total</td><td>20</td><td>$57M</td></tr>
+</table>
+
+<!-- ========== RENT CARDS ========== -->
+<h2 id="rent-cards">&#128184; Rent Cards (13 total)</h2>
+<table>
+  <tr><th>Rent Card Colors</th><th>Count</th><th>Bank Value</th><th>Notes</th></tr>
+  <tr><td>Dark Blue / Green</td><td>2</td><td>$1M</td><td>Charge rent for one of these two colors</td></tr>
+  <tr><td>Red / Yellow</td><td>2</td><td>$1M</td><td>Charge rent for one of these two colors</td></tr>
+  <tr><td>Pink / Orange</td><td>2</td><td>$1M</td><td>Charge rent for one of these two colors</td></tr>
+  <tr><td>Light Blue / Brown</td><td>2</td><td>$1M</td><td>Charge rent for one of these two colors</td></tr>
+  <tr><td>Railroad / Utility</td><td>2</td><td>$1M</td><td>Charge rent for one of these two colors</td></tr>
+  <tr><td><em>Wild Rent (10-color)</em></td><td>3</td><td>$3M</td><td>Charge rent for ANY color you have. Charges ALL players in multiplayer.</td></tr>
+  <tr style="font-weight:700;"><td>Total</td><td>13</td><td>&mdash;</td><td>&mdash;</td></tr>
+</table>
+<div class="note"><strong>Rent amount</strong> is based on how many property cards you have in the chosen set. Each property card lists rent values for 1 card, 2 cards, full set. Wild Rent can only be charged if you have at least 1 property of that color.</div>
+
+<!-- ========== WILDCARDS ========== -->
+<h2 id="wildcards">&#127183; Property Wildcards (11 total)</h2>
+<table>
+  <tr><th>Wildcard Colors</th><th>Count</th><th>Bank Value</th></tr>
+  <tr><td>Pink / Orange</td><td>2</td><td>$0</td></tr>
+  <tr><td>Red / Yellow</td><td>2</td><td>$0</td></tr>
+  <tr><td>Dark Blue / Green</td><td>1</td><td>$0</td></tr>
+  <tr><td>Green / Railroad</td><td>1</td><td>$0</td></tr>
+  <tr><td>Light Blue / Railroad</td><td>1</td><td>$0</td></tr>
+  <tr><td>Light Blue / Brown</td><td>1</td><td>$0</td></tr>
+  <tr><td>Utility / Railroad</td><td>1</td><td>$0</td></tr>
+  <tr><td><em>Multi-color (10-color)</em></td><td>2</td><td>$0</td></tr>
+  <tr style="font-weight:700;"><td>Total</td><td>11</td><td>&mdash;</td></tr>
+</table>
+<div class="note"><strong>Two-color wildcards:</strong> Can be flipped between their two colors during YOUR turn. <strong>Multi-color (10-color):</strong> Acts as any color. Can be stolen via Sly/Force Deal if not in a complete set. Has $0 bank value (cannot be used to pay rent).</div>
+
+<!-- ========== TURN FLOW ========== -->
+<h2 id="turn-flow">&#128260; Turn Flow</h2>
+<div class="rule-item">
+  <p><strong>1. Draw:</strong> Pick up 2 cards from draw pile (5 cards if hand is empty)</p>
+  <p><strong>2. Play:</strong> Up to 3 card plays in any combination:</p>
+  <ul style="margin-left:20px;">
+    <li>Place money/action cards face-up in your bank</li>
+    <li>Play property cards to your property area</li>
+    <li>Play action cards to the discard pile (triggering their effect)</li>
+    <li>Rearrange your wildcards between sets (free, not a play)</li>
+  </ul>
+  <p><strong>3. Discard:</strong> If hand &gt; 7 cards, discard extras to the pile</p>
+  <p><strong>4. End turn</strong></p>
+</div>
+<div class="note"><strong>"A card laid is a card played"</strong> &mdash; no take-backs. Cards on the table can NEVER return to your hand. You don't have to use all 3 plays.</div>
+
+<!-- ========== PAYMENT RULES ========== -->
+<h2 id="payment-rules">&#128176; Payment Rules</h2>
+<div class="card-grid">
+  <div class="card-box">
+    <h4>Who chooses what to pay with?</h4>
+    <p>The <strong>paying player</strong> decides. They can use bank money, property, action cards in bank, or houses/hotels. Any combination.</p>
+  </div>
+  <div class="card-box">
+    <h4>Where does property payment go?</h4>
+    <p>Property paid goes to the <strong>opponent's property area</strong> (not their bank). Money goes to opponent's bank.</p>
+  </div>
+  <div class="card-box">
+    <h4>Is change given?</h4>
+    <p><strong>No change.</strong> If you overpay, the opponent keeps everything. Strategy: pay with exact amounts when possible.</p>
+  </div>
+  <div class="card-box">
+    <h4>Can I pay from my hand?</h4>
+    <p><strong>No.</strong> Only cards already on the table (bank + property area) can be used for payment.</p>
+  </div>
+  <div class="card-box">
+    <h4>What if I can't afford it?</h4>
+    <p>Pay everything you can. Opponent gets what you give. You're not eliminated &mdash; you just have nothing left on the table.</p>
+  </div>
+  <div class="card-box">
+    <h4>Action cards used as payment?</h4>
+    <p>If an action card was in your bank (as money), it transfers to opponent's bank as money. They cannot use it as an action.</p>
+  </div>
+</div>
+
+<!-- ========== JUST SAY NO ========== -->
+<h2 id="jsn-rules">&#9940; Just Say No Rules</h2>
+<div class="rule-item">
+  <p class="rule-q">Does JSN count as one of your 3 plays?</p>
+  <p class="rule-a"><strong>No.</strong> JSN is a free reaction &mdash; can be played even on opponent's turn.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">Can you JSN a JSN?</p>
+  <p class="rule-a"><strong>Yes.</strong> You can chain: Player A plays Deal Breaker &rarr; Player B plays JSN &rarr; Player A plays JSN (un-does opponent's No) &rarr; Player B plays another JSN. All 3 JSN cards could be used in one exchange.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">JSN + Double The Rent?</p>
+  <p class="rule-a">JSN cancels only the Double The Rent. Original rent amount is still owed.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">Is the JSN card kept after use?</p>
+  <p class="rule-a"><strong>No.</strong> It goes to the discard pile like any other action card.</p>
+</div>
+
+<!-- ========== HOUSE/HOTEL ========== -->
+<h2 id="house-hotel">&#127963;&#65039; House &amp; Hotel Rules</h2>
+<div class="rule-item">
+  <p><strong>Order:</strong> House MUST be placed before Hotel. Hotel requires existing House on a complete set.</p>
+  <p><strong>Placement:</strong> Only on <strong>complete property sets</strong>. Cannot go on Railroad or Utility.</p>
+  <p><strong>Rent bonus:</strong> House = +$3M, Hotel = +$4M. (Debated: some play Hotel replaces House for $4M total, others stack for $7M total.)</p>
+  <p><strong>Stealing:</strong> Deal Breaker takes entire set INCLUDING house/hotel. Sly Deal and Force Deal CANNOT take house/hotel from a complete set (but can if it's orphaned on the table).</p>
+  <p><strong>Orphaned house/hotel:</strong> If you pay with property from a set that had a house/hotel, the house/hotel stays on the table until you complete another set.</p>
+</div>
+
+<!-- ========== DEAL BREAKER ========== -->
+<h2 id="deal-breaker">&#128163; Deal Breaker Rules</h2>
+<div class="rule-item">
+  <p><strong>Target:</strong> Must target a <strong>complete property set</strong>. Takes the entire set + any house/hotel on it.</p>
+  <p><strong>Wasted play:</strong> If you play Deal Breaker against someone with NO complete set, the card is discarded and you lose that play. "A card laid is a card played."</p>
+  <p><strong>Can be blocked:</strong> Opponent can play Just Say No to cancel it.</p>
+</div>
+
+<!-- ========== PROPERTY RULES ========== -->
+<h2 id="property-rules">&#127968; Property &amp; Wildcard Rules</h2>
+<div class="rule-item">
+  <p class="rule-q">Can you win with duplicate color sets?</p>
+  <p class="rule-a"><strong>Yes.</strong> Any 3 complete sets win, even 3 sets of the same color.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">Multi-color (10-color) wildcard rules:</p>
+  <p class="rule-a">Can be played alone or with other properties. Can be stolen via Sly/Force Deal if NOT in a complete set. Has $0 bank value (can't pay with it). Can only charge rent against it if paired with another property card.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">Can wildcards be moved between sets?</p>
+  <p class="rule-a"><strong>Yes</strong>, but only during YOUR turn. Two-color wildcards can be flipped. Cards freeze at end of turn.</p>
+</div>
+<div class="rule-item">
+  <p class="rule-q">Overflow properties?</p>
+  <p class="rule-a">If you have more cards than a set needs (via wildcards), extras start a new set of that color.</p>
+</div>
+
+<!-- ========== H&F COMPARISON ========== -->
+<h2 id="hf-comparison">&#128149; H&#9829;F Deal vs Monopoly Deal Comparison</h2>
+<table>
+  <tr><th>Feature</th><th>Monopoly Deal (Official)</th><th>H&#9829;F Deal (Our Version)</th></tr>
+  <tr><td>Players</td><td>2&ndash;5</td><td>2 (designed for couples)</td></tr>
+  <tr><td>Deck size</td><td>110 cards</td><td>63 cards</td></tr>
+  <tr><td>Property colors</td><td>10 (varying set sizes 2&ndash;4)</td><td>5 (all sets = 3 cards)</td></tr>
+  <tr><td>Win condition</td><td>3 complete sets</td><td>3 complete sets</td></tr>
+  <tr><td>Money denominations</td><td>$1M&ndash;$10M (20 cards)</td><td>$1&ndash;$5 (10 cards)</td></tr>
+  <tr><td>Rent cards</td><td>13 (color-paired + wild)</td><td>6 (generic, choose any color)</td></tr>
+  <tr><td>Rent amount</td><td>Variable per set size + house/hotel</td><td>$1 per property in chosen set</td></tr>
+  <tr><td>Block/JSN</td><td>3 Just Say No (free play, chainable)</td><td>4 Block (free play, 15s timer)</td></tr>
+  <tr><td>Steal</td><td>3 Sly Deal (steal 1 from incomplete)</td><td>5 Steal (steal 1 from incomplete)</td></tr>
+  <tr><td>Swap</td><td>4 Force Deal (swap any)</td><td>4 Swap (swap any)</td></tr>
+  <tr><td>Deal Breaker</td><td>2 (steal complete set)</td><td>Not in V1</td></tr>
+  <tr><td>House/Hotel</td><td>3 House + 2 Hotel</td><td>Not in V1</td></tr>
+  <tr><td>Pass Go</td><td>10 (draw 2 extra)</td><td>Not in V1</td></tr>
+  <tr><td>Double The Rent</td><td>2</td><td>Not in V1</td></tr>
+  <tr><td>Debt Collector</td><td>3 ($5M from 1 player)</td><td>Not in V1</td></tr>
+  <tr><td>Birthday</td><td>3 ($2M from all)</td><td>Not in V1</td></tr>
+  <tr><td>Wildcards</td><td>11 (two-color + multi-color)</td><td>4 (any color, reassignable)</td></tr>
+  <tr><td>Completed sets</td><td>Locked &mdash; only Deal Breaker can take</td><td>Locked &mdash; cannot be stolen or swapped</td></tr>
+  <tr><td>Payment choice</td><td>Payer chooses (bank + property)</td><td>Payer chooses (manual selection)</td></tr>
+  <tr><td>Change given?</td><td>No</td><td>No</td></tr>
+  <tr><td>Hand limit</td><td>7</td><td>7</td></tr>
+  <tr><td>Draw per turn</td><td>2 (5 if hand empty)</td><td>2</td></tr>
+  <tr><td>Plays per turn</td><td>3</td><td>3</td></tr>
+</table>
+
+<div class="note">
+  <strong>V2 Enhancement Ideas (from Monopoly Deal):</strong>
+  <ul style="margin-left:16px; margin-top:6px;">
+    <li>Double Rent card (play with rent for 2x)</li>
+    <li>Deal Breaker (steal complete set &mdash; high drama)</li>
+    <li>Pass Go (draw 2 extra &mdash; speeds up game)</li>
+    <li>Variable rent per set size (closer to original)</li>
+    <li>Two-color wildcards (strategic flipping)</li>
+    <li>House/Hotel system (+rent on complete sets)</li>
+    <li>JSN chaining (JSN vs JSN vs JSN)</li>
+  </ul>
+</div>
+
+<p class="source">Source: <a href="https://monopolydealrules.com/" target="_blank">monopolydealrules.com</a> &bull; Compiled for H&#9829;F Deal development reference</p>
+</body>
+</html>
