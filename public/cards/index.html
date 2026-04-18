@@ -46,8 +46,11 @@
 
   /* ========= Opponent Area ========= */
   .opp-area { width: 100%; margin: 6px 0; }
-  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(85,85,85,0.15); margin-bottom: 6px; }
+  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(85,85,85,0.15); margin-bottom: 6px; cursor: pointer; user-select: none; }
   .opp-header .name { font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+  .opp-header .collapse-arrow { font-size: 0.7em; color: #aaa; transition: transform 0.25s; }
+  .opp-area.collapsed .collapse-arrow { transform: rotate(-90deg); }
+  .opp-area.collapsed .opp-sets, .opp-area.collapsed .bank-row { display: none; }
   .opp-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Event Banner ========= */
@@ -62,8 +65,11 @@
 
   /* ========= My Area ========= */
   .my-area { width: 100%; margin: 6px 0; }
-  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(39,174,96,0.2); margin-bottom: 6px; }
+  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(39,174,96,0.2); margin-bottom: 6px; cursor: pointer; user-select: none; }
   .my-header .name { font-weight: 800; color: #27ae60; text-transform: uppercase; letter-spacing: 0.5px; }
+  .my-header .collapse-arrow { font-size: 0.7em; color: #aaa; transition: transform 0.25s; }
+  .my-area.collapsed .collapse-arrow { transform: rotate(-90deg); }
+  .my-area.collapsed .my-sets, .my-area.collapsed .bank-row { display: none; }
   .my-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Property Sets ========= */
@@ -237,10 +243,13 @@
 
 <!-- ======= GAME ======= -->
 <div id="game-screen" class="screen">
-  <div class="opp-area">
-    <div class="opp-header">
+  <div class="opp-area" id="opp-area">
+    <div class="opp-header" onclick="document.getElementById('opp-area').classList.toggle('collapsed')">
       <span class="name" id="opp-name"></span>
-      <span id="opp-hand-count" style="color:#8e8e93;"></span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span id="opp-hand-count" style="color:#8e8e93;"></span>
+        <span class="collapse-arrow">▼</span>
+      </span>
     </div>
     <div class="opp-sets" id="opp-sets"></div>
     <div class="bank-row" id="opp-bank"></div>
@@ -261,10 +270,13 @@
     <button class="btn btn-outline btn-sm" id="btn-end-turn" style="display:none;">End Turn</button>
   </div>
 
-  <div class="my-area">
-    <div class="my-header">
+  <div class="my-area" id="my-area">
+    <div class="my-header" onclick="document.getElementById('my-area').classList.toggle('collapsed')">
       <span class="name" id="my-name"></span>
-      <span id="my-bank-label" style="color:#8e8e93; font-size:0.78em;"></span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span id="my-bank-label" style="color:#8e8e93; font-size:0.78em;"></span>
+        <span class="collapse-arrow">▼</span>
+      </span>
     </div>
     <div class="my-sets" id="my-sets"></div>
     <div class="bank-row" id="my-bank"></div>
