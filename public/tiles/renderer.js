@@ -1820,10 +1820,15 @@ function createCenterHeartSVG(theme) {
     }
   }
 
-  // Heart shape — uses theme accent color for fill
-  const heartColor= theme.palette.accent[0] || '#e91e63';
+  // h ❤ f — themed monogram
+  const c1 = theme.palette.ring[0] || '#e91e63';
+  const heartColor = theme.palette.accent[0] || '#e91e63';
+  const c2 = theme.palette.ring[1] || '#6a1b9a';
   const heartPath = 'M0,-40 C-25,-80 -80,-40 -80,0 C-80,40 -40,60 0,90 C40,60 80,40 80,0 C80,-40 25,-80 0,-40Z';
-  html += `<g class="center-heart" transform="translate(50,45) scale(0.48)"><path d="${heartPath}" fill="${heartColor}" opacity="0.85" stroke="white" stroke-width="2"/></g>`;
+  const font = `font-family="Georgia, 'Times New Roman', serif" font-style="italic"`;
+  html += `<text x="20" y="62" ${font} font-size="36" font-weight="bold" fill="${c1}" opacity="0.9" text-anchor="middle">h</text>`;
+  html += `<g class="center-heart" transform="translate(52,46) scale(0.22)"><path d="${heartPath}" fill="${heartColor}" opacity="0.85" stroke="white" stroke-width="3"/></g>`;
+  html += `<text x="80" y="62" ${font} font-size="36" font-weight="bold" fill="${c2}" opacity="0.9" text-anchor="middle">f</text>`;
 
   svg.innerHTML = html;
   return svg;
