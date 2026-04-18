@@ -790,7 +790,7 @@
       let hasProps = false;
       for (const color of ['blue','red','green','yellow','black']) {
         const paySetSize = (state.setSizes && state.setSizes[color]) || 3;
-        if (me.properties[color].length > 0 && me.properties[color].length < paySetSize) {
+        if (me.properties[color].length > 0) {
           if (!hasProps) {
             const lbl = document.createElement('div');
             lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#8e8e93; margin:6px 0 2px;';
@@ -819,7 +819,7 @@
           opts.appendChild(row);
         }
       }
-      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green','yellow','black'].reduce((s,c) => { const ss = (state.setSizes && state.setSizes[c]) || 3; return s + (me.properties[c].length < ss ? me.properties[c].length : 0); }, 0);
+      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green','yellow','black'].reduce((s,c) => s + me.properties[c].length, 0);
       const canConfirm = selVal >= pa.amount || selVal >= maxAssets;
       const cb = document.createElement('button');
       cb.className = 'btn btn-sm btn-pink';

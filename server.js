@@ -879,7 +879,7 @@ function payRentManual(target, actor, moneyIds, propertyIds) {
 function totalAssets(player) {
   let total = player.bank.reduce((s, c) => s + c.value, 0);
   for (const c of CARD_COLORS) {
-    if (!setComplete(player.properties[c], c)) total += player.properties[c].length;
+    total += player.properties[c].length; // all properties count, even complete sets
   }
   return total;
 }
