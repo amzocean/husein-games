@@ -6,90 +6,90 @@
 <title>H♥F Deal</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a1a; color: #e8e8f0; min-height: 100vh; display: flex; flex-direction: column; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #fff5f5; color: #2c2c2c; min-height: 100vh; display: flex; flex-direction: column; -webkit-tap-highlight-color: transparent; }
 
   /* ========= Screens ========= */
   .screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
   .screen.active { display: flex; }
 
   /* ========= Idle / Lobby ========= */
-  #idle-screen h1, #lobby-screen h1 { font-size: 2em; margin-bottom: 4px; letter-spacing: 1px; }
-  #idle-screen h1 .heart, #lobby-screen h1 .heart { color: #e74c7c; }
-  .sub { color: #888; margin-bottom: 24px; font-size: 0.95em; }
+  #idle-screen h1, #lobby-screen h1 { font-size: 2em; margin-bottom: 4px; letter-spacing: 1px; color: #1c1c1e; }
+  #idle-screen h1 .heart, #lobby-screen h1 .heart { color: #c44569; }
+  .sub { color: #8e8e93; margin-bottom: 24px; font-size: 0.95em; }
   .input-group { margin: 8px 0; display: flex; gap: 8px; }
-  .input-group input { padding: 10px 14px; border-radius: 10px; border: 1px solid #333; background: #181830; color: #fff; font-size: 1em; width: 180px; }
-  .input-group input::placeholder { color: #555; }
-  .input-group input:focus { border-color: #e74c7c; outline: none; box-shadow: 0 0 8px #e74c7c44; }
+  .input-group input { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(196,69,105,0.2); background: #fff; color: #2c2c2c; font-size: 1em; width: 180px; }
+  .input-group input::placeholder { color: #aaa; }
+  .input-group input:focus { border-color: #c44569; outline: none; box-shadow: 0 0 8px rgba(196,69,105,0.15); }
   .btn { padding: 10px 22px; border-radius: 10px; border: none; font-size: 1em; cursor: pointer; font-weight: 600; transition: transform .12s, box-shadow .15s; }
   .btn:active { transform: scale(0.95); }
-  .btn-pink { background: linear-gradient(135deg, #e74c7c, #c44569); color: #fff; }
-  .btn-pink:hover { box-shadow: 0 0 18px #e74c7c66; }
-  .btn-outline { background: transparent; border: 1.5px solid #555; color: #ccc; }
-  .btn-outline:hover { border-color: #aaa; color: #fff; }
+  .btn-pink { background: #c44569; color: #fff; box-shadow: 0 2px 8px rgba(196,69,105,0.20); }
+  .btn-pink:hover { box-shadow: 0 4px 16px rgba(196,69,105,0.30); }
+  .btn-outline { background: #fff; border: 1.5px solid rgba(196,69,105,0.25); color: #c44569; }
+  .btn-outline:hover { border-color: #c44569; background: #fff5f5; }
   .btn-sm { padding: 6px 14px; font-size: 0.85em; }
-  .error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.9em; }
+  .error-msg { color: #d63031; margin-top: 10px; font-size: 0.9em; }
   .lobby-players { margin: 16px 0; text-align: center; }
-  .lobby-players div { font-size: 1.1em; margin: 4px 0; }
-  .lobby-players .connected { color: #7ddb7d; }
-  .waiting { color: #888; font-style: italic; }
+  .lobby-players div { font-size: 1.1em; margin: 4px 0; color: #2c2c2c; }
+  .lobby-players .connected { color: #27ae60; }
+  .waiting { color: #8e8e93; font-style: italic; }
 
   /* ========= Sound Toggle ========= */
-  .sound-toggle { position: fixed; top: 10px; right: 10px; z-index: 100; background: #181830; border: 1px solid #333; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1em; transition: background .2s, border-color .2s; }
-  .sound-toggle:hover { background: #252550; border-color: #555; }
+  .sound-toggle { position: fixed; top: 10px; right: 10px; z-index: 100; background: #fff; border: 1px solid rgba(196,69,105,0.15); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1em; transition: background .2s, border-color .2s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .sound-toggle:hover { background: #fff5f5; border-color: rgba(196,69,105,0.3); }
   .sound-toggle.muted { opacity: 0.5; }
 
   /* ========= Game Board ========= */
-  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; }
+  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; background: #fff5f5; }
   .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; font-size: 0.85em; }
-  .top-bar .turn-info { color: #f9ca24; font-weight: 600; }
-  .top-bar .deck-info { color: #888; }
+  .top-bar .turn-info { color: #c44569; font-weight: 600; }
+  .top-bar .deck-info { color: #8e8e93; }
 
   /* ========= Opponent Area ========= */
   .opp-area { width: 100%; margin: 6px 0; }
   .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
-  .opp-header .name { font-weight: 600; color: #ddd; }
+  .opp-header .name { font-weight: 600; color: #555; }
   .opp-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Event Banner ========= */
-  .event-banner { width: 100%; text-align: center; padding: 8px; font-size: 0.92em; color: #f9ca24; min-height: 32px; font-weight: 500; }
+  .event-banner { width: 100%; text-align: center; padding: 8px; font-size: 0.92em; color: #b8860b; min-height: 32px; font-weight: 500; }
   .event-banner.animate { animation: bannerSlide 0.35s ease-out; }
 
   /* ========= Action Prompt ========= */
-  .action-prompt { width: 100%; background: linear-gradient(135deg, #1a1a35, #15152e); border-radius: 12px; padding: 12px; margin: 4px 0; text-align: center; display: none; border: 1px solid #2a2a50; }
+  .action-prompt { width: 100%; background: #fff; border-radius: 12px; padding: 12px; margin: 4px 0; text-align: center; display: none; border: 1px solid rgba(196,69,105,0.12); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .action-prompt.active { display: block; animation: promptFade 0.3s ease-out; }
-  .prompt-title { font-weight: 600; margin-bottom: 8px; color: #f0a0c0; }
+  .prompt-title { font-weight: 600; margin-bottom: 8px; color: #c44569; }
   .prompt-options { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 
   /* ========= My Area ========= */
   .my-area { width: 100%; margin: 6px 0; }
   .my-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
-  .my-header .name { font-weight: 600; color: #7ddb7d; }
+  .my-header .name { font-weight: 600; color: #27ae60; }
   .my-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Property Sets ========= */
-  .set-group { background: linear-gradient(180deg, #14142c, #0f0f24); border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid #1e1e3a; }
+  .set-group { background: #fff; border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
   .set-label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.5px; }
   .set-cards { display: flex; gap: 4px; flex-wrap: wrap; }
-  .set-card { width: 30px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.2s; }
-  .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; pointer-events: none; }
+  .set-card { width: 30px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s; }
+  .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; pointer-events: none; }
   .set-complete { position: relative; }
-  .set-complete::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.25); border-radius: 5px; z-index: 1; }
+  .set-complete::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.15); border-radius: 5px; z-index: 1; }
   .set-complete .lock-icon { position: absolute; font-size: 9px; top: -3px; right: -3px; z-index: 2; }
   .set-complete-anim { animation: setGlow 0.6s ease-out; }
-  .selectable { cursor: pointer; outline: 2px dashed #f9ca24; animation: pulse 1s infinite; }
+  .selectable { cursor: pointer; outline: 2px dashed #b8860b; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{ outline-offset: 0; } 50%{ outline-offset: 3px; } }
 
   .bank-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
-  .bank-chip { background: linear-gradient(135deg, #2d6a2d, #1a5c1a); color: #90ee90; border-radius: 14px; padding: 3px 10px; font-size: 0.75em; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.3); border: 1px solid #3a8a3a; }
+  .bank-chip { background: rgba(184,134,11,0.1); color: #b8860b; border-radius: 14px; padding: 3px 10px; font-size: 0.75em; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid rgba(184,134,11,0.2); }
 
   /* ========= Hand ========= */
-  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid #1a1a35; }
-  .hand-label { font-size: 0.78em; color: #888; margin-bottom: 4px; padding-left: 4px; }
+  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); }
+  .hand-label { font-size: 0.78em; color: #8e8e93; margin-bottom: 4px; padding-left: 4px; }
   .hand { display: flex; gap: 8px; overflow-x: auto; padding: 8px 4px 12px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   .hand::-webkit-scrollbar { height: 4px; }
-  .hand::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+  .hand::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
 
-  /* ========= Cards (Fancy) ========= */
+  /* ========= Cards (Elegant) ========= */
   .card {
     width: 70px; min-width: 70px; height: 98px; border-radius: 10px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -97,52 +97,52 @@
     transition: transform .15s ease, box-shadow .2s ease;
     position: relative; user-select: none;
     border: 2px solid transparent;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
     overflow: hidden;
   }
   .card::before {
     content: ''; position: absolute;
     top: 3px; left: 3px; right: 3px; bottom: 3px;
-    border: 1.5px solid rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.18);
     border-radius: 7px; pointer-events: none; z-index: 1;
   }
   .card::after {
     content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
-    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
     pointer-events: none; z-index: 2; transition: left 0.4s ease;
   }
   .card:hover::after { left: 120%; }
   .card:hover:not(.disabled) {
     transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.08);
   }
   .card:active:not(.disabled) { transform: translateY(-2px) scale(0.97); }
-  .card.disabled { opacity: 0.35; cursor: not-allowed; filter: grayscale(30%); }
-  .card .card-icon { font-size: 1.8em; margin-bottom: 3px; z-index: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
-  .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.4); font-size: 0.78em; letter-spacing: 0.3px; }
-  .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.7; }
-  .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.7; transform: rotate(180deg); }
+  .card.disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(20%); }
+  .card .card-icon { font-size: 1.8em; margin-bottom: 3px; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15)); }
+  .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 1px rgba(0,0,0,0.2); font-size: 0.78em; letter-spacing: 0.3px; }
+  .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; }
+  .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; transform: rotate(180deg); }
 
-  .card-blue { background: linear-gradient(160deg, #3b82f6 0%, #1d4ed8 50%, #1e3a8a 100%); color: #fff; border-color: #60a5fa; }
-  .card-red { background: linear-gradient(160deg, #ef4444 0%, #dc2626 50%, #991b1b 100%); color: #fff; border-color: #f87171; }
-  .card-green { background: linear-gradient(160deg, #22c55e 0%, #16a34a 50%, #14532d 100%); color: #fff; border-color: #4ade80; }
-  .card-money { background: linear-gradient(160deg, #fbbf24 0%, #b45309 50%, #78350f 100%); color: #fef3c7; border-color: #f59e0b; }
-  .card-rent { background: linear-gradient(160deg, #a855f7 0%, #7e22ce 50%, #581c87 100%); color: #e9d5ff; border-color: #c084fc; }
-  .card-steal { background: linear-gradient(160deg, #ec4899 0%, #be185d 50%, #831843 100%); color: #fce7f3; border-color: #f472b6; }
-  .card-swap { background: linear-gradient(160deg, #22d3ee 0%, #0891b2 50%, #164e63 100%); color: #cffafe; border-color: #67e8f9; }
-  .card-wild { background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 30%, #e74c7c 70%, #9333ea 100%); color: #fff; border-color: #fcd34d; }
-  .card-block { background: linear-gradient(160deg, #94a3b8 0%, #475569 50%, #1e293b 100%); color: #e2e8f0; border-color: #cbd5e1; }
+  .card-blue { background: linear-gradient(160deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%); color: #fff; border-color: #93c5fd; }
+  .card-red { background: linear-gradient(160deg, #f87171 0%, #ef4444 50%, #dc2626 100%); color: #fff; border-color: #fca5a5; }
+  .card-green { background: linear-gradient(160deg, #4ade80 0%, #22c55e 50%, #16a34a 100%); color: #fff; border-color: #86efac; }
+  .card-money { background: linear-gradient(160deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%); color: #78350f; border-color: #fde68a; }
+  .card-rent { background: linear-gradient(160deg, #c084fc 0%, #a855f7 50%, #7e22ce 100%); color: #fff; border-color: #d8b4fe; }
+  .card-steal { background: linear-gradient(160deg, #f472b6 0%, #ec4899 50%, #db2777 100%); color: #fff; border-color: #f9a8d4; }
+  .card-swap { background: linear-gradient(160deg, #67e8f9 0%, #22d3ee 50%, #06b6d4 100%); color: #164e63; border-color: #a5f3fc; }
+  .card-wild { background: linear-gradient(160deg, #fcd34d 0%, #f59e0b 30%, #c44569 70%, #9333ea 100%); color: #fff; border-color: #fde68a; }
+  .card-block { background: linear-gradient(160deg, #cbd5e1 0%, #94a3b8 50%, #64748b 100%); color: #1e293b; border-color: #e2e8f0; }
 
-  .set-card.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-  .set-card.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-  .set-card.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .set-card.blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+  .set-card.red { background: linear-gradient(135deg, #f87171, #ef4444); }
+  .set-card.green { background: linear-gradient(135deg, #4ade80, #22c55e); }
 
   /* ========= End Turn ========= */
   .end-turn-row { width: 100%; display: flex; justify-content: center; margin: 6px 0; }
 
   /* ========= Finished Screen ========= */
-  #finished-screen h1 { font-size: 2.2em; }
-  #finished-screen .winner-name { color: #f9ca24; font-size: 1.5em; font-weight: 700; margin: 10px 0; }
+  #finished-screen h1 { font-size: 2.2em; color: #1c1c1e; }
+  #finished-screen .winner-name { color: #b8860b; font-size: 1.5em; font-weight: 700; margin: 10px 0; }
   .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; overflow: hidden; }
   .confetti { position: absolute; width: 8px; height: 8px; top: -10px; border-radius: 1px; animation: confettiFall linear forwards; }
   @keyframes confettiFall {
@@ -150,11 +150,11 @@
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
-  .back-link { display: inline-block; margin-top: 20px; color: #888; text-decoration: none; font-size: 0.9em; transition: color .2s; }
-  .back-link:hover { color: #ccc; }
-  .set-label.blue { color: #60a5fa; }
-  .set-label.red { color: #f87171; }
-  .set-label.green { color: #4ade80; }
+  .back-link { display: inline-block; margin-top: 20px; color: #8e8e93; text-decoration: none; font-size: 0.9em; transition: color .2s; }
+  .back-link:hover { color: #c44569; }
+  .set-label.blue { color: #3b82f6; }
+  .set-label.red { color: #ef4444; }
+  .set-label.green { color: #22c55e; }
 
   /* ========= Animations ========= */
   @keyframes cardEntrance {
@@ -170,8 +170,8 @@
     to { opacity: 1; transform: scale(1); }
   }
   @keyframes setGlow {
-    0% { box-shadow: 0 0 0 0 rgba(249,202,36,0.6); }
-    50% { box-shadow: 0 0 20px 4px rgba(249,202,36,0.4); }
+    0% { box-shadow: 0 0 0 0 rgba(196,69,105,0.5); }
+    50% { box-shadow: 0 0 20px 4px rgba(196,69,105,0.3); }
     100% { box-shadow: 0 0 0 0 transparent; }
   }
   @keyframes shakeX {
@@ -230,7 +230,7 @@
   <div class="opp-area">
     <div class="opp-header">
       <span class="name" id="opp-name"></span>
-      <span id="opp-hand-count" style="color:#888;"></span>
+      <span id="opp-hand-count" style="color:#8e8e93;"></span>
     </div>
     <div class="opp-sets" id="opp-sets"></div>
     <div class="bank-row" id="opp-bank"></div>
@@ -250,7 +250,7 @@
   <div class="my-area">
     <div class="my-header">
       <span class="name" id="my-name"></span>
-      <span id="my-bank-label" style="color:#888; font-size:0.78em;"></span>
+      <span id="my-bank-label" style="color:#8e8e93; font-size:0.78em;"></span>
     </div>
     <div class="my-sets" id="my-sets"></div>
     <div class="bank-row" id="my-bank"></div>
@@ -717,7 +717,7 @@
       title.innerHTML = '\u{1f4b8} Pay <b>$' + pa.amount + '</b> rent (' + pa.color + ') \u2014 selected: <b>$' + selVal + '</b>';
       if (me.bank.length > 0) {
         const lbl = document.createElement('div');
-        lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#aaa; margin:6px 0 2px;';
+        lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#8e8e93; margin:6px 0 2px;';
         lbl.textContent = 'Tap money to select:';
         opts.appendChild(lbl);
         const row = document.createElement('div');
@@ -725,7 +725,7 @@
         me.bank.forEach(c => {
           const b = document.createElement('button');
           b.className = 'btn btn-sm';
-          b.style.cssText = selMoney.includes(c.id) ? 'background:#ca8a04; color:#fff; min-width:50px;' : 'background:#333; color:#ccc; min-width:50px;';
+          b.style.cssText = selMoney.includes(c.id) ? 'background:#b8860b; color:#fff; min-width:50px;' : 'background:#f2f2f7; color:#2c2c2c; min-width:50px; border:1px solid rgba(0,0,0,0.1);';
           b.textContent = '$' + c.value + (selMoney.includes(c.id) ? ' \u2713' : '');
           b.onclick = () => socket.emit('choose', { sessionId, choice: { action: 'toggle_money', id: c.id } });
           row.appendChild(b);
@@ -737,7 +737,7 @@
         if (me.properties[color].length > 0 && me.properties[color].length < 3) {
           if (!hasProps) {
             const lbl = document.createElement('div');
-            lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#aaa; margin:6px 0 2px;';
+            lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#8e8e93; margin:6px 0 2px;';
             lbl.textContent = 'Tap properties to sacrifice:';
             opts.appendChild(lbl);
             hasProps = true;
