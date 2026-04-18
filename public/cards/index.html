@@ -91,7 +91,7 @@
 
   /* ========= Cards (Elegant) ========= */
   .card {
-    width: 70px; min-width: 70px; height: 98px; border-radius: 10px;
+    width: 70px; min-width: 70px; height: 105px; border-radius: 10px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     font-size: 0.72em; font-weight: 600; cursor: pointer;
     transition: transform .15s ease, box-shadow .2s ease;
@@ -118,10 +118,12 @@
   }
   .card:active:not(.disabled) { transform: translateY(-2px) scale(0.97); }
   .card.disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(20%); }
-  .card .card-icon { font-size: 1.8em; margin-bottom: 3px; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15)); }
+  .card .card-icon { font-size: 1.8em; margin-bottom: 1px; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15)); }
   .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 1px rgba(0,0,0,0.2); font-size: 0.78em; letter-spacing: 0.3px; }
   .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; }
   .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; transform: rotate(180deg); }
+  .card .card-rent-tiers { position: absolute; bottom: 2px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 0; z-index: 1; pointer-events: none; }
+  .card .rent-row { font-size: 0.52em; font-weight: 600; opacity: 0.85; line-height: 1.15; text-shadow: 0 1px 1px rgba(0,0,0,0.3); letter-spacing: 0.3px; }
 
   .card-blue { background: linear-gradient(160deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%); color: #fff; border-color: #93c5fd; }
   .card-red { background: linear-gradient(160deg, #f87171 0%, #ef4444 50%, #dc2626 100%); color: #fff; border-color: #fca5a5; }
@@ -566,6 +568,7 @@
   function renderSets(container, props, selectable, who) {
     container.innerHTML = '';
     for (const color of ['blue','red','green','yellow','black']) {
+      if (props[color].length === 0) continue; // hide empty sets
       const grp = document.createElement('div');
       grp.className = 'set-group';
       const setSize = (state.setSizes && state.setSizes[color]) || 3;
@@ -852,10 +855,12 @@
         tl.className = 'card-value';
         tl.textContent = cornerVal;
         el.appendChild(tl);
-        const br = document.createElement('div');
-        br.className = 'card-value-br';
-        br.textContent = cornerVal;
-        el.appendChild(br);
+        if (card.type !== 'property') {
+          const br = document.createElement('div');
+          br.className = 'card-value-br';
+          br.textContent = cornerVal;
+          el.appendChild(br);
+        }
       }
 
       const icon = document.createElement('div');
@@ -867,6 +872,21 @@
       label.className = 'card-label';
       label.textContent = getCardLabel(card);
       el.appendChild(label);
+
+      // Rent tiers on property cards
+      if (card.type === 'property' && state.rentTable && state.rentTable[card.color]) {
+        const tiers = state.rentTable[card.color];
+        const tierEl = document.createElement('div');
+        tierEl.className = 'card-rent-tiers';
+        const sz = (state.setSizes && state.setSizes[card.color]) || 3;
+        for (let n = 1; n <= sz; n++) {
+          const row = document.createElement('div');
+          row.className = 'rent-row';
+          row.textContent = n + (n === sz ? '\u2605' : '') + ' $' + (tiers[n] || 0);
+          tierEl.appendChild(row);
+        }
+        el.appendChild(tierEl);
+      }
 
       if (isDiscarding) {
         el.onclick = () => socket.emit('discard_card', { sessionId, cardId: card.id });
