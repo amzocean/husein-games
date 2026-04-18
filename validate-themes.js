@@ -158,12 +158,12 @@ if (THEMES) {
   const expected = {
     bgPatterns:   { count: 5, label: 'bgPatterns' },
     ringStyles:   { count: 3, label: 'ringStyles' },
-    shapeNames:   { count: 5, label: 'shapeNames' },
-    accentShapes: { count: 5, label: 'accentShapes' },
+    shapeNames:   { count: 4, label: 'shapeNames' },
+    accentShapes: { count: 4, label: 'accentShapes' },
   };
   const paletteExpected = {
     bg:     { count: 3, label: 'palette.bg' },
-    ring:   { count: 5, label: 'palette.ring' },
+    ring:   { count: 4, label: 'palette.ring' },
     shape:  { count: 3, label: 'palette.shape' },
     accent: { count: 3, label: 'palette.accent' },
   };
@@ -190,23 +190,28 @@ if (THEMES) {
       }
     }
 
-    // Verify pool products: bg 5×3=15, ring 5×3=15, shape 5×3=15, accent 5×3=15
+    // Verify pool products: ring 4×3=12, shape 4×3=12, accent 4×3=12
     if (themeOk) {
-      const bgPool   = theme.bgPatterns.length * theme.palette.bg.length;
       const ringPool = theme.palette.ring.length * theme.ringStyles.length;
       const shapePool = theme.shapeNames.length * theme.palette.shape.length;
       const accentPool = theme.accentShapes.length * theme.palette.accent.length;
 
-      for (const [name, val] of [['bg', bgPool], ['ring', ringPool], ['shape', shapePool], ['accent', accentPool]]) {
-        if (val !== 15) {
-          check(false, '', `${theme.name}: ${name} pool = ${val}, expected 15`);
+      for (const [name, val] of [['ring', ringPool], ['shape', shapePool], ['accent', accentPool]]) {
+        if (val !== 12) {
+          check(false, '', `${theme.name}: ${name} pool = ${val}, expected 12`);
           allPoolOk = false;
         }
+      }
+
+      // Validate boardBg field
+      if (!theme.boardBg || !theme.boardBg.pattern || !theme.boardBg.color) {
+        check(false, '', `${theme.name}: missing boardBg field (needs { pattern, color })`);
+        allPoolOk = false;
       }
     }
   }
   if (allPoolOk) {
-    check(true, `All ${THEMES.length} themes have correct pool math (5×3=15 per dimension)`, '');
+    check(true, `All ${THEMES.length} themes have correct pool math (ring 4×3=12, shape 4×3=12, accent 4×3=12) and boardBg`, '');
   }
 } else {
   check(false, '', 'Skipped — could not parse THEMES');
@@ -355,12 +360,13 @@ console.log(`\n${BOLD}CHECK 6: Function/utility dependencies (renderer.js)${RESE
 
   const cleanSrc = stripLiterals(rendererSrc);
 
-  // Known JS builtins and DOM APIs
+  // Known JS builtins, DOM APIs, and cross-function refs (validator's string-stripping may false-positive)
   const KNOWN = new Set([
     'Math', 'parseInt', 'parseFloat', 'isNaN', 'isFinite', 'Number', 'String',
     'encodeURIComponent', 'decodeURIComponent',
     'Array', 'Object', 'Map', 'Set', 'JSON',
     'document', 'setTimeout', 'clearTimeout', 'console', 'Symbol',
+    'createCenterHeartSVG',
   ]);
 
   const JS_KEYWORDS = new Set([

@@ -48,8 +48,8 @@ async function startNewGame() {
   // Update score display
   updateScoreDisplay();
 
-  // Attach tile click handlers (click works on touch too)
-  boardEl.querySelectorAll('.tile').forEach(tileEl => {
+  // Attach tile click handlers (click works on touch too) — skip center tile
+  boardEl.querySelectorAll('.tile:not(.center-tile)').forEach(tileEl => {
     tileEl.addEventListener('click', () => handleTileSelect(tileEl));
   });
 }
@@ -153,6 +153,10 @@ function handleMatch(result) {
 }
 
 function showWin() {
+  // Animate center heart out to reveal photo underneath
+  const centerTile = boardEl.querySelector('.center-tile');
+  if (centerTile) centerTile.classList.add('win-reveal');
+
   winBanner.textContent = `\u{1F495} Revealed in ${game.moveCount} moves!`;
   winBanner.classList.add('visible');
   spawnHearts();

@@ -161,14 +161,15 @@ body {
 #board {
   display: grid;
   grid-template-columns: repeat(var(--cols, 5), 1fr);
-  grid-template-rows: repeat(var(--rows, 6), 1fr);
+  grid-template-rows: repeat(var(--rows, 5), 1fr);
   gap: var(--tile-gap);
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 5 / 6;
+  aspect-ratio: 1 / 1;
   position: relative;
   border-radius: var(--radius-md);
-  overflow: hidden;
+  overflow: visible;
+  padding: 4px;
   /* Photo reveal background */
   background-size: cover;
   background-position: center;
@@ -183,9 +184,9 @@ body {
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.4s ease;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -218,6 +219,30 @@ body {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s, background 0.3s ease;
+}
+
+/* Center heart decoration tile */
+.center-tile {
+  pointer-events: none;
+  cursor: default;
+  box-shadow: none;
+  animation: heartPulse 1.2s ease-in-out infinite;
+}
+.center-tile:active { transform: none; }
+
+.center-tile.win-reveal {
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+@keyframes heartPulse {
+  0%   { transform: scale(1); }
+  15%  { transform: scale(1.12); }
+  30%  { transform: scale(1); }
+  45%  { transform: scale(1.08); }
+  60%  { transform: scale(1); }
+  100% { transform: scale(1); }
 }
 
 .tile-svg {

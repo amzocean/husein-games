@@ -15,7 +15,7 @@ function mulberry32(a) {
 
 function renderBg(attr) {
   const c = attr.color;
-  const o = 0.75;
+  const o = 0.35;
   switch (attr.pattern) {
     // ── Azulejo ──
     case 'checkerboard': {
@@ -430,9 +430,12 @@ function renderBg(attr) {
 
     // ── Bollywood ──
     case 'spotlight': {
-      return `<circle cx="50" cy="50" r="44" fill="${c}" opacity="${o*0.15}"/>` +
-             `<circle cx="50" cy="50" r="30" fill="${c}" opacity="${o*0.2}"/>` +
-             `<circle cx="50" cy="50" r="16" fill="${c}" opacity="${o*0.3}"/>`;
+      // Diagonal shimmer stripes instead of concentric circles (which looked like ring elements)
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.12}"/>`;
+      for (let i = -60; i < 120; i += 20) {
+        s += `<rect x="${i}" y="0" width="8" height="100" fill="${c}" opacity="${o*0.10}" transform="rotate(35 50 50)"/>`;
+      }
+      return s;
     }
     case 'sequins': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
@@ -486,7 +489,7 @@ function renderBg(attr) {
       return s;
     }
     case 'chalkboard': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.88"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.35"/>`;
       const rng = mulberry32(c.charCodeAt(1));
       for (let i = 0; i < 18; i++) {
         const x = 6 + rng() * 84, y = 6 + rng() * 84;
@@ -525,19 +528,19 @@ function renderBg(attr) {
 
     // ── Sky ──
     case 'sky-gradient': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.75"/>`;
-      s += `<rect x="4" y="4" width="92" height="30" rx="6" fill="#fff" opacity="0.18"/>`;
-      s += `<rect x="4" y="66" width="92" height="30" fill="${c}" opacity="0.2"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.3"/>`;
+      s += `<rect x="4" y="4" width="92" height="30" rx="6" fill="#fff" opacity="0.12"/>`;
+      s += `<rect x="4" y="66" width="92" height="30" fill="${c}" opacity="0.1"/>`;
       return s;
     }
     case 'fluffy-clouds': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
-      s += `<circle cx="25" cy="35" r="10" fill="#fff" opacity="0.5"/>`;
-      s += `<circle cx="35" cy="30" r="12" fill="#fff" opacity="0.45"/>`;
-      s += `<circle cx="45" cy="35" r="9" fill="#fff" opacity="0.5"/>`;
-      s += `<circle cx="65" cy="70" r="8" fill="#fff" opacity="0.4"/>`;
-      s += `<circle cx="75" cy="66" r="10" fill="#fff" opacity="0.35"/>`;
-      s += `<circle cx="82" cy="70" r="7" fill="#fff" opacity="0.4"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.3"/>`;
+      s += `<circle cx="25" cy="35" r="10" fill="#fff" opacity="0.3"/>`;
+      s += `<circle cx="35" cy="30" r="12" fill="#fff" opacity="0.25"/>`;
+      s += `<circle cx="45" cy="35" r="9" fill="#fff" opacity="0.3"/>`;
+      s += `<circle cx="65" cy="70" r="8" fill="#fff" opacity="0.2"/>`;
+      s += `<circle cx="75" cy="66" r="10" fill="#fff" opacity="0.18"/>`;
+      s += `<circle cx="82" cy="70" r="7" fill="#fff" opacity="0.2"/>`;
       return s;
     }
     case 'rainbow-arc': {
@@ -567,10 +570,10 @@ function renderBg(attr) {
 
     // ── Street Food ──
     case 'checkered-tablecloth': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.3"/>`;
       for (let r = 0; r < 6; r++) for (let col = 0; col < 6; col++) {
         if ((r + col) % 2 === 0)
-          s += `<rect x="${8 + col * 14}" y="${8 + r * 14}" width="13" height="13" fill="#fff" opacity="0.18"/>`;
+          s += `<rect x="${8 + col * 14}" y="${8 + r * 14}" width="13" height="13" fill="#fff" opacity="0.12"/>`;
       }
       return s;
     }
@@ -607,7 +610,7 @@ function renderBg(attr) {
     }
     // ── Arctic ──
     case 'ice-crystals': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.3"/>`;
       const pts = [[25,30],[70,25],[50,55],[30,80],[75,75]];
       for (const [px,py] of pts) {
         for (let a = 0; a < 6; a++) {
@@ -661,25 +664,25 @@ function renderRing(attr) {
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="8 5"/>`;
     case 'double':
       return `<rect x="3" y="3" width="94" height="94" rx="7" fill="none" stroke="${c}" stroke-width="3"/>` +
-             `<rect x="9" y="9" width="82" height="82" rx="4" fill="none" stroke="${c}" stroke-width="2"/>`;
+             `<rect x="9" y="9" width="82" height="82" rx="4" fill="none" stroke="${c}" stroke-width="2.5"/>`;
     // ── Celestial ──
     case 'glow':
-      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="8" opacity="0.3"/>` +
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="8" opacity="0.6"/>` +
              `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>`;
     case 'dotted':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="3 5"/>`;
     case 'eclipse':
       return `<path d="M50,4 A46,46 0 1,1 50,96" fill="none" stroke="${c}" stroke-width="4"/>` +
-             `<path d="M50,96 A46,46 0 0,1 50,4" fill="none" stroke="${c}" stroke-width="2" opacity="0.3"/>`;
+             `<path d="M50,96 A46,46 0 0,1 50,4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     // ── Garden ──
     case 'vine':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3"/>` +
              `<circle cx="20" cy="4" r="4" fill="${c}" opacity="0.6"/>` +
-             `<circle cx="50" cy="4" r="3" fill="${c}" opacity="0.5"/>` +
+             `<circle cx="50" cy="4" r="3" fill="${c}" opacity="0.6"/>` +
              `<circle cx="80" cy="4" r="4" fill="${c}" opacity="0.6"/>` +
-             `<circle cx="20" cy="96" r="3" fill="${c}" opacity="0.5"/>` +
+             `<circle cx="20" cy="96" r="3" fill="${c}" opacity="0.6"/>` +
              `<circle cx="50" cy="96" r="4" fill="${c}" opacity="0.6"/>` +
-             `<circle cx="80" cy="96" r="3" fill="${c}" opacity="0.5"/>`;
+             `<circle cx="80" cy="96" r="3" fill="${c}" opacity="0.6"/>`;
     case 'thorn':
       return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="3"/>` +
              `<polygon points="25,2 28,8 22,8" fill="${c}"/>` +
@@ -689,12 +692,12 @@ function renderRing(attr) {
              `<polygon points="50,98 53,92 47,92" fill="${c}"/>` +
              `<polygon points="75,98 78,92 72,92" fill="${c}"/>`;
     case 'ribbon':
-      return `<rect x="2" y="2" width="96" height="96" rx="6" fill="none" stroke="${c}" stroke-width="5" opacity="0.5"/>` +
-             `<rect x="7" y="7" width="86" height="86" rx="4" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.8"/>`;
+      return `<rect x="2" y="2" width="96" height="96" rx="6" fill="none" stroke="${c}" stroke-width="5" opacity="0.6"/>` +
+             `<rect x="7" y="7" width="86" height="86" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.8"/>`;
     // ── Deco ──
     case 'thick-thin':
       return `<rect x="3" y="3" width="94" height="94" rx="7" fill="none" stroke="${c}" stroke-width="5"/>` +
-             `<rect x="11" y="11" width="78" height="78" rx="3" fill="none" stroke="${c}" stroke-width="1"/>`;
+             `<rect x="11" y="11" width="78" height="78" rx="3" fill="none" stroke="${c}" stroke-width="2.5"/>`;
     case 'dotted-line':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="2 4 8 4"/>`;
     case 'fillet':
@@ -702,22 +705,22 @@ function renderRing(attr) {
     // ── Mosaic ──
     case 'rope':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="1 3"/>` +
-             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2" opacity="0.4"/>`;
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'notched':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4"/>` +
-             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="14 6" opacity="0.5"/>`;
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="14 6" opacity="0.6"/>`;
     case 'inset':
-      return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="2"/>` +
-             `<rect x="12" y="12" width="76" height="76" rx="3" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>` +
-             `<rect x="18" y="18" width="64" height="64" rx="2" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+      return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="2.5"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<rect x="18" y="18" width="64" height="64" rx="2" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     // ── Candy ──
     case 'frosting':
       return `<path d="M4,8 Q15,2 25,8 Q35,14 45,8 Q55,2 65,8 Q75,14 85,8 Q92,4 96,8 L96,4 L4,4 Z" fill="${c}" opacity="0.6"/>` +
              `<path d="M4,92 Q15,98 25,92 Q35,86 45,92 Q55,98 65,92 Q75,86 85,92 Q92,96 96,92 L96,96 L4,96 Z" fill="${c}" opacity="0.6"/>` +
-             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2" opacity="0.4"/>`;
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'licorice':
       return `<rect x="3" y="3" width="94" height="94" rx="7" fill="none" stroke="${c}" stroke-width="7"/>` +
-             `<rect x="3" y="3" width="94" height="94" rx="7" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>`;
+             `<rect x="3" y="3" width="94" height="94" rx="7" fill="none" stroke="white" stroke-width="2.5" opacity="0.6"/>`;
     case 'candy-dots': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3"/>`;
       const pos = [20,35,50,65,80];
@@ -733,16 +736,16 @@ function renderRing(attr) {
     case 'sharp':
       return `<rect x="3" y="3" width="94" height="94" fill="none" stroke="${c}" stroke-width="4"/>`;
     case 'etched':
-      return `<rect x="4" y="4" width="92" height="92" fill="none" stroke="${c}" stroke-width="2"/>` +
-             `<rect x="8" y="8" width="84" height="84" fill="none" stroke="${c}" stroke-width="1" opacity="0.5"/>` +
-             `<rect x="12" y="12" width="76" height="76" fill="none" stroke="${c}" stroke-width="0.5" opacity="0.3"/>`;
+      return `<rect x="4" y="4" width="92" height="92" fill="none" stroke="${c}" stroke-width="2.5"/>` +
+             `<rect x="8" y="8" width="84" height="84" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<rect x="12" y="12" width="76" height="76" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'shadow':
-      return `<rect x="6" y="6" width="92" height="92" rx="4" fill="${c}" opacity="0.15"/>` +
+      return `<rect x="6" y="6" width="92" height="92" rx="4" fill="${c}" opacity="0.6"/>` +
              `<rect x="3" y="3" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="3"/>`;
     // ── Sepia ──
     case 'ornate':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3"/>` +
-             `<rect x="10" y="10" width="80" height="80" rx="3" fill="none" stroke="${c}" stroke-width="1" opacity="0.5"/>` +
+             `<rect x="10" y="10" width="80" height="80" rx="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
              `<circle cx="10" cy="10" r="3" fill="${c}" opacity="0.6"/>` +
              `<circle cx="90" cy="10" r="3" fill="${c}" opacity="0.6"/>` +
              `<circle cx="10" cy="90" r="3" fill="${c}" opacity="0.6"/>` +
@@ -751,11 +754,11 @@ function renderRing(attr) {
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="12 3 4 3"/>`;
     case 'gilded':
       return `<rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="${c}" stroke-width="5"/>` +
-             `<rect x="8" y="8" width="84" height="84" rx="5" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`;
+             `<rect x="8" y="8" width="84" height="84" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     // ── Neon ──
     case 'neon-glow':
-      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="8" opacity="0.25"/>` +
-             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2" opacity="0.8"/>`;
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="8" opacity="0.6"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.8"/>`;
     case 'pulse':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="14 8"/>`;
     case 'wireframe':
@@ -777,18 +780,18 @@ function renderRing(attr) {
     }
     case 'rope-twist':
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4"/>` +
-             `<rect x="7" y="7" width="86" height="86" rx="4" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
+             `<rect x="7" y="7" width="86" height="86" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'shell-border': {
       let s = '';
       for (let i = 0; i < 6; i++) {
         const x = 10 + i * 16;
-        s += `<path d="M${x},4 A8,8 0 0,1 ${x+16},4" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>`;
-        s += `<path d="M${x},96 A8,8 0 0,0 ${x+16},96" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>`;
+        s += `<path d="M${x},4 A8,8 0 0,1 ${x+16},4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+        s += `<path d="M${x},96 A8,8 0 0,0 ${x+16},96" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       }
       for (let i = 0; i < 6; i++) {
         const y = 10 + i * 16;
-        s += `<path d="M4,${y} A8,8 0 0,0 4,${y+16}" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>`;
-        s += `<path d="M96,${y} A8,8 0 0,1 96,${y+16}" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>`;
+        s += `<path d="M4,${y} A8,8 0 0,0 4,${y+16}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+        s += `<path d="M96,${y} A8,8 0 0,1 96,${y+16}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       }
       return s;
     }
@@ -796,26 +799,26 @@ function renderRing(attr) {
     // ── Indian ──
     case 'zari-border':
       return `<rect x="4" y="4" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="5" opacity="0.7"/>` +
-             `<rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>`;
+             `<rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="4,3" opacity="0.6"/>`;
     case 'kolam': {
-      let s = `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+      let s = `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       for (let i = 0; i < 10; i++) {
         const pos = 10 + i * 9;
-        s += `<circle cx="${pos}" cy="6" r="1.5" fill="${c}" opacity="0.5"/>`;
-        s += `<circle cx="${pos}" cy="94" r="1.5" fill="${c}" opacity="0.5"/>`;
-        s += `<circle cx="6" cy="${pos}" r="1.5" fill="${c}" opacity="0.5"/>`;
-        s += `<circle cx="94" cy="${pos}" r="1.5" fill="${c}" opacity="0.5"/>`;
+        s += `<circle cx="${pos}" cy="6" r="1.5" fill="${c}" opacity="0.6"/>`;
+        s += `<circle cx="${pos}" cy="94" r="1.5" fill="${c}" opacity="0.6"/>`;
+        s += `<circle cx="6" cy="${pos}" r="1.5" fill="${c}" opacity="0.6"/>`;
+        s += `<circle cx="94" cy="${pos}" r="1.5" fill="${c}" opacity="0.6"/>`;
       }
       return s;
     }
     case 'thread-wrap':
-      return `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="3" opacity="0.5"/>` +
-             `<rect x="8" y="8" width="84" height="84" rx="2" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>` +
-             `<rect x="11" y="11" width="78" height="78" rx="1" fill="none" stroke="${c}" stroke-width="0.5" opacity="0.2"/>`;
+      return `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
+             `<rect x="8" y="8" width="84" height="84" rx="2" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<rect x="11" y="11" width="78" height="78" rx="1" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
 
     // ── Bollywood ──
     case 'marquee-lights': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.4"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       for (let i = 0; i < 8; i++) {
         const pos = 10 + i * 11.5;
         s += `<circle cx="${pos}" cy="4" r="2.5" fill="${c}" opacity="${i%2===0?0.7:0.3}"/>`;
@@ -827,7 +830,7 @@ function renderRing(attr) {
     }
     case 'bollywood-arch':
       return `<path d="M10,92 L10,30 Q50,2 90,30 L90,92" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
-             `<path d="M16,92 L16,34 Q50,10 84,34 L84,92" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+             `<path d="M16,92 L16,34 Q50,10 84,34 L84,92" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'sequin-border': {
       let s = '';
       const rng = mulberry32(c.charCodeAt(1));
@@ -845,19 +848,19 @@ function renderRing(attr) {
 
     // ── Arithmetic ──
     case 'ruler-marks': {
-      let s = `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+      let s = `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       for (let i = 0; i < 10; i++) {
         const pos = 10 + i * 9;
         const h = i % 5 === 0 ? 8 : 4;
-        s += `<line x1="${pos}" y1="4" x2="${pos}" y2="${4+h}" stroke="${c}" stroke-width="1" opacity="0.5"/>`;
-        s += `<line x1="${pos}" y1="96" x2="${pos}" y2="${96-h}" stroke="${c}" stroke-width="1" opacity="0.5"/>`;
+        s += `<line x1="${pos}" y1="4" x2="${pos}" y2="${4+h}" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+        s += `<line x1="${pos}" y1="96" x2="${pos}" y2="${96-h}" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
       }
       return s;
     }
     case 'protractor':
-      return `<rect x="6" y="6" width="88" height="88" rx="3" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>` +
-             `<path d="M10,90 A56,56 0 0,1 90,90" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
-             `<path d="M20,90 A40,40 0 0,1 80,90" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+      return `<rect x="6" y="6" width="88" height="88" rx="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M10,90 A56,56 0 0,1 90,90" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M20,90 A40,40 0 0,1 80,90" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'bracket-border':
       return `<path d="M20,6 L8,6 L8,94 L20,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
              `<path d="M80,6 L92,6 L92,94 L80,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
@@ -867,13 +870,13 @@ function renderRing(attr) {
       let s = '';
       for (let i = 0; i < 8; i++) {
         const x = 10 + i * 12;
-        s += `<circle cx="${x}" cy="6" r="${4 + (i%2)*2}" fill="${c}" opacity="0.35"/>`;
-        s += `<circle cx="${x}" cy="94" r="${4 + ((i+1)%2)*2}" fill="${c}" opacity="0.35"/>`;
+        s += `<circle cx="${x}" cy="6" r="${4 + (i%2)*2}" fill="${c}" opacity="0.6"/>`;
+        s += `<circle cx="${x}" cy="94" r="${4 + ((i+1)%2)*2}" fill="${c}" opacity="0.6"/>`;
       }
       for (let i = 0; i < 7; i++) {
         const y = 14 + i * 12;
-        s += `<circle cx="6" cy="${y}" r="${3.5 + (i%2)*1.5}" fill="${c}" opacity="0.3"/>`;
-        s += `<circle cx="94" cy="${y}" r="${3.5 + ((i+1)%2)*1.5}" fill="${c}" opacity="0.3"/>`;
+        s += `<circle cx="6" cy="${y}" r="${3.5 + (i%2)*1.5}" fill="${c}" opacity="0.6"/>`;
+        s += `<circle cx="94" cy="${y}" r="${3.5 + ((i+1)%2)*1.5}" fill="${c}" opacity="0.6"/>`;
       }
       return s;
     }
@@ -883,58 +886,58 @@ function renderRing(attr) {
       for (let i = 0; i < 6; i++) {
         const inset = 4 + i * 1.5;
         const size = 92 - i * 3;
-        s += `<rect x="${inset}" y="${inset}" width="${size}" height="${size}" rx="3" fill="none" stroke="${rc[i]}" stroke-width="1.2" opacity="0.45"/>`;
+        s += `<rect x="${inset}" y="${inset}" width="${size}" height="${size}" rx="3" fill="none" stroke="${rc[i]}" stroke-width="2.5" opacity="0.6"/>`;
       }
       return s;
     }
     case 'breeze-dash':
-      return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>` +
-             `<rect x="9" y="9" width="82" height="82" rx="3" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="4,6" opacity="0.3"/>`;
+      return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="8,4" opacity="0.6"/>` +
+             `<rect x="9" y="9" width="82" height="82" rx="3" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="4,6" opacity="0.6"/>`;
 
     // ── Street Food ──
     case 'pretzel-twist':
-      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5"/>` +
-             `<circle cx="15" cy="15" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
-             `<circle cx="85" cy="15" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
-             `<circle cx="15" cy="85" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
-             `<circle cx="85" cy="85" r="6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
-             `<path d="M21,15 Q50,8 79,15" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
-             `<path d="M21,85 Q50,92 79,85" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.35"/>`;
+      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.85"/>` +
+             `<circle cx="15" cy="15" r="7" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.75"/>` +
+             `<circle cx="85" cy="15" r="7" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.75"/>` +
+             `<circle cx="15" cy="85" r="7" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.75"/>` +
+             `<circle cx="85" cy="85" r="7" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.75"/>` +
+             `<path d="M21,15 Q50,8 79,15" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M21,85 Q50,92 79,85" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'sauce-drizzle':
-      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
-             `<path d="M10,10 Q30,6 50,12 Q70,18 90,10" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>` +
-             `<path d="M10,90 Q30,94 50,88 Q70,82 90,90" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>` +
-             `<path d="M10,10 Q6,30 12,50 Q18,70 10,90" fill="none" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>` +
-             `<path d="M90,10 Q94,30 88,50 Q82,70 90,90" fill="none" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>`;
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.8"/>` +
+             `<path d="M10,10 Q30,6 50,12 Q70,18 90,10" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>` +
+             `<path d="M10,90 Q30,94 50,88 Q70,82 90,90" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>` +
+             `<path d="M10,10 Q6,30 12,50 Q18,70 10,90" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>` +
+             `<path d="M90,10 Q94,30 88,50 Q82,70 90,90" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>`;
     case 'chopstick-border':
-      return `<line x1="6" y1="6" x2="94" y2="6" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
-             `<line x1="8" y1="10" x2="92" y2="10" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>` +
-             `<line x1="6" y1="94" x2="94" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
-             `<line x1="8" y1="90" x2="92" y2="90" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>` +
-             `<line x1="6" y1="6" x2="6" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>` +
-             `<line x1="94" y1="6" x2="94" y2="94" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>`;
+      return `<line x1="6" y1="6" x2="94" y2="6" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>` +
+             `<line x1="8" y1="11" x2="92" y2="11" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>` +
+             `<line x1="6" y1="94" x2="94" y2="94" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>` +
+             `<line x1="8" y1="89" x2="92" y2="89" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>` +
+             `<line x1="6" y1="6" x2="6" y2="94" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>` +
+             `<line x1="94" y1="6" x2="94" y2="94" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>`;
 
     // ── Arctic ──
     case 'frost-border':
-      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5"/>` +
-             `<path d="M15,5 L15,12 M30,5 L30,10 M50,5 L50,13 M70,5 L70,10 M85,5 L85,12" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
-             `<path d="M15,95 L15,88 M30,95 L30,90 M50,95 L50,87 M70,95 L70,90 M85,95 L85,88" stroke="${c}" stroke-width="1.2" opacity="0.35"/>` +
-             `<path d="M5,15 L12,15 M5,50 L13,50 M5,85 L12,85" stroke="${c}" stroke-width="1.2" opacity="0.3"/>` +
-             `<path d="M95,15 L88,15 M95,50 L87,50 M95,85 L88,85" stroke="${c}" stroke-width="1.2" opacity="0.3"/>`;
+      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M15,5 L15,12 M30,5 L30,10 M50,5 L50,13 M70,5 L70,10 M85,5 L85,12" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M15,95 L15,88 M30,95 L30,90 M50,95 L50,87 M70,95 L70,90 M85,95 L85,88" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M5,15 L12,15 M5,50 L13,50 M5,85 L12,85" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M95,15 L88,15 M95,50 L87,50 M95,85 L88,85" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
     case 'icicle-ring':
-      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
-             `<polygon points="15,6 18,16 12,16" fill="${c}" opacity="0.35"/>` +
-             `<polygon points="35,6 38,18 32,18" fill="${c}" opacity="0.3"/>` +
-             `<polygon points="55,6 58,14 52,14" fill="${c}" opacity="0.35"/>` +
-             `<polygon points="75,6 78,17 72,17" fill="${c}" opacity="0.3"/>` +
-             `<polygon points="15,94 18,84 12,84" fill="${c}" opacity="0.3"/>` +
-             `<polygon points="50,94 53,85 47,85" fill="${c}" opacity="0.3"/>` +
-             `<polygon points="80,94 83,86 77,86" fill="${c}" opacity="0.3"/>`;
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<polygon points="15,6 18,16 12,16" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="35,6 38,18 32,18" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="55,6 58,14 52,14" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="75,6 78,17 72,17" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="15,94 18,84 12,84" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="50,94 53,85 47,85" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="80,94 83,86 77,86" fill="${c}" opacity="0.6"/>`;
     case 'snowdrift-edge':
-      return `<path d="M5,10 Q20,5 35,10 Q50,15 65,8 Q80,3 95,10" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
-             `<path d="M5,90 Q20,95 35,90 Q50,85 65,92 Q80,97 95,90" fill="none" stroke="${c}" stroke-width="2" opacity="0.45"/>` +
-             `<path d="M10,5 Q5,20 10,35 Q15,50 8,65 Q3,80 10,95" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>` +
-             `<path d="M90,5 Q95,20 90,35 Q85,50 92,65 Q97,80 90,95" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/>`;
+      return `<path d="M5,10 Q20,5 35,10 Q50,15 65,8 Q80,3 95,10" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M5,90 Q20,95 35,90 Q50,85 65,92 Q80,97 95,90" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M10,5 Q5,20 10,35 Q15,50 8,65 Q3,80 10,95" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M90,5 Q95,20 90,35 Q85,50 92,65 Q97,80 90,95" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
 
     default: return '';
   }
@@ -1441,10 +1444,10 @@ function renderAccent(attr) {
       case 'sparks':
         out += `<line x1="${cx}" y1="${cy-6}" x2="${cx}" y2="${cy+6}" stroke="${c}" stroke-width="2"/>` +
                `<line x1="${cx-6}" y1="${cy}" x2="${cx+6}" y2="${cy}" stroke="${c}" stroke-width="2"/>` +
-               `<line x1="${cx-4}" y1="${cy-4}" x2="${cx+4}" y2="${cy+4}" stroke="${c}" stroke-width="1"/>` +
-               `<line x1="${cx+4}" y1="${cy-4}" x2="${cx-4}" y2="${cy+4}" stroke="${c}" stroke-width="1"/>`; break;
+               `<line x1="${cx-4}" y1="${cy-4}" x2="${cx+4}" y2="${cy+4}" stroke="${c}" stroke-width="1.5"/>` +
+               `<line x1="${cx+4}" y1="${cy-4}" x2="${cx-4}" y2="${cy+4}" stroke="${c}" stroke-width="1.5"/>`; break;
       case 'orbs':
-        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" opacity="0.4"/>` +
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" opacity="0.6"/>` +
                `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.7"/>`; break;
       case 'carets': {
         const dx = cx < 50 ? 1 : -1;
@@ -1456,17 +1459,17 @@ function renderAccent(attr) {
       case 'seeds':
         out += `<ellipse cx="${cx}" cy="${cy}" rx="3" ry="5" fill="${c}" transform="rotate(${cx<50?-30:30},${cx},${cy})"/>`; break;
       case 'dewdrops':
-        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}" opacity="0.5"/>` +
-               `<circle cx="${cx-1}" cy="${cy-1}" r="1.5" fill="white" opacity="0.6"/>`; break;
+        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-1}" cy="${cy-1}" r="2.5" fill="white" opacity="0.6"/>`; break;
       case 'buds':
         out += `<ellipse cx="${cx}" cy="${cy}" rx="4" ry="6" fill="${c}" opacity="0.7"/>` +
-               `<ellipse cx="${cx}" cy="${cy}" rx="6" ry="3" fill="${c}" opacity="0.4"/>`; break;
+               `<ellipse cx="${cx}" cy="${cy}" rx="6" ry="3" fill="${c}" opacity="0.6"/>`; break;
       case 'rosettes': {
         let petals = '';
         for (let i = 0; i < 4; i++) {
           petals += `<ellipse cx="${cx}" cy="${cy-4}" rx="2" ry="4" fill="${c}" opacity="0.6" transform="rotate(${i*90},${cx},${cy})"/>`;
         }
-        out += petals + `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>`; break;
+        out += petals + `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}"/>`; break;
       }
       case 'thorns': {
         const dx = cx < 50 ? 1 : -1;
@@ -1479,7 +1482,7 @@ function renderAccent(attr) {
                `<line x1="${cx-7}" y1="${cy}" x2="${cx+7}" y2="${cy}" stroke="${c}" stroke-width="2"/>`; break;
       case 'studs':
         out += `<rect x="${cx-4}" y="${cy-4}" width="8" height="8" rx="1" fill="${c}"/>` +
-               `<rect x="${cx-2}" y="${cy-2}" width="4" height="4" rx="0.5" fill="white" opacity="0.3"/>`; break;
+               `<rect x="${cx-2}" y="${cy-2}" width="4" height="4" rx="0.5" fill="white" opacity="0.6"/>`; break;
       case 'arrows': {
         const dx = cx < 50 ? 1 : -1;
         out += `<polygon points="${cx-5*dx},${cy-4} ${cx+5*dx},${cy} ${cx-5*dx},${cy+4}" fill="${c}"/>`; break;
@@ -1506,7 +1509,7 @@ function renderAccent(attr) {
       }
       case 'pips':
         out += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="2" fill="white" opacity="0.4"/>`; break;
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.6"/>`; break;
       case 'nails':
         out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}"/>` +
                `<rect x="${cx-1}" y="${cy}" width="2" height="8" fill="${c}" opacity="0.6"/>`; break;
@@ -1516,23 +1519,23 @@ function renderAccent(attr) {
       case 'cherries':
         out += `<circle cx="${cx-2}" cy="${cy+2}" r="3" fill="${c}"/>` +
                `<circle cx="${cx+3}" cy="${cy+1}" r="3" fill="${c}"/>` +
-               `<path d="M${cx-2},${cy-1} Q${cx},${cy-6} ${cx+3},${cy-2}" fill="none" stroke="${c}" stroke-width="1"/>`; break;
+               `<path d="M${cx-2},${cy-1} Q${cx},${cy-6} ${cx+3},${cy-2}" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
       case 'drops':
         out += `<path d="M${cx},${cy-5} Q${cx+4},${cy} ${cx},${cy+5} Q${cx-4},${cy} ${cx},${cy-5}" fill="${c}"/>`; break;
       case 'gumballs':
         out += `<circle cx="${cx}" cy="${cy}" r="6" fill="${c}" opacity="0.7"/>` +
-               `<circle cx="${cx-2}" cy="${cy-2}" r="2" fill="white" opacity="0.4"/>`; break;
+               `<circle cx="${cx-2}" cy="${cy-2}" r="2.5" fill="white" opacity="0.6"/>`; break;
       case 'mini-hearts':
         out += `<path d="M${cx},${cy+4} L${cx-5},${cy-1} A3.5,3.5 0 0,1 ${cx},${cy-3} A3.5,3.5 0 0,1 ${cx+5},${cy-1} Z" fill="${c}"/>`; break;
       // ── Noir ──
       case 'crosshairs':
         out += `<line x1="${cx}" y1="${cy-7}" x2="${cx}" y2="${cy+7}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx-7}" y1="${cy}" x2="${cx+7}" y2="${cy}" stroke="${c}" stroke-width="1.5"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${c}" stroke-width="1"/>`; break;
+               `<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
       case 'slashes': {
         const dx = cx < 50 ? 1 : -1;
         out += `<line x1="${cx-4}" y1="${cy+5}" x2="${cx+4}" y2="${cy-5}" stroke="${c}" stroke-width="2"/>` +
-               `<line x1="${cx-4+3*dx}" y1="${cy+5}" x2="${cx+4+3*dx}" y2="${cy-5}" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`; break;
+               `<line x1="${cx-4+3*dx}" y1="${cy+5}" x2="${cx+4+3*dx}" y2="${cy-5}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
       }
       case 'corners': {
         const dx = cx < 50 ? 1 : -1;
@@ -1549,28 +1552,28 @@ function renderAccent(attr) {
       case 'filigree': {
         const dx = cx < 50 ? 1 : -1;
         out += `<path d="M${cx},${cy-5} Q${cx+6*dx},${cy} ${cx},${cy+5}" fill="none" stroke="${c}" stroke-width="1.5"/>` +
-               `<path d="M${cx},${cy-3} Q${cx+4*dx},${cy} ${cx},${cy+3}" fill="none" stroke="${c}" stroke-width="1" opacity="0.6"/>`; break;
+               `<path d="M${cx},${cy-3} Q${cx+4*dx},${cy} ${cx},${cy+3}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
       }
       case 'rivets':
         out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.5"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="1" fill="white" opacity="0.3"/>`; break;
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.6"/>`; break;
       case 'scrolls': {
         const dx = cx < 50 ? 1 : -1;
         out += `<path d="M${cx-4*dx},${cy} Q${cx},${cy-6} ${cx+4*dx},${cy} Q${cx},${cy+4} ${cx-4*dx},${cy}" fill="none" stroke="${c}" stroke-width="1.5"/>`; break;
       }
       case 'stamps':
         out += `<rect x="${cx-5}" y="${cy-5}" width="10" height="10" rx="1" fill="none" stroke="${c}" stroke-width="1.5"/>` +
-               `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" rx="0.5" fill="${c}" opacity="0.4"/>`; break;
+               `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" rx="0.5" fill="${c}" opacity="0.6"/>`; break;
       case 'ink-dots':
         out += `<circle cx="${cx-2}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.7"/>` +
-               `<circle cx="${cx+2}" cy="${cy+2}" r="2" fill="${c}" opacity="0.5"/>` +
-               `<circle cx="${cx+3}" cy="${cy-1}" r="1" fill="${c}" opacity="0.3"/>`; break;
+               `<circle cx="${cx+2}" cy="${cy+2}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+3}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       // ── Neon ──
       case 'glitch-dots':
         out += `<rect x="${cx-4}" y="${cy-3}" width="4" height="2" fill="${c}" opacity="0.8"/>` +
                `<rect x="${cx}" y="${cy}" width="4" height="2" fill="${c}" opacity="0.6"/>` +
-               `<rect x="${cx-2}" y="${cy+3}" width="4" height="2" fill="${c}" opacity="0.4"/>`; break;
+               `<rect x="${cx-2}" y="${cy+3}" width="4" height="2" fill="${c}" opacity="0.6"/>`; break;
       case 'brackets': {
         const dx = cx < 50 ? 1 : -1;
         out += `<path d="M${cx+4*dx},${cy-6} L${cx-4*dx},${cy-6} L${cx-4*dx},${cy-2}" fill="none" stroke="${c}" stroke-width="2"/>` +
@@ -1580,7 +1583,7 @@ function renderAccent(attr) {
         out += `<rect x="${cx-4}" y="${cy-4}" width="3" height="3" fill="${c}"/>` +
                `<rect x="${cx+1}" y="${cy-4}" width="3" height="3" fill="${c}" opacity="0.7"/>` +
                `<rect x="${cx-4}" y="${cy+1}" width="3" height="3" fill="${c}" opacity="0.7"/>` +
-               `<rect x="${cx+1}" y="${cy+1}" width="3" height="3" fill="${c}" opacity="0.5"/>`; break;
+               `<rect x="${cx+1}" y="${cy+1}" width="3" height="3" fill="${c}" opacity="0.6"/>`; break;
       case 'signal-bars':
         out += `<rect x="${cx-4}" y="${cy+2}" width="2" height="4" fill="${c}" opacity="0.6"/>` +
                `<rect x="${cx-1}" y="${cy-1}" width="2" height="7" fill="${c}" opacity="0.7"/>` +
@@ -1600,7 +1603,7 @@ function renderAccent(attr) {
                `<path d="M${cx-6},${cy+3} Q${cx-3},${cy} ${cx},${cy+3} Q${cx+3},${cy+6} ${cx+6},${cy+3}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
       case 'shells':
         out += `<path d="M${cx+4},${cy} A4,4 0 1,1 ${cx},${cy-4}" fill="none" stroke="${c}" stroke-width="1.5"/>` +
-               `<path d="M${cx+2},${cy} A2,2 0 1,1 ${cx},${cy-2}" fill="none" stroke="${c}" stroke-width="1" opacity="0.6"/>`; break;
+               `<path d="M${cx+2},${cy} A2,2 0 1,1 ${cx},${cy-2}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
       case 'sun-rays':
         out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}"/>` +
                `<line x1="${cx}" y1="${cy-6}" x2="${cx}" y2="${cy-4}" stroke="${c}" stroke-width="1.5"/>` +
@@ -1611,28 +1614,28 @@ function renderAccent(attr) {
       // ── Indian ──
       case 'bindis':
         out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="1.5" fill="white" opacity="0.3"/>`; break;
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.6"/>`; break;
       case 'bells':
         out += `<path d="M${cx-3},${cy-4} Q${cx},${cy-7} ${cx+3},${cy-4} L${cx+4},${cy+2} Q${cx},${cy+5} ${cx-4},${cy+2}Z" fill="${c}" opacity="0.8"/>` +
-               `<circle cx="${cx}" cy="${cy+4}" r="1.5" fill="${c}"/>`; break;
+               `<circle cx="${cx}" cy="${cy+4}" r="2.5" fill="${c}"/>`; break;
       case 'bangles':
         out += `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="3" fill="none" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
+               `<circle cx="${cx}" cy="${cy}" r="3" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
       case 'om-dots': {
         const dd = 3;
-        out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>` +
-               `<circle cx="${cx-dd}" cy="${cy-dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
-               `<circle cx="${cx+dd}" cy="${cy-dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
-               `<circle cx="${cx-dd}" cy="${cy+dd}" r="1.2" fill="${c}" opacity="0.6"/>` +
-               `<circle cx="${cx+dd}" cy="${cy+dd}" r="1.2" fill="${c}" opacity="0.6"/>`; break;
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}"/>` +
+               `<circle cx="${cx-dd}" cy="${cy-dd}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+dd}" cy="${cy-dd}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-dd}" cy="${cy+dd}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+dd}" cy="${cy+dd}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       }
       case 'marigolds': {
         let p = '';
         for (let i = 0; i < 6; i++) {
           const a = i * 60 * Math.PI / 180;
-          p += `<circle cx="${(cx + 4*Math.cos(a)).toFixed(1)}" cy="${(cy + 4*Math.sin(a)).toFixed(1)}" r="2" fill="${c}" opacity="0.6"/>`;
+          p += `<circle cx="${(cx + 4*Math.cos(a)).toFixed(1)}" cy="${(cy + 4*Math.sin(a)).toFixed(1)}" r="2.5" fill="${c}" opacity="0.6"/>`;
         }
-        out += p + `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>`; break;
+        out += p + `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}"/>`; break;
       }
 
       // ── Bollywood ──
@@ -1644,12 +1647,12 @@ function renderAccent(attr) {
         out += `<polygon points="${cx},${cy-6} ${cx+1.5},${cy-1.5} ${cx+6},${cy} ${cx+1.5},${cy+1.5} ${cx},${cy+6} ${cx-1.5},${cy+1.5} ${cx-6},${cy} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.8"/>`; break;
       case 'cameras':
         out += `<rect x="${cx-5}" y="${cy-3}" width="10" height="7" rx="1" fill="${c}" opacity="0.8"/>` +
-               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.3"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.6"/>` +
                `<rect x="${cx-2}" y="${cy-5}" width="4" height="2" rx="0.5" fill="${c}" opacity="0.6"/>`; break;
       case 'roses':
         out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.7"/>` +
-               `<circle cx="${cx-2}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.5"/>` +
-               `<circle cx="${cx+2}" cy="${cy+1}" r="2.5" fill="${c}" opacity="0.5"/>`; break;
+               `<circle cx="${cx-2}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+2}" cy="${cy+1}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       case 'masala-stars': {
         const sp = [];
         for (let i = 0; i < 5; i++) {
@@ -1666,8 +1669,8 @@ function renderAccent(attr) {
         out += `<line x1="${cx-4}" y1="${cy-2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="2"/>` +
                `<line x1="${cx-4}" y1="${cy+2}" x2="${cx+4}" y2="${cy+2}" stroke="${c}" stroke-width="2"/>`; break;
       case 'percent':
-        out += `<circle cx="${cx-3}" cy="${cy-3}" r="2" fill="${c}" opacity="0.7"/>` +
-               `<circle cx="${cx+3}" cy="${cy+3}" r="2" fill="${c}" opacity="0.7"/>` +
+        out += `<circle cx="${cx-3}" cy="${cy-3}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+3}" cy="${cy+3}" r="2.5" fill="${c}" opacity="0.7"/>` +
                `<line x1="${cx+4}" y1="${cy-4}" x2="${cx-4}" y2="${cy+4}" stroke="${c}" stroke-width="1.5"/>`; break;
       case 'tally-marks':
         out += `<line x1="${cx-5}" y1="${cy-5}" x2="${cx-5}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
@@ -1676,8 +1679,8 @@ function renderAccent(attr) {
                `<line x1="${cx+4}" y1="${cy-5}" x2="${cx+4}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx-6}" y1="${cy+3}" x2="${cx+5}" y2="${cy-5}" stroke="${c}" stroke-width="1.5" opacity="0.8"/>`; break;
       case 'decimal-dots':
-        out += `<circle cx="${cx-3}" cy="${cy}" r="2" fill="${c}"/>` +
-               `<circle cx="${cx+3}" cy="${cy}" r="2" fill="${c}" opacity="0.6"/>`; break;
+        out += `<circle cx="${cx-3}" cy="${cy}" r="2.5" fill="${c}"/>` +
+               `<circle cx="${cx+3}" cy="${cy}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       case 'hash-marks':
         out += `<line x1="${cx-2}" y1="${cy-5}" x2="${cx-2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
                `<line x1="${cx+2}" y1="${cy-5}" x2="${cx+2}" y2="${cy+5}" stroke="${c}" stroke-width="1.5"/>` +
@@ -1694,59 +1697,59 @@ function renderAccent(attr) {
         const angle = (cx < 50 ? 0 : 1) + (cy < 50 ? 0 : 2);
         out += `<ellipse cx="${cx-3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${angle*90+15},${cx},${cy})"/>` +
                `<ellipse cx="${cx+3}" cy="${cy-2}" rx="3" ry="4" fill="${c}" opacity="0.6" transform="rotate(${angle*90-15},${cx},${cy})"/>` +
-               `<line x1="${cx}" y1="${cy-2}" x2="${cx}" y2="${cy+3}" stroke="${c}" stroke-width="0.8"/>`; break;
+               `<line x1="${cx}" y1="${cy-2}" x2="${cx}" y2="${cy+3}" stroke="${c}" stroke-width="1.5"/>`; break;
       }
       case 'raindrops':
-        out += `<path d="M${cx},${cy-4} Q${cx+2.5},${cy} ${cx},${cy+4} Q${cx-2.5},${cy} ${cx},${cy-4}" fill="${c}" opacity="0.5"/>`; break;
+        out += `<path d="M${cx},${cy-4} Q${cx+2.5},${cy} ${cx},${cy+4} Q${cx-2.5},${cy} ${cx},${cy-4}" fill="${c}" opacity="0.6"/>`; break;
       case 'drifting-leaves':
-        out += `<path d="M${cx-4},${cy} Q${cx},${cy-5} ${cx+4},${cy} Q${cx},${cy+2} ${cx-4},${cy}" fill="${c}" opacity="0.5"/>` +
-               `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="#fff" stroke-width="0.6" opacity="0.4"/>`; break;
+        out += `<path d="M${cx-4},${cy} Q${cx},${cy-5} ${cx+4},${cy} Q${cx},${cy+2} ${cx-4},${cy}" fill="${c}" opacity="0.6"/>` +
+               `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="#fff" stroke-width="1.5" opacity="0.6"/>`; break;
       case 'contrails':
-        out += `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>` +
-               `<line x1="${cx-4}" y1="${cy+1}" x2="${cx+4}" y2="${cy+3}" stroke="${c}" stroke-width="0.8" stroke-linecap="round" opacity="0.35"/>`; break;
+        out += `<line x1="${cx-5}" y1="${cy-2}" x2="${cx+5}" y2="${cy+2}" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>` +
+               `<line x1="${cx-4}" y1="${cy+1}" x2="${cx+4}" y2="${cy+3}" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>`; break;
       // ── Street Food ──
       case 'sesame-seeds':
-        out += `<ellipse cx="${cx-2}" cy="${cy-2}" rx="1.8" ry="1" transform="rotate(30,${cx-2},${cy-2})" fill="${c}" opacity="0.5"/>` +
-               `<ellipse cx="${cx+3}" cy="${cy+2}" rx="1.8" ry="1" transform="rotate(-20,${cx+3},${cy+2})" fill="${c}" opacity="0.45"/>` +
-               `<ellipse cx="${cx}" cy="${cy+4}" rx="1.5" ry="0.8" transform="rotate(50,${cx},${cy+4})" fill="${c}" opacity="0.4"/>`; break;
+        out += `<ellipse cx="${cx-3}" cy="${cy-3}" rx="3" ry="1.5" transform="rotate(30,${cx-3},${cy-3})" fill="${c}" opacity="0.8"/>` +
+               `<ellipse cx="${cx+4}" cy="${cy+3}" rx="3" ry="1.5" transform="rotate(-20,${cx+4},${cy+3})" fill="${c}" opacity="0.75"/>` +
+               `<ellipse cx="${cx}" cy="${cy+5}" rx="2.5" ry="1.2" transform="rotate(50,${cx},${cy+5})" fill="${c}" opacity="0.7"/>`; break;
       case 'chili-flakes':
-        out += `<path d="M${cx-3},${cy} Q${cx},${cy-3} ${cx+3},${cy}" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.5"/>` +
-               `<circle cx="${cx+1}" cy="${cy+3}" r="1" fill="${c}" opacity="0.4"/>` +
-               `<circle cx="${cx-2}" cy="${cy+2}" r="0.8" fill="${c}" opacity="0.35"/>`; break;
+        out += `<path d="M${cx-4},${cy} Q${cx},${cy-4} ${cx+4},${cy}" fill="none" stroke="${c}" stroke-width="2" opacity="0.8"/>` +
+               `<circle cx="${cx+2}" cy="${cy+3}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx-3}" cy="${cy+2}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       case 'crumbs':
-        out += `<circle cx="${cx-2}" cy="${cy-1}" r="1.2" fill="${c}" opacity="0.45"/>` +
-               `<circle cx="${cx+2}" cy="${cy+2}" r="1" fill="${c}" opacity="0.4"/>` +
-               `<circle cx="${cx+1}" cy="${cy-3}" r="0.8" fill="${c}" opacity="0.35"/>` +
-               `<circle cx="${cx-3}" cy="${cy+3}" r="1.1" fill="${c}" opacity="0.4"/>`; break;
+        out += `<circle cx="${cx-2}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.8"/>` +
+               `<circle cx="${cx+3}" cy="${cy+2}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+1}" cy="${cy-3}" r="2.5" fill="${c}" opacity="0.65"/>` +
+               `<circle cx="${cx-3}" cy="${cy+3}" r="2.5" fill="${c}" opacity="0.7"/>`; break;
       case 'steam-wisps':
-        out += `<path d="M${cx},${cy+3} Q${cx-2},${cy} ${cx},${cy-3} Q${cx+2},${cy-6} ${cx},${cy-8}" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round" opacity="0.45"/>` +
-               `<path d="M${cx+2},${cy+2} Q${cx+4},${cy-1} ${cx+2},${cy-4}" fill="none" stroke="${c}" stroke-width="0.7" stroke-linecap="round" opacity="0.3"/>`; break;
+        out += `<path d="M${cx},${cy+3} Q${cx-3},${cy} ${cx},${cy-3} Q${cx+3},${cy-6} ${cx},${cy-8}" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" opacity="0.75"/>` +
+               `<path d="M${cx+3},${cy+2} Q${cx+5},${cy-1} ${cx+3},${cy-4}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>`; break;
       case 'sauce-dots':
-        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.5"/>` +
-               `<circle cx="${cx-3}" cy="${cy+3}" r="1.2" fill="${c}" opacity="0.35"/>` +
-               `<circle cx="${cx+3}" cy="${cy-2}" r="1" fill="${c}" opacity="0.3"/>`; break;
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-3}" cy="${cy+3}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+3}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       // ── Arctic ──
       case 'ice-shards':
-        out += `<polygon points="${cx},${cy-5} ${cx+2},${cy} ${cx-1},${cy+4} ${cx-3},${cy-1}" fill="${c}" opacity="0.45"/>` +
-               `<polygon points="${cx+2},${cy-2} ${cx+5},${cy+1} ${cx+1},${cy+3}" fill="${c}" opacity="0.35"/>`; break;
+        out += `<polygon points="${cx},${cy-5} ${cx+2},${cy} ${cx-1},${cy+4} ${cx-3},${cy-1}" fill="${c}" opacity="0.6"/>` +
+               `<polygon points="${cx+2},${cy-2} ${cx+5},${cy+1} ${cx+1},${cy+3}" fill="${c}" opacity="0.6"/>`; break;
       case 'snowflakes-tiny': {
         for (let a = 0; a < 6; a++) {
           const ang = a * 60 * Math.PI / 180;
-          out += `<line x1="${cx}" y1="${cy}" x2="${cx + 4 * Math.cos(ang)}" y2="${cy + 4 * Math.sin(ang)}" stroke="${c}" stroke-width="0.8" opacity="0.45"/>`;
+          out += `<line x1="${cx}" y1="${cy}" x2="${cx + 4 * Math.cos(ang)}" y2="${cy + 4 * Math.sin(ang)}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`;
         }
         break;
       }
       case 'frost-dots':
-        out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.45"/>` +
-               `<circle cx="${cx-3}" cy="${cy-2}" r="1" fill="${c}" opacity="0.3"/>` +
-               `<circle cx="${cx+3}" cy="${cy+2}" r="1" fill="${c}" opacity="0.3"/>` +
-               `<circle cx="${cx+1}" cy="${cy-4}" r="0.8" fill="${c}" opacity="0.25"/>`; break;
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-3}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+3}" cy="${cy+2}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+1}" cy="${cy-4}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       case 'icicle-drops':
-        out += `<polygon points="${cx},${cy+5} ${cx-2},${cy-2} ${cx+2},${cy-2}" fill="${c}" opacity="0.45"/>` +
-               `<circle cx="${cx}" cy="${cy-3}" r="1.5" fill="${c}" opacity="0.35"/>`; break;
+        out += `<polygon points="${cx},${cy+5} ${cx-2},${cy-2} ${cx+2},${cy-2}" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx}" cy="${cy-3}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
       case 'wind-swirls':
-        out += `<path d="M${cx-4},${cy} Q${cx},${cy-4} ${cx+4},${cy} Q${cx},${cy+3} ${cx-2},${cy+1}" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round" opacity="0.45"/>` +
-               `<path d="M${cx+1},${cy-2} Q${cx+4},${cy-5} ${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="0.7" stroke-linecap="round" opacity="0.3"/>`; break;
+        out += `<path d="M${cx-4},${cy} Q${cx},${cy-4} ${cx+4},${cy} Q${cx},${cy+3} ${cx-2},${cy+1}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>` +
+               `<path d="M${cx+1},${cy-2} Q${cx+4},${cy-5} ${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>`; break;
     }
   }
   return out;
@@ -1773,18 +1776,54 @@ function sortAttributes(attributes) {
 
 // ── Public API (signatures match what app.js expects) ──
 
-function createTileSVG(tile) {
+function createTileSVG(tile, theme) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 100 100');
   svg.setAttribute('class', 'tile-svg');
   svg.setAttribute('data-tile-index', tile.index);
 
-  let html = `<rect x="0" y="0" width="100" height="100" rx="8" fill="white" opacity="0.1"/>`;
+  // Board-level background layer (not matchable, not removable)
+  // White base + very light tint = opaque backing; photo only shows when tile cleared
+  let html = '';
+  if (theme && theme.boardBg) {
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${theme.boardBg.color}" opacity="0.12"/>`;
+    if (theme.boardBg.pattern !== 'solid') {
+      html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
+    }
+  } else {
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
+  }
 
+  // Matchable attribute layers (ring, shape, accent only — no bg)
   const attrs = sortAttributes([...tile.attributes.values()]);
   for (const attr of attrs) {
     html += `<g class="attr-layer" data-attr-id="${attr.id}">${renderAttributeInner(attr)}</g>`;
   }
+
+  svg.innerHTML = html;
+  return svg;
+}
+
+function createCenterHeartSVG(theme) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('class', 'tile-svg center-heart-svg');
+
+  // Board bg layer with solid backing (white base + light tint)
+  let html = '';
+  if (theme && theme.boardBg) {
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${theme.boardBg.color}" opacity="0.12"/>`;
+    if (theme.boardBg.pattern !== 'solid') {
+      html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
+    }
+  }
+
+  // Heart shape — uses theme accent color for fill
+  const heartColor= theme.palette.accent[0] || '#e91e63';
+  const heartPath = 'M0,-40 C-25,-80 -80,-40 -80,0 C-80,40 -40,60 0,90 C40,60 80,40 80,0 C80,-40 25,-80 0,-40Z';
+  html += `<g class="center-heart" transform="translate(50,45) scale(0.48)"><path d="${heartPath}" fill="${heartColor}" opacity="0.85" stroke="white" stroke-width="2"/></g>`;
 
   svg.innerHTML = html;
   return svg;
@@ -1807,16 +1846,23 @@ function renderBoard(board, container) {
 
   for (const tile of board.tiles) {
     const tileEl = document.createElement('div');
-    tileEl.className = 'tile';
     tileEl.dataset.tileIndex = tile.index;
     tileEl.dataset.row = tile.row;
     tileEl.dataset.col = tile.col;
     tileEl.style.setProperty('--tile-i', tile.index);
 
-    const svg = createTileSVG(tile);
-    tileEl.appendChild(svg);
+    if (tile.isCenter) {
+      tileEl.className = 'tile center-tile';
+      const svg = createCenterHeartSVG(board.theme);
+      tileEl.appendChild(svg);
+    } else {
+      tileEl.className = 'tile';
+      const svg = createTileSVG(tile, board.theme);
+      tileEl.appendChild(svg);
+    }
+
     container.appendChild(tileEl);
   }
 }
 
-export { renderBoard, updateTileSVG, createTileSVG };
+export { renderBoard, updateTileSVG, createTileSVG, createCenterHeartSVG };
