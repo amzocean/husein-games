@@ -665,7 +665,7 @@ const RENT_TABLE = {
   black:  [0, 1, 2, 3, 4],
 };
 const PROP_COUNTS = { blue: 3, red: 6, green: 6, yellow: 6, black: 8 };
-const BANK_VALUES = { rent: 1, steal: 3, swap: 3, wild: 0, block: 4, passgo: 1 };
+const BANK_VALUES = { rent: 1, steal: 3, swap: 3, wild: 0, block: 4, passgo: 1, debtcollector: 3, birthday: 2, doublerent: 1, dealbreaker: 5 };
 const SETS_TO_WIN = 3;
 const HAND_LIMIT = 7;
 const BLOCK_TIMEOUT = 15000;
@@ -698,6 +698,10 @@ function createDeck() {
   for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'wild', bankValue: BANK_VALUES.wild });
   for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'block', bankValue: BANK_VALUES.block });
   for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'passgo', bankValue: BANK_VALUES.passgo });
+  for (let i = 0; i < 3; i++) d.push({ id: id++, type: 'action', action: 'debtcollector', bankValue: BANK_VALUES.debtcollector });
+  for (let i = 0; i < 3; i++) d.push({ id: id++, type: 'action', action: 'birthday', bankValue: BANK_VALUES.birthday });
+  for (let i = 0; i < 2; i++) d.push({ id: id++, type: 'action', action: 'doublerent', bankValue: BANK_VALUES.doublerent });
+  for (let i = 0; i < 2; i++) d.push({ id: id++, type: 'action', action: 'dealbreaker', bankValue: BANK_VALUES.dealbreaker });
   return shuffleArr(d);
 }
 
@@ -782,6 +786,7 @@ function getCardState(forIdx) {
     lastEvent: cardGame.lastEvent,
     setSizes: SET_SIZES,
     rentTable: RENT_TABLE,
+    doubleRentActive: cardGame.doubleRentActive || false,
   };
 }
 
@@ -806,6 +811,7 @@ function startCardTurn() {
   cardGame.actionsLeft = 3;
   cardGame.turnPhase = 'playing';
   cardGame.pendingAction = null;
+  cardGame.doubleRentActive = false;
   cardGame.lastEvent = { type: 'turn_start', player: p.name };
   clog(`Turn: ${p.name}, drew ${drawN}, hand=${p.hand.length}`);
   resetCGIdle();
@@ -910,6 +916,15 @@ function executeSwap(actIdx, myCardId, theirCardId) {
   }
 }
 
+function executeDealBreaker(actIdx, targetIdx, color) {
+  const actor = cardGame.players[actIdx];
+  const target = cardGame.players[targetIdx];
+  const stolen = target.properties[color].splice(0, target.properties[color].length);
+  actor.properties[color].push(...stolen);
+  cardGame.lastEvent = { type: 'dealbreaker', player: actor.name, target: target.name, color };
+  clog(`Deal Breaker: ${actor.name} took ${color} set from ${target.name}`);
+}
+
 function resolveCardAction() {
   if (!cardGame?.pendingAction) return;
   const pa = cardGame.pendingAction;
@@ -937,6 +952,16 @@ function resolveCardAction() {
   } else if (pa.actionType === 'swap') {
     executeSwap(pa.actingPlayer, pa.myCardId, pa.theirCardId);
     cardGame.lastEvent = { type: 'swap', player: actor.name, target: target.name };
+  } else if (pa.actionType === 'debtcollector') {
+    startRentPay(pa.actingPlayer, pa.targetPlayer, null, pa.amount);
+    clog(`Debt Collector: ${target.name} must pay $${pa.amount}`);
+    return;
+  } else if (pa.actionType === 'birthday') {
+    startRentPay(pa.actingPlayer, pa.targetPlayer, null, pa.amount);
+    clog(`Birthday: ${target.name} must pay $${pa.amount}`);
+    return;
+  } else if (pa.actionType === 'dealbreaker') {
+    executeDealBreaker(pa.actingPlayer, pa.targetPlayer, pa.color);
   }
 
   cardGame.pendingAction = null;
@@ -1098,6 +1123,63 @@ cardsNs.on('connection', (socket) => {
       clog(`${player.name} Pass Go, drew ${drawn.length}`);
       if (!useCardAction()) broadcastCG();
 
+    } else if (card.type === 'action' && card.action === 'debtcollector') {
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'debtcollector', amount: 5 };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        if (!useCardAction()) broadcastCG();
+      } else {
+        startRentPay(pi, oi, null, 5);
+        cardGame.lastEvent = { type: 'debtcollector', player: player.name, target: opp.name, amount: 5 };
+        clog(`${player.name} Debt Collector $5 from ${opp.name}`);
+        useCardAction();
+      }
+
+    } else if (card.type === 'action' && card.action === 'birthday') {
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'birthday', amount: 2 };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        if (!useCardAction()) broadcastCG();
+      } else {
+        startRentPay(pi, oi, null, 2);
+        cardGame.lastEvent = { type: 'birthday', player: player.name, target: opp.name, amount: 2 };
+        clog(`${player.name} Birthday $2 from ${opp.name}`);
+        useCardAction();
+      }
+
+    } else if (card.type === 'action' && card.action === 'doublerent') {
+      // Double rent: hold in pending, next rent card doubles
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      cardGame.doubleRentActive = true;
+      cardGame.lastEvent = { type: 'doublerent', player: player.name };
+      clog(`${player.name} played Double Rent`);
+      if (!useCardAction()) broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'dealbreaker') {
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      const completedColors = CARD_COLORS.filter(c => setComplete(opp.properties[c], c));
+      if (completedColors.length === 0) {
+        socket.emit('error_msg', 'Opponent has no complete sets to break!');
+        return;
+      }
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      cardGame.pendingAction = { type: 'dealbreaker_target', actingPlayer: pi, targetPlayer: oi, validColors: completedColors };
+      clog(`${player.name} Deal Breaker — choosing set`);
+      if (!useCardAction()) broadcastCG();
+
     } else if (card.type === 'action' && card.action === 'block') {
       socket.emit('error_msg', 'Block is reactive only.');
     }
@@ -1125,7 +1207,8 @@ cardsNs.on('connection', (socket) => {
     } else if (pa.type === 'rent_color' && pi === pa.actingPlayer) {
       if (!pa.validColors.includes(choice)) return;
       const count = player.properties[choice].length;
-      const amount = (RENT_TABLE[choice] && RENT_TABLE[choice][count]) || count;
+      let amount = (RENT_TABLE[choice] && RENT_TABLE[choice][count]) || count;
+      if (cardGame.doubleRentActive) { amount *= 2; cardGame.doubleRentActive = false; }
       const oi = oppIdx(pi);
       const opp = cardGame.players[oi];
       const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
@@ -1190,6 +1273,21 @@ cardsNs.on('connection', (socket) => {
       } else {
         executeSwap(pi, pa.myCardId, choice);
         cardGame.lastEvent = { type: 'swap', player: player.name, target: opp.name };
+        cardGame.pendingAction = null;
+        if (!checkCardWin()) { if (cardGame.actionsLeft <= 0) endCardTurn(); else broadcastCG(); }
+      }
+
+    } else if (pa.type === 'dealbreaker_target' && pi === pa.actingPlayer) {
+      if (!pa.validColors.includes(choice)) return;
+      const oi = pa.targetPlayer;
+      const opp = cardGame.players[oi];
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'dealbreaker', color: choice };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        broadcastCG();
+      } else {
+        executeDealBreaker(pi, oi, choice);
         cardGame.pendingAction = null;
         if (!checkCardWin()) { if (cardGame.actionsLeft <= 0) endCardTurn(); else broadcastCG(); }
       }

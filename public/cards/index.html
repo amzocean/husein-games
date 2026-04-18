@@ -139,6 +139,10 @@
   .card-yellow { background: linear-gradient(160deg, #fde68a 0%, #fbbf24 50%, #d97706 100%); color: #78350f; border-color: #fef3c7; }
   .card-black { background: linear-gradient(160deg, #4b5563 0%, #1f2937 50%, #111827 100%); color: #f3f4f6; border-color: #6b7280; }
   .card-passgo { background: linear-gradient(160deg, #86efac 0%, #22c55e 50%, #16a34a 100%); color: #052e16; border-color: #bbf7d0; }
+  .card-debtcollector { background: linear-gradient(160deg, #fda4af 0%, #e11d48 50%, #be123c 100%); color: #fff; border-color: #fecdd3; }
+  .card-birthday { background: linear-gradient(160deg, #fbcfe8 0%, #ec4899 50%, #db2777 100%); color: #fff; border-color: #f9a8d4; }
+  .card-doublerent { background: linear-gradient(160deg, #fef08a 0%, #eab308 50%, #ca8a04 100%); color: #422006; border-color: #fef9c3; }
+  .card-dealbreaker { background: linear-gradient(160deg, #f87171 0%, #dc2626 50%, #991b1b 100%); color: #fff; border-color: #fca5a5; }
 
   .set-card.blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
   .set-card.red { background: linear-gradient(135deg, #f87171, #ef4444); }
@@ -455,6 +459,10 @@
         case 'blocked': playSound('block'); break;
         case 'passgo': playSound('draw'); break;
         case 'bank_action': playSound('money'); break;
+        case 'debtcollector': playSound('rent'); break;
+        case 'birthday': playSound('rent'); break;
+        case 'doublerent': playSound('play'); break;
+        case 'dealbreaker': playSound('steal'); break;
         case 'win': playSound('win'); break;
         case 'turn_start':
           if (e.player === (state.players[myIndex]||{}).name) playSound('turn');
@@ -542,7 +550,8 @@
     const opp = state.players[oppI];
     const isMyTurn = myIndex === state.currentPlayerIndex;
 
-    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' : opp.name + "'s turn";
+    const dblRent = state.doubleRentActive ? ' \u{1f4b0}\u{1f4b0} 2\u00d7 RENT!' : '';
+    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' + dblRent : opp.name + "'s turn" + dblRent;
     if ($('deck-info')) $('deck-info').textContent = 'Deck: ' + state.deckCount;
 
     $('opp-name').textContent = opp.name + '\u2019s Table' + (!opp.connected ? ' (disconnected)' : '');
@@ -635,6 +644,10 @@
       blocked: e.player + ' blocked ' + (e.actionType||'') + '!',
       passgo: e.player + ' played Pass Go, drew ' + (e.drew||2) + ' cards',
       bank_action: e.player + ' banked ' + (e.action||'') + ' for $' + (e.value||''),
+      debtcollector: '\u{1f4b3} ' + e.player + ' demands $' + (e.amount||5) + ' from ' + (e.target||''),
+      birthday: '\u{1f382} ' + e.player + ' — It\'s My Birthday! $' + (e.amount||2) + ' from ' + (e.target||''),
+      doublerent: '\u{1f4b0}\u{1f4b0} ' + e.player + ' played Double Rent — next rent is 2\u00d7!',
+      dealbreaker: '\u{1f4a5} ' + e.player + ' Deal Breaker! Stole ' + (e.color||'') + ' set from ' + (e.target||''),
       win: '\u{1f3c6} ' + e.player + ' wins!',
     };
     const txt = msgs[e.type] || '';
@@ -678,16 +691,30 @@
 
     } else if (pa.type === 'rent_color' && myIndex === pa.actingPlayer) {
       el.classList.add('active');
-      title.textContent = 'Charge rent on which set?';
+      const isDouble = state.doubleRentActive;
+      title.textContent = isDouble ? 'Charge DOUBLE rent on which set?' : 'Charge rent on which set?';
       pa.validColors.forEach(c => {
         const me = state.players[myIndex];
         const count = me.properties[c].length;
         const rentTbl = state.rentTable && state.rentTable[c];
-        const amt = (rentTbl && rentTbl[count]) || count;
+        let amt = (rentTbl && rentTbl[count]) || count;
+        if (isDouble) amt *= 2;
         const b = document.createElement('button');
         b.className = 'btn btn-sm card-' + c;
         b.style.cssText = 'color:#fff; min-width:80px;';
-        b.textContent = c + ' ($' + amt + ')';
+        b.textContent = c + ' ($' + amt + ')' + (isDouble ? ' 2\u00d7' : '');
+        b.onclick = () => socket.emit('choose', { sessionId, choice: c });
+        opts.appendChild(b);
+      });
+
+    } else if (pa.type === 'dealbreaker_target' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Steal which complete set?';
+      pa.validColors.forEach(c => {
+        const b = document.createElement('button');
+        b.className = 'btn btn-sm card-' + c;
+        b.style.cssText = 'color:#fff; min-width:80px;';
+        b.textContent = c.toUpperCase();
         b.onclick = () => socket.emit('choose', { sessionId, choice: c });
         opts.appendChild(b);
       });
@@ -736,7 +763,8 @@
         const mc = me.bank.find(c => c.id === mid);
         return s + (mc ? mc.value : 0);
       }, 0) + selProps.length;
-      title.innerHTML = '\u{1f4b8} Pay <b>$' + pa.amount + '</b> rent (' + pa.color + ') \u2014 selected: <b>$' + selVal + '</b>';
+      const colorLabel = pa.color ? ' (' + pa.color + ')' : '';
+      title.innerHTML = '\u{1f4b8} Pay <b>$' + pa.amount + '</b>' + colorLabel + ' \u2014 selected: <b>$' + selVal + '</b>';
       if (me.bank.length > 0) {
         const lbl = document.createElement('div');
         lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#8e8e93; margin:6px 0 2px;';
@@ -881,7 +909,7 @@
 
         const label = document.createElement('div');
         label.className = 'card-label';
-        label.textContent = getCardLabel(card);
+        label.innerHTML = getCardLabel(card).replace(/\n/g, '<br>');
         el.appendChild(label);
       }
 
@@ -921,20 +949,20 @@
   function getCardIcon(c) {
     if (c.type === 'property') return '\u{1f3e0}';
     if (c.type === 'money') return '\u{1f4b0}';
-    const icons = { rent: '\u{1f4b8}', steal: '\u{1f9f2}', swap: '\u{1f501}', wild: '\u{1f0cf}', block: '\u{1f6e1}\ufe0f', passgo: '\u{1f3c3}' };
+    const icons = { rent: '\u{1f4b8}', steal: '\u{1f9f2}', swap: '\u{1f501}', wild: '\u{1f0cf}', block: '\u{1f6e1}\ufe0f', passgo: '\u{1f3c3}', debtcollector: '\u{1f4b3}', birthday: '\u{1f382}', doublerent: '\u{1f4b0}\u{1f4b0}', dealbreaker: '\u{1f4a5}' };
     return icons[c.action] || '\u26a1';
   }
   function getCardLabel(c) {
     if (c.type === 'property') return c.color;
     if (c.type === 'money') return '$' + c.value;
-    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', block: 'Block', passgo: 'Pass Go' };
+    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', block: 'Block', passgo: 'Pass Go', debtcollector: 'Debt\nCollector', birthday: 'Birthday', doublerent: 'Double\nRent', dealbreaker: 'Deal\nBreaker' };
     return labels[c.action] || c.action;
   }
   function getCornerValue(c) {
     if (c.type === 'money') return '$' + c.value;
     if (c.type === 'property') { const m = {blue:'B',red:'R',green:'G',yellow:'Y',black:'K'}; return m[c.color] || c.color[0].toUpperCase(); }
     if (c.bankValue !== undefined && c.bankValue > 0) return '$' + c.bankValue;
-    const abbr = { rent: '$1', steal: '$3', swap: '$3', wild: '\u2606', block: '$4', passgo: '$1' };
+    const abbr = { rent: '$1', steal: '$3', swap: '$3', wild: '\u2606', block: '$4', passgo: '$1', debtcollector: '$3', birthday: '$2', doublerent: '$1', dealbreaker: '$5' };
     return abbr[c.action] || '';
   }
 
