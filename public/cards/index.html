@@ -861,6 +861,12 @@
     btnBank.textContent = '\u{1f4b0} Bank for $' + card.bankValue;
     btnBank.onclick = () => { document.body.removeChild(overlay); socket.emit('play_card', { sessionId, cardId: card.id, asBank: true }); };
     box.appendChild(btnBank);
+    const btnCancel = document.createElement('button');
+    btnCancel.className = 'btn btn-sm btn-outline';
+    btnCancel.style.cssText = 'width:100%;padding:10px;font-size:0.95em;margin-top:4px;';
+    btnCancel.textContent = 'Cancel';
+    btnCancel.onclick = () => document.body.removeChild(overlay);
+    box.appendChild(btnCancel);
     overlay.appendChild(box);
     overlay.onclick = (e) => { if (e.target === overlay) document.body.removeChild(overlay); };
     document.body.appendChild(overlay);
