@@ -25,13 +25,15 @@ First player to complete **3 full property sets** (3 cards each) wins.
 | Property (Blue) | 6 | Color: blue, needs 3 for a set |
 | Property (Red) | 6 | Color: red, needs 3 for a set |
 | Property (Green) | 6 | Color: green, needs 3 for a set |
+| Property (Yellow) | 6 | Color: yellow, needs 3 for a set |
+| Property (Black) | 6 | Color: black, needs 3 for a set |
 | Money | 10 | Values: 1×3, 2×3, 3×2, 5×2 |
 | Rent | 6 | Charge opponent based on your set size |
 | Steal | 5 | Take 1 property from opponent's incomplete set |
 | Swap | 4 | Exchange 1 property with opponent |
 | Wild | 4 | Plays as any color property |
 | Block | 4 | Cancel any action played against you |
-| **Total** | **51** | |
+| **Total** | **63** | |
 
 ### Turn Flow
 1. **Draw 2 cards** (automatic)
@@ -54,21 +56,25 @@ First player to complete **3 full property sets** (3 cards each) wins.
 ---
 
 ## Visual Theme
-- **Dark theme** — background `#0a0a1a`, matches the portal's dark aesthetic
+- **Light elegant theme** — background `#fff5f5`, matching Tiles and Ludo design language
+- **Accent colors** — rose `#c44569` (buttons, headings, prompts), gold `#b8860b` (event banner, bank chips, selections)
 - **Card colors** — gradient backgrounds per type:
   | Type | Gradient | Border |
   |------|----------|--------|
-  | Blue property | `#2563eb → #1d4ed8` | `#3b82f6` |
-  | Red property | `#dc2626 → #b91c1c` | `#ef4444` |
-  | Green property | `#16a34a → #15803d` | `#22c55e` |
-  | Money | `#854d0e → #a16207` | `#ca8a04` |
-  | Rent | `#9333ea → #7e22ce` | `#a855f7` |
-  | Steal | `#be185d → #9d174d` | `#ec4899` |
-  | Swap | `#0891b2 → #0e7490` | `#22d3ee` |
-  | Wild | `#f59e0b → #d97706` | `#fbbf24` |
-  | Block | `#475569 → #334155` | `#94a3b8` |
-- **Accent colors** — pink `#e74c7c` (buttons, headings), yellow `#f9ca24` (turn info, selections)
+  | Blue property | `#60a5fa → #2563eb` | `#93c5fd` |
+  | Red property | `#f87171 → #dc2626` | `#fca5a5` |
+  | Green property | `#4ade80 → #16a34a` | `#86efac` |
+  | Yellow property | `#fde68a → #d97706` | `#fef3c7` |
+  | Black property | `#4b5563 → #111827` | `#6b7280` |
+  | Money | `#fcd34d → #d97706` | `#fde68a` |
+  | Rent | `#c084fc → #7e22ce` | `#d8b4fe` |
+  | Steal | `#f472b6 → #db2777` | `#f9a8d4` |
+  | Swap | `#67e8f9 → #06b6d4` | `#a5f3fc` |
+  | Wild | `#fcd34d → #c44569 → #9333ea` | `#fde68a` |
+  | Block | `#cbd5e1 → #64748b` | `#e2e8f0` |
 - **Font** — Segoe UI / system-ui (no external font dependencies)
+- **Animations** — card entrance, event banner slide, set completion glow, confetti on win
+- **Sound effects** — Web Audio API synthesizer with 10 event sounds + mute toggle (top-right)
 
 ---
 
@@ -161,7 +167,7 @@ Socket.IO namespace: `/cards` (`io.of('/cards')`)
 
 ### Constants
 ```javascript
-const CARD_COLORS = ['blue', 'red', 'green'];
+const CARD_COLORS = ['blue', 'red', 'green', 'yellow', 'black'];
 const SET_SIZE = 3;          // Cards per complete set
 const SETS_TO_WIN = 3;       // Sets needed to win
 const HAND_LIMIT = 7;        // Max cards in hand at end of turn
@@ -180,7 +186,7 @@ const CARD_IDLE_TIMEOUT = 30 * 60 * 1000; // 30 min idle = game over
       socketId,     // Current socket ID
       connected,    // Boolean
       hand: [],     // Cards in hand (hidden from opponent)
-      properties: { blue: [], red: [], green: [] },
+      properties: { blue: [], red: [], green: [], yellow: [], black: [] },
       bank: [],     // Money cards (visible to all)
       disconnectTimer,
     }
@@ -315,7 +321,5 @@ When a game exists in lobby phase, new connections receive the lobby state. The 
 - **"Steal Full Set"** — ultra-rare card that can steal a complete set
 - **Themed sets** — cities, perfumes, etc. with different set sizes
 - **Short mode** — 2 sets to win instead of 3
-- **Sound effects** — card play, rent charge, block sounds
-- **Card animations** — deal, play, transfer animations
 - **Game history/log** — scrollable event log showing all actions
 - **Rematch button** — quick restart without going through lobby

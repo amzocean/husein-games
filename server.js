@@ -655,7 +655,7 @@ ludoNs.on('connection', (socket) => {
 // PROPERTY DUEL CARD GAME (Socket.IO namespace: /cards)
 // ============================================================
 const cardsNs = io.of('/cards');
-const CARD_COLORS = ['blue', 'red', 'green'];
+const CARD_COLORS = ['blue', 'red', 'green', 'yellow', 'black'];
 const SET_SIZE = 3;
 const SETS_TO_WIN = 3;
 const HAND_LIMIT = 7;
@@ -712,7 +712,7 @@ function oppIdx(i) { return i === 0 ? 1 : 0; }
 function newCardPlayer(sessionId, name) {
   return {
     sessionId, name, socketId: null, connected: true,
-    hand: [], properties: { blue: [], red: [], green: [] }, bank: [],
+    hand: [], properties: { blue: [], red: [], green: [], yellow: [], black: [] }, bank: [],
     disconnectTimer: null,
   };
 }

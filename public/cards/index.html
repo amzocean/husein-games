@@ -132,10 +132,14 @@
   .card-swap { background: linear-gradient(160deg, #67e8f9 0%, #22d3ee 50%, #06b6d4 100%); color: #164e63; border-color: #a5f3fc; }
   .card-wild { background: linear-gradient(160deg, #fcd34d 0%, #f59e0b 30%, #c44569 70%, #9333ea 100%); color: #fff; border-color: #fde68a; }
   .card-block { background: linear-gradient(160deg, #cbd5e1 0%, #94a3b8 50%, #64748b 100%); color: #1e293b; border-color: #e2e8f0; }
+  .card-yellow { background: linear-gradient(160deg, #fde68a 0%, #fbbf24 50%, #d97706 100%); color: #78350f; border-color: #fef3c7; }
+  .card-black { background: linear-gradient(160deg, #4b5563 0%, #1f2937 50%, #111827 100%); color: #f3f4f6; border-color: #6b7280; }
 
   .set-card.blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
   .set-card.red { background: linear-gradient(135deg, #f87171, #ef4444); }
   .set-card.green { background: linear-gradient(135deg, #4ade80, #22c55e); }
+  .set-card.yellow { background: linear-gradient(135deg, #fbbf24, #d97706); }
+  .set-card.black { background: linear-gradient(135deg, #4b5563, #1f2937); }
 
   /* ========= End Turn ========= */
   .end-turn-row { width: 100%; display: flex; justify-content: center; margin: 6px 0; }
@@ -155,6 +159,8 @@
   .set-label.blue { color: #3b82f6; }
   .set-label.red { color: #ef4444; }
   .set-label.green { color: #22c55e; }
+  .set-label.yellow { color: #d97706; }
+  .set-label.black { color: #374151; }
 
   /* ========= Animations ========= */
   @keyframes cardEntrance {
@@ -468,7 +474,7 @@
       const me = state.players[myIndex];
       const opp = state.players[oppI];
       const myComplete = []; const oppComplete = [];
-      for (const c of ['blue','red','green']) {
+      for (const c of ['blue','red','green','yellow','black']) {
         if (me.properties[c].length >= 3) myComplete.push(c);
         if (opp.properties[c].length >= 3) oppComplete.push(c);
       }
@@ -555,7 +561,7 @@
 
   function renderSets(container, props, selectable, who) {
     container.innerHTML = '';
-    for (const color of ['blue','red','green']) {
+    for (const color of ['blue','red','green','yellow','black']) {
       const grp = document.createElement('div');
       grp.className = 'set-group';
       const complete = props[color].length >= 3;
@@ -647,7 +653,7 @@
     if (pa.type === 'wild_color' && myIndex === state.currentPlayerIndex) {
       el.classList.add('active');
       title.textContent = 'Choose color for Wild card:';
-      ['blue','red','green'].forEach(c => {
+      ['blue','red','green','yellow','black'].forEach(c => {
         const b = document.createElement('button');
         b.className = 'btn btn-sm card-' + c;
         b.style.cssText = 'color:#fff; min-width:60px;';
@@ -733,7 +739,7 @@
         opts.appendChild(row);
       }
       let hasProps = false;
-      for (const color of ['blue','red','green']) {
+      for (const color of ['blue','red','green','yellow','black']) {
         if (me.properties[color].length > 0 && me.properties[color].length < 3) {
           if (!hasProps) {
             const lbl = document.createElement('div');
@@ -745,15 +751,15 @@
           const row = document.createElement('div');
           row.style.cssText = 'display:flex; gap:4px; flex-wrap:wrap; align-items:center;';
           const clbl = document.createElement('span');
-          const clr = color === 'blue' ? '#60a5fa' : color === 'red' ? '#f87171' : '#4ade80';
+          const clr = {blue:'#3b82f6', red:'#ef4444', green:'#22c55e', yellow:'#d97706', black:'#374151'}[color] || '#888';
           clbl.style.cssText = 'font-size:0.75em; color:' + clr + '; width:42px;';
           clbl.textContent = color;
           row.appendChild(clbl);
           me.properties[color].forEach(pc => {
             const b = document.createElement('button');
             const sel = selProps.includes(pc.id);
-            const bg = color === 'blue' ? '#2563eb' : color === 'red' ? '#dc2626' : '#16a34a';
-            const bgD = color === 'blue' ? '#1d4ed8' : color === 'red' ? '#b91c1c' : '#15803d';
+            const bg = {blue:'#2563eb', red:'#dc2626', green:'#16a34a', yellow:'#d97706', black:'#374151'}[color] || '#666';
+            const bgD = {blue:'#1d4ed8', red:'#b91c1c', green:'#15803d', yellow:'#b45309', black:'#1f2937'}[color] || '#555';
             b.className = 'btn btn-sm';
             b.style.cssText = sel ? 'background:'+bg+'; color:#fff; min-width:36px; border:2px solid #f9ca24;' : 'background:'+bgD+'; color:#fff; min-width:36px; opacity:0.7;';
             b.textContent = (pc.action === 'wild' ? 'W' : color[0].toUpperCase()) + (sel ? '\u2713' : '');
@@ -763,7 +769,7 @@
           opts.appendChild(row);
         }
       }
-      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green'].reduce((s,c) => s + (me.properties[c].length < 3 ? me.properties[c].length : 0), 0);
+      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green','yellow','black'].reduce((s,c) => s + (me.properties[c].length < 3 ? me.properties[c].length : 0), 0);
       const canConfirm = selVal >= pa.amount || selVal >= maxAssets;
       const cb = document.createElement('button');
       cb.className = 'btn btn-sm btn-pink';
@@ -853,7 +859,7 @@
   }
   function getCornerValue(c) {
     if (c.type === 'money') return '$' + c.value;
-    if (c.type === 'property') return c.color[0].toUpperCase();
+    if (c.type === 'property') { const m = {blue:'B',red:'R',green:'G',yellow:'Y',black:'K'}; return m[c.color] || c.color[0].toUpperCase(); }
     const abbr = { rent: 'R', steal: 'S', swap: '\u21c4', wild: '\u2606', block: '\u2666' };
     return abbr[c.action] || '';
   }
