@@ -122,8 +122,9 @@
   .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 1px rgba(0,0,0,0.2); font-size: 0.78em; letter-spacing: 0.3px; }
   .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; }
   .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; transform: rotate(180deg); }
-  .card .card-rent-tiers { position: absolute; bottom: 2px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 0; z-index: 1; pointer-events: none; }
-  .card .rent-row { font-size: 0.52em; font-weight: 600; opacity: 0.85; line-height: 1.15; text-shadow: 0 1px 1px rgba(0,0,0,0.3); letter-spacing: 0.3px; }
+  .card .card-rent-tiers { position: absolute; bottom: 4px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 1px; z-index: 1; pointer-events: none; }
+  .card .rent-row { font-size: 0.7em; font-weight: 700; opacity: 0.9; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.35); letter-spacing: 0.3px; }
+  .card .card-prop-title { font-size: 0.85em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.25); margin-top: 4px; }
 
   .card-blue { background: linear-gradient(160deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%); color: #fff; border-color: #93c5fd; }
   .card-red { background: linear-gradient(160deg, #f87171 0%, #ef4444 50%, #dc2626 100%); color: #fff; border-color: #fca5a5; }
@@ -578,7 +579,9 @@
 
       const lbl = document.createElement('div');
       lbl.className = 'set-label ' + color;
-      lbl.textContent = color + ' ' + props[color].length + '/' + setSize + ' ' + (complete ? '\u2713' : '');
+      const rentTbl = state.rentTable && state.rentTable[color];
+      const curRent = (rentTbl && rentTbl[props[color].length]) || 0;
+      lbl.textContent = color + ' ' + props[color].length + '/' + setSize + (complete ? ' \u2713' : '') + ' \u2022 $' + curRent;
       grp.appendChild(lbl);
       const sc = document.createElement('div');
       sc.className = 'set-cards';
@@ -863,15 +866,23 @@
         }
       }
 
-      const icon = document.createElement('div');
-      icon.className = 'card-icon';
-      icon.textContent = getCardIcon(card);
-      el.appendChild(icon);
+      if (card.type === 'property') {
+        // Property cards: color title + rent tiers (no icon)
+        const title = document.createElement('div');
+        title.className = 'card-prop-title';
+        title.textContent = card.color;
+        el.appendChild(title);
+      } else {
+        const icon = document.createElement('div');
+        icon.className = 'card-icon';
+        icon.textContent = getCardIcon(card);
+        el.appendChild(icon);
 
-      const label = document.createElement('div');
-      label.className = 'card-label';
-      label.textContent = getCardLabel(card);
-      el.appendChild(label);
+        const label = document.createElement('div');
+        label.className = 'card-label';
+        label.textContent = getCardLabel(card);
+        el.appendChild(label);
+      }
 
       // Rent tiers on property cards
       if (card.type === 'property' && state.rentTable && state.rentTable[card.color]) {
@@ -882,7 +893,7 @@
         for (let n = 1; n <= sz; n++) {
           const row = document.createElement('div');
           row.className = 'rent-row';
-          row.textContent = n + (n === sz ? '\u2605' : '') + ' $' + (tiers[n] || 0);
+          row.textContent = (n === sz ? '\u2605' : n) + ' \u2192 $' + (tiers[n] || 0);
           tierEl.appendChild(row);
         }
         el.appendChild(tierEl);
