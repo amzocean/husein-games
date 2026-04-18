@@ -911,6 +911,16 @@
         label.className = 'card-label';
         label.innerHTML = getCardLabel(card).replace(/\n/g, '<br>');
         el.appendChild(label);
+
+        // Benefit text on action cards
+        const benefits = { debtcollector: 'Collect $5', birthday: 'Collect $2', doublerent: '2× Next Rent', dealbreaker: 'Steal Full Set' };
+        if (benefits[card.action]) {
+          const ben = document.createElement('div');
+          ben.className = 'card-rent-tiers';
+          ben.style.cssText = 'font-size:0.55em; font-weight:700; opacity:0.9;';
+          ben.textContent = benefits[card.action];
+          el.appendChild(ben);
+        }
       }
 
       // Rent tiers on property cards
