@@ -6,50 +6,72 @@
 
 ## Overview
 
-A 2-player card game inspired by Monopoly Deal (but simplified, copyright-free). Players collect property sets, bank money, and play action cards (Rent, Steal, Swap, Wild, Block). First to complete **3 full property sets** wins. Built for quick 15-20 minute sessions over a call.
+A 2-player card game inspired by Monopoly Deal (but simplified, copyright-free). Players collect property sets, bank money, and play action cards (Rent, Steal, Swap, Wild, Block, Pass Go, Debt Collector, Birthday, Double Rent, Deal Breaker). First to complete **3 full property sets** wins. Built for quick 15-20 minute sessions over a call.
 
 **Why "H♥F Deal" instead of "Monopoly Deal"?**
 Monopoly is a Hasbro trademark. The mechanics (collect sets, charge rent, steal) are not copyrightable — only the name and branding are. "H♥F Deal" uses the same core gameplay loop but with a simplified ruleset and original card design.
 
 ---
 
-## Game Rules (V1)
+## Game Rules (V2)
 
 ### Objective
-First player to complete **3 full property sets** (3 cards each) wins.
+First player to complete **3 full property sets** wins. Set sizes vary by color (see table below).
 
 ### Components
 
 | Card Type | Count | Details |
 |-----------|-------|---------|
-| Property (Blue) | 6 | Color: blue, needs 3 for a set |
-| Property (Red) | 6 | Color: red, needs 3 for a set |
-| Property (Green) | 6 | Color: green, needs 3 for a set |
-| Property (Yellow) | 6 | Color: yellow, needs 3 for a set |
-| Property (Black) | 6 | Color: black, needs 3 for a set |
-| Money | 10 | Values: 1×3, 2×3, 3×2, 5×2 |
-| Rent | 6 | Charge opponent based on your set size |
+| Property (Blue) | 4 | Needs **2** for a set |
+| Property (Red) | 6 | Needs **3** for a set |
+| Property (Green) | 4 | Needs **3** for a set |
+| Property (Yellow) | 6 | Needs **3** for a set |
+| Property (Black) | 5 | Needs **2** for a set |
+| Money ($1-$10) | 11 | Values: 1×3, 2×3, 3×2, 5×2, 10×1 |
+| Rent | 6 | Charge opponent rent based on RENT_TABLE |
 | Steal | 5 | Take 1 property from opponent's incomplete set |
 | Swap | 4 | Exchange 1 property with opponent |
 | Wild | 4 | Plays as any color property |
 | Block | 4 | Cancel any action played against you |
-| **Total** | **63** | |
+| Pass Go | 4 | Draw 2 extra cards ($1 bank value) |
+| Debt Collector | 3 | Force opponent to pay $5 ($3 bank value) |
+| Birthday | 3 | Opponent pays $2 ($2 bank value) |
+| Double Rent | 2 | Next rent card this turn does 2× damage ($1 bank value) |
+| Deal Breaker | 2 | Steal an opponent's complete set ($5 bank value) |
+| **Total** | **77** | |
+
+### Set Sizes & Rent Table
+
+| Color | Set Size | Rent by Card Count (1/2/3) |
+|-------|----------|---------------------------|
+| Blue | 2 | $3 / $8 / — |
+| Red | 3 | $2 / $3 / $6 |
+| Green | 3 | $2 / $4 / $7 |
+| Yellow | 3 | $2 / $3 / $6 |
+| Black | 2 | $3 / $8 / — |
 
 ### Turn Flow
-1. **Draw 2 cards** (automatic)
+1. **Draw 2 cards** (automatic; draw **5** if hand is empty at turn start)
 2. **Play up to 3 actions** — any combination of:
    - Play a property card to your area
    - Bank a money card
-   - Play an action card (Rent, Steal, Swap, Wild)
+   - Play an action card (Rent, Steal, Swap, Wild, Pass Go, etc.)
+   - Bank an action card for its $ value (choice popup appears)
 3. **End turn** (manual button, or auto after 3 actions)
 4. **Discard** down to 7 if over hand limit
 
 ### Key Rules
-- **Complete sets are locked** — cannot be stolen or swapped
-- **Rent amount** = number of cards in chosen color set (e.g., 2 red properties = $2 rent)
-- **Rent payment is manual** — target player selects which money/properties to give up (not automated). Money goes to actor's bank; sacrificed properties go to actor's property area.
-- **Block** is reactive only — can only be played when an action targets you (15-second timer)
+- **Complete sets are locked** — cannot be stolen or swapped (but CAN be taken by Deal Breaker)
+- **Variable rent** — rent amounts follow the `RENT_TABLE` per color (not just card count)
+- **Rent payment is manual** — target player selects which money/properties to give up. Payment comes from table (bank + properties), NOT from hand.
+- **Block** is reactive only — can only be played when an action targets you (15-second timer). Block works against: Rent, Steal, Swap, Debt Collector, Birthday, Deal Breaker.
 - **Wild cards** — player chooses color when played; tracked via `assignedColor` field
+- **Pass Go** — draw 2 extra cards immediately; can be banked for $1 instead
+- **Double Rent** — play before a Rent card; the next rent this turn is doubled (uses 1 play action)
+- **Debt Collector** — force opponent to pay $5; can be blocked; can be banked for $3
+- **Birthday** — force opponent to pay $2; can be blocked; can be banked for $2
+- **Deal Breaker** — steal an entire complete set from opponent; can be blocked; can be banked for $5
+- **Bank value on action cards** — when playing an action card, a popup offers "Use Action" or "Bank for $X"
 - **Empty deck** — discard pile is reshuffled; if both empty, draw fewer cards
 - **Hand limit** — max 7 cards; must discard excess at end of turn
 
@@ -72,13 +94,18 @@ First player to complete **3 full property sets** (3 cards each) wins.
   | Swap | `#67e8f9 → #06b6d4` | `#a5f3fc` |
   | Wild | `#fcd34d → #c44569 → #9333ea` | `#fde68a` |
   | Block | `#cbd5e1 → #64748b` | `#e2e8f0` |
+  | Pass Go | `#86efac → #16a34a` | `#bbf7d0` |
+  | Debt Collector | `#fda4af → #be123c` | `#fecdd3` |
+  | Birthday | `#fbcfe8 → #db2777` | `#f9a8d4` |
+  | Double Rent | `#fef08a → #ca8a04` | `#fef9c3` |
+  | Deal Breaker | `#f87171 → #991b1b` | `#fca5a5` |
 - **Font** — Segoe UI / system-ui (no external font dependencies)
 - **Animations** — card entrance, event banner slide, set completion glow, confetti on win
 - **Sound effects** — Web Audio API synthesizer with 10 event sounds + mute toggle (top-right)
 
 ---
 
-## Client: `public/cards/index.html` (~500 lines)
+## Client: `public/cards/index.html` (~900 lines)
 
 Single file containing all HTML, CSS, and JavaScript (same pattern as Ludo).
 
@@ -91,44 +118,46 @@ Single file containing all HTML, CSS, and JavaScript (same pattern as Ludo).
 ### Game Screen Layout (top to bottom)
 ```
 ┌─────────────────────────────────┐
-│ Turn info (left)   Deck count   │  ← top-bar
-├─────────────────────────────────┤
-│ Opponent name          🃏 count │
-│ [BLUE 0/3] [RED 1/3] [GRN 0/3] │  ← opp property sets
+│ FATE'S TABLE          🃏 count  │  ← bold uppercase header
+│ [RED 2/3 Rent $3 • Val $2]     │  ← multi-line set labels (only owned colors)
 │ $2 $3                           │  ← opp bank chips
 ├─────────────────────────────────┤
-│   fate charged huse $2 rent     │  ← event banner
+│   fate charged huse $2 rent     │  ← event banner (gold, animated)
+├─────────────────────────────────┤
+│ Your turn — 3 plays left        │  ← centered turn info
 ├─────────────────────────────────┤
 │ ┌─ Action Prompt ─────────────┐ │
 │ │ Choose color / Pay rent / …  │ │  ← context-sensitive prompts
 │ └─────────────────────────────┘ │
 │           [End Turn]            │
 ├─────────────────────────────────┤
-│ My name (you)         Bank: $5  │
-│ [BLUE 1/3] [RED 2/3] [GRN 0/3] │  ← my property sets
+│ MY TABLE                Bank $5 │  ← bold uppercase header
+│ [BLUE 1/2 Rent $3 • Val $1]    │  ← only owned colors shown
 │ $1 $2 $2                        │  ← my bank chips
 ├─────────────────────────────────┤
-│ Your hand (5)                   │
-│ [🏠][🏠][💵][💸][🛡️]            │  ← horizontally scrollable
+│ MY HAND (5)                     │  ← bold uppercase gold header
+│ [🏠][🏠][💵][💸][🛡️][🎂][💥]    │  ← horizontally scrollable
 └─────────────────────────────────┘
 ```
 
 ### Property Sets Display
-- Grouped by color with label showing `COLOR X/3`
+- Grouped by color — **only colors the player owns** are shown (empty colors hidden)
+- Label shows multi-line info: `COLOR X/Y` + `Rent $X • Value $Y` (rent = current tier amount, value = $1 per card for payment purposes)
 - Complete sets show `✓` and individual cards get 🔒 overlay + reduced opacity
 - Mini-cards (28×38px) inside set groups with color gradient backgrounds
-- **Selectable mode**: when Steal/Swap requires targeting, cards get dashed yellow outline + pulse animation
+- **Selectable mode**: when Steal/Swap/Deal Breaker requires targeting, cards get dashed yellow outline + pulse animation
 
 ### Action Prompt System
 The `action-prompt` div renders different UIs based on `state.pendingAction.type`:
 
 | Pending Type | Who Sees It | UI |
 |---|---|---|
-| `wild_color` | Acting player | 3 color buttons (blue/red/green) |
-| `rent_color` | Acting player | Color buttons with rent amount (`red ($2)`) |
+| `wild_color` | Acting player | 5 color buttons (blue/red/green/yellow/black) |
+| `rent_color` | Acting player | Color buttons with rent amount (`red ($3)`) — shows 2× if Double Rent active |
 | `steal_target` | Acting player | Opponent's property cards become selectable |
 | `swap_own` | Acting player | Own property cards become selectable |
 | `swap_target` | Acting player | Opponent's property cards become selectable |
+| `dealbreaker_target` | Acting player | Color buttons for opponent's complete sets |
 | `block_prompt` | Target player | Block 🛡️ / Allow buttons |
 | `block_prompt` | Acting player | "Waiting for response…" message |
 | `rent_pay` | Target player | Selectable money + property cards, running total, Confirm button |
@@ -136,7 +165,8 @@ The `action-prompt` div renders different UIs based on `state.pendingAction.type
 
 ### Hand Rendering
 - Horizontal scrollable row of card elements (64×90px)
-- Cards show icon (emoji) + label (color/value/action name)
+- Cards show icon (emoji) + label (color/value/action name); multi-word labels use line breaks (e.g., "Debt\nCollector")
+- Property cards also show rent tier amounts at the bottom
 - **Playable** when: it's your turn, turnPhase is 'playing', actionsLeft > 0, no pendingAction
 - **Discarding** mode: all cards tappable, clicking discards immediately
 - **Disabled** state: reduced opacity + no-pointer cursor when not your turn
@@ -168,7 +198,19 @@ Socket.IO namespace: `/cards` (`io.of('/cards')`)
 ### Constants
 ```javascript
 const CARD_COLORS = ['blue', 'red', 'green', 'yellow', 'black'];
-const SET_SIZE = 3;          // Cards per complete set
+const SET_SIZES = { blue: 2, red: 3, green: 3, yellow: 3, black: 2 };
+const RENT_TABLE = {
+  blue:   { 1: 3, 2: 8 },
+  red:    { 1: 2, 2: 3, 3: 6 },
+  green:  { 1: 2, 2: 4, 3: 7 },
+  yellow: { 1: 2, 2: 3, 3: 6 },
+  black:  { 1: 3, 2: 8 },
+};
+const PROP_COUNTS = { blue: 4, red: 6, green: 4, yellow: 6, black: 5 };
+const BANK_VALUES = {
+  rent: 1, steal: 3, swap: 3, wild: 0, block: 4, passgo: 1,
+  debtcollector: 3, birthday: 2, doublerent: 1, dealbreaker: 5,
+};
 const SETS_TO_WIN = 3;       // Sets needed to win
 const HAND_LIMIT = 7;        // Max cards in hand at end of turn
 const BLOCK_TIMEOUT = 15000; // 15s for opponent to decide on Block
@@ -197,6 +239,7 @@ const CARD_IDLE_TIMEOUT = 30 * 60 * 1000; // 30 min idle = game over
   actionsLeft: 0-3,         // Actions remaining this turn
   pendingAction: null|{...}, // Multi-step action state machine
   turnPhase: 'waiting'|'playing'|'discarding',
+  doubleRentActive: false,    // True if Double Rent was played this turn
   winner: null|name,
   idleTimer, blockTimer,
   lastEvent: { type, ... }, // For event banner display
@@ -211,8 +254,11 @@ const CARD_IDLE_TIMEOUT = 30 * 60 * 1000; // 30 min idle = game over
 // Money
 { id: 18, type: 'money', value: 3 }
 
-// Action
+// Action (basic)
 { id: 28, type: 'action', action: 'rent'|'steal'|'swap'|'wild'|'block' }
+
+// Action (with bank value)
+{ id: 55, type: 'action', action: 'passgo'|'debtcollector'|'birthday'|'doublerent'|'dealbreaker', bankValue: 1-5 }
 
 // Wild when played (gets assignedColor)
 { id: 47, type: 'action', action: 'wild', assignedColor: 'red' }
@@ -223,11 +269,16 @@ const CARD_IDLE_TIMEOUT = 30 * 60 * 1000; // 30 min idle = game over
 Actions that require multiple steps use `pendingAction` to track state:
 
 ```
-Rent:   play_card → rent_color → [block_prompt →] rent_pay → resolved
-Steal:  play_card → steal_target → [block_prompt →] resolved
-Swap:   play_card → swap_own → swap_target → [block_prompt →] resolved
-Wild:   play_card → wild_color → resolved
-Block:  (reactive only — appears in block_prompt phase)
+Rent:          play_card → rent_color → [block_prompt →] rent_pay → resolved
+Steal:         play_card → steal_target → [block_prompt →] resolved
+Swap:          play_card → swap_own → swap_target → [block_prompt →] resolved
+Wild:          play_card → wild_color → resolved
+Block:         (reactive only — appears in block_prompt phase)
+Pass Go:       play_card → draw 2 → resolved (immediate)
+DebtCollector: play_card → [block_prompt →] rent_pay($5, no color) → resolved
+Birthday:      play_card → [block_prompt →] rent_pay($2, no color) → resolved
+Double Rent:   play_card → set doubleRentActive → resolved (immediate)
+Deal Breaker:  play_card → dealbreaker_target → [block_prompt →] steal set → resolved
 ```
 
 The `block_prompt` phase is **optional** — it only appears if the target has a Block card in hand. If they don't, the action resolves immediately (no waiting).
@@ -236,13 +287,13 @@ The `block_prompt` phase is **optional** — it only appears if the target has a
 `getCardState(forIdx)` builds a per-player view:
 - **Your hand**: full card objects with IDs
 - **Opponent's hand**: only `handCount` (integer) — cards are hidden
-- Everything else (properties, bank, deck count, pending actions) is visible to both
+- Everything else (properties, bank, deck count, pending actions, doubleRentActive, setSizes, rentTable) is visible to both
 
-### Rent Payment Flow (Manual)
-This is the most complex interaction, designed to feel like physical card play:
+### Rent / Debt Payment Flow (Manual)
+This is the most complex interaction, designed to feel like physical card play. This same flow is used for Rent, Debt Collector, and Birthday cards.
 
-1. Rent card is played → actor chooses color → block prompt (if applicable)
-2. `startRentPay()` creates `pendingAction.type = 'rent_pay'` with `selectedMoney: []` and `selectedProperties: []`
+1. Action card is played → (for Rent: actor chooses color) → block prompt (if applicable)
+2. `startRentPay()` creates `pendingAction.type = 'rent_pay'` with `selectedMoney: []` and `selectedProperties: []`. The `color` field is the rent color for Rent cards, or `null` for Debt Collector/Birthday.
 3. Target player sees interactive UI: tap money/properties to toggle selection
 4. Each toggle sends `choose` with `{ action: 'toggle_money'|'toggle_property', id }` — server updates selected arrays and rebroadcasts
 5. Confirm button enabled when `selectedValue >= rentAmount` OR `selectedValue >= totalAssets` (can't pay more than you have)
@@ -315,11 +366,13 @@ When a game exists in lobby phase, new connections receive the lobby state. The 
 
 ---
 
-## Future Enhancements (V2+)
+## Future Enhancements (V3+)
 
-- **Double Rent** — rare action card that doubles rent amount
-- **"Steal Full Set"** — ultra-rare card that can steal a complete set
-- **Themed sets** — cities, perfumes, etc. with different set sizes
+- **Just Say No chaining** — allow counter-blocking (Block vs Block chains)
+- **Color-paired rents** — rent cards tied to specific color pairs (like real Monopoly Deal)
+- **Two-color wildcards** — wild cards that count as one of two colors
+- **House/Hotel** — upgrade complete sets for higher rent
+- **Property overflow** — handle extra properties beyond set size
 - **Short mode** — 2 sets to win instead of 3
 - **Game history/log** — scrollable event log showing all actions
 - **Rematch button** — quick restart without going through lobby
