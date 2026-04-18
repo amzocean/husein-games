@@ -2,12 +2,13 @@
 
 ## 1. Introduction & Project Context
 
-This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 3 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
+This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 4 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
 
-**The 3 games:**
+**The 4 games:**
 - **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels) → [Valentines docs](public/valentines/DOCUMENTATION.md)
 - **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering → [Ludo docs](public/ludo/DOCUMENTATION.md)
+- **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -32,6 +33,7 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 | This file | `DOCUMENTATION.md` | Project architecture, deployment, shared infrastructure, common tasks |
 | Photo Tiles | `public/tiles/DOCUMENTATION.md` | 16-theme system, SVG rendering, new theme guide, tile bug fixes |
 | Ludo | `public/ludo/DOCUMENTATION.md` | Multiplayer logic, 5 code paths, Socket.IO events, Ludo bug fixes |
+| H♥F Deal | `public/cards/DOCUMENTATION.md` | Card game rules, pending action state machine, rent payment flow, bug fixes |
 | Valentines | `public/valentines/DOCUMENTATION.md` | Level config, customization |
 
 ## 3. Quick Resume Checklist
@@ -48,8 +50,8 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 ## 4. Architecture Overview
 
 Single Node.js process serving everything:
-- **Express** serves static files from `public/` (landing page + 3 games)
-- **Socket.IO** provides real-time multiplayer for Ludo via `/ludo` namespace
+- **Express** serves static files from `public/` (landing page + 4 games)
+- **Socket.IO** provides real-time multiplayer for Ludo (`/ludo`) and H♥F Deal (`/cards`) namespaces
 - Deployed on **Render.com free tier** (spins down after 15min of no HTTP requests, ~30s cold start)
 
 ```
@@ -60,7 +62,7 @@ husein-games/
 ├── DOCUMENTATION.md       # This file — project-wide docs
 ├── validate-themes.js     # Pre-commit validator for tiles themes
 └── public/
-    ├── index.html          # Landing page with 3 game cards
+    ├── index.html          # Landing page with 4 game cards
     ├── valentines/         # Valentine puzzle game (static, single-player)
     │   ├── DOCUMENTATION.md
     │   ├── index.html
@@ -80,10 +82,14 @@ husein-games/
     └── ludo/
         ├── DOCUMENTATION.md
         └── index.html
+    └── cards/              # H♥F Deal card game (2-player multiplayer)
+        ├── DOCUMENTATION.md
+        └── index.html
 ```
 
 ### Key Technical Decisions
 - Socket.IO namespace `/ludo` (`io.of('/ludo')` on server, `io('/ludo')` on client) — keeps Ludo traffic separate
+- Socket.IO namespace `/cards` (`io.of('/cards')` on server, `io('/cards')` on client) — H♥F Deal traffic
 - `broadcastState()` uses `ludoNs.emit()` (namespace-scoped, not global)
 - **Cache-busting middleware** runs BEFORE `express.static`: sets `Cache-Control: no-cache` on `.html` files and directory-root requests (`/`, `/ludo/`, etc.). This forces browsers to revalidate on every visit — if the file hasn't changed, server returns 304 (no body, ~200 bytes), so performance cost is negligible. Without this, mobile browsers (esp. iOS Safari) would serve stale HTML for hours/days after a deploy.
 - Static files served with `express.static(path.join(__dirname, 'public'))` — MUST use `path.join` for Render (relative paths fail)
@@ -122,6 +128,7 @@ husein-games/
   1. **💌 Valentines** → `/valentines/` (tag: Story)
   2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
   3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
+  4. **🃏 H♥F Deal** → `/cards/` (tag: Multiplayer)
 - Footer: "Made with ♥ by Husein"
 
 ---
@@ -130,9 +137,9 @@ husein-games/
 
 1. **In-memory game state**: Render process restart loses the game. No persistence layer. Free tier can restart anytime (though Socket.IO heartbeats prevent idle shutdown while connected).
 
-2. **Single game at a time**: Only one Ludo game can run globally. By design — "not very sophisticated, just have one game running at any point."
+2. **Single game at a time**: Only one Ludo game and one H♥F Deal game can run globally. By design — "not very sophisticated, just have one game running at any point."
 
-3. **No authentication**: Players identified by UUID sessionId stored in localStorage (`ludo_session`). Refreshing reloads sessionId from localStorage; `visibilitychange` handles tab suspension.
+3. **No authentication**: Players identified by UUID sessionId stored in localStorage (`ludo_session` / `cards_session`). Refreshing reloads sessionId from localStorage; `visibilitychange` handles tab suspension.
 
 4. **Winner display shows player name**: If a player names themselves "2", it shows "2 wins!" — this is correct behavior, not a bug.
 
@@ -160,7 +167,7 @@ git push
 
 ### Check Render logs
 Go to https://dashboard.render.com → husein-games service → Logs tab.
-Server logs are prefixed with `[LUDO timestamp]`.
+Server logs are prefixed with `[LUDO timestamp]` or `[CARDS timestamp]`.
 
 ### Add a new game
 1. Create folder under `public/` (e.g., `public/newgame/`)
@@ -193,6 +200,7 @@ These are project-wide bugs not specific to any single game:
 > For game-specific bug fixes, see each game's documentation:
 > - [Photo Tiles bug fixes](public/tiles/DOCUMENTATION.md#key-bug-fixes-history)
 > - [Ludo bug fixes](public/ludo/DOCUMENTATION.md#key-bug-fixes-history)
+> - [H♥F Deal bug fixes](public/cards/DOCUMENTATION.md#key-bug-fixes-history)
 
 ---
 

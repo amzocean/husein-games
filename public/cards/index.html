@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>H♥F Deal</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a1a; color: #e8e8f0; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ========= Screens ========= */
+  .screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+  .screen.active { display: flex; }
+
+  /* ========= Idle / Lobby ========= */
+  #idle-screen h1, #lobby-screen h1 { font-size: 2em; margin-bottom: 4px; letter-spacing: 1px; }
+  #idle-screen h1 .heart, #lobby-screen h1 .heart { color: #e74c7c; }
+  .sub { color: #888; margin-bottom: 24px; font-size: 0.95em; }
+  .input-group { margin: 8px 0; display: flex; gap: 8px; }
+  .input-group input { padding: 10px 14px; border-radius: 10px; border: 1px solid #333; background: #181830; color: #fff; font-size: 1em; width: 180px; }
+  .input-group input::placeholder { color: #555; }
+  .input-group input:focus { border-color: #e74c7c; outline: none; box-shadow: 0 0 8px #e74c7c44; }
+  .btn { padding: 10px 22px; border-radius: 10px; border: none; font-size: 1em; cursor: pointer; font-weight: 600; transition: transform .12s, box-shadow .15s; }
+  .btn:active { transform: scale(0.95); }
+  .btn-pink { background: linear-gradient(135deg, #e74c7c, #c44569); color: #fff; }
+  .btn-pink:hover { box-shadow: 0 0 18px #e74c7c66; }
+  .btn-outline { background: transparent; border: 1.5px solid #555; color: #ccc; }
+  .btn-outline:hover { border-color: #aaa; color: #fff; }
+  .btn-sm { padding: 6px 14px; font-size: 0.85em; }
+  .error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.9em; }
+  .lobby-players { margin: 16px 0; text-align: center; }
+  .lobby-players div { font-size: 1.1em; margin: 4px 0; }
+  .lobby-players .connected { color: #7ddb7d; }
+  .waiting { color: #888; font-style: italic; }
+
+  /* ========= Sound Toggle ========= */
+  .sound-toggle { position: fixed; top: 10px; right: 10px; z-index: 100; background: #181830; border: 1px solid #333; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1em; transition: background .2s, border-color .2s; }
+  .sound-toggle:hover { background: #252550; border-color: #555; }
+  .sound-toggle.muted { opacity: 0.5; }
+
+  /* ========= Game Board ========= */
+  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; }
+  .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; font-size: 0.85em; }
+  .top-bar .turn-info { color: #f9ca24; font-weight: 600; }
+  .top-bar .deck-info { color: #888; }
+
+  /* ========= Opponent Area ========= */
+  .opp-area { width: 100%; margin: 6px 0; }
+  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
+  .opp-header .name { font-weight: 600; color: #ddd; }
+  .opp-sets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ========= Event Banner ========= */
+  .event-banner { width: 100%; text-align: center; padding: 8px; font-size: 0.92em; color: #f9ca24; min-height: 32px; font-weight: 500; }
+  .event-banner.animate { animation: bannerSlide 0.35s ease-out; }
+
+  /* ========= Action Prompt ========= */
+  .action-prompt { width: 100%; background: linear-gradient(135deg, #1a1a35, #15152e); border-radius: 12px; padding: 12px; margin: 4px 0; text-align: center; display: none; border: 1px solid #2a2a50; }
+  .action-prompt.active { display: block; animation: promptFade 0.3s ease-out; }
+  .prompt-title { font-weight: 600; margin-bottom: 8px; color: #f0a0c0; }
+  .prompt-options { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+
+  /* ========= My Area ========= */
+  .my-area { width: 100%; margin: 6px 0; }
+  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; font-size: 0.82em; }
+  .my-header .name { font-weight: 600; color: #7ddb7d; }
+  .my-sets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ========= Property Sets ========= */
+  .set-group { background: linear-gradient(180deg, #14142c, #0f0f24); border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid #1e1e3a; }
+  .set-label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.5px; }
+  .set-cards { display: flex; gap: 4px; flex-wrap: wrap; }
+  .set-card { width: 30px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.2s; }
+  .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; pointer-events: none; }
+  .set-complete { position: relative; }
+  .set-complete::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.25); border-radius: 5px; z-index: 1; }
+  .set-complete .lock-icon { position: absolute; font-size: 9px; top: -3px; right: -3px; z-index: 2; }
+  .set-complete-anim { animation: setGlow 0.6s ease-out; }
+  .selectable { cursor: pointer; outline: 2px dashed #f9ca24; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{ outline-offset: 0; } 50%{ outline-offset: 3px; } }
+
+  .bank-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .bank-chip { background: linear-gradient(135deg, #2d6a2d, #1a5c1a); color: #90ee90; border-radius: 14px; padding: 3px 10px; font-size: 0.75em; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.3); border: 1px solid #3a8a3a; }
+
+  /* ========= Hand ========= */
+  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid #1a1a35; }
+  .hand-label { font-size: 0.78em; color: #888; margin-bottom: 4px; padding-left: 4px; }
+  .hand { display: flex; gap: 8px; overflow-x: auto; padding: 8px 4px 12px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  .hand::-webkit-scrollbar { height: 4px; }
+  .hand::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  /* ========= Cards (Fancy) ========= */
+  .card {
+    width: 70px; min-width: 70px; height: 98px; border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 0.72em; font-weight: 600; cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease;
+    position: relative; user-select: none;
+    border: 2px solid transparent;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 7px; pointer-events: none; z-index: 1;
+  }
+  .card::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+    pointer-events: none; z-index: 2; transition: left 0.4s ease;
+  }
+  .card:hover::after { left: 120%; }
+  .card:hover:not(.disabled) {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .card:active:not(.disabled) { transform: translateY(-2px) scale(0.97); }
+  .card.disabled { opacity: 0.35; cursor: not-allowed; filter: grayscale(30%); }
+  .card .card-icon { font-size: 1.8em; margin-bottom: 3px; z-index: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
+  .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.4); font-size: 0.78em; letter-spacing: 0.3px; }
+  .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.7; }
+  .card .card-value-br { position: absolute; bottom: 4px; right: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.7; transform: rotate(180deg); }
+
+  .card-blue { background: linear-gradient(160deg, #3b82f6 0%, #1d4ed8 50%, #1e3a8a 100%); color: #fff; border-color: #60a5fa; }
+  .card-red { background: linear-gradient(160deg, #ef4444 0%, #dc2626 50%, #991b1b 100%); color: #fff; border-color: #f87171; }
+  .card-green { background: linear-gradient(160deg, #22c55e 0%, #16a34a 50%, #14532d 100%); color: #fff; border-color: #4ade80; }
+  .card-money { background: linear-gradient(160deg, #fbbf24 0%, #b45309 50%, #78350f 100%); color: #fef3c7; border-color: #f59e0b; }
+  .card-rent { background: linear-gradient(160deg, #a855f7 0%, #7e22ce 50%, #581c87 100%); color: #e9d5ff; border-color: #c084fc; }
+  .card-steal { background: linear-gradient(160deg, #ec4899 0%, #be185d 50%, #831843 100%); color: #fce7f3; border-color: #f472b6; }
+  .card-swap { background: linear-gradient(160deg, #22d3ee 0%, #0891b2 50%, #164e63 100%); color: #cffafe; border-color: #67e8f9; }
+  .card-wild { background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 30%, #e74c7c 70%, #9333ea 100%); color: #fff; border-color: #fcd34d; }
+  .card-block { background: linear-gradient(160deg, #94a3b8 0%, #475569 50%, #1e293b 100%); color: #e2e8f0; border-color: #cbd5e1; }
+
+  .set-card.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+  .set-card.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .set-card.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
+
+  /* ========= End Turn ========= */
+  .end-turn-row { width: 100%; display: flex; justify-content: center; margin: 6px 0; }
+
+  /* ========= Finished Screen ========= */
+  #finished-screen h1 { font-size: 2.2em; }
+  #finished-screen .winner-name { color: #f9ca24; font-size: 1.5em; font-weight: 700; margin: 10px 0; }
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; overflow: hidden; }
+  .confetti { position: absolute; width: 8px; height: 8px; top: -10px; border-radius: 1px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .back-link { display: inline-block; margin-top: 20px; color: #888; text-decoration: none; font-size: 0.9em; transition: color .2s; }
+  .back-link:hover { color: #ccc; }
+  .set-label.blue { color: #60a5fa; }
+  .set-label.red { color: #f87171; }
+  .set-label.green { color: #4ade80; }
+
+  /* ========= Animations ========= */
+  @keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(20px) scale(0.85); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes bannerSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes promptFade {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes setGlow {
+    0% { box-shadow: 0 0 0 0 rgba(249,202,36,0.6); }
+    50% { box-shadow: 0 0 20px 4px rgba(249,202,36,0.4); }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+  @keyframes shakeX {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .anim-entrance { animation: cardEntrance 0.3s ease-out both; }
+  .anim-shake { animation: shakeX 0.4s ease-out; }
+  .anim-pop { animation: popIn 0.35s ease-out; }
+</style>
+</head>
+<body>
+
+<!-- Sound toggle -->
+<button class="sound-toggle" id="sound-toggle" title="Toggle sound">&#x1f50a;</button>
+
+<!-- ======= IDLE ======= -->
+<div id="idle-screen" class="screen active">
+  <h1>&#x1f3b4; H<span class="heart">&hearts;</span>F <span class="heart">Deal</span></h1>
+  <p class="sub">collect 3 sets to win</p>
+  <div class="input-group">
+    <input id="name-input" placeholder="Your name" maxlength="12" autocomplete="off">
+  </div>
+  <div style="display:flex; gap:10px; margin-top:12px;">
+    <button class="btn btn-pink" id="btn-create">Create Game</button>
+    <button class="btn btn-outline" id="btn-join">Join Game</button>
+  </div>
+  <div id="idle-error" class="error-msg"></div>
+  <a href="/" class="back-link">&larr; back to games</a>
+</div>
+
+<!-- ======= LOBBY ======= -->
+<div id="lobby-screen" class="screen">
+  <h1>&#x1f3b4; H<span class="heart">&hearts;</span>F <span class="heart">Deal</span></h1>
+  <p class="sub">waiting for opponent&hellip;</p>
+  <div class="lobby-players" id="lobby-players"></div>
+  <button class="btn btn-pink" id="btn-start" style="display:none;">Start Game</button>
+  <div id="lobby-error" class="error-msg"></div>
+</div>
+
+<!-- ======= GAME ======= -->
+<div id="game-screen" class="screen">
+  <div class="top-bar">
+    <span class="turn-info" id="turn-info"></span>
+    <span class="deck-info" id="deck-info"></span>
+  </div>
+
+  <div class="opp-area">
+    <div class="opp-header">
+      <span class="name" id="opp-name"></span>
+      <span id="opp-hand-count" style="color:#888;"></span>
+    </div>
+    <div class="opp-sets" id="opp-sets"></div>
+    <div class="bank-row" id="opp-bank"></div>
+  </div>
+
+  <div class="event-banner" id="event-banner"></div>
+
+  <div class="action-prompt" id="action-prompt">
+    <div class="prompt-title" id="prompt-title"></div>
+    <div class="prompt-options" id="prompt-options"></div>
+  </div>
+
+  <div class="end-turn-row">
+    <button class="btn btn-outline btn-sm" id="btn-end-turn" style="display:none;">End Turn</button>
+  </div>
+
+  <div class="my-area">
+    <div class="my-header">
+      <span class="name" id="my-name"></span>
+      <span id="my-bank-label" style="color:#888; font-size:0.78em;"></span>
+    </div>
+    <div class="my-sets" id="my-sets"></div>
+    <div class="bank-row" id="my-bank"></div>
+  </div>
+
+  <div class="hand-area">
+    <div class="hand-label" id="hand-label">Your hand</div>
+    <div class="hand" id="hand"></div>
+  </div>
+</div>
+
+<!-- ======= FINISHED ======= -->
+<div id="finished-screen" class="screen">
+  <div class="confetti-container" id="confetti"></div>
+  <h1>&#x1f3c6; Game Over</h1>
+  <div class="winner-name" id="winner-name"></div>
+  <button class="btn btn-pink" id="btn-new-game" style="margin-top:16px;">New Game</button>
+  <a href="/" class="back-link">&larr; back to games</a>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function(){
+
+  // ===================== SOUND SYSTEM =====================
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  let soundEnabled = localStorage.getItem('hf_sound') !== 'off';
+
+  function ensureAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function playNote(freq, dur, type, vol, delay) {
+    ensureAudio();
+    const t = audioCtx.currentTime + (delay || 0);
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol || 0.15, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(t); o.stop(t + dur);
+  }
+
+  function playSweep(f1, f2, dur, vol) {
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(f1, t);
+    o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+    g.gain.setValueAtTime(vol || 0.12, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur + 0.05);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+
+  function playSound(type) {
+    if (!soundEnabled) return;
+    try {
+      switch(type) {
+        case 'play':
+          playNote(700, 0.08, 'square', 0.12);
+          playNote(900, 0.06, 'sine', 0.08, 0.04);
+          break;
+        case 'draw':
+          playNote(400, 0.08, 'triangle', 0.1);
+          playNote(520, 0.07, 'triangle', 0.08, 0.06);
+          break;
+        case 'money':
+          playNote(1200, 0.12, 'sine', 0.12);
+          playNote(1600, 0.18, 'sine', 0.1, 0.08);
+          break;
+        case 'rent':
+          playNote(300, 0.12, 'sawtooth', 0.08);
+          playNote(200, 0.18, 'sawtooth', 0.06, 0.1);
+          break;
+        case 'steal':
+          playSweep(250, 900, 0.22, 0.1);
+          break;
+        case 'swap':
+          playNote(600, 0.1, 'triangle', 0.1);
+          playNote(400, 0.1, 'triangle', 0.08, 0.12);
+          break;
+        case 'block':
+          playNote(180, 0.18, 'square', 0.12);
+          playNote(350, 0.12, 'square', 0.08, 0.06);
+          break;
+        case 'complete':
+          playNote(523, 0.18, 'sine', 0.12);
+          playNote(659, 0.18, 'sine', 0.1, 0.14);
+          playNote(784, 0.25, 'sine', 0.13, 0.28);
+          break;
+        case 'win':
+          playNote(523, 0.12, 'sine', 0.13);
+          playNote(659, 0.12, 'sine', 0.11, 0.12);
+          playNote(784, 0.12, 'sine', 0.11, 0.24);
+          playNote(1047, 0.35, 'sine', 0.15, 0.36);
+          break;
+        case 'turn':
+          playNote(880, 0.1, 'sine', 0.08);
+          playNote(1100, 0.12, 'sine', 0.07, 0.08);
+          break;
+      }
+    } catch(e) {}
+  }
+
+  // Sound toggle
+  const soundBtn = document.getElementById('sound-toggle');
+  function updateSoundBtn() {
+    soundBtn.textContent = soundEnabled ? '\u{1f50a}' : '\u{1f507}';
+    soundBtn.classList.toggle('muted', !soundEnabled);
+  }
+  updateSoundBtn();
+  soundBtn.onclick = () => {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('hf_sound', soundEnabled ? 'on' : 'off');
+    updateSoundBtn();
+    if (soundEnabled) playSound('play');
+  };
+
+  // ===================== CONFETTI =====================
+  function spawnConfetti() {
+    const c = document.getElementById('confetti');
+    c.innerHTML = '';
+    const colors = ['#f9ca24','#e74c7c','#3b82f6','#22c55e','#a855f7','#f59e0b','#ec4899'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti';
+      p.style.left = Math.random()*100 + '%';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.animationDuration = (1.5 + Math.random()*2) + 's';
+      p.style.animationDelay = Math.random()*1.5 + 's';
+      p.style.width = (5+Math.random()*6) + 'px';
+      p.style.height = (5+Math.random()*6) + 'px';
+      p.style.borderRadius = Math.random()>0.5 ? '50%' : '1px';
+      c.appendChild(p);
+    }
+  }
+
+  // ===================== SOCKET =====================
+  const socket = io('/cards');
+  let state = null;
+  let myIndex = -1;
+  let sessionId = localStorage.getItem('cards_session');
+  let prevEventJSON = '';
+  let prevHandIds = [];
+  let prevCompleteSets = { me: [], opp: [] };
+
+  const $ = id => document.getElementById(id);
+  const screens = document.querySelectorAll('.screen');
+  function showScreen(id) { screens.forEach(s => s.classList.remove('active')); $(id).classList.add('active'); }
+
+  socket.on('session', sid => { sessionId = sid; localStorage.setItem('cards_session', sid); });
+  socket.on('error_msg', msg => {
+    const el = $('idle-error').offsetParent ? $('idle-error') : $('lobby-error');
+    el.textContent = msg;
+    setTimeout(() => el.textContent = '', 3000);
+  });
+
+  if (sessionId) socket.emit('rejoin', sessionId);
+
+  socket.on('state', s => {
+    const prevPhase = state ? state.phase : null;
+    state = s;
+    detectIndex();
+    handleSoundAndAnimation(prevPhase);
+    render();
+  });
+
+  function detectIndex() {
+    if (!state || !state.players) { myIndex = -1; return; }
+    myIndex = state.players.findIndex(p => p.sessionId === sessionId);
+  }
+
+  // ===================== SOUND/ANIMATION TRIGGERS =====================
+  function handleSoundAndAnimation(prevPhase) {
+    if (!state) return;
+    const evJSON = state.lastEvent ? JSON.stringify(state.lastEvent) : '';
+    if (evJSON && evJSON !== prevEventJSON) {
+      const e = state.lastEvent;
+      switch(e.type) {
+        case 'play_property': case 'play_wild': playSound('play'); break;
+        case 'play_money': playSound('money'); break;
+        case 'rent': case 'rent_charge': playSound('rent'); break;
+        case 'steal': playSound('steal'); break;
+        case 'swap': playSound('swap'); break;
+        case 'blocked': playSound('block'); break;
+        case 'win': playSound('win'); break;
+        case 'turn_start':
+          if (e.player === (state.players[myIndex]||{}).name) playSound('turn');
+          break;
+      }
+    }
+    prevEventJSON = evJSON;
+
+    // Draw sound
+    if (state.phase === 'playing' && myIndex >= 0) {
+      const me = state.players[myIndex];
+      if (me && me.hand) {
+        const newIds = me.hand.map(c => c.id);
+        const drawn = newIds.filter(id => !prevHandIds.includes(id));
+        if (drawn.length > 0 && prevHandIds.length > 0) playSound('draw');
+        prevHandIds = newIds;
+      }
+    }
+
+    // Set completion detection
+    if (state.phase === 'playing' && myIndex >= 0) {
+      const oppI = myIndex === 0 ? 1 : 0;
+      const me = state.players[myIndex];
+      const opp = state.players[oppI];
+      const myComplete = []; const oppComplete = [];
+      for (const c of ['blue','red','green']) {
+        if (me.properties[c].length >= 3) myComplete.push(c);
+        if (opp.properties[c].length >= 3) oppComplete.push(c);
+      }
+      const newMyComplete = myComplete.filter(c => !prevCompleteSets.me.includes(c));
+      const newOppComplete = oppComplete.filter(c => !prevCompleteSets.opp.includes(c));
+      if (newMyComplete.length > 0 || newOppComplete.length > 0) playSound('complete');
+      prevCompleteSets = { me: myComplete, opp: oppComplete };
+    }
+
+    // Win confetti
+    if (state.phase === 'finished' && prevPhase !== 'finished') spawnConfetti();
+  }
+
+  // ===================== RENDER =====================
+  function render() {
+    if (!state) return;
+    if (state.phase === 'idle') { showScreen('idle-screen'); $('btn-create').style.display = ''; return; }
+    if (state.phase === 'lobby') {
+      if (myIndex < 0) { showScreen('idle-screen'); $('btn-create').style.display = 'none'; return; }
+      renderLobby(); return;
+    }
+    if (state.phase === 'finished') { renderFinished(); return; }
+    if (state.phase === 'playing') {
+      if (myIndex < 0) { showScreen('idle-screen'); $('idle-error').textContent = 'Game in progress'; return; }
+      renderGame(); return;
+    }
+  }
+
+  function renderLobby() {
+    showScreen('lobby-screen');
+    const lp = $('lobby-players');
+    lp.innerHTML = '';
+    state.players.forEach(p => {
+      const d = document.createElement('div');
+      d.className = 'connected';
+      d.textContent = p.name + (p.sessionId === sessionId ? ' (you)' : '');
+      lp.appendChild(d);
+    });
+    if (state.players.length < 2) {
+      const w = document.createElement('div');
+      w.className = 'waiting';
+      w.textContent = 'Waiting for player 2\u2026';
+      lp.appendChild(w);
+    }
+    const isHost = state.players[0]?.sessionId === sessionId;
+    $('btn-start').style.display = (isHost && state.players.length === 2) ? '' : 'none';
+  }
+
+  function renderFinished() {
+    showScreen('finished-screen');
+    $('winner-name').textContent = state.winner === 'idle' ? 'Game timed out' : state.winner === 'disconnect' ? 'Opponent disconnected' : state.winner + ' wins!';
+  }
+
+  function renderGame() {
+    showScreen('game-screen');
+    const me = myIndex >= 0 ? state.players[myIndex] : null;
+    const oppI = myIndex === 0 ? 1 : 0;
+    const opp = state.players[oppI];
+    const isMyTurn = myIndex === state.currentPlayerIndex;
+
+    $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' action' + (state.actionsLeft!==1?'s':'') + ' left' : state.players[state.currentPlayerIndex].name + "'s turn";
+    $('deck-info').textContent = 'Deck: ' + state.deckCount;
+
+    $('opp-name').textContent = opp.name + (!opp.connected ? ' (disconnected)' : '');
+    $('opp-hand-count').textContent = '\u{1f0cf} ' + opp.handCount;
+    renderSets($('opp-sets'), opp.properties, false, 'opp');
+    renderBank($('opp-bank'), opp.bank);
+
+    renderEvent();
+    renderPrompt();
+
+    $('btn-end-turn').style.display = (isMyTurn && state.turnPhase === 'playing' && !state.pendingAction) ? '' : 'none';
+
+    if (me) {
+      $('my-name').textContent = me.name + ' (you)';
+      const bankTotal = me.bank.reduce((s,c) => s + c.value, 0);
+      $('my-bank-label').textContent = bankTotal > 0 ? 'Bank: $' + bankTotal : '';
+      renderSets($('my-sets'), me.properties, false, 'me');
+      renderBank($('my-bank'), me.bank);
+      renderHand(me.hand, isMyTurn);
+      $('hand-label').textContent = state.turnPhase === 'discarding' && isMyTurn ? 'Discard to 7 (' + me.hand.length + '/7)' : 'Your hand (' + me.hand.length + ')';
+    }
+  }
+
+  function renderSets(container, props, selectable, who) {
+    container.innerHTML = '';
+    for (const color of ['blue','red','green']) {
+      const grp = document.createElement('div');
+      grp.className = 'set-group';
+      const complete = props[color].length >= 3;
+      const wasComplete = who === 'me' ? prevCompleteSets.me.includes(color) : prevCompleteSets.opp.includes(color);
+      if (complete && !wasComplete) grp.classList.add('set-complete-anim');
+
+      const lbl = document.createElement('div');
+      lbl.className = 'set-label ' + color;
+      lbl.textContent = color + ' ' + props[color].length + '/3 ' + (complete ? '\u2713' : '');
+      grp.appendChild(lbl);
+      const sc = document.createElement('div');
+      sc.className = 'set-cards';
+      props[color].forEach(card => {
+        const c = document.createElement('div');
+        const displayColor = card.assignedColor || card.color || color;
+        c.className = 'set-card ' + displayColor + (complete ? ' set-complete' : '');
+        if (card.type === 'action' && card.action === 'wild') c.textContent = 'W';
+        else c.textContent = displayColor[0].toUpperCase();
+        if (complete) {
+          const lock = document.createElement('span');
+          lock.className = 'lock-icon';
+          lock.textContent = '\u{1f512}';
+          c.appendChild(lock);
+        }
+        if (selectable && !complete) {
+          c.classList.add('selectable');
+          c.onclick = () => handleSelectProperty(card.id);
+        }
+        sc.appendChild(c);
+      });
+      grp.appendChild(sc);
+      container.appendChild(grp);
+    }
+  }
+
+  function renderBank(container, bank) {
+    container.innerHTML = '';
+    bank.forEach(c => {
+      const chip = document.createElement('span');
+      chip.className = 'bank-chip';
+      chip.textContent = '$' + c.value;
+      container.appendChild(chip);
+    });
+  }
+
+  function renderEvent() {
+    const el = $('event-banner');
+    if (!state.lastEvent) { el.textContent = ''; el.classList.remove('animate'); return; }
+    const e = state.lastEvent;
+    const msgs = {
+      turn_start: e.player + "'s turn",
+      play_property: e.player + ' played a ' + (e.color||'') + ' property',
+      play_money: e.player + ' banked $' + (e.value||''),
+      play_wild: e.player + ' played wild as ' + (e.color||''),
+      rent: e.player + ' collected $' + (e.amount||'') + ' rent from ' + (e.target||'') + ' (' + (e.color||'') + ')',
+      rent_charge: '\u{1f4b8} ' + (e.target||'') + ' owes $' + (e.amount||'') + ' rent (' + (e.color||'') + ')',
+      steal: e.player + ' stole ' + (e.color||'') + ' from ' + (e.target||''),
+      swap: e.player + ' swapped with ' + (e.target||''),
+      blocked: e.player + ' blocked ' + (e.actionType||'') + '!',
+      win: '\u{1f3c6} ' + e.player + ' wins!',
+    };
+    const txt = msgs[e.type] || '';
+    if (txt !== el.textContent) {
+      el.textContent = txt;
+      el.classList.remove('animate');
+      void el.offsetWidth;
+      el.classList.add('animate');
+    }
+  }
+
+  function renderPrompt() {
+    const el = $('action-prompt');
+    const title = $('prompt-title');
+    const opts = $('prompt-options');
+    el.classList.remove('active');
+    opts.innerHTML = '';
+
+    if (!state.pendingAction) {
+      if (myIndex >= 0) {
+        const oppI = myIndex === 0 ? 1 : 0;
+        renderSets($('opp-sets'), state.players[oppI].properties, false, 'opp');
+        if (myIndex >= 0) renderSets($('my-sets'), state.players[myIndex].properties, false, 'me');
+      }
+      return;
+    }
+
+    const pa = state.pendingAction;
+
+    if (pa.type === 'wild_color' && myIndex === state.currentPlayerIndex) {
+      el.classList.add('active');
+      title.textContent = 'Choose color for Wild card:';
+      ['blue','red','green'].forEach(c => {
+        const b = document.createElement('button');
+        b.className = 'btn btn-sm card-' + c;
+        b.style.cssText = 'color:#fff; min-width:60px;';
+        b.textContent = c;
+        b.onclick = () => socket.emit('choose', { sessionId, choice: c });
+        opts.appendChild(b);
+      });
+
+    } else if (pa.type === 'rent_color' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Charge rent on which set?';
+      pa.validColors.forEach(c => {
+        const me = state.players[myIndex];
+        const amt = me.properties[c].length;
+        const b = document.createElement('button');
+        b.className = 'btn btn-sm card-' + c;
+        b.style.cssText = 'color:#fff; min-width:80px;';
+        b.textContent = c + ' ($' + amt + ')';
+        b.onclick = () => socket.emit('choose', { sessionId, choice: c });
+        opts.appendChild(b);
+      });
+
+    } else if (pa.type === 'steal_target' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Choose a card to steal:';
+      const oppI = myIndex === 0 ? 1 : 0;
+      renderSets($('opp-sets'), state.players[oppI].properties, true, 'opp');
+
+    } else if (pa.type === 'swap_own' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Choose YOUR card to swap away:';
+      renderSets($('my-sets'), state.players[myIndex].properties, true, 'me');
+
+    } else if (pa.type === 'swap_target' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Choose THEIR card to take:';
+      const oppI = myIndex === 0 ? 1 : 0;
+      renderSets($('opp-sets'), state.players[oppI].properties, true, 'opp');
+
+    } else if (pa.type === 'block_prompt' && myIndex === pa.targetPlayer) {
+      el.classList.add('active');
+      title.textContent = state.players[pa.actingPlayer].name + ' played ' + pa.actionType + '! Block it?';
+      const bb = document.createElement('button');
+      bb.className = 'btn btn-sm btn-pink';
+      bb.textContent = '\u{1f6e1}\ufe0f Block';
+      bb.onclick = () => socket.emit('choose', { sessionId, choice: 'block' });
+      opts.appendChild(bb);
+      const ab = document.createElement('button');
+      ab.className = 'btn btn-sm btn-outline';
+      ab.textContent = 'Allow';
+      ab.onclick = () => socket.emit('choose', { sessionId, choice: 'allow' });
+      opts.appendChild(ab);
+
+    } else if (pa.type === 'block_prompt' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = 'Waiting for ' + state.players[pa.targetPlayer].name + ' to respond\u2026';
+
+    } else if (pa.type === 'rent_pay' && myIndex === pa.targetPlayer) {
+      el.classList.add('active');
+      const me = state.players[myIndex];
+      const selMoney = pa.selectedMoney || [];
+      const selProps = pa.selectedProperties || [];
+      const selVal = selMoney.reduce((s, mid) => {
+        const mc = me.bank.find(c => c.id === mid);
+        return s + (mc ? mc.value : 0);
+      }, 0) + selProps.length;
+      title.innerHTML = '\u{1f4b8} Pay <b>$' + pa.amount + '</b> rent (' + pa.color + ') \u2014 selected: <b>$' + selVal + '</b>';
+      if (me.bank.length > 0) {
+        const lbl = document.createElement('div');
+        lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#aaa; margin:6px 0 2px;';
+        lbl.textContent = 'Tap money to select:';
+        opts.appendChild(lbl);
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex; gap:6px; flex-wrap:wrap;';
+        me.bank.forEach(c => {
+          const b = document.createElement('button');
+          b.className = 'btn btn-sm';
+          b.style.cssText = selMoney.includes(c.id) ? 'background:#ca8a04; color:#fff; min-width:50px;' : 'background:#333; color:#ccc; min-width:50px;';
+          b.textContent = '$' + c.value + (selMoney.includes(c.id) ? ' \u2713' : '');
+          b.onclick = () => socket.emit('choose', { sessionId, choice: { action: 'toggle_money', id: c.id } });
+          row.appendChild(b);
+        });
+        opts.appendChild(row);
+      }
+      let hasProps = false;
+      for (const color of ['blue','red','green']) {
+        if (me.properties[color].length > 0 && me.properties[color].length < 3) {
+          if (!hasProps) {
+            const lbl = document.createElement('div');
+            lbl.style.cssText = 'width:100%; text-align:left; font-size:0.8em; color:#aaa; margin:6px 0 2px;';
+            lbl.textContent = 'Tap properties to sacrifice:';
+            opts.appendChild(lbl);
+            hasProps = true;
+          }
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex; gap:4px; flex-wrap:wrap; align-items:center;';
+          const clbl = document.createElement('span');
+          const clr = color === 'blue' ? '#60a5fa' : color === 'red' ? '#f87171' : '#4ade80';
+          clbl.style.cssText = 'font-size:0.75em; color:' + clr + '; width:42px;';
+          clbl.textContent = color;
+          row.appendChild(clbl);
+          me.properties[color].forEach(pc => {
+            const b = document.createElement('button');
+            const sel = selProps.includes(pc.id);
+            const bg = color === 'blue' ? '#2563eb' : color === 'red' ? '#dc2626' : '#16a34a';
+            const bgD = color === 'blue' ? '#1d4ed8' : color === 'red' ? '#b91c1c' : '#15803d';
+            b.className = 'btn btn-sm';
+            b.style.cssText = sel ? 'background:'+bg+'; color:#fff; min-width:36px; border:2px solid #f9ca24;' : 'background:'+bgD+'; color:#fff; min-width:36px; opacity:0.7;';
+            b.textContent = (pc.action === 'wild' ? 'W' : color[0].toUpperCase()) + (sel ? '\u2713' : '');
+            b.onclick = () => socket.emit('choose', { sessionId, choice: { action: 'toggle_property', id: pc.id } });
+            row.appendChild(b);
+          });
+          opts.appendChild(row);
+        }
+      }
+      const maxAssets = me.bank.reduce((s,c) => s + c.value, 0) + ['blue','red','green'].reduce((s,c) => s + (me.properties[c].length < 3 ? me.properties[c].length : 0), 0);
+      const canConfirm = selVal >= pa.amount || selVal >= maxAssets;
+      const cb = document.createElement('button');
+      cb.className = 'btn btn-sm btn-pink';
+      cb.style.cssText = 'margin-top:10px;' + (canConfirm ? '' : 'opacity:0.4; pointer-events:none;');
+      cb.textContent = selVal >= pa.amount ? 'Pay $' + selVal : (selVal >= maxAssets ? 'Pay all ($' + selVal + ')' : 'Select more ($' + selVal + '/$' + pa.amount + ')');
+      cb.onclick = () => socket.emit('choose', { sessionId, choice: { action: 'confirm_pay' } });
+      opts.appendChild(cb);
+
+    } else if (pa.type === 'rent_pay' && myIndex === pa.actingPlayer) {
+      el.classList.add('active');
+      title.textContent = state.players[pa.targetPlayer].name + ' is choosing what to pay\u2026';
+    }
+  }
+
+  function handleSelectProperty(cardId) {
+    if (!state.pendingAction) return;
+    socket.emit('choose', { sessionId, choice: cardId });
+  }
+
+  function renderHand(hand, isMyTurn) {
+    const container = $('hand');
+    const oldIds = Array.from(container.children).map(el => el.dataset.cardId);
+    container.innerHTML = '';
+    const canPlay = isMyTurn && state.turnPhase === 'playing' && state.actionsLeft > 0 && !state.pendingAction;
+    const isDiscarding = state.turnPhase === 'discarding' && isMyTurn;
+
+    hand.forEach((card, idx) => {
+      const el = document.createElement('div');
+      el.className = 'card ' + getCardClass(card);
+      el.dataset.cardId = String(card.id);
+      if (!canPlay && !isDiscarding) el.classList.add('disabled');
+
+      // Entrance animation for newly drawn cards
+      if (!oldIds.includes(String(card.id))) {
+        el.classList.add('anim-entrance');
+        el.style.animationDelay = (idx * 0.06) + 's';
+      }
+
+      // Corner values (like real playing cards)
+      const cornerVal = getCornerValue(card);
+      if (cornerVal) {
+        const tl = document.createElement('div');
+        tl.className = 'card-value';
+        tl.textContent = cornerVal;
+        el.appendChild(tl);
+        const br = document.createElement('div');
+        br.className = 'card-value-br';
+        br.textContent = cornerVal;
+        el.appendChild(br);
+      }
+
+      const icon = document.createElement('div');
+      icon.className = 'card-icon';
+      icon.textContent = getCardIcon(card);
+      el.appendChild(icon);
+
+      const label = document.createElement('div');
+      label.className = 'card-label';
+      label.textContent = getCardLabel(card);
+      el.appendChild(label);
+
+      if (isDiscarding) {
+        el.onclick = () => socket.emit('discard_card', { sessionId, cardId: card.id });
+      } else if (canPlay) {
+        el.onclick = () => socket.emit('play_card', { sessionId, cardId: card.id });
+      }
+      container.appendChild(el);
+    });
+  }
+
+  function getCardClass(c) {
+    if (c.type === 'property') return 'card-' + c.color;
+    if (c.type === 'money') return 'card-money';
+    return 'card-' + c.action;
+  }
+  function getCardIcon(c) {
+    if (c.type === 'property') return '\u{1f3e0}';
+    if (c.type === 'money') return '\u{1f4b0}';
+    const icons = { rent: '\u{1f4b8}', steal: '\u{1f9f2}', swap: '\u{1f501}', wild: '\u{1f0cf}', block: '\u{1f6e1}\ufe0f' };
+    return icons[c.action] || '\u26a1';
+  }
+  function getCardLabel(c) {
+    if (c.type === 'property') return c.color;
+    if (c.type === 'money') return '$' + c.value;
+    const labels = { rent: 'Rent', steal: 'Steal', swap: 'Swap', wild: 'Wild', block: 'Block' };
+    return labels[c.action] || c.action;
+  }
+  function getCornerValue(c) {
+    if (c.type === 'money') return '$' + c.value;
+    if (c.type === 'property') return c.color[0].toUpperCase();
+    const abbr = { rent: 'R', steal: 'S', swap: '\u21c4', wild: '\u2606', block: '\u2666' };
+    return abbr[c.action] || '';
+  }
+
+  // ===================== BUTTONS =====================
+  $('btn-create').onclick = () => {
+    const name = $('name-input').value.trim();
+    if (!name) { $('idle-error').textContent = 'Enter your name'; return; }
+    localStorage.setItem('cards_name', name);
+    socket.emit('create', { name });
+  };
+  $('btn-join').onclick = () => {
+    const name = $('name-input').value.trim();
+    if (!name) { $('idle-error').textContent = 'Enter your name'; return; }
+    localStorage.setItem('cards_name', name);
+    socket.emit('join', { name });
+  };
+  $('btn-start').onclick = () => socket.emit('start', sessionId);
+  $('btn-end-turn').onclick = () => socket.emit('end_turn', sessionId);
+  $('btn-new-game').onclick = () => {
+    socket.emit('reset');
+    localStorage.removeItem('cards_session');
+    sessionId = null;
+  };
+
+  const savedName = localStorage.getItem('cards_name');
+  if (savedName) $('name-input').value = savedName;
+
+})();
+</script>
+</body>
+</html>

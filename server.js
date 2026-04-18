@@ -652,6 +652,604 @@ ludoNs.on('connection', (socket) => {
 });
 
 // ============================================================
+// PROPERTY DUEL CARD GAME (Socket.IO namespace: /cards)
+// ============================================================
+const cardsNs = io.of('/cards');
+const CARD_COLORS = ['blue', 'red', 'green'];
+const SET_SIZE = 3;
+const SETS_TO_WIN = 3;
+const HAND_LIMIT = 7;
+const BLOCK_TIMEOUT = 15000;
+const CARD_IDLE_TIMEOUT = 30 * 60 * 1000;
+
+function clog(msg, data) {
+  const ts = new Date().toISOString().slice(11, 23);
+  if (data !== undefined) console.log(`[CARDS ${ts}] ${msg}`, JSON.stringify(data));
+  else console.log(`[CARDS ${ts}] ${msg}`);
+}
+
+let cardGame = null;
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function createDeck() {
+  const d = []; let id = 0;
+  for (const c of CARD_COLORS) for (let i = 0; i < 6; i++) d.push({ id: id++, type: 'property', color: c });
+  for (const v of [1,1,1,2,2,2,3,3,5,5]) d.push({ id: id++, type: 'money', value: v });
+  for (let i = 0; i < 6; i++) d.push({ id: id++, type: 'action', action: 'rent' });
+  for (let i = 0; i < 5; i++) d.push({ id: id++, type: 'action', action: 'steal' });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'swap' });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'wild' });
+  for (let i = 0; i < 4; i++) d.push({ id: id++, type: 'action', action: 'block' });
+  return shuffleArr(d);
+}
+
+function drawCards(n) {
+  const drawn = [];
+  for (let i = 0; i < n; i++) {
+    if (cardGame.deck.length === 0) {
+      if (cardGame.discard.length === 0) break;
+      cardGame.deck = shuffleArr(cardGame.discard);
+      cardGame.discard = [];
+      clog('Reshuffled discard into deck');
+    }
+    drawn.push(cardGame.deck.pop());
+  }
+  return drawn;
+}
+
+function setComplete(cards) { return cards.length >= SET_SIZE; }
+function completeSets(p) { return CARD_COLORS.reduce((n, c) => n + (setComplete(p.properties[c]) ? 1 : 0), 0); }
+function oppIdx(i) { return i === 0 ? 1 : 0; }
+
+function newCardPlayer(sessionId, name) {
+  return {
+    sessionId, name, socketId: null, connected: true,
+    hand: [], properties: { blue: [], red: [], green: [] }, bank: [],
+    disconnectTimer: null,
+  };
+}
+
+function newCG(sessionId, name) {
+  return {
+    phase: 'lobby',
+    players: [newCardPlayer(sessionId, name)],
+    deck: [], discard: [],
+    currentPlayerIndex: 0,
+    actionsLeft: 0,
+    pendingAction: null,
+    turnPhase: 'waiting',
+    winner: null,
+    idleTimer: null,
+    blockTimer: null,
+    lastEvent: null,
+  };
+}
+
+function resetCG() {
+  if (cardGame?.idleTimer) clearTimeout(cardGame.idleTimer);
+  if (cardGame?.blockTimer) clearTimeout(cardGame.blockTimer);
+  cardGame = null;
+  clog('Game reset');
+  cardsNs.emit('state', { phase: 'idle' });
+}
+
+function resetCGIdle() {
+  if (!cardGame) return;
+  if (cardGame.idleTimer) clearTimeout(cardGame.idleTimer);
+  cardGame.idleTimer = setTimeout(() => {
+    clog('IDLE TIMEOUT');
+    cardGame.phase = 'finished';
+    cardGame.winner = 'idle';
+    broadcastCG();
+    setTimeout(resetCG, 10000);
+  }, CARD_IDLE_TIMEOUT);
+}
+
+function getCardState(forIdx) {
+  if (!cardGame) return { phase: 'idle' };
+  return {
+    phase: cardGame.phase,
+    players: cardGame.players.map((p, i) => ({
+      name: p.name, sessionId: p.sessionId, connected: p.connected,
+      properties: p.properties, bank: p.bank,
+      handCount: p.hand.length,
+      hand: i === forIdx ? p.hand : undefined,
+    })),
+    currentPlayerIndex: cardGame.currentPlayerIndex,
+    actionsLeft: cardGame.actionsLeft,
+    turnPhase: cardGame.turnPhase,
+    pendingAction: cardGame.pendingAction,
+    deckCount: cardGame.deck.length,
+    winner: cardGame.winner,
+    lastEvent: cardGame.lastEvent,
+  };
+}
+
+function broadcastCG() {
+  if (!cardGame) { cardsNs.emit('state', { phase: 'idle' }); return; }
+  for (let i = 0; i < cardGame.players.length; i++) {
+    const p = cardGame.players[i];
+    if (p.socketId) cardsNs.to(p.socketId).emit('state', getCardState(i));
+  }
+  // spectators
+  for (const [sid, sock] of cardsNs.sockets) {
+    if (!cardGame.players.some(p => p.socketId === sid)) {
+      sock.emit('state', getCardState(-1));
+    }
+  }
+}
+
+function startCardTurn() {
+  const p = cardGame.players[cardGame.currentPlayerIndex];
+  p.hand.push(...drawCards(2));
+  cardGame.actionsLeft = 3;
+  cardGame.turnPhase = 'playing';
+  cardGame.pendingAction = null;
+  cardGame.lastEvent = { type: 'turn_start', player: p.name };
+  clog(`Turn: ${p.name}, drew 2, hand=${p.hand.length}`);
+  resetCGIdle();
+  broadcastCG();
+}
+
+function nextCardTurn() {
+  if (cardGame.blockTimer) { clearTimeout(cardGame.blockTimer); cardGame.blockTimer = null; }
+  cardGame.currentPlayerIndex = oppIdx(cardGame.currentPlayerIndex);
+  startCardTurn();
+}
+
+function checkCardWin() {
+  for (let i = 0; i < cardGame.players.length; i++) {
+    if (completeSets(cardGame.players[i]) >= SETS_TO_WIN) {
+      cardGame.phase = 'finished';
+      cardGame.winner = cardGame.players[i].name;
+      cardGame.lastEvent = { type: 'win', player: cardGame.players[i].name };
+      clog(`WINNER: ${cardGame.players[i].name}`);
+      broadcastCG();
+      setTimeout(resetCG, 60000);
+      return true;
+    }
+  }
+  return false;
+}
+
+function endCardTurn() {
+  const p = cardGame.players[cardGame.currentPlayerIndex];
+  if (p.hand.length > HAND_LIMIT) {
+    cardGame.turnPhase = 'discarding';
+    broadcastCG();
+    return;
+  }
+  nextCardTurn();
+}
+
+function useCardAction() {
+  cardGame.actionsLeft--;
+  if (checkCardWin()) return true;
+  if (cardGame.actionsLeft <= 0) { endCardTurn(); return true; }
+  return false;
+}
+
+function payRentManual(target, actor, moneyIds, propertyIds) {
+  // Transfer selected money cards
+  for (const mid of moneyIds) {
+    const idx = target.bank.findIndex(c => c.id === mid);
+    if (idx >= 0) actor.bank.push(target.bank.splice(idx, 1)[0]);
+  }
+  // Transfer selected property cards
+  for (const pid of propertyIds) {
+    for (const c of CARD_COLORS) {
+      const idx = target.properties[c].findIndex(x => x.id === pid);
+      if (idx >= 0) {
+        const card = target.properties[c].splice(idx, 1)[0];
+        const dest = card.assignedColor || card.color || c;
+        actor.properties[dest].push(card);
+        break;
+      }
+    }
+  }
+}
+
+function totalAssets(player) {
+  let total = player.bank.reduce((s, c) => s + c.value, 0);
+  for (const c of CARD_COLORS) {
+    if (!setComplete(player.properties[c])) total += player.properties[c].length;
+  }
+  return total;
+}
+
+function startRentPay(actingPlayer, targetPlayer, color, amount) {
+  cardGame.pendingAction = {
+    type: 'rent_pay', actingPlayer, targetPlayer, color, amount,
+    selectedMoney: [], selectedProperties: []
+  };
+  cardGame.lastEvent = { type: 'rent_charge', player: cardGame.players[actingPlayer].name, target: cardGame.players[targetPlayer].name, color, amount };
+  broadcastCG();
+}
+
+function executeSwap(actIdx, myCardId, theirCardId) {
+  const me = cardGame.players[actIdx];
+  const opp = cardGame.players[oppIdx(actIdx)];
+  let myCard = null, myColor = null, theirCard = null, theirColor = null;
+  for (const c of CARD_COLORS) {
+    let mi = me.properties[c].findIndex(x => x.id === myCardId);
+    if (mi >= 0) { myCard = me.properties[c].splice(mi, 1)[0]; myColor = c; }
+    let ti = opp.properties[c].findIndex(x => x.id === theirCardId);
+    if (ti >= 0) { theirCard = opp.properties[c].splice(ti, 1)[0]; theirColor = c; }
+  }
+  if (myCard && theirCard) {
+    const md = myCard.assignedColor || myCard.color || myColor;
+    const td = theirCard.assignedColor || theirCard.color || theirColor;
+    opp.properties[md].push(myCard);
+    me.properties[td].push(theirCard);
+    clog(`Swap: ${me.name} ${myColor} <-> ${opp.name} ${theirColor}`);
+  }
+}
+
+function resolveCardAction() {
+  if (!cardGame?.pendingAction) return;
+  const pa = cardGame.pendingAction;
+  if (cardGame.blockTimer) { clearTimeout(cardGame.blockTimer); cardGame.blockTimer = null; }
+  const actor = cardGame.players[pa.actingPlayer];
+  const target = cardGame.players[pa.targetPlayer];
+
+  if (pa.actionType === 'rent') {
+    startRentPay(pa.actingPlayer, pa.targetPlayer, pa.color, pa.amount);
+    clog(`Rent: ${target.name} must pay $${pa.amount}`);
+    return; // don't clear pendingAction yet
+  } else if (pa.actionType === 'steal') {
+    for (const c of CARD_COLORS) {
+      if (setComplete(target.properties[c])) continue;
+      const idx = target.properties[c].findIndex(x => x.id === pa.targetCardId);
+      if (idx >= 0) {
+        const stolen = target.properties[c].splice(idx, 1)[0];
+        const dest = stolen.assignedColor || stolen.color || c;
+        actor.properties[dest].push(stolen);
+        cardGame.lastEvent = { type: 'steal', player: actor.name, target: target.name, color: dest };
+        clog(`Steal resolved: ${actor.name} took ${dest} from ${target.name}`);
+        break;
+      }
+    }
+  } else if (pa.actionType === 'swap') {
+    executeSwap(pa.actingPlayer, pa.myCardId, pa.theirCardId);
+    cardGame.lastEvent = { type: 'swap', player: actor.name, target: target.name };
+  }
+
+  cardGame.pendingAction = null;
+  if (!checkCardWin()) {
+    if (cardGame.actionsLeft <= 0) endCardTurn();
+    else broadcastCG();
+  }
+}
+
+cardsNs.on('connection', (socket) => {
+  clog(`CONNECT ${socket.id}`);
+  if (cardGame) {
+    const pi = cardGame.players.findIndex(p => p.socketId === socket.id);
+    if (pi >= 0) socket.emit('state', getCardState(pi));
+    else socket.emit('state', getCardState(-1));
+  } else {
+    socket.emit('state', { phase: 'idle' });
+  }
+
+  socket.on('rejoin', (sessionId) => {
+    if (!cardGame) return;
+    const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
+    if (pi < 0) return;
+    const p = cardGame.players[pi];
+    if (p.disconnectTimer) { clearTimeout(p.disconnectTimer); p.disconnectTimer = null; }
+    p.socketId = socket.id;
+    p.connected = true;
+    clog(`REJOIN: ${p.name}`);
+    broadcastCG();
+  });
+
+  socket.on('create', ({ name }) => {
+    if (cardGame) { socket.emit('error_msg', 'A game already exists.'); return; }
+    const sid = crypto.randomUUID();
+    cardGame = newCG(sid, name);
+    cardGame.players[0].socketId = socket.id;
+    socket.emit('session', sid);
+    clog(`CREATED by ${name}`);
+    broadcastCG();
+  });
+
+  socket.on('join', ({ name }) => {
+    if (!cardGame || cardGame.phase !== 'lobby') { socket.emit('error_msg', 'No lobby.'); return; }
+    if (cardGame.players.length >= 2) { socket.emit('error_msg', 'Full.'); return; }
+    const sid = crypto.randomUUID();
+    const p = newCardPlayer(sid, name);
+    p.socketId = socket.id;
+    cardGame.players.push(p);
+    socket.emit('session', sid);
+    clog(`JOINED: ${name}`);
+    broadcastCG();
+  });
+
+  socket.on('start', (sessionId) => {
+    if (!cardGame || cardGame.phase !== 'lobby') return;
+    if (cardGame.players[0].sessionId !== sessionId) return;
+    if (cardGame.players.length < 2) { socket.emit('error_msg', 'Need 2 players.'); return; }
+    cardGame.phase = 'playing';
+    cardGame.deck = createDeck();
+    for (const p of cardGame.players) p.hand = drawCards(5);
+    cardGame.currentPlayerIndex = 0;
+    clog('GAME STARTED');
+    startCardTurn();
+  });
+
+  socket.on('play_card', ({ sessionId, cardId, color }) => {
+    if (!cardGame || cardGame.phase !== 'playing') return;
+    const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
+    if (pi < 0 || pi !== cardGame.currentPlayerIndex) return;
+    if (cardGame.turnPhase !== 'playing' || cardGame.actionsLeft <= 0 || cardGame.pendingAction) return;
+    const player = cardGame.players[pi];
+    const ci = player.hand.findIndex(c => c.id === cardId);
+    if (ci < 0) return;
+    const card = player.hand[ci];
+    resetCGIdle();
+
+    if (card.type === 'property') {
+      player.hand.splice(ci, 1);
+      player.properties[card.color].push(card);
+      cardGame.lastEvent = { type: 'play_property', player: player.name, color: card.color };
+      clog(`${player.name} played ${card.color} property`);
+      if (!useCardAction()) broadcastCG();
+
+    } else if (card.type === 'money') {
+      player.hand.splice(ci, 1);
+      player.bank.push(card);
+      cardGame.lastEvent = { type: 'play_money', player: player.name, value: card.value };
+      clog(`${player.name} banked $${card.value}`);
+      if (!useCardAction()) broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'wild') {
+      if (!color || !CARD_COLORS.includes(color)) {
+        cardGame.pendingAction = { type: 'wild_color', cardId: card.id };
+        broadcastCG();
+        return;
+      }
+      player.hand.splice(ci, 1);
+      player.properties[color].push({ ...card, assignedColor: color });
+      cardGame.lastEvent = { type: 'play_wild', player: player.name, color };
+      clog(`${player.name} wild → ${color}`);
+      if (!useCardAction()) broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'rent') {
+      const valid = CARD_COLORS.filter(c => player.properties[c].length > 0);
+      if (valid.length === 0) { socket.emit('error_msg', 'No properties to rent.'); return; }
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      cardGame.actionsLeft--;
+      cardGame.pendingAction = { type: 'rent_color', actingPlayer: pi, validColors: valid };
+      clog(`${player.name} played Rent`);
+      broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'steal') {
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      const targets = [];
+      for (const c of CARD_COLORS) {
+        if (!setComplete(opp.properties[c])) opp.properties[c].forEach(pc => targets.push({ ...pc, fromColor: c }));
+      }
+      if (targets.length === 0) { socket.emit('error_msg', 'Nothing to steal.'); return; }
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      cardGame.actionsLeft--;
+      cardGame.pendingAction = { type: 'steal_target', actingPlayer: pi, targets };
+      clog(`${player.name} played Steal`);
+      broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'swap') {
+      const oi = oppIdx(pi);
+      const mine = [], theirs = [];
+      for (const c of CARD_COLORS) {
+        if (!setComplete(player.properties[c])) player.properties[c].forEach(pc => mine.push({ ...pc, fromColor: c }));
+        if (!setComplete(cardGame.players[oi].properties[c])) cardGame.players[oi].properties[c].forEach(pc => theirs.push({ ...pc, fromColor: c }));
+      }
+      if (mine.length === 0 || theirs.length === 0) { socket.emit('error_msg', 'Not enough to swap.'); return; }
+      player.hand.splice(ci, 1);
+      cardGame.discard.push(card);
+      cardGame.actionsLeft--;
+      cardGame.pendingAction = { type: 'swap_own', actingPlayer: pi, mine, theirs };
+      clog(`${player.name} played Swap`);
+      broadcastCG();
+
+    } else if (card.type === 'action' && card.action === 'block') {
+      socket.emit('error_msg', 'Block is reactive only.');
+    }
+  });
+
+  socket.on('choose', ({ sessionId, choice }) => {
+    if (!cardGame || !cardGame.pendingAction) return;
+    const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
+    if (pi < 0) return;
+    const pa = cardGame.pendingAction;
+    const player = cardGame.players[pi];
+    resetCGIdle();
+
+    if (pa.type === 'wild_color' && pi === cardGame.currentPlayerIndex) {
+      if (!CARD_COLORS.includes(choice)) return;
+      const ci = player.hand.findIndex(c => c.id === pa.cardId);
+      if (ci < 0) return;
+      const card = player.hand.splice(ci, 1)[0];
+      player.properties[choice].push({ ...card, assignedColor: choice });
+      cardGame.lastEvent = { type: 'play_wild', player: player.name, color: choice };
+      cardGame.pendingAction = null;
+      clog(`${player.name} wild → ${choice}`);
+      if (!useCardAction()) broadcastCG();
+
+    } else if (pa.type === 'rent_color' && pi === pa.actingPlayer) {
+      if (!pa.validColors.includes(choice)) return;
+      const amount = player.properties[choice].length;
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'rent', color: choice, amount };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        broadcastCG();
+      } else {
+        startRentPay(pi, oi, choice, amount);
+        clog(`Rent ${choice} $${amount} — ${opp.name} must pay`);
+      }
+
+    } else if (pa.type === 'steal_target' && pi === pa.actingPlayer) {
+      const tid = choice;
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      let targetColor = null;
+      for (const c of CARD_COLORS) {
+        if (!setComplete(opp.properties[c]) && opp.properties[c].some(x => x.id === tid)) { targetColor = c; break; }
+      }
+      if (!targetColor) return;
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'steal', targetCardId: tid, targetColor };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        broadcastCG();
+      } else {
+        const idx = opp.properties[targetColor].findIndex(x => x.id === tid);
+        if (idx >= 0) {
+          const stolen = opp.properties[targetColor].splice(idx, 1)[0];
+          const dest = stolen.assignedColor || stolen.color || targetColor;
+          player.properties[dest].push(stolen);
+          cardGame.lastEvent = { type: 'steal', player: player.name, target: opp.name, color: dest };
+          clog(`${player.name} stole ${dest} from ${opp.name}`);
+        }
+        cardGame.pendingAction = null;
+        if (!checkCardWin()) { if (cardGame.actionsLeft <= 0) endCardTurn(); else broadcastCG(); }
+      }
+
+    } else if (pa.type === 'swap_own' && pi === pa.actingPlayer) {
+      let valid = false;
+      for (const c of CARD_COLORS) {
+        if (!setComplete(player.properties[c]) && player.properties[c].some(x => x.id === choice)) { valid = true; break; }
+      }
+      if (!valid) return;
+      cardGame.pendingAction = { ...pa, type: 'swap_target', myCardId: choice };
+      broadcastCG();
+
+    } else if (pa.type === 'swap_target' && pi === pa.actingPlayer) {
+      const oi = oppIdx(pi);
+      const opp = cardGame.players[oi];
+      let targetColor = null;
+      for (const c of CARD_COLORS) {
+        if (!setComplete(opp.properties[c]) && opp.properties[c].some(x => x.id === choice)) { targetColor = c; break; }
+      }
+      if (!targetColor) return;
+      const hasBlock = opp.hand.some(c => c.type === 'action' && c.action === 'block');
+      if (hasBlock) {
+        cardGame.pendingAction = { type: 'block_prompt', actingPlayer: pi, targetPlayer: oi, actionType: 'swap', myCardId: pa.myCardId, theirCardId: choice };
+        cardGame.blockTimer = setTimeout(() => { if (cardGame?.pendingAction?.type === 'block_prompt') resolveCardAction(); }, BLOCK_TIMEOUT);
+        broadcastCG();
+      } else {
+        executeSwap(pi, pa.myCardId, choice);
+        cardGame.lastEvent = { type: 'swap', player: player.name, target: opp.name };
+        cardGame.pendingAction = null;
+        if (!checkCardWin()) { if (cardGame.actionsLeft <= 0) endCardTurn(); else broadcastCG(); }
+      }
+
+    } else if (pa.type === 'block_prompt' && pi === pa.targetPlayer) {
+      if (cardGame.blockTimer) { clearTimeout(cardGame.blockTimer); cardGame.blockTimer = null; }
+      if (choice === 'block') {
+        const bi = player.hand.findIndex(c => c.type === 'action' && c.action === 'block');
+        if (bi >= 0) {
+          cardGame.discard.push(player.hand.splice(bi, 1)[0]);
+          cardGame.lastEvent = { type: 'blocked', player: player.name, actionType: pa.actionType };
+          clog(`${player.name} BLOCKED ${pa.actionType}`);
+        }
+        cardGame.pendingAction = null;
+        if (cardGame.actionsLeft <= 0) endCardTurn();
+        else broadcastCG();
+      } else {
+        resolveCardAction();
+      }
+    } else if (pa.type === 'rent_pay' && pi === pa.targetPlayer) {
+      if (choice.action === 'toggle_money') {
+        const idx = pa.selectedMoney.indexOf(choice.id);
+        if (idx >= 0) pa.selectedMoney.splice(idx, 1);
+        else pa.selectedMoney.push(choice.id);
+        broadcastCG();
+      } else if (choice.action === 'toggle_property') {
+        const idx = pa.selectedProperties.indexOf(choice.id);
+        if (idx >= 0) pa.selectedProperties.splice(idx, 1);
+        else pa.selectedProperties.push(choice.id);
+        broadcastCG();
+      } else if (choice.action === 'confirm_pay') {
+        const target = cardGame.players[pa.targetPlayer];
+        const actor = cardGame.players[pa.actingPlayer];
+        const selectedVal = pa.selectedMoney.reduce((s, mid) => {
+          const mc = target.bank.find(c => c.id === mid);
+          return s + (mc ? mc.value : 0);
+        }, 0) + pa.selectedProperties.length;
+        const maxAssets = totalAssets(target);
+        if (selectedVal < pa.amount && selectedVal < maxAssets) return; // must pay enough or all they have
+        payRentManual(target, actor, pa.selectedMoney, pa.selectedProperties);
+        cardGame.lastEvent = { type: 'rent', player: actor.name, target: target.name, color: pa.color, amount: pa.amount };
+        clog(`Rent paid: ${target.name} paid $${selectedVal} to ${actor.name}`);
+        cardGame.pendingAction = null;
+        if (!checkCardWin()) { if (cardGame.actionsLeft <= 0) endCardTurn(); else broadcastCG(); }
+      }
+    }
+  });
+
+  socket.on('end_turn', (sessionId) => {
+    if (!cardGame || cardGame.phase !== 'playing') return;
+    const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
+    if (pi < 0 || pi !== cardGame.currentPlayerIndex) return;
+    if (cardGame.pendingAction) return;
+    endCardTurn();
+  });
+
+  socket.on('discard_card', ({ sessionId, cardId }) => {
+    if (!cardGame || cardGame.turnPhase !== 'discarding') return;
+    const pi = cardGame.players.findIndex(p => p.sessionId === sessionId);
+    if (pi < 0 || pi !== cardGame.currentPlayerIndex) return;
+    const player = cardGame.players[pi];
+    const ci = player.hand.findIndex(c => c.id === cardId);
+    if (ci < 0) return;
+    cardGame.discard.push(player.hand.splice(ci, 1)[0]);
+    clog(`${player.name} discarded`);
+    if (player.hand.length <= HAND_LIMIT) nextCardTurn();
+    else broadcastCG();
+  });
+
+  socket.on('reset', () => resetCG());
+
+  socket.on('disconnect', () => {
+    if (!cardGame) return;
+    const p = cardGame.players.find(x => x.socketId === socket.id);
+    if (!p) return;
+    clog(`DISCONNECT: ${p.name}`);
+    if (cardGame.phase === 'lobby') {
+      cardGame.players = cardGame.players.filter(x => x.socketId !== socket.id);
+      if (cardGame.players.length === 0) resetCG();
+      else broadcastCG();
+    } else if (cardGame.phase === 'playing') {
+      p.connected = false;
+      p.disconnectTimer = setTimeout(() => {
+        if (!cardGame) return;
+        clog(`Grace expired: ${p.name}`);
+        cardGame.phase = 'finished';
+        const other = cardGame.players.find(x => x.connected);
+        cardGame.winner = other ? other.name : 'disconnect';
+        broadcastCG();
+        setTimeout(resetCG, 15000);
+      }, 15 * 60 * 1000);
+      broadcastCG();
+    }
+  });
+});
+
+// ============================================================
 // START SERVER
 // ============================================================
 const PORT = process.env.PORT || 3000;

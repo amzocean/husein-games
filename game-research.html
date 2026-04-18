@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Research — New 2-Player Games for huseinlovesyou.com</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --card-bg: #1a1a2e;
+    --accent: #e94560;
+    --accent2: #0f3460;
+    --text: #eee;
+    --muted: #999;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    background: linear-gradient(135deg, var(--accent), #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  /* Profile Section */
+  .profile {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #2a2a4a;
+  }
+  .profile h2 { color: var(--accent); font-size: 1.1rem; margin-bottom: 0.8rem; }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+  }
+  .profile-grid dt { color: var(--muted); font-size: 0.85rem; }
+  .profile-grid dd { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+  /* Baseline Table */
+  .baseline {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #2a2a4a;
+  }
+  .baseline h2 { color: var(--accent); font-size: 1.1rem; margin-bottom: 0.8rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 2px solid var(--accent2);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid #2a2a4a;
+  }
+
+  /* Game Cards */
+  .game-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #2a2a4a;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-card.pick-1 { border-color: var(--gold); }
+  .game-card.pick-2 { border-color: var(--silver); }
+  .game-card.pick-3 { border-color: var(--bronze); }
+
+  .medal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.8rem;
+  }
+  .game-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+  }
+  .game-card .tagline {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  .game-card .description {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #ccc;
+  }
+
+  /* Star ratings */
+  .ratings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.4rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .rating-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+  }
+  .rating-label { color: var(--muted); }
+  .stars { color: var(--gold); letter-spacing: 1px; }
+
+  .meta-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+  .meta-item { color: var(--muted); }
+  .meta-item span { color: var(--text); font-weight: 600; }
+
+  .why-fits {
+    background: rgba(233, 69, 96, 0.08);
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1rem;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .why-fits strong { color: var(--accent); }
+
+  .concern {
+    background: rgba(255, 215, 0, 0.06);
+    border-left: 3px solid #ff9800;
+    padding: 0.6rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+    color: #ccc;
+  }
+  .concern strong { color: #ff9800; }
+
+  .components {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .components strong { color: var(--text); }
+
+  /* Summary Table */
+  .summary {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #2a2a4a;
+  }
+  .summary h2 {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .summary td.pick { font-weight: 700; }
+  .summary .best { color: var(--gold); }
+  .summary .easiest { color: var(--silver); }
+  .summary .deepest { color: var(--bronze); }
+
+  /* Recommendation */
+  .recommendation {
+    background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(15,52,96,0.3));
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .recommendation h2 {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+  .recommendation p {
+    font-size: 0.95rem;
+    color: #ccc;
+    max-width: 700px;
+    margin: 0 auto 0.5rem;
+  }
+  .recommendation .highlight {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem 0.5rem; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .ratings { grid-template-columns: 1fr 1fr; }
+    .meta-row { gap: 0.8rem; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>🎮 New Game Research</h1>
+  <p class="subtitle">2-Player Long-Distance Games for huseinlovesyou.com &mdash; April 2026</p>
+
+  <!-- Player Profile -->
+  <div class="profile">
+    <h2>👫 Player Profile</h2>
+    <dl class="profile-grid">
+      <dt>Play Style</dt>
+      <dd>Quick rounds, strategy + luck mix, light competition</dd>
+      <dt>Currently Playing</dt>
+      <dd>Wordle, Strands (NYT), Ludo, Photo Tiles</dd>
+      <dt>In-Person Favorite</dt>
+      <dd>Monopoly Deal (card game)</dd>
+      <dt>Tech Stack</dt>
+      <dd>Vanilla JS + Node/Socket.IO, deployed on Render</dd>
+    </dl>
+  </div>
+
+  <!-- Baseline -->
+  <div class="baseline">
+    <h2>📏 Existing Codebase Complexity (Baseline)</h2>
+    <table>
+      <thead>
+        <tr><th>Game</th><th>Lines of Code</th><th>Real-Time?</th><th>Architecture</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Ludo</strong></td><td>~1,750</td><td>✅ Socket.IO</td><td>Room codes, turn sync, chat, reconnect</td></tr>
+        <tr><td><strong>Photo Tiles</strong></td><td>~2,900</td><td>❌ Solo</td><td>SVG rendering, 16 themes, 5&times;5 grid</td></tr>
+        <tr><td><strong>Valentines</strong></td><td>~960</td><td>❌ Solo</td><td>Countdown, animations, photos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Game 1: Battleship -->
+  <div class="game-card pick-1">
+    <span class="medal">🥇</span>
+    <h2>⚓ Battleship</h2>
+    <p class="tagline">Best Overall Pick &mdash; "You sunk my battleship!"</p>
+    <p class="description">
+      Classic ship placement + guessing grid. Each player places 5 ships on a 10&times;10 grid,
+      then takes turns firing shots at the opponent's grid. Hit/miss/sunk feedback with progressive
+      deduction narrows down remaining ships.
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★★★</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★★★☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★★★</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>10-15 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~800-1000 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Medium</span></div>
+    </div>
+    <div class="why-fits">
+      <strong>Why it fits:</strong> Perfect strategy/luck balance. Placement phase is strategic, early shots
+      are lucky, mid-game becomes deductive. Very similar Socket.IO architecture to Ludo (turn-based, room codes,
+      game state sync). Ship drag-placement adds a unique pre-game layer none of your current games have.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> 10&times;10 grid UI (&times;2), ship drag-and-drop placement, shot/result
+      WebSocket protocol, ship sinking detection, CSS grid + SVG ships with couple theming.
+    </div>
+  </div>
+
+  <!-- Game 2: Connect Four -->
+  <div class="game-card pick-2">
+    <span class="medal">🥈</span>
+    <h2>🔴 Connect Four</h2>
+    <p class="tagline">Quickest to Build &mdash; fast drops, surprise wins</p>
+    <p class="description">
+      Drop colored discs into a 7-column, 6-row grid. Gravity pulls them to the lowest open slot.
+      First to get 4 in a row (horizontal, vertical, or diagonal) wins. Simple rules, satisfying
+      drop animation, and quick rematches.
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★★☆☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★★☆</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>3-5 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~500-600 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Low</span></div>
+    </div>
+    <div class="why-fits">
+      <strong>Why it fits:</strong> Simplest to build of all options. Gravity-based drop mechanic is satisfying.
+      Can add couple-themed tokens (hearts vs stars). Very quick rounds create a "one more game" factor.
+      Could be a weekend project.
+    </div>
+    <div class="concern">
+      <strong>⚠ Concern:</strong> Less luck than you prefer. Can feel "solved" after many games if both
+      players learn the meta. First-player advantage is significant.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> 7&times;6 grid with gravity, disc drop animation (CSS transition),
+      4-in-a-row detection (8 directions), turn sync via Socket.IO, win highlight animation.
+    </div>
+  </div>
+
+  <!-- Game 3: Dots & Boxes -->
+  <div class="game-card pick-3">
+    <span class="medal">🥉</span>
+    <h2>🔲 Dots &amp; Boxes</h2>
+    <p class="tagline">Hidden Gem &mdash; deceptively deep, chain reactions are thrilling</p>
+    <p class="description">
+      Grid of dots. Take turns drawing one line between two adjacent dots. Complete all 4 sides of
+      a box to claim it + earn an extra turn. Chain reactions let you capture multiple boxes in one
+      turn. Most boxes at the end wins.
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★★★★★</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★★☆☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★★★</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>5-10 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~700-800 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Medium</span></div>
+    </div>
+    <div class="why-fits">
+      <strong>Why it fits:</strong> Extremely underrated. Looks simple but has real depth. The "extra turn
+      on box completion" mechanic creates exciting chain reactions. Endgames are dramatic with tight scores.
+      Grid-based UI is familiar territory. Easy to theme (heart-shaped boxes?).
+    </div>
+    <div class="concern">
+      <strong>⚠ Concern:</strong> Low luck factor. Early moves feel neutral until the midgame "sacrifice"
+      decisions kick in. Strategy-heavy players may dominate.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> Dot grid rendering (SVG/Canvas), line click detection (horizontal
+      &amp; vertical edges), box completion check (O(1) per move), chain turn logic, score tracking, Socket.IO sync.
+    </div>
+  </div>
+
+  <!-- Game 4: Yahtzee Duel -->
+  <div class="game-card">
+    <h2>🎲 Yahtzee Duel</h2>
+    <p class="tagline">Best Strategy/Luck Balance &mdash; dice drama every turn</p>
+    <p class="description">
+      Roll 5 dice, choose which to keep, reroll up to 3 times per turn. Fill one of 13 scoring
+      categories each turn (three-of-a-kind, full house, straight, Yahtzee, etc.). Compete for highest
+      total score. Both players can roll simultaneously &mdash; less waiting!
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★★★☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★★☆</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>10-15 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~700-800 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Medium</span></div>
+    </div>
+    <div class="why-fits">
+      <strong>Why it fits:</strong> Great strategy/luck balance via dice. Both players roll simultaneously
+      so there's less downtime waiting for turns. "YAHTZEE!" moments are genuinely exciting. Dice animations
+      would be fun to build. Risk management decisions every turn.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> 5 dice with roll/hold toggle, 13-category scorecard UI, scoring
+      logic (patterns, straights, full house), simultaneous play sync, running score comparison.
+    </div>
+  </div>
+
+  <!-- Game 5: Ultimate Tic-Tac-Toe -->
+  <div class="game-card">
+    <h2>❌⭕ Ultimate Tic-Tac-Toe</h2>
+    <p class="tagline">Strategy Lover's Pick &mdash; meta-game mind bender</p>
+    <p class="description">
+      9 mini tic-tac-toe boards in a 3&times;3 grid. Where you play in a mini-board determines which
+      mini-board your opponent must play next. Win 3 mini-boards in a row to win the meta-game.
+      The "forced board" mechanic creates deep strategy around sending your opponent to bad positions.
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★★☆</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★★★★★</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★☆☆☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★★☆</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>5-8 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~600-700 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Medium</span></div>
+    </div>
+    <div class="concern">
+      <strong>⚠ Concern:</strong> Very strategy-heavy, almost zero luck element. Great if you both enjoy
+      chess-like thinking, but might frustrate if one player finds the meta first. Draws are possible.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> Nested 3&times;3&times;3&times;3 grid, active-board highlighting,
+      forced-board mechanic, mini-board win detection, meta-board win detection, Socket.IO turn sync.
+    </div>
+  </div>
+
+  <!-- Game 6: War -->
+  <div class="game-card">
+    <h2>🃏 War / Speed War</h2>
+    <p class="tagline">Pure Luck + Speed &mdash; casual banter game</p>
+    <p class="description">
+      Classic War: simultaneous card flip, higher card wins both. Ties trigger "war" (3 face-down, flip 4th).
+      Speed variant: both flip simultaneously, first to slap a matching pair wins the pile.
+      Great for chatting while playing.
+    </p>
+    <div class="ratings">
+      <div class="rating-item"><span class="rating-label">Fun</span><span class="stars">★★★☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Strategy</span><span class="stars">★☆☆☆☆</span></div>
+      <div class="rating-item"><span class="rating-label">Luck</span><span class="stars">★★★★★</span></div>
+      <div class="rating-item"><span class="rating-label">Competition</span><span class="stars">★★★☆☆</span></div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">⏱ Round: <span>3-5 min</span></div>
+      <div class="meta-item">📝 Estimate: <span>~400-500 LOC</span></div>
+      <div class="meta-item">🔧 Difficulty: <span>Low</span></div>
+    </div>
+    <div class="concern">
+      <strong>⚠ Concern:</strong> Too luck-based, may get boring fast. Zero meaningful decisions in classic
+      mode. Better as a "palette cleanser" between strategic games than a standalone addition.
+    </div>
+    <div class="components">
+      <strong>Key components:</strong> 52-card deck shuffle, card flip animation, comparison logic,
+      war sequence handling, pile tracking, card art (SVG or CSS).
+    </div>
+  </div>
+
+  <!-- Summary Comparison -->
+  <div class="summary">
+    <h2>📊 Head-to-Head Comparison</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Game</th><th>Fun</th><th>Strategy</th><th>Luck</th><th>Speed</th><th>Build</th><th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Battleship</strong></td>
+          <td>★★★★★</td><td>★★★★</td><td>★★★</td><td>10-15m</td><td>~900</td>
+          <td class="pick best">🥇 Best Fit</td>
+        </tr>
+        <tr>
+          <td><strong>Connect Four</strong></td>
+          <td>★★★★</td><td>★★★★</td><td>★★</td><td>3-5m</td><td>~550</td>
+          <td class="pick easiest">🥈 Easiest Build</td>
+        </tr>
+        <tr>
+          <td><strong>Dots &amp; Boxes</strong></td>
+          <td>★★★★</td><td>★★★★★</td><td>★★</td><td>5-10m</td><td>~750</td>
+          <td class="pick deepest">🥉 Deepest Game</td>
+        </tr>
+        <tr>
+          <td><strong>Yahtzee Duel</strong></td>
+          <td>★★★★</td><td>★★★</td><td>★★★★</td><td>10-15m</td><td>~750</td>
+          <td>Great luck/strat</td>
+        </tr>
+        <tr>
+          <td><strong>Ultimate TTT</strong></td>
+          <td>★★★★</td><td>★★★★★</td><td>★</td><td>5-8m</td><td>~650</td>
+          <td>Too strategic</td>
+        </tr>
+        <tr>
+          <td><strong>War/Speed</strong></td>
+          <td>★★★</td><td>★</td><td>★★★★★</td><td>3-5m</td><td>~450</td>
+          <td>Too luck-based</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Final Recommendation -->
+  <div class="recommendation">
+    <h2>🎯 Recommendation</h2>
+    <p>
+      <span class="highlight">Build Battleship first</span> &mdash; it has the ideal strategy/luck balance,
+      head-to-head competition, satisfying rounds, and architecturally reuses the Ludo Socket.IO infrastructure
+      (rooms, turns, game state sync). The ship-placement phase adds a unique pre-game layer.
+    </p>
+    <p>
+      <span class="highlight">Then Connect Four</span> as a quick add &mdash; so simple it could be a weekend
+      project, giving a fast "one more round" option alongside the longer Battleship games.
+    </p>
+  </div>
+
+  <footer>
+    Research compiled April 2026 &bull; huseinlovesyou.com game portal
+  </footer>
+
+</div>
+</body>
+</html>
