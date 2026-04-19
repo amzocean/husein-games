@@ -585,7 +585,8 @@
       $('my-name').textContent = 'My Table';
       const bankTotal = me.bank.reduce((s,c) => s + c.value, 0);
       $('my-bank-label').textContent = bankTotal > 0 ? 'Bank: $' + bankTotal : '';
-      renderSets($('my-sets'), me.properties, false, 'me');
+      const mySetSelectable = state.pendingAction && state.pendingAction.type === 'swap_own' && myIndex === state.pendingAction.actingPlayer;
+      if (!mySetSelectable) renderSets($('my-sets'), me.properties, false, 'me');
       renderBank($('my-bank'), me.bank);
       renderHand(me.hand, isMyTurn);
       $('hand-label').textContent = 'My Hand (' + me.hand.length + ')';
