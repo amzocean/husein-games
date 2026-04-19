@@ -39,7 +39,8 @@
   .sound-toggle.muted { opacity: 0.5; }
 
   /* ========= Game Board ========= */
-  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; background: #1a5c2c; background-image: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%), repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 8px); color: #f0ebe3; }
+  #game-screen { padding: 0; justify-content: flex-start; height: 100vh; overflow: hidden; background: #1a5c2c; background-image: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%), repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 8px); color: #f0ebe3; }
+  .game-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px; -webkit-overflow-scrolling: touch; }
   .top-bar { width: 100%; text-align: right; padding: 4px 8px; font-size: 0.85em; }
   .top-bar .deck-info { color: rgba(255,255,255,0.4); }
   .turn-info { color: #f0c040; font-weight: 700; font-size: 0.95em; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
@@ -91,7 +92,7 @@
   .bank-chip { background: linear-gradient(180deg, #ffd700 0%, #daa520 100%); color: #5c3a00; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.68em; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.4); border: 1.5px solid #b8860b; }
 
   /* ========= Hand ========= */
-  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.12); border-radius: 12px 12px 0 0; margin-bottom: -8px; padding-bottom: 8px; }
+  .hand-area { width: 100%; flex-shrink: 0; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.25); border-radius: 12px 12px 0 0; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
   .hand-label { font-size: 0.88em; color: #e8c170; margin-bottom: 4px; padding: 4px 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(232,193,112,0.15); }
   .hand { display: flex; justify-content: center; overflow-x: auto; padding: 12px 8px 16px; gap: 0; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   .hand::-webkit-scrollbar { height: 4px; }

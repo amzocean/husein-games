@@ -68,7 +68,7 @@ First player to complete **3 full property sets** wins. Set sizes vary by color 
 - **Block** is reactive only — can only be played when an action targets you (15-second timer). Block works against: Rent, Steal, Swap, Debt Collector, Birthday, Deal Breaker.
 - **Wild cards** — player chooses color when played; tracked via `assignedColor` field
 - **Pass Go** — draw 2 extra cards immediately; can be banked for $1 instead
-- **Double Rent** — play before a Rent card; the next rent this turn is doubled (uses 1 play action)
+- **Double Rent** — play **before** a Rent card; the next rent this turn is doubled (uses 1 play action). Requires at least 2 actions remaining (so you can play both Double Rent + Rent). Card displays "(Play BEFORE Rent)" hint. When active, rent cards in hand glow gold and rent color buttons show `2×` amounts.
 - **Debt Collector** — force opponent to pay $5; can be blocked; can be banked for $3
 - **Birthday** — force opponent to pay $2; can be blocked; can be banked for $2
 - **Deal Breaker** — steal an entire complete set from opponent; can be blocked; can be banked for $5
@@ -78,10 +78,13 @@ First player to complete **3 full property sets** wins. Set sizes vary by color 
 
 ---
 
-## Visual Theme
-- **Light elegant theme** — background `#fff5f5`, matching Tiles and Ludo design language
-- **Accent colors** — rose `#c44569` (buttons, headings, prompts), gold `#b8860b` (event banner, bank chips, selections)
-- **Card colors** — gradient backgrounds per type:
+## Visual Theme — Physical Card Game Aesthetic
+- **Dark green felt table** — background `#1a5c2c` with radial highlight + subtle diagonal stripe texture, simulating a real card game table
+- **Color palette**:
+  - Text: Cream `#f0ebe3` (primary), Gold `#f0c040` / `#e8c170` (secondary, accents)
+  - Player name: Green `#4ade80`, Opponent name: Gold `#e8c170`
+  - Areas: Semi-transparent dark panels `rgba(0,0,0,0.15)` with `rgba(255,255,255,0.06)` borders
+- **Card colors** — gradient backgrounds per type (unchanged from V1):
   | Type | Gradient | Border |
   |------|----------|--------|
   | Blue property | `#60a5fa → #2563eb` | `#93c5fd` |
@@ -100,45 +103,53 @@ First player to complete **3 full property sets** wins. Set sizes vary by color 
   | Birthday | `#fbcfe8 → #db2777` | `#f9a8d4` |
   | Double Rent | `#fef08a → #ca8a04` | `#fef9c3` |
   | Deal Breaker | `#f87171 → #991b1b` | `#fca5a5` |
+- **Set labels** — brightened for dark background: blue `#60a5fa`, red `#f87171`, green `#4ade80`, yellow `#fbbf24`, black `#94a3b8`
+- **Card backs** — pink/maroon gradient (`#c44569 → #8b1a3a`) with `♥` watermark, displayed as overlapping fan (`-10px` margin) in opponent's table area to show their hand count
+- **Bank chips** — circular gold coins with metallic gradient (`#f0c040 → #d4a030`), `$` prefix, border `#e8b830`
+- **Hand cards** — fan overlap layout (`-8px` margin, expand on hover), enhanced 3D drop shadows, Double Rent glow effect on rent cards when `doubleRentActive`
+- **Top bar** — fixed deck info display (cards remaining + 🃏 icon) at top-right
 - **Font** — Segoe UI / system-ui (no external font dependencies)
-- **Animations** — card entrance, event banner slide, set completion glow, confetti on win
+- **Animations** — card entrance, event banner slide, set completion glow, confetti on win, hover expand on hand cards
 - **Sound effects** — Web Audio API synthesizer with 10 event sounds + mute toggle (top-right)
 
 ---
 
-## Client: `public/cards/index.html` (~900 lines)
+## Client: `public/cards/index.html` (~1100 lines)
 
 Single file containing all HTML, CSS, and JavaScript (same pattern as Ludo).
 
 ### Screens (CSS class `.screen`, toggled via `.active`)
 1. **`idle-screen`** — No game running. Name input, Create/Join buttons. If a lobby exists and user isn't in it, Create button is hidden (only Join shown).
 2. **`lobby-screen`** — Game created, waiting for player 2. Shows player list, Start button (host only, requires 2 players).
-3. **`game-screen`** — Active game. Opponent area (top), event banner, action prompt, end turn button, my area, hand (bottom).
+3. **`game-screen`** — Active game. Fixed-height viewport (`100vh`) with: top-bar, scrollable middle (opponent area → event banner → turn info → prompt → my area), hand pinned at bottom.
 4. **`finished-screen`** — Game over. Winner name, New Game button.
 
 ### Game Screen Layout (top to bottom)
 ```
 ┌─────────────────────────────────┐
-│ FATE'S TABLE          🃏 count  │  ← bold uppercase header
-│ [RED 2/3 Rent $3 • Val $2]     │  ← multi-line set labels (only owned colors)
-│ $2 $3                           │  ← opp bank chips
+│                     Deck: 42 🃏 │  ← top-bar (deck count, mute btn)
+├─────────────────────────────────┤
+│ FATE'S TABLE          7 cards   │  ← opponent header (gold, collapsible)
+│ [♥♥♥♥♥♥♥]                      │  ← card backs (pink fan, shows hand count)
+│ [RED 2/3 Rent $3 • Val $2]     │  ← opponent property sets
+│ 💰2 💰3                         │  ← opponent bank (gold coin chips)
 ├─────────────────────────────────┤
 │   fate charged huse $2 rent     │  ← event banner (gold, animated)
 ├─────────────────────────────────┤
-│ Your turn — 3 plays left        │  ← centered turn info
+│ Your turn — 3 plays left        │  ← centered turn info (cream text)
 │ 📤 Discard to 7 (8/7)           │  ← discard status (only when over limit)
 ├─────────────────────────────────┤
 │ ┌─ Action Prompt ─────────────┐ │
 │ │ Choose color / Pay rent / …  │ │  ← context-sensitive prompts
 │ └─────────────────────────────┘ │
-│           [End Turn]            │
+│           [End Turn]            │  ← dark outline button
 ├─────────────────────────────────┤
-│ MY TABLE                Bank $5 │  ← bold uppercase header
-│ [BLUE 1/2 Rent $3 • Val $1]    │  ← only owned colors shown
-│ $1 $2 $2                        │  ← my bank chips
+│ MY TABLE                Bank $5 │  ← player header (green, collapsible)
+│ [BLUE 1/2 Rent $3 • Val $1]    │  ← player property sets
+│ 💰1 💰2 💰2                      │  ← player bank (gold coin chips)
 ├─────────────────────────────────┤
-│ MY HAND (5)                     │  ← bold uppercase gold header
-│ [🏠][🏠][💵][💸][🛡️][🎂][💥]    │  ← horizontally scrollable
+│ MY HAND (5)                     │  ← gold header, pinned to bottom
+│ [🏠][🏠][💵][💸][🛡️][🎂][💥]    │  ← fan overlap, horizontally scrollable
 └─────────────────────────────────┘
 ```
 
@@ -178,12 +189,20 @@ All card plays require confirmation to prevent accidental taps while scrolling:
 Popups are fixed overlays with centered boxes. Dismissed by Cancel button or clicking backdrop.
 
 ### Hand Rendering
-- Horizontal scrollable row of card elements (64×90px)
+- Fan overlap layout — cards use `-8px` margin overlap, expand on hover with smooth transition
 - Cards show icon (emoji) + label (color/value/action name); multi-word labels use line breaks (e.g., "Debt\nCollector")
 - Property cards also show rent tier amounts at the bottom
+- Enhanced 3D drop shadows for physical card depth
+- **Double Rent glow**: when `doubleRentActive` is true, all Rent cards in hand get a pulsing gold glow (`dbl-rent-glow` class) to remind player to play rent next
+- **Double Rent hint**: Double Rent cards display "(Play BEFORE Rent)" subtitle text
 - **Playable** when: it's your turn, turnPhase is 'playing', actionsLeft > 0, no pendingAction
 - **Discarding** mode: all cards tappable, clicking shows discard confirmation popup, then discards on confirm
 - **Disabled** state: reduced opacity + no-pointer cursor when not your turn
+
+### Opponent Hand Display
+- Card backs (pink/maroon gradient with `♥` watermark) rendered in a fan layout inside opponent's table area
+- Count matches `opp.handCount` from server state (capped at 12 visually)
+- Text label also shows exact count (e.g., "7 cards")
 
 ### Socket.IO Connection
 - Connects to namespace `/cards` (`io('/cards')`)
@@ -377,6 +396,8 @@ When a game exists in lobby phase, new connections receive the lobby state. The 
 | **Rent discards money instead of transferring** | `payRent()` pushed money to `cardGame.discard` instead of actor's bank | Changed to push to `actor.bank`; properties go to `actor.properties` |
 | **Non-players see lobby screen, can't join** | `broadcastCG()` sends lobby state to all sockets; client rendered lobby for everyone | Client checks `myIndex < 0` → shows idle screen with Join button instead |
 | **Create button missing after game reset** | Idle screen render didn't re-show Create button after it was hidden for lobby spectators | Added `$('btn-create').style.display = ''` in idle phase render |
+| **Swap card: can't select own property** | `renderGame()` overwrites `my-sets` with `selectable=false` after `renderPrompt()` already set `selectable=true` for swap_own | Skip non-selectable re-render of my-sets when `swap_own` is the active pending action |
+| **Double Rent played after Rent (wrong order)** | UX confusion — no indication that Double Rent must be played BEFORE Rent | Added "(Play BEFORE Rent)" hint on card, gold glow on rent cards when active, `actionsLeft >= 2` server validation |
 
 ---
 
