@@ -1158,6 +1158,11 @@ cardsNs.on('connection', (socket) => {
       }
 
     } else if (card.type === 'action' && card.action === 'doublerent') {
+      // Double rent requires at least 2 actions (1 for this + 1 for the rent card)
+      if (cardGame.actionsLeft < 2) {
+        socket.emit('error_msg', 'Need at least 2 actions left to play Double Rent (1 for Double Rent + 1 for Rent card)');
+        return;
+      }
       // Double rent: hold in pending, next rent card doubles
       player.hand.splice(ci, 1);
       cardGame.discard.push(card);

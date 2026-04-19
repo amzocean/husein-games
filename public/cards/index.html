@@ -39,73 +39,74 @@
   .sound-toggle.muted { opacity: 0.5; }
 
   /* ========= Game Board ========= */
-  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; background: #fff5f5; }
+  #game-screen { padding: 8px; justify-content: flex-start; min-height: 100vh; background: #1a5c2c; background-image: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%), repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 8px); color: #f0ebe3; }
   .top-bar { width: 100%; text-align: right; padding: 4px 8px; font-size: 0.85em; }
-  .top-bar .deck-info { color: #8e8e93; }
-  .turn-info { color: #c44569; font-weight: 600; }
+  .top-bar .deck-info { color: rgba(255,255,255,0.4); }
+  .turn-info { color: #f0c040; font-weight: 700; font-size: 0.95em; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
 
   /* ========= Opponent Area ========= */
-  .opp-area { width: 100%; margin: 6px 0; }
-  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(85,85,85,0.15); margin-bottom: 6px; cursor: pointer; user-select: none; }
-  .opp-header .name { font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
-  .opp-header .collapse-arrow { font-size: 0.7em; color: #aaa; transition: transform 0.25s; }
+  .opp-area { width: 100%; margin: 6px 0; background: rgba(0,0,0,0.15); border-radius: 10px; padding: 6px 8px; }
+  .opp-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(255,255,255,0.08); margin-bottom: 6px; cursor: pointer; user-select: none; }
+  .opp-header .name { font-weight: 800; color: #e8c170; text-transform: uppercase; letter-spacing: 0.5px; }
+  .opp-header .collapse-arrow { font-size: 0.7em; color: rgba(255,255,255,0.35); transition: transform 0.25s; }
   .opp-area.collapsed .collapse-arrow { transform: rotate(-90deg); }
-  .opp-area.collapsed .opp-sets, .opp-area.collapsed .bank-row { display: none; }
+  .opp-area.collapsed .opp-sets, .opp-area.collapsed .bank-row, .opp-area.collapsed .opp-hand-cards { display: none; }
   .opp-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Event Banner ========= */
-  .event-banner { width: 100%; text-align: center; padding: 8px; font-size: 0.92em; color: #b8860b; min-height: 32px; font-weight: 500; }
+  .event-banner { width: 100%; text-align: center; padding: 8px; font-size: 0.92em; color: #f0c040; min-height: 32px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
   .event-banner.animate { animation: bannerSlide 0.35s ease-out; }
 
   /* ========= Action Prompt ========= */
-  .action-prompt { width: 100%; background: #fff; border-radius: 12px; padding: 12px; margin: 4px 0; text-align: center; display: none; border: 1px solid rgba(196,69,105,0.12); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .action-prompt { width: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 12px; padding: 12px; margin: 4px 0; text-align: center; display: none; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
   .action-prompt.active { display: block; animation: promptFade 0.3s ease-out; }
-  .prompt-title { font-weight: 600; margin-bottom: 8px; color: #c44569; }
+  .prompt-title { font-weight: 600; margin-bottom: 8px; color: #f0c040; }
   .prompt-options { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 
   /* ========= My Area ========= */
-  .my-area { width: 100%; margin: 6px 0; }
-  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(39,174,96,0.2); margin-bottom: 6px; cursor: pointer; user-select: none; }
-  .my-header .name { font-weight: 800; color: #27ae60; text-transform: uppercase; letter-spacing: 0.5px; }
-  .my-header .collapse-arrow { font-size: 0.7em; color: #aaa; transition: transform 0.25s; }
+  .my-area { width: 100%; margin: 6px 0; background: rgba(0,0,0,0.15); border-radius: 10px; padding: 6px 8px; }
+  .my-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; font-size: 0.88em; border-bottom: 2px solid rgba(39,174,96,0.25); margin-bottom: 6px; cursor: pointer; user-select: none; }
+  .my-header .name { font-weight: 800; color: #4ade80; text-transform: uppercase; letter-spacing: 0.5px; }
+  .my-header .collapse-arrow { font-size: 0.7em; color: rgba(255,255,255,0.35); transition: transform 0.25s; }
   .my-area.collapsed .collapse-arrow { transform: rotate(-90deg); }
   .my-area.collapsed .my-sets, .my-area.collapsed .bank-row { display: none; }
   .my-sets { display: flex; gap: 8px; flex-wrap: wrap; }
 
   /* ========= Property Sets ========= */
-  .set-group { background: #fff; border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .set-group { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 6px 8px; min-width: 70px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
   .set-label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.5px; line-height: 1.4; }
-  .set-detail { font-size: 0.88em; font-weight: 600; opacity: 0.7; text-transform: none; letter-spacing: 0; }
-  .set-cards { display: flex; gap: 4px; flex-wrap: wrap; }
-  .set-card { width: 30px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s; }
-  .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; pointer-events: none; }
+  .set-detail { font-size: 0.88em; font-weight: 600; opacity: 0.8; text-transform: none; letter-spacing: 0; color: rgba(255,255,255,0.6); }
+  .set-cards { display: flex; gap: 2px; flex-wrap: wrap; }
+  .set-card { width: 32px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.68em; font-weight: 700; color: #fff; cursor: default; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15); transition: transform 0.2s; margin-left: -3px; }
+  .set-card:first-child { margin-left: 0; }
+  .set-card::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; pointer-events: none; }
   .set-complete { position: relative; }
-  .set-complete::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.15); border-radius: 5px; z-index: 1; }
+  .set-complete::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.15); border-radius: 6px; z-index: 1; }
   .set-complete .lock-icon { position: absolute; font-size: 9px; top: -3px; right: -3px; z-index: 2; }
   .set-complete-anim { animation: setGlow 0.6s ease-out; }
-  .selectable { cursor: pointer; outline: 2px dashed #b8860b; animation: pulse 1s infinite; }
+  .selectable { cursor: pointer; outline: 2px dashed #f0c040; animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{ outline-offset: 0; } 50%{ outline-offset: 3px; } }
 
-  .bank-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
-  .bank-chip { background: rgba(184,134,11,0.1); color: #b8860b; border-radius: 14px; padding: 3px 10px; font-size: 0.75em; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid rgba(184,134,11,0.2); }
+  .bank-row { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 4px; align-items: center; }
+  .bank-chip { background: linear-gradient(180deg, #ffd700 0%, #daa520 100%); color: #5c3a00; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.68em; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.4); border: 1.5px solid #b8860b; }
 
   /* ========= Hand ========= */
-  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); }
-  .hand-label { font-size: 0.88em; color: #b8860b; margin-bottom: 4px; padding: 4px 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(184,134,11,0.2); }
-  .hand { display: flex; gap: 8px; overflow-x: auto; padding: 8px 4px 12px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  .hand-area { width: 100%; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.12); border-radius: 12px 12px 0 0; margin-bottom: -8px; padding-bottom: 8px; }
+  .hand-label { font-size: 0.88em; color: #e8c170; margin-bottom: 4px; padding: 4px 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(232,193,112,0.15); }
+  .hand { display: flex; justify-content: center; overflow-x: auto; padding: 12px 8px 16px; gap: 0; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   .hand::-webkit-scrollbar { height: 4px; }
-  .hand::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+  .hand::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
 
-  /* ========= Cards (Elegant) ========= */
+  /* ========= Cards (Physical) ========= */
   .card {
     width: 70px; min-width: 70px; height: 105px; border-radius: 10px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     font-size: 0.72em; font-weight: 600; cursor: pointer;
-    transition: transform .15s ease, box-shadow .2s ease;
+    transition: transform .2s ease, box-shadow .25s ease, margin .15s ease;
     position: relative; user-select: none;
     border: 2px solid transparent;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
-    overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12);
+    overflow: hidden; will-change: transform;
   }
   .card::before {
     content: ''; position: absolute;
@@ -115,16 +116,21 @@
   }
   .card::after {
     content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
-    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
     pointer-events: none; z-index: 2; transition: left 0.4s ease;
   }
   .card:hover::after { left: 120%; }
   .card:hover:not(.disabled) {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.08);
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.25);
+    z-index: 10;
   }
-  .card:active:not(.disabled) { transform: translateY(-2px) scale(0.97); }
+  .card:active:not(.disabled) { transform: translateY(-3px) scale(0.97); }
   .card.disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(20%); }
+  /* Hand fan overlap */
+  .hand .card { margin-left: -8px; }
+  .hand .card:first-child { margin-left: 0; }
+  .hand .card:hover:not(.disabled) { transform: translateY(-14px) scale(1.06); margin-left: 4px; margin-right: 12px; }
   .card .card-icon { font-size: 1.8em; margin-bottom: 1px; z-index: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15)); }
   .card .card-label { text-align: center; line-height: 1.15; z-index: 1; text-shadow: 0 1px 1px rgba(0,0,0,0.2); font-size: 0.78em; letter-spacing: 0.3px; }
   .card .card-value { position: absolute; top: 4px; left: 6px; font-size: 0.7em; font-weight: 700; z-index: 1; opacity: 0.75; }
@@ -158,6 +164,8 @@
 
   /* ========= End Turn ========= */
   .end-turn-row { width: 100%; display: flex; justify-content: center; margin: 6px 0; }
+  #game-screen .btn-outline { background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.25); color: #f0ebe3; }
+  #game-screen .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
 
   /* ========= Finished Screen ========= */
   #finished-screen h1 { font-size: 2.2em; color: #1c1c1e; }
@@ -171,11 +179,11 @@
 
   .back-link { display: inline-block; margin-top: 20px; color: #8e8e93; text-decoration: none; font-size: 0.9em; transition: color .2s; }
   .back-link:hover { color: #c44569; }
-  .set-label.blue { color: #3b82f6; }
-  .set-label.red { color: #ef4444; }
-  .set-label.green { color: #22c55e; }
-  .set-label.yellow { color: #d97706; }
-  .set-label.black { color: #374151; }
+  .set-label.blue { color: #60a5fa; }
+  .set-label.red { color: #f87171; }
+  .set-label.green { color: #4ade80; }
+  .set-label.yellow { color: #fbbf24; }
+  .set-label.black { color: #94a3b8; }
 
   /* ========= Animations ========= */
   @keyframes cardEntrance {
@@ -210,6 +218,17 @@
   .anim-entrance { animation: cardEntrance 0.3s ease-out both; }
   .anim-shake { animation: shakeX 0.4s ease-out; }
   .anim-pop { animation: popIn 0.35s ease-out; }
+
+  /* ========= Card Backs (Opponent Hand) ========= */
+  .opp-hand-cards { display: flex; padding: 4px 6px; gap: 0; }
+  .card-back { width: 24px; height: 34px; border-radius: 4px; background: linear-gradient(145deg, #c44569, #8b2252); border: 1.5px solid rgba(255,255,255,0.3); margin-left: -10px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); position: relative; flex-shrink: 0; }
+  .card-back:first-child { margin-left: 0; }
+  .card-back::after { content: '\2665'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.25); font-size: 0.65em; }
+
+  /* ========= Double Rent Active Indicators ========= */
+  .dbl-rent-badge { background: linear-gradient(90deg, #f59e0b, #eab308); color: #422006; padding: 2px 8px; border-radius: 10px; font-size: 0.85em; font-weight: 800; animation: dblRentPulse 1.2s infinite; display: inline-block; vertical-align: middle; margin-left: 4px; }
+  .card.dbl-rent-glow { box-shadow: 0 0 12px 4px rgba(234,179,8,0.5), 0 3px 6px rgba(0,0,0,0.3) !important; animation: dblRentPulse 1.2s infinite; }
+  @keyframes dblRentPulse { 0%,100% { box-shadow: 0 0 8px 2px rgba(234,179,8,0.3), 0 3px 6px rgba(0,0,0,0.3); } 50% { box-shadow: 0 0 16px 6px rgba(234,179,8,0.6), 0 3px 6px rgba(0,0,0,0.3); } }
 </style>
 </head>
 <body>
@@ -243,14 +262,16 @@
 
 <!-- ======= GAME ======= -->
 <div id="game-screen" class="screen">
+  <div class="top-bar"><span class="deck-info" id="deck-info"></span></div>
   <div class="opp-area" id="opp-area">
     <div class="opp-header" onclick="document.getElementById('opp-area').classList.toggle('collapsed')">
       <span style="display:flex;align-items:center;gap:5px;">
         <span class="collapse-arrow">▼</span>
         <span class="name" id="opp-name"></span>
       </span>
-      <span id="opp-hand-count" style="color:#8e8e93;"></span>
+      <span id="opp-hand-count" style="color:rgba(255,255,255,0.5);font-size:0.82em;"></span>
     </div>
+    <div class="opp-hand-cards" id="opp-hand-cards"></div>
     <div class="opp-sets" id="opp-sets"></div>
     <div class="bank-row" id="opp-bank"></div>
   </div>
@@ -276,7 +297,7 @@
         <span class="collapse-arrow">▼</span>
         <span class="name" id="my-name"></span>
       </span>
-      <span id="my-bank-label" style="color:#8e8e93; font-size:0.78em;"></span>
+      <span id="my-bank-label" style="color:rgba(255,255,255,0.45); font-size:0.78em;"></span>
     </div>
     <div class="my-sets" id="my-sets"></div>
     <div class="bank-row" id="my-bank"></div>
@@ -562,17 +583,27 @@
     const opp = state.players[oppI];
     const isMyTurn = myIndex === state.currentPlayerIndex;
 
-    const dblRent = state.doubleRentActive ? ' \u{1f4b0}\u{1f4b0} 2\u00d7 RENT!' : '';
+    const dblRent = state.doubleRentActive ? ' <span class="dbl-rent-badge">\u26a1 2\u00d7 RENT</span>' : '';
     const isDiscarding = state.turnPhase === 'discarding' && isMyTurn;
     if (isDiscarding) {
       $('turn-info').textContent = '\u{1f4e4} Discard to 7 (' + (me ? me.hand.length : '?') + '/7) — tap a card to discard';
     } else {
-      $('turn-info').textContent = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' + dblRent : opp.name + "'s turn" + dblRent;
+      $('turn-info').innerHTML = isMyTurn ? 'Your turn \u2014 ' + state.actionsLeft + ' play' + (state.actionsLeft!==1?'s':'') + ' left' + dblRent : opp.name + '\u2019s turn' + dblRent;
     }
     if ($('deck-info')) $('deck-info').textContent = 'Deck: ' + state.deckCount;
 
     $('opp-name').textContent = opp.name + '\u2019s Table' + (!opp.connected ? ' (disconnected)' : '');
-    $('opp-hand-count').textContent = '\u{1f0cf} ' + opp.handCount;
+    $('opp-hand-count').textContent = opp.handCount + ' cards';
+    // Render card backs for opponent hand
+    const oppHandCards = $('opp-hand-cards');
+    if (oppHandCards) {
+      oppHandCards.innerHTML = '';
+      for (let i = 0; i < Math.min(opp.handCount, 12); i++) {
+        const cb = document.createElement('div');
+        cb.className = 'card-back';
+        oppHandCards.appendChild(cb);
+      }
+    }
     renderSets($('opp-sets'), opp.properties, false, 'opp');
     renderBank($('opp-bank'), opp.bank);
 
@@ -949,6 +980,10 @@
       const el = document.createElement('div');
       el.className = 'card ' + getCardClass(card);
       el.dataset.cardId = String(card.id);
+      // Glow on rent cards when double rent is active
+      if (state.doubleRentActive && card.type === 'action' && card.action === 'rent') {
+        el.classList.add('dbl-rent-glow');
+      }
       if (!canPlay && !isDiscarding) el.classList.add('disabled');
 
       // Entrance animation for newly drawn cards
@@ -990,13 +1025,19 @@
         el.appendChild(label);
 
         // Benefit text on action cards
-        const benefits = { debtcollector: 'Collect $5', birthday: 'Collect $2', doublerent: '2× Next Rent', dealbreaker: 'Steal Full Set' };
+        const benefits = { debtcollector: 'Collect $5', birthday: 'Collect $2', doublerent: '2\u00d7 Next Rent', dealbreaker: 'Steal Full Set' };
         if (benefits[card.action]) {
           const ben = document.createElement('div');
           ben.className = 'card-rent-tiers';
           ben.style.cssText = 'font-size:0.55em; font-weight:700; opacity:0.9;';
           ben.textContent = benefits[card.action];
           el.appendChild(ben);
+        }
+        if (card.action === 'doublerent') {
+          const hint = document.createElement('div');
+          hint.style.cssText = 'font-size:0.48em;opacity:0.65;margin-top:1px;font-style:italic;';
+          hint.textContent = '(Play BEFORE Rent)';
+          el.appendChild(hint);
         }
       }
 
