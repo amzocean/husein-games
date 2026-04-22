@@ -31,6 +31,40 @@ const DISCONNECT_GRACE = 15 * 60 * 1000; // 15 minutes — mobile tabs suspend s
 const LOBBY_DISCONNECT_GRACE = 5 * 60 * 1000; // 5 minutes — lobby grace for iOS tab switching
 const AUTO_PLAY_DELAY = 60 * 1000; // 1 minute — auto-play if player is idle
 
+// --- Commentary pools ---
+const COMMENTARY = {
+  capture: [
+    "Nikaal diya! 💥", "Dhoom machale! 💃", "Out kar diya bhai!",
+    "Vaat laga di! 😤", "Kya shot maara! 🏏", "Supari complete! 🎯"
+  ],
+  six: [
+    "Chhakka! 🏏", "Luck ka badshah!", "Kya baat hai! 🔥",
+    "Sixer! Dhoni style! 🏏", "Chha gaye guru! 🙌"
+  ],
+  doubleSix: [
+    "Double six?! Ye toh Don hai! 😎", "Back to back! Unstoppable! 🚂",
+    "Koi rokk nahi sakta! 🔥", "Lagaan wali innings! 🏏"
+  ],
+  stuck: [
+    "Kismat ke kharaab din... 😩", "Arre yaar! 😫",
+    "Kuch nahi mil raha... 🍀", "Bas kar bhai... rula dega kya 😭",
+    "Thoda sabar karo... ⏳"
+  ],
+  leaveBase: [
+    "Entry maarli! 🎬", "Aa raha hai! 🏃", "Chalo ji, shuru! 🎉",
+    "Ek tha tiger... nikla! 🐯", "First class entry! 🌟"
+  ],
+  reachHome: [
+    "Ghar aa gaya! 🏠", "Apna time aa gaya! ⭐",
+    "Safe! Ek aur andar! 🎯", "Home run! 🏡", "Ek aur paar! 🙌"
+  ],
+  win: [
+    "Jeet gaya bhai! 🏆", "And the Oscar goes to... 🎬",
+    "Champion! 👑", "Mogambo khush hua! 😈", "All izz well! 🌟"
+  ]
+};
+const COMMENTARY_COOLDOWN = 3; // minimum turns between comments
+
 function log(msg, data) {
   const ts = new Date().toISOString().slice(11, 23);
   if (data !== undefined) {
@@ -59,6 +93,10 @@ function newGame(creatorSession, creatorName) {
     tokens: {},
     winner: null,
     lastCapture: null,
+    commentary: null,
+    commentaryTurn: -99,
+    consecutiveSixes: 0,
+    turnNumber: 0,
     idleTimer: null,
     turnTimer: null,
     autoPlayTimer: null
@@ -184,6 +222,33 @@ function checkWin(color) {
   return game.tokens[color] && game.tokens[color].every(s => s === 57);
 }
 
+function setCommentary(type) {
+  if (game.turnNumber - game.commentaryTurn < COMMENTARY_COOLDOWN) return;
+  const pool = COMMENTARY[type];
+  if (!pool || pool.length === 0) return;
+  game.commentary = pool[crypto.randomInt(0, pool.length)];
+  game.commentaryTurn = game.turnNumber;
+}
+
+// Capture and win comments always show (bypass cooldown)
+function setCommentaryForce(type) {
+  const pool = COMMENTARY[type];
+  if (!pool || pool.length === 0) return;
+  game.commentary = pool[crypto.randomInt(0, pool.length)];
+  game.commentaryTurn = game.turnNumber;
+}
+
+function addMoveCommentary(color, tokenIdx, captured, oldStep) {
+  // Priority: capture > reachHome > leaveBase (win handled separately)
+  if (captured) {
+    setCommentaryForce('capture');
+  } else if (game.tokens[color][tokenIdx] === 57) {
+    setCommentary('reachHome');
+  } else if (oldStep === 0) {
+    setCommentary('leaveBase');
+  }
+}
+
 function nextTurn(extraTurn) {
   if (game.turnTimer) { clearTimeout(game.turnTimer); game.turnTimer = null; }
   if (game.autoPlayTimer) { clearTimeout(game.autoPlayTimer); game.autoPlayTimer = null; }
@@ -208,8 +273,10 @@ function nextTurn(extraTurn) {
   }
   log(`Turn: ${game.players[game.currentPlayerIndex].name}(${game.players[game.currentPlayerIndex].color})`);
   game.turnDeadline = Date.now() + AUTO_PLAY_DELAY;
+  game.turnNumber++;
   broadcastState();
   game.lastCapture = null; // Clear after broadcasting so banner shows only once
+  game.commentary = null;  // Clear after broadcasting so toast shows only once
   startAutoPlayTimer();
 }
 
@@ -240,17 +307,21 @@ function startAutoPlayTimer() {
           if (game && game.phase === 'playing') nextTurn(false);
         }, TURN_SKIP_DELAY);
       } else {
-        const pick = movable.length === 1 ? movable[0] : movable[Math.floor(Math.random() * movable.length)];
+        const pick = movable.length === 1 ? movable[0] : movable[crypto.randomInt(0, movable.length)];
         log(`AUTO-PLAY: moved token ${pick} for ${player.name}(${player.color})`);
+        const oldStep = game.tokens[player.color][pick];
         const captured = moveToken(player.color, pick, value);
         if (checkWin(player.color)) {
+          setCommentaryForce('win');
           game.phase = 'finished';
           game.winner = player.color;
           log(`GAME OVER: ${player.name}(${player.color}) wins!`);
           broadcastState();
           setTimeout(resetGame, 30000);
         } else {
+          addMoveCommentary(player.color, pick, captured, oldStep);
           broadcastState();
+          game.commentary = null;
           game.turnTimer = setTimeout(() => {
             if (game && game.phase === 'playing') {
               const reachedHome = game.tokens[player.color][pick] === 57;
@@ -266,16 +337,19 @@ function startAutoPlayTimer() {
         if (canMoveToken(player.color, i, game.diceValue)) movable.push(i);
       }
       if (movable.length > 0) {
-        const pick = movable[Math.floor(Math.random() * movable.length)];
+        const pick = movable[crypto.randomInt(0, movable.length)];
         log(`AUTO-PLAY: moved token ${pick} for ${player.name}(${player.color})`);
+        const oldStep = game.tokens[player.color][pick];
         const captured = moveToken(player.color, pick, game.diceValue);
         if (checkWin(player.color)) {
+          setCommentaryForce('win');
           game.phase = 'finished';
           game.winner = player.color;
           log(`GAME OVER: ${player.name}(${player.color}) wins!`);
           broadcastState();
           setTimeout(resetGame, 30000);
         } else {
+          addMoveCommentary(player.color, pick, captured, oldStep);
           const reachedHome = game.tokens[player.color][pick] === 57;
           nextTurn(game.diceValue === 6 || captured || reachedHome);
         }
@@ -313,6 +387,7 @@ function getClientState() {
     tokens: game.tokens,
     winner: game.winner,
     lastCapture: game.lastCapture || null,
+    commentary: game.commentary || null,
     turnTimeLeft: game.turnDeadline ? Math.max(0, game.turnDeadline - Date.now()) : null,
     turnDuration: AUTO_PLAY_DELAY
   };
@@ -436,6 +511,18 @@ ludoNs.on('connection', (socket) => {
     game.diceRolled = true;
     log(`ROLL: ${player.name}(${player.color}) rolled ${value}`);
 
+    // Commentary: dice events
+    if (value === 6) {
+      game.consecutiveSixes++;
+      if (game.consecutiveSixes >= 2) {
+        setCommentaryForce('doubleSix');
+      } else {
+        setCommentary('six');
+      }
+    } else {
+      game.consecutiveSixes = 0;
+    }
+
     const movable = [];
     for (let i = 0; i < 4; i++) {
       if (canMoveToken(player.color, i, value)) movable.push(i);
@@ -443,7 +530,9 @@ ludoNs.on('connection', (socket) => {
     log(`  movable tokens: ${JSON.stringify(movable)}`);
 
     if (movable.length === 0) {
+      setCommentary('stuck');
       broadcastState();
+      game.commentary = null;
       game.turnTimer = setTimeout(() => {
         if (game && game.phase === 'playing') {
           nextTurn(false);
@@ -454,14 +543,17 @@ ludoNs.on('connection', (socket) => {
       broadcastState();
       game.turnTimer = setTimeout(() => {
         if (!game || game.phase !== 'playing') return;
+        const oldStep = game.tokens[player.color][movable[0]];
         const captured = moveToken(player.color, movable[0], value);
         if (checkWin(player.color)) {
+          setCommentaryForce('win');
           game.phase = 'finished';
           game.winner = player.color;
           log(`GAME OVER: ${player.name}(${player.color}) wins!`);
           broadcastState();
           setTimeout(resetGame, 30000);
         } else {
+          addMoveCommentary(player.color, movable[0], captured, oldStep);
           const reachedHome = game.tokens[player.color][movable[0]] === 57;
           const extra = value === 6 || captured || reachedHome;
           log(`  auto-move token ${movable[0]}, extra turn: ${extra}`);
@@ -490,15 +582,18 @@ ludoNs.on('connection', (socket) => {
     }
 
     log(`MOVE: ${player.name}(${player.color}) token ${tokenIdx} with dice ${game.diceValue}`);
+    const oldStep = game.tokens[player.color][tokenIdx];
     const captured = moveToken(player.color, tokenIdx, game.diceValue);
 
     if (checkWin(player.color)) {
+      setCommentaryForce('win');
       game.phase = 'finished';
       game.winner = player.color;
       log(`GAME OVER: ${player.name}(${player.color}) wins!`);
       broadcastState();
       setTimeout(resetGame, 30000);
     } else {
+      addMoveCommentary(player.color, tokenIdx, captured, oldStep);
       const reachedHome = game.tokens[player.color][tokenIdx] === 57;
       const extra = game.diceValue === 6 || captured || reachedHome;
       log(`  extra turn: ${extra}`);
