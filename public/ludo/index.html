@@ -59,6 +59,12 @@ button:active { transform: scale(0.95); }
   border: 1.5px solid rgba(196,69,105,0.20); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .btn-dice:disabled { opacity: 0.35; }
+.btn-dice-pick {
+  width: 44px; height: 44px; font-size: 1.3rem; font-weight: 700; border-radius: 10px;
+  border: 2px solid rgba(196,69,105,0.3); background: #fff; color: #c44569; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: transform 0.1s;
+}
+.btn-dice-pick:active { transform: scale(0.92); background: #fce4ec; }
 .players-list { margin: 8px 0; text-align: left; }
 .players-list div {
   padding: 8px 14px; margin: 4px 0; border-radius: 10px; font-weight: 500;
@@ -170,6 +176,16 @@ button:active { transform: scale(0.95); }
     <div id="diceArea">
       <button id="diceBtn" class="btn-dice" onclick="rollDice()" disabled>🎲</button>
       <span id="diceDisplay"></span>
+    </div>
+    <div id="dicePicker" style="display:none;">
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-dice-pick" onclick="pickDice(1)">1</button>
+        <button class="btn-dice-pick" onclick="pickDice(2)">2</button>
+        <button class="btn-dice-pick" onclick="pickDice(3)">3</button>
+        <button class="btn-dice-pick" onclick="pickDice(4)">4</button>
+        <button class="btn-dice-pick" onclick="pickDice(5)">5</button>
+        <button class="btn-dice-pick" onclick="pickDice(6)">6</button>
+      </div>
     </div>
     <div id="pickHint" class="pick-hint" style="display:none;">Tap a highlighted token to move</div>
     <div id="noMoveHint" class="pick-hint" style="display:none;">No valid moves — passing...</div>
@@ -949,6 +965,11 @@ function renderPlaying() {
   const diceDisplay = document.getElementById('diceDisplay');
 
   diceBtn.disabled = !myTurn || state.diceRolled;
+  // Hide dice picker when state updates (turn changed, dice rolled, etc)
+  if (state.diceRolled || !myTurn) {
+    document.getElementById('dicePicker').style.display = 'none';
+    document.getElementById('diceArea').style.display = '';
+  }
 
   if (!diceAnimating) {
     if (state.diceValue) {
@@ -1112,6 +1133,18 @@ function startGame() {
 function rollDice() {
   socket.emit('roll', mySessionId);
 }
+
+function pickDice(val) {
+  document.getElementById('dicePicker').style.display = 'none';
+  document.getElementById('diceArea').style.display = '';
+  socket.emit('dice_choice', { sessionId: mySessionId, value: val });
+}
+
+socket.on('choose_dice', () => {
+  // Hide normal dice, show picker
+  document.getElementById('diceArea').style.display = 'none';
+  document.getElementById('dicePicker').style.display = 'block';
+});
 
 function resetAll() {
   socket.emit('reset');

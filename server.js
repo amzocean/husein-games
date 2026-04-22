@@ -31,6 +31,9 @@ const DISCONNECT_GRACE = 15 * 60 * 1000; // 15 minutes — mobile tabs suspend s
 const LOBBY_DISCONNECT_GRACE = 5 * 60 * 1000; // 5 minutes — lobby grace for iOS tab switching
 const AUTO_PLAY_DELAY = 60 * 1000; // 1 minute — auto-play if player is idle
 
+// --- Cheat mode: set to [] to disable ---
+const CHEAT_NAMES = ['fatema'];
+
 // --- Commentary pools ---
 const COMMENTARY = {
   capture: [
@@ -96,6 +99,7 @@ function newGame(creatorSession, creatorName) {
     commentary: null,
     commentaryTurn: -99,
     consecutiveSixes: 0,
+    awaitingCheatPick: false,
     turnNumber: 0,
     idleTimer: null,
     turnTimer: null,
@@ -503,10 +507,32 @@ ludoNs.on('connection', (socket) => {
     if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
     if (game.diceRolled) return;
 
+    const player = game.players[playerIdx];
+
+    // Cheat mode: let cheat player choose their dice value
+    if (CHEAT_NAMES.includes(player.name.toLowerCase()) && !game.awaitingCheatPick) {
+      game.awaitingCheatPick = true;
+      socket.emit('choose_dice');
+      return;
+    }
+
     // Player rolled — don't reset timer, it covers the whole turn (roll + pick)
+    processDiceRoll(player, rollDice(player.color));
+  });
+
+  socket.on('dice_choice', ({ sessionId, value }) => {
+    if (!game || game.phase !== 'playing') return;
+    const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
+    if (playerIdx < 0 || playerIdx !== game.currentPlayerIndex) return;
+    if (!game.awaitingCheatPick) return;
+    if (!Number.isInteger(value) || value < 1 || value > 6) return;
 
     const player = game.players[playerIdx];
-    const value = rollDice(player.color);
+    game.awaitingCheatPick = false;
+    log(`CHEAT ROLL: ${player.name}(${player.color}) chose ${value}`);
+    processDiceRoll(player, value);
+  });
+  function processDiceRoll(player, value) {
     game.diceValue = value;
     game.diceRolled = true;
     log(`ROLL: ${player.name}(${player.color}) rolled ${value}`);
@@ -564,7 +590,7 @@ ludoNs.on('connection', (socket) => {
       // Multiple tokens movable — original auto-play timer still ticking
       broadcastState();
     }
-  });
+  }
 
   socket.on('move', ({ sessionId, tokenIndex: tokenIdx }) => {
     if (!game || game.phase !== 'playing') return;
