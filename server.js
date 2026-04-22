@@ -117,7 +117,7 @@ function rollDice(color) {
   //   if (Math.random() < 0.333) return 6;
   //   return Math.floor(Math.random() * 5) + 1;
   // }
-  return Math.floor(Math.random() * 6) + 1;
+  return crypto.randomInt(1, 7);
 }
 
 function getAbsolutePathIndex(color, step) {
