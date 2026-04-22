@@ -28,6 +28,7 @@ const COLORS = ['red', 'green', 'yellow', 'blue'];
 const IDLE_TIMEOUT = 30 * 60 * 1000;
 const TURN_SKIP_DELAY = 1500;
 const DISCONNECT_GRACE = 15 * 60 * 1000; // 15 minutes — mobile tabs suspend sockets
+const LOBBY_DISCONNECT_GRACE = 5 * 60 * 1000; // 5 minutes — lobby grace for iOS tab switching
 const AUTO_PLAY_DELAY = 60 * 1000; // 1 minute — auto-play if player is idle
 
 function log(msg, data) {
@@ -401,6 +402,13 @@ ludoNs.on('connection', (socket) => {
       socket.emit('error_msg', 'Need at least 2 players to start.');
       return;
     }
+    // Remove any disconnected lobby players before starting
+    game.players = game.players.filter(p => p.connected);
+    game.players.forEach((p, i) => p.color = COLORS[i]);
+    if (game.players.length < 2) {
+      socket.emit('error_msg', 'Need at least 2 connected players to start.');
+      return;
+    }
     game.phase = 'playing';
     for (const p of game.players) {
       game.tokens[p.color] = [0, 0, 0, 0];
@@ -556,6 +564,16 @@ ludoNs.on('connection', (socket) => {
     resetGame();
   });
 
+  socket.on('reset_lobby', (sessionId) => {
+    if (!game || game.phase !== 'lobby') return;
+    if (game.players[0]?.sessionId !== sessionId) {
+      socket.emit('error_msg', 'Only the game creator can reset the lobby.');
+      return;
+    }
+    log(`RESET_LOBBY: creator ${game.players[0].name} reset the lobby`);
+    resetGame();
+  });
+
   socket.on('debug_roll', ({ sessionId, value }) => {
     if (!game || game.phase !== 'playing') return;
     const playerIdx = game.players.findIndex(p => p.sessionId === sessionId);
@@ -614,13 +632,22 @@ ludoNs.on('connection', (socket) => {
     log(`  player: ${player.name}(${player.color}) phase=${game.phase}`);
 
     if (game.phase === 'lobby') {
-      game.players = game.players.filter(p => p.socketId !== socket.id);
-      game.players.forEach((p, i) => p.color = COLORS[i]);
-      log(`  removed from lobby, ${game.players.length} players remain`);
-      if (game.players.length === 0) {
-        log(`  lobby empty, resetting game`);
-        resetGame();
-      }
+      // Grace period for lobby — iOS suspends sockets when switching apps/tabs
+      player.connected = false;
+      player.disconnectTimer = setTimeout(() => {
+        if (!game || game.phase !== 'lobby') return;
+        const idx = game.players.findIndex(p => p.sessionId === player.sessionId);
+        if (idx < 0 || player.connected) return; // already rejoined
+        game.players.splice(idx, 1);
+        game.players.forEach((p, i) => p.color = COLORS[i]);
+        log(`LOBBY GRACE EXPIRED: removed ${player.name}, ${game.players.length} remain`);
+        if (game.players.length === 0) {
+          log(`  lobby empty, resetting game`);
+          resetGame();
+        }
+        broadcastState();
+      }, LOBBY_DISCONNECT_GRACE);
+      log(`  lobby disconnect — ${LOBBY_DISCONNECT_GRACE/1000}s grace period`);
       broadcastState();
     } else if (game.phase === 'playing') {
       log(`  starting ${DISCONNECT_GRACE/1000}s grace period for reconnection`);

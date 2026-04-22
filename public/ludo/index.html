@@ -143,6 +143,9 @@ button:active { transform: scale(0.95); }
     <div id="lobbyStart" style="display:none;">
       <button class="btn-primary" onclick="startGame()">Start Game</button>
     </div>
+    <div id="lobbyReset" style="display:none;">
+      <button class="btn-secondary" onclick="resetLobby()" style="margin-top:8px;background:#e74c3c;color:#fff;">Reset Lobby</button>
+    </div>
     <div id="lobbyWait" style="display:none;">
       <p class="pick-hint">Waiting for host to start...</p>
     </div>
@@ -900,6 +903,7 @@ function renderLobby() {
 
   document.getElementById('lobbyJoin').style.display = (!isInGame && state.players.length < 4) ? 'block' : 'none';
   document.getElementById('lobbyStart').style.display = (isCreator && state.players.length >= 2) ? 'block' : 'none';
+  document.getElementById('lobbyReset').style.display = isCreator ? 'block' : 'none';
   document.getElementById('lobbyWait').style.display = (isInGame && !isCreator) ? 'block' : 'none';
 }
 
@@ -1120,6 +1124,14 @@ function exitGame() {
 function endGame() {
   if (confirm('End the game for everyone?')) {
     socket.emit('end_game', mySessionId);
+  }
+}
+
+function resetLobby() {
+  if (confirm('Reset the lobby and remove all players?')) {
+    socket.emit('reset_lobby', mySessionId);
+    localStorage.removeItem('ludo_session');
+    mySessionId = null;
   }
 }
 
