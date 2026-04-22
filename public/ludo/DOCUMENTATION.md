@@ -201,12 +201,18 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 4. **Finished** → Someone gets all 4 tokens to step 57, or timeout/disconnect
 5. Auto-reset to **Idle** after 30 seconds (10s for idle timeout)
 
+### Dice Roll — Cryptographic RNG
+- Uses `crypto.randomInt(1, 7)` — cryptographically secure uniform random from the OS entropy pool
+- Replaced `Math.floor(Math.random() * 6) + 1` which used V8's xorshift128+ PRNG — a deterministic sequence seeded once at process start that could produce perceivable clustering in short sessions
+- `crypto.randomInt()` draws from `/dev/urandom` (or OS equivalent), making each roll independently random with no sequential correlation
+- **Server-side only** — clients send a roll request, server generates the value, broadcasts result. No client-side cheating possible.
+
 ### Dice Roll Boost (DISABLED)
 - **Currently disabled** (code commented out) — having the boost reduced the negative impact of captures, which was undesirable
 - When enabled: if all 4 of a player's tokens are in base (step 0), ~33% chance of rolling 6
 - Normal: uniform random 1-6
 - Re-evaluates each roll dynamically
-- To re-enable: uncomment the `allInBase` / boosted roll block in the `roll` handler in server.js
+- To re-enable: uncomment the `allInBase` / boosted roll block in the `roll` handler in server.js (note: boost code still uses `Math.random()` — update to `crypto` if re-enabled)
 
 ### Turn Logic (`nextTurn()`)
 1. Clear turnTimer and autoPlayTimer
@@ -352,3 +358,4 @@ Every game state change MUST go through `broadcastState()` to reach all clients.
 | **Capture banner keeps reappearing** | `game.lastCapture` set on capture but NEVER cleared. Every `broadcastState()` re-sent stale capture data, re-triggering the client banner in an infinite show/hide loop. | Added `game.lastCapture = null;` immediately after `broadcastState()` in `nextTurn()`. Ensures exactly-once delivery: banner data included in one broadcast, then gone. |
 | **Mobile serves stale cached HTML after deploy** | `express.static` serves HTML with default caching headers. Mobile browsers (esp. iOS Safari) aggressively cache and don't revalidate. | Added middleware BEFORE `express.static` that sets `Cache-Control: no-cache` on `.html` files and directory paths. Browser still caches but must revalidate via ETag/304 — negligible overhead (~200-500 byte round-trip), guarantees new deploys are picked up. |
 | **Board rotation Green/Blue swap** | Board rotation feature placed each player's base at bottom-left, but Green (π/2) and Blue (3π/2) angles were swapped. Green base appeared at top-right instead of bottom-left; Blue base appeared at top-left. | Swapped the two values in `getBoardRotation()`: Green=3π/2 (270° CW), Blue=π/2 (90° CW). Verified with 2D rotation math: 3π/2 maps top-left→bottom-left, π/2 maps bottom-right→bottom-left. |
+| **Dice roll clustering / perceived unfairness** | `Math.random()` uses V8's xorshift128+ PRNG — seeded once at process start, producing a deterministic sequence that can cluster in short sessions (e.g., one player getting disproportionate 6s). | Switched to `crypto.randomInt(1, 7)` — draws from OS entropy pool for true independent randomness per roll. Server-side only change, no client impact. |
