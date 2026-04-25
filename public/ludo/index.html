@@ -1029,16 +1029,31 @@ function renderPlaying() {
     captureBanner.style.display = 'none';
   }
 
-  // Commentary toast
+  // Commentary toast — delay if dice is animating so it doesn't spoil the roll
   const commentaryToast = document.getElementById('commentaryToast');
   if (state.commentary) {
-    commentaryToast.textContent = state.commentary;
-    commentaryToast.style.display = 'block';
-    if (window._commentaryTimer) clearTimeout(window._commentaryTimer);
-    window._commentaryTimer = setTimeout(() => {
-      commentaryToast.style.display = 'none';
-      commentaryToast.textContent = '';
-    }, 3500);
+    const showCommentary = () => {
+      commentaryToast.textContent = state.commentary;
+      commentaryToast.style.display = 'block';
+      if (window._commentaryTimer) clearTimeout(window._commentaryTimer);
+      window._commentaryTimer = setTimeout(() => {
+        commentaryToast.style.display = 'none';
+        commentaryToast.textContent = '';
+      }, 3500);
+    };
+    if (diceAnimating) {
+      // Wait for dice animation to finish, then show
+      if (window._commentaryDelay) clearTimeout(window._commentaryDelay);
+      window._commentaryDelay = setTimeout(function waitForDice() {
+        if (diceAnimating) {
+          window._commentaryDelay = setTimeout(waitForDice, 100);
+        } else {
+          showCommentary();
+        }
+      }, 100);
+    } else {
+      showCommentary();
+    }
   } else if (!window._commentaryTimer) {
     commentaryToast.style.display = 'none';
   }
