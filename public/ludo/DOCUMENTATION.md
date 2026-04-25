@@ -91,6 +91,14 @@ Single file containing all HTML, CSS, and JavaScript.
 - `getBoardRotation(color)` returns the angle; `getMyColor()` determines current player's color from session
 - Spectators see the unrotated (Red=bottom-left) default view
 
+### Player Name Labels on Board
+- Each player's name is drawn in UPPERCASE at the edge of their base quadrant
+- Positions (logical/un-rotated): Red=bottom-left, Green=top-left, Yellow=top-right, Blue=bottom-right
+- Text is **counter-rotated** (`ctx.rotate(-rotation)`) so it always reads upright regardless of board rotation
+- White stroke outline behind dark-colored text for readability on colored backgrounds
+- Only shown during `playing` and `finished` phases (when `state.players` is populated)
+- `drawPlayerNames(ctx)` called inside `drawBoard()` after `drawCenter()`
+
 ### Sound Effects (Web Audio API, no external files)
 - `sfxRoll()` — Dice roll sound (noise burst)
 - `sfxMove()` — Token move (short beep)
@@ -207,12 +215,13 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 - `crypto.randomInt()` draws from `/dev/urandom` (or OS equivalent), making each roll independently random with no sequential correlation
 - **Server-side only** — clients send a roll request, server generates the value, broadcasts result. No client-side cheating possible.
 
-### Dice Roll Boost (DISABLED)
-- **Currently disabled** (code commented out) — having the boost reduced the negative impact of captures, which was undesirable
-- When enabled: if all 4 of a player's tokens are in base (step 0), ~33% chance of rolling 6
-- Normal: uniform random 1-6
-- Re-evaluates each roll dynamically
-- To re-enable: uncomment the `allInBase` / boosted roll block in the `roll` handler in server.js (note: boost code still uses `Math.random()` — update to `crypto` if re-enabled)
+### Mercy 6 Rule (All Tokens in Base)
+- If ALL 4 of a player's tokens are in base (step 0) and they roll 5 consecutive non-6 values, the 6th roll is **forced to 6**
+- Per-color counter `game.noSixWhileAllBase[color]` tracks consecutive non-6 rolls while all tokens are in base
+- Counter is **reset immediately when a token leaves base** (inside `moveToken()`), not when the turn ends
+- Counter is also reset when the player rolls a natural 6 (even if they don't move out)
+- If the player already has tokens on the board (not all in base), the counter is not incremented
+- Uses `crypto.randomInt` for all non-forced rolls
 
 ### Turn Logic (`nextTurn()`)
 1. Clear turnTimer and autoPlayTimer

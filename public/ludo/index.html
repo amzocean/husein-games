@@ -635,6 +635,9 @@ function drawBoard(ctx, canvasEl) {
   // Center (home)
   drawCenter(ctx);
 
+  // Player names at corners
+  drawPlayerNames(ctx);
+
   // Draw tokens — group ALL colors together so cross-color overlaps get offset
   if (state.tokens) {
     const myColor = getMyColor();
@@ -806,6 +809,42 @@ function drawCenter(ctx) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('HOME', cx, cy);
+}
+
+function drawPlayerNames(ctx) {
+  if (!state.players || state.players.length === 0) return;
+  const rotation = getBoardRotation();
+  // Logical positions of each color's name label (below their base area)
+  // These are in the un-rotated (logical) coordinate space
+  // red=bottom-left, green=top-left, yellow=top-right, blue=bottom-right
+  const namePositions = {
+    red:    { x: 3 * cellSize, y: 14.7 * cellSize },     // below bottom-left base
+    green:  { x: 3 * cellSize, y: 0.55 * cellSize },      // above top-left base
+    yellow: { x: 12 * cellSize, y: 0.55 * cellSize },     // above top-right base
+    blue:   { x: 12 * cellSize, y: 14.7 * cellSize }      // below bottom-right base
+  };
+  for (const p of state.players) {
+    const pos = namePositions[p.color];
+    if (!pos) continue;
+    const fontSize = Math.max(10, cellSize * 0.42);
+    ctx.save();
+    // Counter-rotate text so it's always upright for the viewer
+    if (rotation) {
+      ctx.translate(pos.x, pos.y);
+      ctx.rotate(-rotation);
+      ctx.translate(-pos.x, -pos.y);
+    }
+    ctx.font = `bold ${fontSize}px 'Inter', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Draw text shadow/outline for readability on colored backgrounds
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.strokeText(p.name.toUpperCase(), pos.x, pos.y);
+    ctx.fillStyle = COLORS[p.color].dark;
+    ctx.fillText(p.name.toUpperCase(), pos.x, pos.y);
+    ctx.restore();
+  }
 }
 
 function drawToken(ctx, cx, cy, radius, color, highlighted, idx) {

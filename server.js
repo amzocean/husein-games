@@ -99,6 +99,7 @@ function newGame(creatorSession, creatorName) {
     commentary: null,
     commentaryTurn: -99,
     consecutiveSixes: 0,
+    noSixWhileAllBase: {},  // per-color counter: consecutive non-6 rolls while all 4 tokens in base
     awaitingCheatPick: false,
     turnNumber: 0,
     idleTimer: null,
@@ -154,12 +155,12 @@ const HOME_STRETCHES = {
 const SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
 
 function rollDice(color) {
-  // const allInBase = game.tokens[color] && game.tokens[color].every(s => s === 0);
-  // if (allInBase) {
-  //   // ~33% chance of 6 when stuck in base; rest split among 1-5
-  //   if (Math.random() < 0.333) return 6;
-  //   return Math.floor(Math.random() * 5) + 1;
-  // }
+  const allInBase = game.tokens[color] && game.tokens[color].every(s => s === 0);
+  if (allInBase && (game.noSixWhileAllBase[color] || 0) >= 5) {
+    // Mercy rule: force a 6 after 5 consecutive non-6 rolls with all tokens stuck in base
+    log(`MERCY 6 for ${color} (${game.noSixWhileAllBase[color]} non-6 rolls while all in base)`);
+    return 6;
+  }
   return crypto.randomInt(1, 7);
 }
 
@@ -183,6 +184,8 @@ function moveToken(playerColor, tokenIdx, diceValue) {
 
   if (step === 0 && diceValue === 6) {
     game.tokens[playerColor][tokenIdx] = 1;
+    // Reset mercy counter immediately when a token comes out of base
+    game.noSixWhileAllBase[playerColor] = 0;
     log(`${playerColor} token ${tokenIdx} leaves base → step 1`);
     const absIdx = getAbsolutePathIndex(playerColor, 1);
     captured = checkCapture(playerColor, absIdx);
@@ -299,6 +302,16 @@ function startAutoPlayTimer() {
       game.diceValue = value;
       game.diceRolled = true;
       log(`AUTO-PLAY: rolled ${value} for ${player.name}(${player.color})`);
+
+      // Track no-6-while-all-in-base counter (same as processDiceRoll)
+      const allInBase = game.tokens[player.color] && game.tokens[player.color].every(s => s === 0);
+      if (allInBase) {
+        if (value === 6) {
+          game.noSixWhileAllBase[player.color] = 0;
+        } else {
+          game.noSixWhileAllBase[player.color] = (game.noSixWhileAllBase[player.color] || 0) + 1;
+        }
+      }
 
       const movable = [];
       for (let i = 0; i < 4; i++) {
@@ -536,6 +549,16 @@ ludoNs.on('connection', (socket) => {
     game.diceValue = value;
     game.diceRolled = true;
     log(`ROLL: ${player.name}(${player.color}) rolled ${value}`);
+
+    // Track no-6-while-all-in-base counter
+    const allInBase = game.tokens[player.color] && game.tokens[player.color].every(s => s === 0);
+    if (allInBase) {
+      if (value === 6) {
+        game.noSixWhileAllBase[player.color] = 0;
+      } else {
+        game.noSixWhileAllBase[player.color] = (game.noSixWhileAllBase[player.color] || 0) + 1;
+      }
+    }
 
     // Commentary: dice events
     if (value === 6) {
