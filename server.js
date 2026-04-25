@@ -66,7 +66,7 @@ const COMMENTARY = {
     "Champion! 👑", "Mogambo khush hua! 😈", "All izz well! 🌟"
   ]
 };
-const COMMENTARY_COOLDOWN = 3; // minimum turns between comments
+const COMMENTARY_COOLDOWN = 2; // minimum turns between comments
 
 function log(msg, data) {
   const ts = new Date().toISOString().slice(11, 23);
