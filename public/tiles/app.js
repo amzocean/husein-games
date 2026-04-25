@@ -2,7 +2,7 @@
 
 import { GameState } from './engine.js';
 import { renderBoard, updateTileSVG } from './renderer.js';
-import { getRandomPhotoURL } from './photos.js';
+import { getDailyPhotoURL } from './photos.js';
 
 // DOM references
 const boardEl = document.getElementById('board');
@@ -31,7 +31,7 @@ async function startNewGame() {
   boardEl.style.backgroundImage = 'none';
 
   // Pick a random photo but don't apply it yet
-  pendingPhotoURL = await getRandomPhotoURL();
+  pendingPhotoURL = await getDailyPhotoURL();
   photoLoaded = false;
 
   // Generate and render new board
