@@ -1,5 +1,5 @@
 // photos.js — Daily photo reveal from photos/ folder via manifest
-// One photo per calendar day (cycles when list exhausts)
+// One photo per calendar day, sequential, no skips, with usage log
 
 const PHOTO_DIR = 'photos/';
 let photoList = null;
@@ -14,6 +14,19 @@ async function loadManifest() {
     photoList = [];
   }
   return photoList;
+}
+
+// Usage log: { "photo-01.jpg": ["2026-04-24", "2026-06-25"], ... }
+function getUsageLog() {
+  try { return JSON.parse(localStorage.getItem('tiles_photo_log') || '{}'); }
+  catch { return {}; }
+}
+
+function logUsage(filename, date) {
+  const log = getUsageLog();
+  if (!log[filename]) log[filename] = [];
+  if (!log[filename].includes(date)) log[filename].push(date);
+  localStorage.setItem('tiles_photo_log', JSON.stringify(log));
 }
 
 // Returns one photo per calendar day, advancing sequentially only on days
@@ -36,8 +49,26 @@ async function getDailyPhotoURL() {
 
   localStorage.setItem('tiles_photo_date', today);
   localStorage.setItem('tiles_photo_index', String(index));
+  logUsage(list[index], today);
 
   return PHOTO_DIR + list[index];
 }
 
-export { getDailyPhotoURL };
+// Get photo usage stats for review
+// Returns: { used: [{file, dates, count}], unused: [file] }
+async function getPhotoStats() {
+  const list = await loadManifest();
+  const log = getUsageLog();
+  const used = [], unused = [];
+  for (const file of list) {
+    if (log[file] && log[file].length > 0) {
+      used.push({ file, dates: log[file], count: log[file].length });
+    } else {
+      unused.push(file);
+    }
+  }
+  used.sort((a, b) => b.count - a.count);
+  return { used, unused, total: list.length };
+}
+
+export { getDailyPhotoURL, getPhotoStats };

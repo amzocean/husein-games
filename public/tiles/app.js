@@ -2,7 +2,16 @@
 
 import { GameState } from './engine.js';
 import { renderBoard, updateTileSVG } from './renderer.js';
-import { getDailyPhotoURL } from './photos.js';
+import { getDailyPhotoURL, getPhotoStats } from './photos.js';
+
+// Expose stats to browser console: await photoStats()
+window.photoStats = async () => {
+  const s = await getPhotoStats();
+  console.log(`📸 Photos: ${s.used.length} used, ${s.unused.length} unused (${s.total} total)`);
+  if (s.used.length) { console.table(s.used.map(u => ({ photo: u.file, times: u.count, dates: u.dates.join(', ') }))); }
+  if (s.unused.length) { console.log('Unused:', s.unused.join(', ')); }
+  return s;
+};
 
 // DOM references
 const boardEl = document.getElementById('board');
