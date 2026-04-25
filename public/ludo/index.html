@@ -838,9 +838,15 @@ function drawPlayerNames(ctx) {
       sx = lp.x;
       sy = lp.y;
     }
+    // Adjust alignment when name lands near canvas edges (90°/270° rotations)
+    let align = 'center';
+    const pad = cellSize * 0.25;
+    if (sx < cellSize * 1.5) { align = 'left'; sx = pad; }
+    else if (sx > cellSize * 13.5) { align = 'right'; sx = size - pad; }
+
     ctx.save();
     ctx.font = `bold ${fontSize}px 'Inter', sans-serif`;
-    ctx.textAlign = 'center';
+    ctx.textAlign = align;
     ctx.textBaseline = 'middle';
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 3;
