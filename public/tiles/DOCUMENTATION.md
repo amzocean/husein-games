@@ -45,8 +45,9 @@ A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center
   - `renderAccent()` (lines 1414-1759) — corner accent decorations (64+ cases: 16 themes × 4)
   - `createTileSVG()` — assembles tile with white base + tint + board bg + matchable layers
   - `createCenterHeartSVG()` — renders the h❤f monogram center tile
-- `photos.js` — Loads random photo from `photos/manifest.json`
-- `photos/` — Personal photos revealed as tiles are cleared
+- `photos.js` — Daily photo selection from `photos/manifest.json` (one photo per calendar day, sequential, no skips)
+- `photos/` — Personal photos revealed as tiles are cleared (62 photos, named `photo-01.jpg` through `photo-62.jpg`)
+- `update-photos.ps1` — PowerShell script to regenerate `photos/manifest.json` from image files in `photos/`
 - `validate-themes.js` — Pre-commit theme validator (10 checks, all must pass)
 
 ## Tile SVG Layer Stack (back-to-front)
@@ -432,6 +433,43 @@ Some board bg patterns have hardcoded opacity values (overriding the global 0.35
 | **Street Food elements too thin** | Ring strokes and accent sizes below visibility thresholds — elements present but essentially invisible | Boosted ring stroke widths and accent sizes specifically for Street Food; then caught the same issue globally (the "197 fixes" above) |
 | **Center heart off-center** | Heart SVG Y position was calculated from top of viewBox, not visual center | Adjusted Y translate position in `createCenterHeartSVG()` for visual centering |
 | **h❤f letter spacing uneven** | "h" at x=22, heart at x=50, "f" at x=78 — gap before heart was larger than gap after | Adjusted: h at x=20, heart at x=52, f at x=80 — optically balanced |
+
+---
+
+## Photo Reveal System
+
+### Daily Photo Rotation
+Each calendar day shows **one** photo as the jigsaw reveal. Photos advance sequentially — never randomly — so there's something new to look forward to each day.
+
+**Key behavior:**
+- First play ever → `photo-01.jpg`
+- Next calendar day someone plays → advances to `photo-02.jpg`
+- If nobody plays for 2 days, the next photo is still `photo-02.jpg` (no skipping)
+- Same day, multiple plays → same photo all day
+- After the last photo, cycles back to `photo-01.jpg`
+
+**How it works:** `photos.js` stores two keys in `localStorage`:
+| Key | Value | Purpose |
+|-----|-------|---------|
+| `tiles_photo_date` | `"YYYY-MM-DD"` | Last calendar day someone played |
+| `tiles_photo_index` | `"0"`, `"1"`, ... | Current position in the manifest array |
+
+On each game start, `getDailyPhotoURL()` checks if today's date differs from the stored date. If yes, it increments the index (wrapping via modulo). If same day, it returns the same photo.
+
+### Managing Photos
+
+**Adding new photos (do this before the cycle completes!):**
+1. Drop image files (`.jpg`, `.png`, `.webp`, `.gif`) into `public/tiles/photos/`
+2. Rename them to continue the sequence: `photo-63.jpg`, `photo-64.jpg`, etc.
+3. Run from the `public/tiles/` directory:
+   ```powershell
+   .\update-photos.ps1
+   ```
+4. Commit and push
+
+**`update-photos.ps1`** scans the `photos/` folder for image files, sorts by name, and writes `manifest.json` as a JSON array of filenames. The sequential naming (`photo-01.jpg`, `photo-02.jpg`, ...) ensures the order in the manifest matches the intended reveal order.
+
+**Current inventory:** 62 photos → approximately 2 months of daily reveals.
 
 ---
 
