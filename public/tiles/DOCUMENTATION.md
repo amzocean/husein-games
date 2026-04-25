@@ -471,6 +471,41 @@ On each game start, `getDailyPhotoURL()` checks if today's date differs from the
 
 **Current inventory:** 62 photos → approximately 2 months of daily reveals.
 
+### Usage Tracking & Stats
+
+Every photo shown is logged in `localStorage` under `tiles_photo_log` with the filename and every date it was displayed:
+```json
+{
+  "photo-01.jpg": ["2026-04-24"],
+  "photo-02.jpg": ["2026-04-25", "2026-06-26"],
+  "photo-35.jpg": []
+}
+```
+
+**To check which photos have been used/unused and how many times:**
+1. Open the tiles game in your browser
+2. Open the browser console (F12 → Console tab)
+3. Run:
+   ```js
+   await photoStats()
+   ```
+4. You'll see a table like:
+   | photo | times | dates |
+   |-------|-------|-------|
+   | photo-01.jpg | 2 | 2026-04-24, 2026-06-25 |
+   | photo-02.jpg | 1 | 2026-04-25 |
+   
+   Plus a list of unused photos.
+
+**When to add more photos:** When `unused` count is getting low (say < 10), drop new images into `photos/`, rename them to continue the sequence (`photo-63.jpg`, `photo-64.jpg`, ...), run `.\update-photos.ps1`, and push.
+
+**localStorage keys reference:**
+| Key | Purpose |
+|-----|---------|
+| `tiles_photo_date` | Last calendar day someone played (`"YYYY-MM-DD"`) |
+| `tiles_photo_index` | Current position in the manifest array |
+| `tiles_photo_log` | Full usage history — `{ filename: [dates] }` |
+
 ---
 
 ## Future Ideas
