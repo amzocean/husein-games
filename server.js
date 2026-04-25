@@ -38,32 +38,64 @@ const CHEAT_NAMES = ['fatema'];
 const COMMENTARY = {
   capture: [
     "Nikaal diya! 💥", "Dhoom machale! 💃", "Out kar diya bhai!",
-    "Vaat laga di! 😤", "Kya shot maara! 🏏", "Supari complete! 🎯"
+    "Vaat laga di! 😤", "Kya shot maara! 🏏", "Supari complete! 🎯",
+    "Gaya tel lene! 🛢️", "Wapas chal beta! 👋", "Kaanta laga! 💀",
+    "Babaji ka thullu! 🤣", "Thappad se darr nahi lagta! 👏"
   ],
   six: [
-    "Chhakka! 🏏", "Luck ka badshah!", "Kya baat hai! 🔥",
-    "Sixer! Dhoni style! 🏏", "Chha gaye guru! 🙌"
+    "SIXER! 🏏", "Luck ka badshah!", "Kya baat hai! 🔥",
+    "Sixer! Dhoni style! 🏏", "Chha gaye guru! 🙌",
+    "Ye banda aag hai! 🔥", "Seeti bajao! 🎶",
+    "Picture abhi baaki hai! 🎬", "Kya gazab dice maara! 🎲"
   ],
   doubleSix: [
     "Double six?! Ye toh Don hai! 😎", "Back to back! Unstoppable! 🚂",
-    "Koi rokk nahi sakta! 🔥", "Lagaan wali innings! 🏏"
+    "Koi rokk nahi sakta! 🔥", "Lagaan wali innings! 🏏",
+    "Ye toh tsunami hai! 🌊", "Shahenshah on fire! 👑🔥",
+    "Script likhi hai kya? 📝"
   ],
   stuck: [
     "Kismat ke kharaab din... 😩", "Arre yaar! 😫",
     "Kuch nahi mil raha... 🍀", "Bas kar bhai... rula dega kya 😭",
-    "Thoda sabar karo... ⏳"
+    "Thoda sabar karo... ⏳", "Chai peelo, kuch nahi hoga ☕",
+    "Taqdeer hi kharab hai! 🥲", "Dice mein bhi politics?! 🗳️"
   ],
   leaveBase: [
     "Entry maarli! 🎬", "Aa raha hai! 🏃", "Chalo ji, shuru! 🎉",
-    "Ek tha tiger... nikla! 🐯", "First class entry! 🌟"
+    "Ek tha tiger... nikla! 🐯", "First class entry! 🌟",
+    "Tiger zinda hai! 🐅", "Nikla hai kaun?! 👀", "Seedha action mode! 💪"
   ],
   reachHome: [
     "Ghar aa gaya! 🏠", "Apna time aa gaya! ⭐",
-    "Safe! Ek aur andar! 🎯", "Home run! 🏡", "Ek aur paar! 🙌"
+    "Safe! Ek aur andar! 🎯", "Home run! 🏡", "Ek aur paar! 🙌",
+    "Pension time! 👴", "Ghar ka raasta mil gaya! 🧭",
+    "No return ticket needed! 🎫"
   ],
   win: [
     "Jeet gaya bhai! 🏆", "And the Oscar goes to... 🎬",
-    "Champion! 👑", "Mogambo khush hua! 😈", "All izz well! 🌟"
+    "Champion! 👑", "Mogambo khush hua! 😈", "All izz well! 🌟",
+    "Bazigar! 🎭", "Aaj mere paas... sab hai! 💰", "Trophy lao bhai! 🏆🏆"
+  ],
+  one: [
+    "Ikke pe ikka! 🎲", "Ek - lonely number! 😢", "Baby steps! 👶",
+    "Chinti chal! 🐜", "Ek dum se ek! 😑"
+  ],
+  two: [
+    "Do ka dum! ✌️", "Jodi number one! 💑",
+    "Do kadam chal diye! 👣", "Double roti! 🍞"
+  ],
+  three: [
+    "Teen maar khan! 🤠", "Teen tigada kaam bigada! 😬",
+    "Hat-trick! 🎩", "Tees maar khan vibes! ⚔️"
+  ],
+  four: [
+    "Chaar chand laga diye! 🌙", "Almost paanch... 😏",
+    "Char kadam chal ke! 💃"
+  ],
+  five: [
+    "Ek aur hota toh sixer! 😩", "Paanch ka punch! 👊",
+    "So close yet so far! 😤", "Panch Pandav chal pade! ⚔️",
+    "Paanchvi pass! 📚"
   ]
 };
 const COMMENTARY_COOLDOWN = 2; // minimum turns between comments
@@ -570,6 +602,8 @@ ludoNs.on('connection', (socket) => {
       }
     } else {
       game.consecutiveSixes = 0;
+      const diceNames = { 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five' };
+      if (diceNames[value]) setCommentary(diceNames[value]);
     }
 
     const movable = [];
