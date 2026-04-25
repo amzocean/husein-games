@@ -93,11 +93,12 @@ Single file containing all HTML, CSS, and JavaScript.
 
 ### Player Name Labels on Board
 - Each player's name is drawn in UPPERCASE at the edge of their base quadrant
-- Positions (logical/un-rotated): Red=bottom-left, Green=top-left, Yellow=top-right, Blue=bottom-right
-- Text is **counter-rotated** (`ctx.rotate(-rotation)`) so it always reads upright regardless of board rotation
+- Drawn **outside** the rotated canvas context (after `ctx.restore()`) in screen space
+- Uses a **fixed screen-slot** approach: 4 slots (bottom-left, top-left, top-right, bottom-right) are always at top/bottom edges, never sides
+- Color-to-slot mapping: `slot = (colorIndex - viewerIndex + 4) % 4` — viewer's own color always at slot 0 (bottom-left)
 - White stroke outline behind dark-colored text for readability on colored backgrounds
-- Only shown during `playing` and `finished` phases (when `state.players` is populated)
-- `drawPlayerNames(ctx)` called inside `drawBoard()` after `drawCenter()`
+- Only shown when `state.players` is populated
+- `drawPlayerNames(ctx)` called in `drawBoard()` after the rotation `ctx.restore()`
 
 ### Sound Effects (Web Audio API, no external files)
 - `sfxRoll()` — Dice roll sound (noise burst)
@@ -148,6 +149,7 @@ IDLE_TIMEOUT = 30 * 60 * 1000      // 30 minutes — no turns taken
 TURN_SKIP_DELAY = 1500              // 1.5s pause before auto-skipping (no valid moves)
 DISCONNECT_GRACE = 15 * 60 * 1000   // 15 minutes — socket drop grace period
 AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
+COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 ```
 
 ### Game State Object (`game`)
@@ -290,6 +292,32 @@ AUTO_PLAY_DELAY = 60 * 1000         // 1 minute — auto-play idle player's turn
 ### Logging
 - All server events logged with `[LUDO HH:MM:SS.mmm]` prefix
 - Key events: CONNECT, DISCONNECT, REJOIN, CREATE, JOIN, START, ROLL, MOVE, CAPTURE, AUTO-PLAY, GAME OVER, GRACE EXPIRED
+
+### Commentary System
+Server-side commentary generates Bollywood/desi-flavored toast messages for game events.
+
+**12 event pools** (70 total lines):
+
+| Pool | Count | Trigger | Cooldown |
+|------|-------|---------|----------|
+| `capture` | 11 | Token captured | Bypasses cooldown |
+| `six` | 9 | Rolled a 6 (first consecutive) | Normal |
+| `doubleSix` | 7 | 2+ consecutive 6s | Bypasses cooldown |
+| `stuck` | 8 | No valid moves after roll | Normal |
+| `leaveBase` | 8 | Token leaves base | Normal |
+| `reachHome` | 8 | Token reaches home (step 57) | Normal |
+| `win` | 8 | Game won | Bypasses cooldown |
+| `one` | 5 | Rolled a 1 | Normal |
+| `two` | 4 | Rolled a 2 | Normal |
+| `three` | 4 | Rolled a 3 | Normal |
+| `four` | 3 | Rolled a 4 | Normal |
+| `five` | 5 | Rolled a 5 | Normal |
+
+**Cooldown**: `COMMENTARY_COOLDOWN = 2` turns between normal comments. Capture, doubleSix, and win bypass cooldown via `setCommentaryForce()`.
+
+**Client display**: Commentary toast is delayed until the dice roll animation (600ms) finishes — polls `diceAnimating` flag every 100ms so comments don't spoil the roll result. Toast auto-hides after 3.5 seconds.
+
+**Transient field**: `game.commentary` is cleared immediately after `broadcastState()` (exactly-once delivery pattern, same as `lastCapture`).
 
 ## Design Pitfalls & Patterns
 
