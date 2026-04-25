@@ -635,9 +635,6 @@ function drawBoard(ctx, canvasEl) {
   // Center (home)
   drawCenter(ctx);
 
-  // Player names at corners
-  drawPlayerNames(ctx);
-
   // Draw tokens — group ALL colors together so cross-color overlaps get offset
   if (state.tokens) {
     const myColor = getMyColor();
@@ -725,6 +722,9 @@ function drawBoard(ctx, canvasEl) {
     }
   }
   ctx.restore();
+
+  // Player names — drawn OUTSIDE the rotation context, in screen space
+  drawPlayerNames(ctx);
 }
 
 function drawBase(ctx, startRow, startCol, color) {
@@ -814,35 +814,39 @@ function drawCenter(ctx) {
 function drawPlayerNames(ctx) {
   if (!state.players || state.players.length === 0) return;
   const rotation = getBoardRotation();
-  // Logical positions of each color's name label (below their base area)
-  // These are in the un-rotated (logical) coordinate space
-  // red=bottom-left, green=top-left, yellow=top-right, blue=bottom-right
-  const namePositions = {
-    red:    { x: 3 * cellSize, y: 14.7 * cellSize },     // below bottom-left base
-    green:  { x: 3 * cellSize, y: 0.55 * cellSize },      // above top-left base
-    yellow: { x: 12 * cellSize, y: 0.55 * cellSize },     // above top-right base
-    blue:   { x: 12 * cellSize, y: 14.7 * cellSize }      // below bottom-right base
+  const size = cellSize * 15;
+  const half = size / 2;
+  // Logical name positions (un-rotated board): at the outer edge of each base
+  const logicalPos = {
+    red:    { x: 3 * cellSize, y: 14.5 * cellSize },
+    green:  { x: 3 * cellSize, y: 0.5 * cellSize },
+    yellow: { x: 12 * cellSize, y: 0.5 * cellSize },
+    blue:   { x: 12 * cellSize, y: 14.5 * cellSize }
   };
+  const fontSize = Math.max(10, cellSize * 0.44);
   for (const p of state.players) {
-    const pos = namePositions[p.color];
-    if (!pos) continue;
-    const fontSize = Math.max(10, cellSize * 0.42);
-    ctx.save();
-    // Counter-rotate text so it's always upright for the viewer
+    const lp = logicalPos[p.color];
+    if (!lp) continue;
+    // Rotate logical position to screen position
+    let sx, sy;
     if (rotation) {
-      ctx.translate(pos.x, pos.y);
-      ctx.rotate(-rotation);
-      ctx.translate(-pos.x, -pos.y);
+      const cos = Math.cos(rotation), sin = Math.sin(rotation);
+      const dx = lp.x - half, dy = lp.y - half;
+      sx = cos * dx - sin * dy + half;
+      sy = sin * dx + cos * dy + half;
+    } else {
+      sx = lp.x;
+      sy = lp.y;
     }
+    ctx.save();
     ctx.font = `bold ${fontSize}px 'Inter', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    // Draw text shadow/outline for readability on colored backgrounds
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 3;
-    ctx.strokeText(p.name.toUpperCase(), pos.x, pos.y);
+    ctx.strokeText(p.name.toUpperCase(), sx, sy);
     ctx.fillStyle = COLORS[p.color].dark;
-    ctx.fillText(p.name.toUpperCase(), pos.x, pos.y);
+    ctx.fillText(p.name.toUpperCase(), sx, sy);
     ctx.restore();
   }
 }
