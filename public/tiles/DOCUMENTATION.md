@@ -6,7 +6,7 @@
 
 ## Overview
 
-A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center). Match tiles by shared visual attributes to clear them. A surprise photo reveals underneath as tiles are cleared (jigsaw-style). Originally built as "Fatema Tiles" (source: `C:\Users\huseinm\Downloads\fatema-tiles`).
+A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center). Match tiles by shared visual attributes to clear them. A surprise photo reveals underneath as tiles are cleared, and on win a romantic jigsaw cascade assembles the full photo from scattered pieces. Originally built as "Fatema Tiles" (source: `C:\Users\huseinm\Downloads\fatema-tiles`).
 
 ## Architecture (v2 — April 2026 Redesign)
 
@@ -31,7 +31,7 @@ A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center
 - `app.js` — Main application controller (ES modules, imports engine + renderer + photos)
   - Shows theme name + emoji as a toast on each new game (fades after 2s)
   - Skips center tile clicks (`.tile:not(.center-tile)` selector)
-  - Animates center heart out on win
+  - Animates center heart out on win, plays romantic jigsaw cascade reveal (`playCascadeReveal()`)
 - `engine.js` — Board generation, game logic & **16-theme system** (~448 lines)
   - Constants: `ROWS=5, COLS=5, TILE_COUNT=25, ACTIVE_TILES=24, CENTER_INDEX=12`
   - `THEMES` array defines all 16 themes (palette, patterns, styles, shapes, accents, **boardBg**)
@@ -62,6 +62,23 @@ Layer 4: matchable attribute layers (ring, shape, accent)   ← what the player 
 ```
 
 When a tile is cleared (matched), the whole tile element goes to `opacity: 0`, revealing the photo CSS `background-image` on the board div underneath — creating a jigsaw reveal effect.
+
+## Win Cascade Reveal
+
+When all 24 tiles are cleared, a romantic **jigsaw cascade animation** plays:
+
+1. Center heart tile animates out (scale down + fade via `.win-reveal`)
+2. The CSS background photo is temporarily hidden
+3. 25 overlay `<div>` pieces are created, each showing a slice of the photo via `background-position` offsets
+4. Pieces start at **random scattered positions** with random rotations (±60°) and small scale (0.3–0.7×)
+5. Each piece **flies into its correct grid cell** with staggered delays (~70ms apart) and bouncy easing (`cubic-bezier(0.34, 1.56, 0.64, 1)`)
+6. Cascade order is **fully randomized** each game (Fisher-Yates shuffle)
+7. Soft **pink glow pulse** (`rgba(196, 69, 105, 0.3)`) on completion
+8. Overlay is removed, CSS background restored, win banner + falling hearts appear
+
+**Timing:** ~2.5s total (25 pieces × 70ms stagger + 900ms settle + 600ms glow)
+
+**Implementation:** `playCascadeReveal(onComplete)` in `app.js` — purely visual, no game state changes. All pieces are absolutely positioned inside a `.cascade-overlay` div appended to `#board`.
 
 ## Center Heart Tile (index 12)
 
@@ -110,7 +127,8 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 3. Tap two tiles that share at least one visual attribute (ring, shape, or accent) to match them
 4. Matched tiles fade out, revealing a photo underneath (jigsaw reveal)
 5. Track combo streaks and clear all 24 tiles to win
-6. "✨ New" button starts a fresh board with a new random theme + random photo
+6. Romantic jigsaw cascade — photo pieces fly in from random positions and assemble the full photo
+7. "✨ New" button starts a fresh board with a new random theme + random photo
 
 ### Score Display
 - Current combo, best combo, tiles cleared (X/24)
@@ -391,6 +409,9 @@ Board div:
 CSS animations:
   .center-tile: heartPulse 1.2s infinite (double-pump: scale 1→1.12→1→1.08→1)
   .center-tile.win-reveal: opacity 0, scale 0.3 (animate out on win)
+  .cascade-overlay: 25 absolutely-positioned photo slices fly in from random positions
+    - Each piece: transition 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) with staggered delays
+    - Completion glow: inset box-shadow rgba(196, 69, 105, 0.3)
 ```
 
 ### Pattern Opacity Hardcodes
@@ -435,6 +456,13 @@ Some board bg patterns have hardcoded opacity values (overriding the global 0.35
 | **Street Food elements too thin** | Ring strokes and accent sizes below visibility thresholds — elements present but essentially invisible | Boosted ring stroke widths and accent sizes specifically for Street Food; then caught the same issue globally (the "197 fixes" above) |
 | **Center heart off-center** | Heart SVG Y position was calculated from top of viewBox, not visual center | Adjusted Y translate position in `createCenterHeartSVG()` for visual centering |
 | **h❤f letter spacing uneven** | "h" at x=22, heart at x=50, "f" at x=78 — gap before heart was larger than gap after | Adjusted: h at x=20, heart at x=52, f at x=80 — optically balanced |
+| **Indistinguishable tile backgrounds** | `boardBg.color` tint was uniform (same color at 12% opacity for ALL tiles). All tiles looked identically near-white regardless of theme | Per-tile bg tint: `generateBoard()` assigns a random `bgColor` from `theme.palette.bg` to each tile. `createTileSVG()` renders it at 22% opacity. Tiles now have distinct colored tints. |
+
+### Feature Additions (April 2026)
+
+| Feature | Description | Implementation |
+|---------|-------------|----------------|
+| **Romantic jigsaw cascade reveal** | On win, instead of just showing the photo, 25 pieces fly in from random scattered positions and assemble the full photo like a jigsaw puzzle snapping together | `playCascadeReveal(onComplete)` in `app.js`. Creates 25 overlay divs with `background-position` slices. Fisher-Yates shuffle for random order, staggered 70ms delays, bouncy `cubic-bezier(0.34, 1.56, 0.64, 1)` easing, pink glow pulse on completion. ~2.5s total. |
 
 ---
 
