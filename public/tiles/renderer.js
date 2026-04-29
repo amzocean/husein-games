@@ -650,6 +650,154 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Apps ──
+    case 'app-grid': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let r = 0; r < 3; r++)
+        for (let col = 0; col < 3; col++)
+          s += `<rect x="${18 + col * 24}" y="${18 + r * 24}" width="16" height="16" rx="4" fill="#fff" opacity="0.08"/>`;
+      return s;
+    }
+    case 'status-bar': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="4" y="4" width="92" height="12" rx="2" fill="#fff" opacity="0.06"/>`;
+      s += `<rect x="8" y="7" width="14" height="5" rx="1" fill="#fff" opacity="0.1"/>`;
+      s += `<rect x="75" y="7" width="18" height="5" rx="1" fill="#fff" opacity="0.1"/>`;
+      return s;
+    }
+    case 'home-screen': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="30" y="80" width="40" height="5" rx="2.5" fill="#fff" opacity="0.1"/>`;
+      for (let i = 0; i < 4; i++)
+        s += `<rect x="${20 + i * 18}" y="${35 + (i % 2) * 4}" width="12" height="12" rx="3" fill="#fff" opacity="0.07"/>`;
+      return s;
+    }
+    case 'swipe-trail': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<path d="M20,80 Q30,40 50,50 Q70,60 80,20" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.1" stroke-linecap="round"/>`;
+      s += `<path d="M22,82 Q32,42 52,52 Q72,62 82,22" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06" stroke-linecap="round"/>`;
+      return s;
+    }
+    case 'notification-shade': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let i = 0; i < 3; i++)
+        s += `<rect x="12" y="${20 + i * 22}" width="76" height="14" rx="3" fill="#fff" opacity="0.06"/>`;
+      return s;
+    }
+    // ── Laundry ──
+    case 'clothesline': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<line x1="8" y1="30" x2="92" y2="28" stroke="#fff" stroke-width="1" opacity="0.12"/>`;
+      s += `<line x1="8" y1="60" x2="92" y2="58" stroke="#fff" stroke-width="1" opacity="0.1"/>`;
+      for (let i = 0; i < 4; i++)
+        s += `<rect x="${15 + i * 20}" y="${26 + (i % 2)}" width="8" height="14" rx="1" fill="#fff" opacity="0.06"/>`;
+      return s;
+    }
+    case 'fabric-weave': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let i = 0; i < 10; i++) {
+        s += `<line x1="${10 + i * 9}" y1="4" x2="${10 + i * 9}" y2="96" stroke="#fff" stroke-width="0.5" opacity="0.08"/>`;
+        s += `<line x1="4" y1="${10 + i * 9}" x2="96" y2="${10 + i * 9}" stroke="#fff" stroke-width="0.5" opacity="0.08"/>`;
+      }
+      return s;
+    }
+    case 'tumble-dry': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<path d="M30,50 Q50,20 70,50 Q50,80 30,50Z" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.1"/>`;
+      s += `<path d="M35,50 Q50,28 65,50 Q50,72 35,50Z" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.07"/>`;
+      return s;
+    }
+    case 'soap-suds': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      const r = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 8; i++)
+        s += `<ellipse cx="${15 + r() * 70}" cy="${15 + r() * 70}" rx="${3 + r() * 5}" ry="${3 + r() * 5}" fill="#fff" opacity="0.06"/>`;
+      return s;
+    }
+    case 'laundry-basket': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let i = 0; i < 6; i++)
+        s += `<path d="M10,${22 + i * 12} Q50,${18 + i * 12} 90,${22 + i * 12}" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.08"/>`;
+      return s;
+    }
+    // ── Jeweler ──
+    case 'velvet-cushion': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="10" y="10" width="80" height="80" rx="10" fill="#fff" opacity="0.04"/>`;
+      s += `<path d="M10,50 Q50,40 90,50" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.08"/>`;
+      s += `<path d="M50,10 Q40,50 50,90" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.08"/>`;
+      return s;
+    }
+    case 'display-case': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="15" y="15" width="70" height="70" rx="2" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.1"/>`;
+      s += `<line x1="15" y1="50" x2="85" y2="50" stroke="#fff" stroke-width="0.5" opacity="0.07"/>`;
+      s += `<line x1="50" y1="15" x2="50" y2="85" stroke="#fff" stroke-width="0.5" opacity="0.07"/>`;
+      return s;
+    }
+    case 'chain-links': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let i = 0; i < 5; i++)
+        s += `<ellipse cx="${15 + i * 18}" cy="50" rx="8" ry="5" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.1"/>`;
+      return s;
+    }
+    case 'gem-facets': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<polygon points="50,15 75,40 65,75 35,75 25,40" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.1"/>`;
+      s += `<line x1="50" y1="15" x2="35" y2="75" stroke="#fff" stroke-width="0.4" opacity="0.07"/>`;
+      s += `<line x1="50" y1="15" x2="65" y2="75" stroke="#fff" stroke-width="0.4" opacity="0.07"/>`;
+      s += `<line x1="25" y1="40" x2="75" y2="40" stroke="#fff" stroke-width="0.4" opacity="0.07"/>`;
+      return s;
+    }
+    case 'jewel-box': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="20" y="30" width="60" height="40" rx="3" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.1"/>`;
+      s += `<line x1="20" y1="42" x2="80" y2="42" stroke="#fff" stroke-width="0.6" opacity="0.08"/>`;
+      s += `<path d="M44,42 L50,30 L56,42" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.08"/>`;
+      return s;
+    }
+    // ── Royal Court ──
+    case 'royal-damask': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let r = 0; r < 3; r++)
+        for (let col = 0; col < 3; col++) {
+          const x = 18 + col * 28, y = 18 + r * 28;
+          s += `<path d="M${x},${y-6} Q${x+6},${y} ${x},${y+6} Q${x-6},${y} ${x},${y-6}Z" fill="#fff" opacity="0.06"/>`;
+        }
+      return s;
+    }
+    case 'throne-room': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="35" y="45" width="30" height="45" rx="2" fill="#fff" opacity="0.05"/>`;
+      s += `<path d="M35,45 Q50,30 65,45" fill="#fff" opacity="0.06"/>`;
+      s += `<line x1="4" y1="90" x2="96" y2="90" stroke="#fff" stroke-width="1" opacity="0.08"/>`;
+      return s;
+    }
+    case 'castle-stone': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let r = 0; r < 4; r++)
+        for (let col = 0; col < 3; col++) {
+          const off = r % 2 === 0 ? 0 : 15;
+          s += `<rect x="${8 + col * 30 + off}" y="${10 + r * 20}" width="26" height="16" rx="1" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.08"/>`;
+        }
+      return s;
+    }
+    case 'tapestry-weave': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      for (let i = 0; i < 8; i++) {
+        s += `<line x1="${12 + i * 11}" y1="4" x2="${12 + i * 11}" y2="96" stroke="#fff" stroke-width="0.4" opacity="0.08"/>`;
+        s += `<line x1="4" y1="${12 + i * 11}" x2="96" y2="${12 + i * 11}" stroke="#fff" stroke-width="0.4" opacity="0.08"/>`;
+      }
+      return s;
+    }
+    case 'herald-banner': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.22"/>`;
+      s += `<rect x="30" y="10" width="40" height="60" rx="1" fill="#fff" opacity="0.05"/>`;
+      s += `<polygon points="30,70 50,80 70,70" fill="#fff" opacity="0.05"/>`;
+      s += `<line x1="50" y1="4" x2="50" y2="10" stroke="#fff" stroke-width="1.2" opacity="0.1"/>`;
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -938,6 +1086,58 @@ function renderRing(attr) {
              `<path d="M5,90 Q20,95 35,90 Q50,85 65,92 Q80,97 95,90" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
              `<path d="M10,5 Q5,20 10,35 Q15,50 8,65 Q3,80 10,95" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
              `<path d="M90,5 Q95,20 90,35 Q85,50 92,65 Q97,80 90,95" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+
+    // ── Apps ──
+    case 'app-border':
+      return `<rect x="6" y="6" width="88" height="88" rx="14" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+    case 'rounded-badge':
+      return `<rect x="8" y="8" width="84" height="84" rx="20" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="17" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+    case 'pill-outline':
+      return `<rect x="6" y="20" width="88" height="60" rx="30" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+
+    // ── Laundry ──
+    case 'stitched':
+      return `<rect x="7" y="7" width="86" height="86" rx="6" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="5,3" opacity="0.7"/>`;
+    case 'hemline':
+      return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
+             `<rect x="10" y="10" width="80" height="80" rx="4" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+    case 'fold-crease':
+      return `<path d="M10,5 L90,5 L95,10 L95,90 L90,95 L10,95 L5,90 L5,10 Z" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<line x1="50" y1="5" x2="50" y2="95" stroke="${c}" stroke-width="0.8" opacity="0.25"/>`;
+
+    // ── Jeweler ──
+    case 'band-ring':
+      return `<circle cx="50" cy="50" r="42" fill="none" stroke="${c}" stroke-width="4" opacity="0.7"/>` +
+             `<circle cx="50" cy="50" r="38" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+    case 'prong-setting':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<line x1="50" y1="6" x2="50" y2="14" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<line x1="50" y1="86" x2="50" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<line x1="6" y1="50" x2="14" y2="50" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<line x1="86" y1="50" x2="94" y2="50" stroke="${c}" stroke-width="2.5" opacity="0.7"/>`;
+    case 'filigree-band':
+      return `<circle cx="50" cy="50" r="42" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<circle cx="50" cy="50" r="38" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.4"/>` +
+             `<path d="M18,18 Q50,30 82,18" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.3"/>` +
+             `<path d="M18,82 Q50,70 82,82" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.3"/>`;
+
+    // ── Royal Court ──
+    case 'crown-points':
+      return `<rect x="6" y="12" width="88" height="82" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<polygon points="6,12 20,5 34,12 50,3 66,12 80,5 94,12" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>`;
+    case 'royal-chain':
+      return `<rect x="8" y="8" width="84" height="84" rx="6" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="8,4" opacity="0.7"/>`;
+    case 'ermine-trim':
+      return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
+             `<line x1="20" y1="6" x2="20" y2="12" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="40" y1="6" x2="40" y2="12" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="60" y1="6" x2="60" y2="12" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="80" y1="6" x2="80" y2="12" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="20" y1="88" x2="20" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="40" y1="88" x2="40" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="60" y1="88" x2="60" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
+             `<line x1="80" y1="88" x2="80" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
 
     default: return '';
   }
@@ -1405,6 +1605,92 @@ function renderShape(attr) {
              `<path d="M32,55 Q42,32 54,42 Q66,52 74,28" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" opacity="0.4"/>` +
              `<path d="M26,68 Q36,48 48,55 Q60,62 68,42" fill="none" stroke="#7b1fa2" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>`;
 
+    // ── Apps ──
+    case 'chat-bubble':
+      return `<rect x="30" y="32" width="40" height="28" rx="8" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="38,60 44,60 36,70" fill="${c}" opacity="${o}"/>` +
+             `<line x1="38" y1="42" x2="62" y2="42" stroke="#fff" stroke-width="2" opacity="0.3"/>` +
+             `<line x1="38" y1="48" x2="56" y2="48" stroke="#fff" stroke-width="2" opacity="0.25"/>`;
+    case 'wifi-icon':
+      return `<path d="M26,52 Q50,28 74,52" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/>` +
+             `<path d="M34,56 Q50,40 66,56" fill="none" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="${o * 0.8}"/>` +
+             `<path d="M42,60 Q50,50 58,60" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o * 0.7}"/>` +
+             `<circle cx="50" cy="66" r="3" fill="${c}" opacity="${o}"/>`;
+    case 'battery-shape':
+      return `<rect x="30" y="35" width="36" height="24" rx="3" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<rect x="66" y="42" width="5" height="10" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="39" width="20" height="16" rx="1" fill="${c}" opacity="${o * 0.6}"/>`;
+    case 'bell-icon':
+      return `<path d="M38,55 Q38,35 50,32 Q62,35 62,55 L65,60 L35,60 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="28" x2="50" y2="32" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<circle cx="50" cy="27" r="2" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="50" cy="64" rx="5" ry="3" fill="${c}" opacity="${o * 0.7}"/>`;
+
+    // ── Laundry ──
+    case 'sock-shape':
+      return `<path d="M42,30 L42,58 Q42,70 50,70 Q58,70 58,62 L58,55 L48,55 L48,30 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="42" y1="38" x2="48" y2="38" stroke="#fff" stroke-width="1.5" opacity="0.25"/>` +
+             `<line x1="42" y1="42" x2="48" y2="42" stroke="#fff" stroke-width="1.5" opacity="0.25"/>`;
+    case 'hanger':
+      return `<path d="M50,30 L50,36 L28,56 L72,56 Z" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" opacity="${o}"/>` +
+             `<circle cx="50" cy="28" r="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="28" y1="56" x2="72" y2="56" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+    case 'clothespin':
+      return `<rect x="46" y="30" width="8" height="35" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<path d="M44,65 L46,50 L50,50 L48,68 Z" fill="${c}" opacity="${o * 0.8}"/>` +
+             `<path d="M56,65 L54,50 L50,50 L52,68 Z" fill="${c}" opacity="${o * 0.8}"/>` +
+             `<rect x="44" y="34" width="12" height="4" rx="1" fill="${c}" opacity="${o}"/>`;
+    case 'iron-shape':
+      return `<path d="M30,55 L30,42 L70,42 L70,55 L60,65 L30,65 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="44" y="35" width="6" height="10" rx="1" fill="${c}" opacity="${o * 0.7}"/>` +
+             `<line x1="34" y1="55" x2="66" y2="55" stroke="#fff" stroke-width="1.5" opacity="0.2"/>`;
+
+    // ── Jeweler ──
+    case 'diamond-gem':
+      return `<polygon points="50,28 70,48 50,72 30,48" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="28" x2="30" y2="48" stroke="#fff" stroke-width="1" opacity="0.25"/>` +
+             `<line x1="50" y1="28" x2="70" y2="48" stroke="#fff" stroke-width="1" opacity="0.25"/>` +
+             `<line x1="30" y1="48" x2="70" y2="48" stroke="#fff" stroke-width="1" opacity="0.2"/>` +
+             `<line x1="50" y1="28" x2="50" y2="72" stroke="#fff" stroke-width="0.8" opacity="0.15"/>`;
+    case 'pearl-drop':
+      return `<circle cx="50" cy="48" r="14" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="45" cy="43" rx="4" ry="3" fill="#fff" opacity="0.2"/>` +
+             `<path d="M50,32 L50,28 L48,24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o * 0.7}"/>`;
+    case 'watch-face':
+      return `<circle cx="50" cy="50" r="18" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<circle cx="50" cy="50" r="15" fill="${c}" opacity="${o * 0.3}"/>` +
+             `<line x1="50" y1="50" x2="50" y2="38" stroke="${c}" stroke-width="2" opacity="${o}"/>` +
+             `<line x1="50" y1="50" x2="60" y2="54" stroke="${c}" stroke-width="1.5" opacity="${o * 0.8}"/>` +
+             `<circle cx="50" cy="50" r="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="68" y="46" width="4" height="8" rx="1" fill="${c}" opacity="${o * 0.7}"/>`;
+    case 'tiara':
+      return `<path d="M28,60 Q35,40 42,52 Q50,30 58,52 Q65,40 72,60" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o}"/>` +
+             `<line x1="26" y1="60" x2="74" y2="60" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<circle cx="50" cy="33" r="3" fill="${c}" opacity="${o * 0.8}"/>`;
+
+    // ── Royal Court ──
+    case 'royal-crown':
+      return `<polygon points="30,62 30,42 38,52 50,35 62,52 70,42 70,62" fill="${c}" opacity="${o}"/>` +
+             `<rect x="28" y="62" width="44" height="6" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="38" cy="42" r="2.5" fill="${c}" opacity="${o * 0.8}"/>` +
+             `<circle cx="50" cy="35" r="2.5" fill="${c}" opacity="${o * 0.8}"/>` +
+             `<circle cx="62" cy="42" r="2.5" fill="${c}" opacity="${o * 0.8}"/>`;
+    case 'scepter':
+      return `<line x1="50" y1="30" x2="50" y2="72" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity="${o}"/>` +
+             `<polygon points="44,30 50,20 56,30" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="22" r="4" fill="${c}" opacity="${o * 0.8}"/>` +
+             `<rect x="46" y="68" width="8" height="4" rx="1" fill="${c}" opacity="${o * 0.7}"/>`;
+    case 'throne-shape':
+      return `<rect x="36" y="45" width="28" height="24" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="34" width="32" height="14" rx="3" fill="${c}" opacity="${o * 0.9}"/>` +
+             `<path d="M34,34 Q50,24 66,34" fill="${c}" opacity="${o * 0.7}"/>` +
+             `<rect x="34" y="69" width="4" height="5" fill="${c}" opacity="${o * 0.6}"/>` +
+             `<rect x="62" y="69" width="4" height="5" fill="${c}" opacity="${o * 0.6}"/>`;
+    case 'royal-shield':
+      return `<path d="M30,35 L30,52 Q30,70 50,75 Q70,70 70,52 L70,35 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="35" x2="50" y2="72" stroke="#fff" stroke-width="1.5" opacity="0.2"/>` +
+             `<line x1="30" y1="50" x2="70" y2="50" stroke="#fff" stroke-width="1.5" opacity="0.2"/>`;
+
     default: return '';
   }
 }
@@ -1750,6 +2036,72 @@ function renderAccent(attr) {
       case 'wind-swirls':
         out += `<path d="M${cx-4},${cy} Q${cx},${cy-4} ${cx+4},${cy} Q${cx},${cy+3} ${cx-2},${cy+1}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>` +
                `<path d="M${cx+1},${cy-2} Q${cx+4},${cy-5} ${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>`; break;
+
+      // ── Apps ──
+      case 'app-dot':
+        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="#fff" opacity="0.2"/>`; break;
+      case 'signal-bars-corner':
+        out += `<rect x="${cx-4}" y="${cy+1}" width="2" height="3" fill="${c}" opacity="0.6"/>` +
+               `<rect x="${cx-1}" y="${cy-1}" width="2" height="5" fill="${c}" opacity="0.7"/>` +
+               `<rect x="${cx+2}" y="${cy-3}" width="2" height="7" fill="${c}" opacity="0.7"/>`; break;
+      case 'toggle-switch':
+        out += `<rect x="${cx-5}" y="${cy-2.5}" width="10" height="5" rx="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+2}" cy="${cy}" r="2.5" fill="#fff" opacity="0.3"/>`; break;
+      case 'pin-badge':
+        out += `<circle cx="${cx}" cy="${cy-1}" r="3.5" fill="${c}" opacity="0.7"/>` +
+               `<polygon points="${cx},${cy+2.5} ${cx-1.5},${cy+5.5} ${cx+1.5},${cy+5.5}" fill="${c}" opacity="0.6"/>`; break;
+
+      // ── Laundry ──
+      case 'buttons':
+        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<circle cx="${cx-1}" cy="${cy-1}" r="0.8" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+1}" cy="${cy-1}" r="0.8" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx-1}" cy="${cy+1}" r="0.8" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+1}" cy="${cy+1}" r="0.8" fill="${c}" opacity="0.7"/>`; break;
+      case 'safety-pins':
+        out += `<path d="M${cx-4},${cy-2} L${cx+3},${cy-2} Q${cx+5},${cy} ${cx+3},${cy+2} L${cx-2},${cy+2}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<circle cx="${cx-4}" cy="${cy-2}" r="1.5" fill="${c}" opacity="0.6"/>`; break;
+      case 'lint-balls':
+        out += `<circle cx="${cx-2}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+2}" cy="${cy+1}" r="2.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx+1}" cy="${cy-3}" r="2.5" fill="${c}" opacity="0.6"/>`; break;
+      case 'thread-spools':
+        out += `<rect x="${cx-3}" y="${cy-4}" width="6" height="8" rx="1" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx-4}" y1="${cy-4}" x2="${cx+4}" y2="${cy-4}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>` +
+               `<line x1="${cx-4}" y1="${cy+4}" x2="${cx+4}" y2="${cy+4}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
+
+      // ── Jeweler ──
+      case 'gem-studs':
+        out += `<polygon points="${cx},${cy-4} ${cx+3.5},${cy} ${cx},${cy+4} ${cx-3.5},${cy}" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="#fff" stroke-width="0.5" opacity="0.2"/>`; break;
+      case 'clasp-hooks':
+        out += `<path d="M${cx-3},${cy-3} Q${cx+3},${cy-3} ${cx+3},${cy+1} Q${cx+3},${cy+4} ${cx},${cy+4}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<circle cx="${cx-3}" cy="${cy-3}" r="1.5" fill="${c}" opacity="0.6"/>`; break;
+      case 'sparkle-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx}" y1="${cy-5}" x2="${cx}" y2="${cy+5}" stroke="${c}" stroke-width="1" opacity="0.4"/>` +
+               `<line x1="${cx-5}" y1="${cy}" x2="${cx+5}" y2="${cy}" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
+      case 'tiny-gems':
+        out += `<polygon points="${cx},${cy-3} ${cx+3},${cy} ${cx},${cy+3} ${cx-3},${cy}" fill="${c}" opacity="0.7"/>` +
+               `<polygon points="${cx},${cy-3} ${cx+3},${cy} ${cx-3},${cy}" fill="#fff" opacity="0.15"/>`; break;
+
+      // ── Royal Court ──
+      case 'fleur-marks':
+        out += `<path d="M${cx},${cy-5} Q${cx+3},${cy-2} ${cx},${cy+1} Q${cx-3},${cy-2} ${cx},${cy-5}Z" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx}" y1="${cy+1}" x2="${cx}" y2="${cy+5}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
+      case 'royal-orbs':
+        out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.5"/>` +
+               `<path d="M${cx},${cy-3.5} Q${cx+2},${cy} ${cx},${cy+3.5}" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.25"/>`; break;
+      case 'crown-jewels':
+        out += `<polygon points="${cx},${cy-4} ${cx+3},${cy+1} ${cx+1},${cy+4} ${cx-1},${cy+4} ${cx-3},${cy+1}" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1.5" fill="#fff" opacity="0.2"/>`; break;
+      case 'crest-corners': {
+        const dx = cx < 50 ? 1 : -1;
+        const dy = cy < 50 ? 1 : -1;
+        out += `<path d="M${cx},${cy} L${cx + dx * 6},${cy} L${cx + dx * 6},${cy + dy * 2} L${cx + dx * 2},${cy + dy * 2} L${cx + dx * 2},${cy + dy * 6} L${cx},${cy + dy * 6} Z" fill="${c}" opacity="0.7"/>`; break;
+      }
     }
   }
   return out;

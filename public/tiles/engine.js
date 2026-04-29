@@ -193,6 +193,62 @@ const THEMES = [
     accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops'],
     boardBg: { pattern: 'ice-crystals', color: '#1565c0' },
   },
+  {
+    name: 'Apps', emoji: '📱',
+    palette: {
+      bg:     ['#42a5f5', '#66bb6a', '#ffa726'],
+      ring:   ['#1a237e', '#1b5e20', '#b71c1c', '#4a148c'],
+      shape:  ['#004d40', '#4e342e', '#263238'],
+      accent: ['#bf360c', '#006064', '#880e4f'],
+    },
+    bgPatterns:   ['app-grid', 'status-bar', 'home-screen', 'swipe-trail', 'notification-shade'],
+    ringStyles:   ['app-border', 'rounded-badge', 'pill-outline'],
+    shapeNames:   ['chat-bubble', 'wifi-icon', 'battery-shape', 'bell-icon'],
+    accentShapes: ['app-dot', 'signal-bars-corner', 'toggle-switch', 'pin-badge'],
+    boardBg: { pattern: 'solid', color: '#42a5f5' },
+  },
+  {
+    name: 'Laundry', emoji: '🧺',
+    palette: {
+      bg:     ['#b39ddb', '#81d4fa', '#a5d6a7'],
+      ring:   ['#0d47a1', '#004d40', '#4a148c', '#3e2723'],
+      shape:  ['#1a237e', '#006064', '#4e342e'],
+      accent: ['#311b92', '#01579b', '#33691e'],
+    },
+    bgPatterns:   ['clothesline', 'fabric-weave', 'tumble-dry', 'soap-suds', 'laundry-basket'],
+    ringStyles:   ['stitched', 'hemline', 'fold-crease'],
+    shapeNames:   ['sock-shape', 'hanger', 'clothespin', 'iron-shape'],
+    accentShapes: ['buttons', 'safety-pins', 'lint-balls', 'thread-spools'],
+    boardBg: { pattern: 'solid', color: '#b39ddb' },
+  },
+  {
+    name: 'Jeweler', emoji: '💎',
+    palette: {
+      bg:     ['#ef5350', '#42a5f5', '#66bb6a'],
+      ring:   ['#6d4c00', '#0d47a1', '#1b5e20', '#4a148c'],
+      shape:  ['#880e4f', '#004d40', '#311b92'],
+      accent: ['#3e2723', '#01579b', '#33691e'],
+    },
+    bgPatterns:   ['velvet-cushion', 'display-case', 'chain-links', 'gem-facets', 'jewel-box'],
+    ringStyles:   ['band-ring', 'prong-setting', 'filigree-band'],
+    shapeNames:   ['diamond-gem', 'pearl-drop', 'watch-face', 'tiara'],
+    accentShapes: ['gem-studs', 'clasp-hooks', 'sparkle-dots', 'tiny-gems'],
+    boardBg: { pattern: 'velvet-cushion', color: '#2c1810' },
+  },
+  {
+    name: 'Royal Court', emoji: '👑',
+    palette: {
+      bg:     ['#9c27b0', '#1565c0', '#c62828'],
+      ring:   ['#6d4c00', '#311b92', '#7f0000', '#0d47a1'],
+      shape:  ['#4a148c', '#1a237e', '#3e2723'],
+      accent: ['#263238', '#880e4f', '#33691e'],
+    },
+    bgPatterns:   ['royal-damask', 'throne-room', 'castle-stone', 'tapestry-weave', 'herald-banner'],
+    ringStyles:   ['crown-points', 'royal-chain', 'ermine-trim'],
+    shapeNames:   ['royal-crown', 'scepter', 'throne-shape', 'royal-shield'],
+    accentShapes: ['fleur-marks', 'royal-orbs', 'crown-jewels', 'crest-corners'],
+    boardBg: { pattern: 'royal-damask', color: '#311b92' },
+  },
 ];
 
 // Archived themes — preserved for reference, not selectable in-game
