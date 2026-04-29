@@ -1783,16 +1783,13 @@ function createTileSVG(tile, theme) {
   svg.setAttribute('data-tile-index', tile.index);
 
   // Board-level background layer (not matchable, not removable)
-  // White base + very light tint = opaque backing; photo only shows when tile cleared
+  // White base + per-tile color tint = opaque backing; photo only shows when tile cleared
   let html = '';
-  if (theme && theme.boardBg) {
-    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
-    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${theme.boardBg.color}" opacity="0.12"/>`;
-    if (theme.boardBg.pattern !== 'solid') {
-      html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
-    }
-  } else {
-    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
+  const tintColor = tile.bgColor || (theme && theme.boardBg ? theme.boardBg.color : '#cccccc');
+  html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
+  html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${tintColor}" opacity="0.22"/>`;
+  if (theme && theme.boardBg && theme.boardBg.pattern !== 'solid') {
+    html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
   }
 
   // Matchable attribute layers (ring, shape, accent only — no bg)

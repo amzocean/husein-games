@@ -280,6 +280,7 @@ function generateBoard() {
   const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
   const pools = buildPools(theme);
 
+  const bgColors = theme.palette.bg;
   const tiles = Array.from({ length: TILE_COUNT }, (_, i) => ({
     index: i,
     row: Math.floor(i / COLS),
@@ -287,6 +288,7 @@ function generateBoard() {
     attributes: new Map(),
     cleared: i === CENTER_INDEX,
     isCenter: i === CENTER_INDEX,
+    bgColor: bgColors[Math.floor(Math.random() * bgColors.length)],
   }));
 
   // Collect active tile indices (excluding center)
