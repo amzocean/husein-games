@@ -11,35 +11,7 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 // Pool math: ring 4×3=12, shape 4×3=12, accent 4×3=12 (bg is board-level only, not matchable)
 
 const THEMES = [
-  {
-    name: 'Azulejo', emoji: '🎨',
-    palette: {
-      bg:     ['#66BB6A', '#F06292', '#FFB300'],
-      ring:   ['#2E7D32', '#C2185B', '#1565C0', '#6A1B9A'],
-      shape:  ['#43A047', '#E91E63', '#1E88E5'],
-      accent: ['#FF6D00', '#00ACC1', '#AB47BC'],
-    },
-    bgPatterns:   ['checkerboard', 'diagonal', 'hBars', 'vBars', 'solid'],
-    ringStyles:   ['solid', 'dashed', 'double'],
-    shapeNames:   ['cross', 'flower', 'star', 'diamond'],
-    accentShapes: ['circles', 'diamonds', 'squares', 'triangles'],
-    boardBg: { pattern: 'checkerboard', color: '#66BB6A' },
-  },
 
-  {
-    name: 'Mosaic', emoji: '🏺',
-    palette: {
-      bg:     ['#8d6e63', '#4db6ac', '#ffb74d'],
-      ring:   ['#d84315', '#00695c', '#f9a825', '#283593'],
-      shape:  ['#bf360c', '#00897b', '#f57f17'],
-      accent: ['#e65100', '#00838f', '#827717'],
-    },
-    bgPatterns:   ['triangles', 'hexgrid', 'brickwork', 'pinwheel', 'terrazzo'],
-    ringStyles:   ['rope', 'notched', 'inset'],
-    shapeNames:   ['octagon', 'arrow-shape', 'hourglass', 'shield'],
-    accentShapes: ['plus-signs', 'arrowheads', 'wedges', 'pips'],
-    boardBg: { pattern: 'solid', color: '#8d6e63' },
-  },
   {
     name: 'Candy', emoji: '🍬',
     palette: {
@@ -54,21 +26,6 @@ const THEMES = [
     accentShapes: ['mini-sprinkles', 'cherries', 'drops', 'gumballs'],
     boardBg: { pattern: 'gingham', color: '#f06292' },
   },
-  {
-    name: 'Tropical', emoji: '🌴',
-    palette: {
-      bg:     ['#00bcd4', '#ff7043', '#ffca28'],
-      ring:   ['#e91e63', '#4caf50', '#ff9800', '#2196f3'],
-      shape:  ['#e91e63', '#4caf50', '#ff9800'],
-      accent: ['#f44336', '#00bcd4', '#e65100'],
-    },
-    bgPatterns:   ['waves', 'palm-fronds', 'sand-ripples', 'bamboo', 'sunset-gradient'],
-    ringStyles:   ['lei', 'rope-twist', 'shell-border'],
-    shapeNames:   ['flamingo', 'pineapple', 'hibiscus', 'surfboard'],
-    accentShapes: ['coconuts', 'fish', 'waves-mini', 'shells'],
-    boardBg: { pattern: 'waves', color: '#00bcd4' },
-  },
-
   {
     name: 'Arithmetic', emoji: '🔢',
     palette: {
@@ -97,20 +54,7 @@ const THEMES = [
     accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves'],
     boardBg: { pattern: 'sky-gradient', color: '#64b5f6' },
   },
-  {
-    name: 'Bollywood', emoji: '🎬',
-    palette: {
-      bg:     ['#e91e63', '#ffd700', '#6a1b9a'],
-      ring:   ['#ff4081', '#ffc107', '#00bcd4', '#e040fb'],
-      shape:  ['#ff4081', '#ffd700', '#00bcd4'],
-      accent: ['#e040fb', '#ff5722', '#ffc107'],
-    },
-    bgPatterns:   ['spotlight', 'sequins', 'film-strip', 'curtain-drapes', 'disco-floor'],
-    ringStyles:   ['marquee-lights', 'bollywood-arch', 'sequin-border'],
-    shapeNames:   ['filmi-star', 'filmi-heart', 'microphone', 'clapperboard'],
-    accentShapes: ['music-notes', 'sparkles', 'cameras', 'roses'],
-    boardBg: { pattern: 'solid', color: '#e91e63' },
-  },
+
   {
     name: 'Arctic', emoji: '❄️',
     palette: {
@@ -296,6 +240,62 @@ const ARCHIVED_THEMES = [
     shapeNames:   ['pizza-slice', 'taco', 'boba-cup', 'soft-pretzel'],
     accentShapes: ['sesame-seeds', 'chili-flakes', 'crumbs', 'steam-wisps'],
     boardBg: { pattern: 'checkered-tablecloth', color: '#d84315' },
+  },
+  {
+    name: 'Bollywood', emoji: '🎬',
+    palette: {
+      bg:     ['#e91e63', '#ffd700', '#6a1b9a'],
+      ring:   ['#ff4081', '#ffc107', '#00bcd4', '#e040fb'],
+      shape:  ['#ff4081', '#ffd700', '#00bcd4'],
+      accent: ['#e040fb', '#ff5722', '#ffc107'],
+    },
+    bgPatterns:   ['spotlight', 'sequins', 'film-strip', 'curtain-drapes', 'disco-floor'],
+    ringStyles:   ['marquee-lights', 'bollywood-arch', 'sequin-border'],
+    shapeNames:   ['filmi-star', 'filmi-heart', 'microphone', 'clapperboard'],
+    accentShapes: ['music-notes', 'sparkles', 'cameras', 'roses'],
+    boardBg: { pattern: 'solid', color: '#e91e63' },
+  },
+  {
+    name: 'Tropical', emoji: '🌴',
+    palette: {
+      bg:     ['#00bcd4', '#ff7043', '#ffca28'],
+      ring:   ['#e91e63', '#4caf50', '#ff9800', '#2196f3'],
+      shape:  ['#e91e63', '#4caf50', '#ff9800'],
+      accent: ['#f44336', '#00bcd4', '#e65100'],
+    },
+    bgPatterns:   ['waves', 'palm-fronds', 'sand-ripples', 'bamboo', 'sunset-gradient'],
+    ringStyles:   ['lei', 'rope-twist', 'shell-border'],
+    shapeNames:   ['flamingo', 'pineapple', 'hibiscus', 'surfboard'],
+    accentShapes: ['coconuts', 'fish', 'waves-mini', 'shells'],
+    boardBg: { pattern: 'waves', color: '#00bcd4' },
+  },
+  {
+    name: 'Mosaic', emoji: '🏺',
+    palette: {
+      bg:     ['#8d6e63', '#4db6ac', '#ffb74d'],
+      ring:   ['#d84315', '#00695c', '#f9a825', '#283593'],
+      shape:  ['#bf360c', '#00897b', '#f57f17'],
+      accent: ['#e65100', '#00838f', '#827717'],
+    },
+    bgPatterns:   ['triangles', 'hexgrid', 'brickwork', 'pinwheel', 'terrazzo'],
+    ringStyles:   ['rope', 'notched', 'inset'],
+    shapeNames:   ['octagon', 'arrow-shape', 'hourglass', 'shield'],
+    accentShapes: ['plus-signs', 'arrowheads', 'wedges', 'pips'],
+    boardBg: { pattern: 'solid', color: '#8d6e63' },
+  },
+  {
+    name: 'Azulejo', emoji: '🎨',
+    palette: {
+      bg:     ['#66BB6A', '#F06292', '#FFB300'],
+      ring:   ['#2E7D32', '#C2185B', '#1565C0', '#6A1B9A'],
+      shape:  ['#43A047', '#E91E63', '#1E88E5'],
+      accent: ['#FF6D00', '#00ACC1', '#AB47BC'],
+    },
+    bgPatterns:   ['checkerboard', 'diagonal', 'hBars', 'vBars', 'solid'],
+    ringStyles:   ['solid', 'dashed', 'double'],
+    shapeNames:   ['cross', 'flower', 'star', 'diamond'],
+    accentShapes: ['circles', 'diamonds', 'squares', 'triangles'],
+    boardBg: { pattern: 'checkerboard', color: '#66BB6A' },
   },
 ];
 
