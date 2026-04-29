@@ -131,7 +131,8 @@ engine.js (THEMES array)                renderer.js (SVG rendering)
 Theme {                                 renderBg(attr)     → board-level bg (NOT matchable)
   name, emoji,                          renderRing(attr)   → case per ringStyle  (matchable)
   palette: {                            renderShape(attr)  → case per shapeName  (matchable)
-    bg:     [3 colors],                 renderAccent(attr) → case per accentShape (matchable)
+    bg:     [3 colors],  ← per-tile    renderAccent(attr) → case per accentShape (matchable)
+      tint (NOT matchable, 22% opacity)
     ring:   [4 colors],
     shape:  [3 colors],                 Each case returns an SVG string fragment.
     accent: [3 colors],                 Pattern names in engine.js MUST have a matching
@@ -150,7 +151,7 @@ Theme {                                 renderBg(attr)     → board-level bg (N
 
 #### 1. Visibility-First Color Selection
 
-**THE #1 PITFALL**: Tile backgrounds are `white + 12% color tint` — essentially near-white. Any matchable element color that's also light will be invisible.
+**THE #1 PITFALL**: Tile backgrounds use a **per-tile color tint** at 22% opacity — each tile randomly gets one of the 3 `palette.bg` colors, making tiles visually distinct. These tints are NOT matchable. Any matchable element color that's also light will be invisible against these near-white backgrounds.
 
 **Color luminance rule**: Every ring, shape, and accent color MUST have sufficient contrast against near-white. In practice:
 - ✅ Use colors with HSL lightness ≤ 50% (Material Design 600-900 range)
@@ -225,7 +226,7 @@ Add a new entry to the `THEMES` array:
 {
   name: 'MyTheme', emoji: '🎯',
   palette: {
-    bg:     ['#hex1', '#hex2', '#hex3'],                     // 3 DISTINCT bg colors (for future use)
+    bg:     ['#hex1', '#hex2', '#hex3'],                     // 3 DISTINCT bg colors (per-tile tint, NOT matchable)
     ring:   ['#hex1', '#hex2', '#hex3', '#hex4'],             // 4 DISTINCT dark/medium colors
     shape:  ['#hex1', '#hex2', '#hex3'],                      // 3 DISTINCT dark/medium colors
     accent: ['#hex1', '#hex2', '#hex3'],                      // 3 DISTINCT dark/medium colors
@@ -244,6 +245,7 @@ Add a new entry to the `THEMES` array:
 - ✅ Every pattern/shape/style name must be **globally unique** across ALL themes in that dimension
 - ✅ Count must be exact: 5 bgPatterns, 3 ringStyles, **4** shapeNames, **4** accentShapes
 - ✅ Palette counts must be exact: 3 bg, **4** ring, 3 shape, 3 accent
+- ✅ Bg colors are used as **per-tile tints** (not matchable) — pick 3 visually distinct colors that look good at 22% opacity on white
 - ✅ `boardBg.pattern` must be one of the names in `bgPatterns` OR `'solid'`
 - ✅ `boardBg.color` should be the theme's primary/dominant color
 
