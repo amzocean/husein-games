@@ -96,48 +96,6 @@ const THEMES = [
     boardBg: { pattern: 'gingham', color: '#f06292' },
   },
   {
-    name: 'Noir', emoji: '🖤',
-    palette: {
-      bg:     ['#111111', '#333333', '#666666'],
-      ring:   ['#222222', '#444444', '#777777', '#555555'],
-      shape:  ['#222222', '#666666', '#444444'],
-      accent: ['#222222', '#666666', '#333333'],
-    },
-    bgPatterns:   ['halftone', 'film-grain', 'scanlines', 'gradient-fade', 'ink-blot'],
-    ringStyles:   ['sharp', 'etched', 'shadow'],
-    shapeNames:   ['spade', 'crown', 'bolt-shape', 'mask'],
-    accentShapes: ['crosshairs', 'slashes', 'corners', 'pins'],
-    boardBg: { pattern: 'solid', color: '#111111' },
-  },
-  {
-    name: 'Sepia', emoji: '📜',
-    palette: {
-      bg:     ['#d4c4a8', '#c0a080', '#a07850'],
-      ring:   ['#3e2723', '#6b4423', '#8b6914', '#a0522d'],
-      shape:  ['#3e2723', '#8b6914', '#795548'],
-      accent: ['#5c3a1e', '#a0522d', '#6d4c41'],
-    },
-    bgPatterns:   ['parchment', 'woodgrain', 'linen', 'coffee-stain', 'aged-paper'],
-    ringStyles:   ['ornate', 'worn', 'gilded'],
-    shapeNames:   ['quill', 'compass', 'anchor', 'fleur'],
-    accentShapes: ['filigree', 'rivets', 'scrolls', 'stamps'],
-    boardBg: { pattern: 'parchment', color: '#d4c4a8' },
-  },
-  {
-    name: 'Neon', emoji: '💡',
-    palette: {
-      bg:     ['#0d0221', '#1a0533', '#2b0845'],
-      ring:   ['#ff00ff', '#00ffff', '#ff3366', '#39ff14'],
-      shape:  ['#ff00ff', '#00ffff', '#39ff14'],
-      accent: ['#ff3366', '#ff6d00', '#00ffff'],
-    },
-    bgPatterns:   ['grid-lines', 'circuit', 'pixel-blocks', 'laser-beams', 'digital-rain'],
-    ringStyles:   ['neon-glow', 'pulse', 'wireframe'],
-    shapeNames:   ['lightning', 'pixel-heart', 'pac-ghost', 'controller'],
-    accentShapes: ['glitch-dots', 'brackets', 'pixels', 'signal-bars'],
-    boardBg: { pattern: 'grid-lines', color: '#0d0221' },
-  },
-  {
     name: 'Tropical', emoji: '🌴',
     palette: {
       bg:     ['#00bcd4', '#ff7043', '#ffca28'],
@@ -234,6 +192,52 @@ const THEMES = [
     shapeNames:   ['snowflake', 'penguin', 'igloo', 'polar-bear'],
     accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops'],
     boardBg: { pattern: 'ice-crystals', color: '#1565c0' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  {
+    name: 'Noir', emoji: '🖤',
+    palette: {
+      bg:     ['#111111', '#333333', '#666666'],
+      ring:   ['#222222', '#444444', '#777777', '#555555'],
+      shape:  ['#222222', '#666666', '#444444'],
+      accent: ['#222222', '#666666', '#333333'],
+    },
+    bgPatterns:   ['halftone', 'film-grain', 'scanlines', 'gradient-fade', 'ink-blot'],
+    ringStyles:   ['sharp', 'etched', 'shadow'],
+    shapeNames:   ['spade', 'crown', 'bolt-shape', 'mask'],
+    accentShapes: ['crosshairs', 'slashes', 'corners', 'pins'],
+    boardBg: { pattern: 'solid', color: '#111111' },
+  },
+  {
+    name: 'Sepia', emoji: '📜',
+    palette: {
+      bg:     ['#d4c4a8', '#c0a080', '#a07850'],
+      ring:   ['#3e2723', '#6b4423', '#8b6914', '#a0522d'],
+      shape:  ['#3e2723', '#8b6914', '#795548'],
+      accent: ['#5c3a1e', '#a0522d', '#6d4c41'],
+    },
+    bgPatterns:   ['parchment', 'woodgrain', 'linen', 'coffee-stain', 'aged-paper'],
+    ringStyles:   ['ornate', 'worn', 'gilded'],
+    shapeNames:   ['quill', 'compass', 'anchor', 'fleur'],
+    accentShapes: ['filigree', 'rivets', 'scrolls', 'stamps'],
+    boardBg: { pattern: 'parchment', color: '#d4c4a8' },
+  },
+  {
+    name: 'Neon', emoji: '💡',
+    palette: {
+      bg:     ['#0d0221', '#1a0533', '#2b0845'],
+      ring:   ['#ff00ff', '#00ffff', '#ff3366', '#39ff14'],
+      shape:  ['#ff00ff', '#00ffff', '#39ff14'],
+      accent: ['#ff3366', '#ff6d00', '#00ffff'],
+    },
+    bgPatterns:   ['grid-lines', 'circuit', 'pixel-blocks', 'laser-beams', 'digital-rain'],
+    ringStyles:   ['neon-glow', 'pulse', 'wireframe'],
+    shapeNames:   ['lightning', 'pixel-heart', 'pac-ghost', 'controller'],
+    accentShapes: ['glitch-dots', 'brackets', 'pixels', 'signal-bars'],
+    boardBg: { pattern: 'grid-lines', color: '#0d0221' },
   },
 ];
 
