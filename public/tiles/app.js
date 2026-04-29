@@ -166,9 +166,102 @@ function showWin() {
   const centerTile = boardEl.querySelector('.center-tile');
   if (centerTile) centerTile.classList.add('win-reveal');
 
-  winBanner.textContent = `\u{1F495} Revealed in ${game.moveCount} moves!`;
-  winBanner.classList.add('visible');
-  spawnHearts();
+  // Play romantic jigsaw cascade, then show banner
+  playCascadeReveal(() => {
+    winBanner.textContent = `\u{1F495} Revealed in ${game.moveCount} moves!`;
+    winBanner.classList.add('visible');
+    spawnHearts();
+  });
+}
+
+// Romantic jigsaw cascade — photo pieces fly in from random positions and assemble
+function playCascadeReveal(onComplete) {
+  if (!pendingPhotoURL) { onComplete(); return; }
+
+  const rect = boardEl.getBoundingClientRect();
+  const cols = 5, rows = 5;
+  const pieceW = rect.width / cols;
+  const pieceH = rect.height / rows;
+
+  // Hide the CSS background so pieces do the reveal
+  boardEl.style.backgroundImage = 'none';
+
+  // Build pieces in random order for staggered arrival
+  const indices = [];
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++)
+      indices.push({ r, c });
+
+  // Shuffle for random cascade order
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'cascade-overlay';
+  overlay.style.cssText = `
+    position: absolute; inset: 0; z-index: 10;
+    border-radius: var(--radius-md); overflow: hidden;
+    pointer-events: none;
+  `;
+  boardEl.style.position = 'relative';
+  boardEl.appendChild(overlay);
+
+  indices.forEach(({ r, c }, i) => {
+    const piece = document.createElement('div');
+    piece.className = 'cascade-piece';
+
+    // Final resting position
+    const finalX = c * pieceW;
+    const finalY = r * pieceH;
+
+    // Random start: scattered around the board with rotation
+    const startX = finalX + (Math.random() - 0.5) * rect.width * 1.2;
+    const startY = finalY + (Math.random() - 0.5) * rect.height * 1.2;
+    const startRot = (Math.random() - 0.5) * 120; // ±60°
+    const startScale = 0.3 + Math.random() * 0.4;
+
+    piece.style.cssText = `
+      position: absolute;
+      width: ${pieceW + 1}px;
+      height: ${pieceH + 1}px;
+      background-image: url(${pendingPhotoURL});
+      background-size: ${rect.width}px ${rect.height}px;
+      background-position: -${c * pieceW}px -${r * pieceH}px;
+      transform: translate(${startX}px, ${startY}px) rotate(${startRot}deg) scale(${startScale});
+      opacity: 0;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.5s ease;
+      transition-delay: ${i * 0.07}s;
+      border-radius: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    `;
+
+    overlay.appendChild(piece);
+
+    // Trigger animation on next frame
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        piece.style.transform = `translate(${finalX}px, ${finalY}px) rotate(0deg) scale(1)`;
+        piece.style.opacity = '1';
+      });
+    });
+  });
+
+  // After cascade completes, restore photo background and clean up
+  const totalTime = indices.length * 70 + 900;
+  setTimeout(() => {
+    // Soft glow pulse on completion
+    overlay.style.transition = 'box-shadow 0.6s ease';
+    overlay.style.boxShadow = 'inset 0 0 30px rgba(196, 69, 105, 0.3)';
+
+    setTimeout(() => {
+      boardEl.style.backgroundImage = `url(${pendingPhotoURL})`;
+      overlay.remove();
+      onComplete();
+    }, 600);
+  }, totalTime);
 }
 
 function spawnHearts() {
