@@ -34,70 +34,159 @@ const AUTO_PLAY_DELAY = 60 * 1000; // 1 minute — auto-play if player is idle
 // --- Cheat mode: set to [] to disable ---
 const CHEAT_NAMES = ['fatema'];
 
-// --- Commentary pools ---
-const COMMENTARY = {
+// --- Commentary pools (shuffled per game start for variety) ---
+const COMMENTARY_MASTER = {
   capture: [
     "Nikaal diya! 💥", "Dhoom machale! 💃", "Out kar diya bhai!",
     "Vaat laga di! 😤", "Kya shot maara! 🏏", "Supari complete! 🎯",
     "Gaya tel lene! 🛢️", "Wapas chal beta! 👋", "Kaanta laga! 💀",
-    "Babaji ka thullu! 🤣", "Thappad se darr nahi lagta! 👏"
+    "Babaji ka thullu! 🤣", "Thappad se darr nahi lagta! 👏",
+    "Panauti hat gayi! ✨", "Clean bowled! 🏏", "Udta Punjab! ✈️",
+    "Popcorn moment! 🍿", "Bhabhi ji ghar pe! 🏠",
+    "Hero ki entry! 🤠", "Style mein bheja ghar! 😏",
+    "Byebye see you never! 😂", "Phirse line mein lago! 🎢",
+    "Ye toh trailer tha! 🎬", "Full power shot! 💪",
+    "Run out! 🏏", "Wicket gir gayi! 🎉", "Aur ek bites the dust! 💨",
+    "Oopsie daisy! 🌼", "KO punch! 🥊", "Khatam, tata, bye bye! 👋",
+    "Phir milenge! 🏘️", "Bazinga! 💥", "Ye hui na baat! 🔥"
   ],
   six: [
     "SIXER! 🏏", "Luck ka badshah!", "Kya baat hai! 🔥",
     "Sixer! Dhoni style! 🏏", "Chha gaye guru! 🙌",
     "Ye banda aag hai! 🔥", "Seeti bajao! 🎶",
-    "Picture abhi baaki hai! 🎬", "Kya gazab dice maara! 🎲"
+    "Picture abhi baaki hai! 🎬", "Kya gazab dice maara! 🎲",
+    "Maximum! 🏏🎆", "Rohit Sharma mode! 🏏",
+    "Paisa wasool! 💰", "Stadium mein silence! 🤫",
+    "Yuvraj ki yaad aa gayi! 🏏", "Helicopter shot! 🚁",
+    "Chhakka maar ke gaya! 🎯", "Dice ne bola I love you! 😍",
+    "Sixer pe sixer! 🎇", "Ye dekho talent! 🌟",
+    "Form mein hai boss! 💪", "Gaadi first gear mein! 🚗",
+    "All engines firing! 🚀", "Isko rokna namumkin! 🛑❌",
+    "Chakka! Commentary box mein! 📺", "Dice whisperer! 🎲🤫",
+    "Six on demand! 📲", "Rajnikanth style! 😎"
   ],
   doubleSix: [
     "Double six?! Ye toh Don hai! 😎", "Back to back! Unstoppable! 🚂",
     "Koi rokk nahi sakta! 🔥", "Lagaan wali innings! 🏏",
     "Ye toh tsunami hai! 🌊", "Shahenshah on fire! 👑🔥",
-    "Script likhi hai kya? 📝"
+    "Dice ne pyaar kar liya! 💕🎲", "Back to back like Baahubali! 🏔️",
+    "Ye player hai ya jadoogar! 🪄", "Bollywood script chal rahi! 📺",
+    "Luck OP hai! ⚡", "Dice ne loyalty de di! 🤝",
+    "Sirf aapke liye chhakke! 🎁", "Train rukti nahi! 🚂💨",
+    "Ye toh magic hai! ✨", "Kisi ki nazar nahi lagegi! 🧿",
+    "Double dhamaka! 💥💥", "Biryani mein double masala! 🍗🔥"
   ],
   stuck: [
     "Kismat ke kharaab din... 😩", "Arre yaar! 😫",
     "Kuch nahi mil raha... 🍀", "Bas kar bhai... rula dega kya 😭",
     "Thoda sabar karo... ⏳", "Chai peelo, kuch nahi hoga ☕",
-    "Taqdeer hi kharab hai! 🥲", "Dice mein bhi politics?! 🗳️"
+    "Taqdeer hi kharab hai! 🥲", "Dice mein bhi politics?! 🗳️",
+    "Koi toh dua karo! 🤲", "Luck left the chat! 💬❌",
+    "Signal nahi aa raha! 📵", "Mercury retrograde hai! ♏",
+    "Kundli mein mangal hai! 🔴", "Pura traffic jam! 🚗🚗🚗",
+    "Waiting room vibes! 🏥", "Buffer... buffer... ⏳",
+    "Abhi toh party shuru hui thi! 🎉😭", "Somebody pray for them! 🙏",
+    "Aaj ka din kharab hai! 📅", "Nazar lag gayi! 🧿",
+    "Lagta hai puja karni padegi! 🛕", "Dice ne unfriend kar diya! 💔",
+    "404: Move not found! 🖥️", "System hang ho gaya! 💻"
   ],
   leaveBase: [
     "Entry maarli! 🎬", "Aa raha hai! 🏃", "Chalo ji, shuru! 🎉",
     "Ek tha tiger... nikla! 🐯", "First class entry! 🌟",
-    "Tiger zinda hai! 🐅", "Nikla hai kaun?! 👀", "Seedha action mode! 💪"
+    "Tiger zinda hai! 🐅", "Nikla hai kaun?! 👀", "Seedha action mode! 💪",
+    "Ladies and gentlemen! 🎤", "Player has entered the game! 🎮",
+    "Runway pe aa gaya! ✈️", "Launch successful! 🚀",
+    "On your marks! 🏁", "Level 1 start! 🎮",
+    "Boarding complete! 🚂", "GPS activated! 📍",
+    "Ready player one! 🕹️", "Scene on hai! 🎥",
+    "Let's gooo! 🏃💨", "The chase begins! 🏃‍♂️",
+    "New challenger approaching! ⚔️", "Naya khiladi! 🎮",
+    "Pandora's box khul gaya! 📦"
   ],
   reachHome: [
     "Ghar aa gaya! 🏠", "Apna time aa gaya! ⭐",
     "Safe! Ek aur andar! 🎯", "Home run! 🏡", "Ek aur paar! 🙌",
     "Pension time! 👴", "Ghar ka raasta mil gaya! 🧭",
-    "No return ticket needed! 🎫"
+    "No return ticket needed! 🎫", "Mission accomplished! ✅",
+    "Retired hurt nahi, retired happy! 😊", "Ek aur settle ho gaya! 🛋️",
+    "Safe landing! ✈️🏁", "Parking ho gayi! 🅿️",
+    "One down, more to go! ✊", "Job done! 🎯",
+    "VIP lounge mein! 🍾", "Finish line cross! 🏅",
+    "Suraj doob gaya... safely! 🌅", "Ghar pohonch gaya bhai! 🏡✨",
+    "Final destination reached! 🎬", "Rest in peace... fully! 😴"
   ],
   win: [
     "Jeet gaya bhai! 🏆", "And the Oscar goes to... 🎬",
     "Champion! 👑", "Mogambo khush hua! 😈", "All izz well! 🌟",
-    "Bazigar! 🎭", "Aaj mere paas... sab hai! 💰", "Trophy lao bhai! 🏆🏆"
+    "Bazigar! 🎭", "Aaj mere paas... sab hai! 💰", "Trophy lao bhai! 🏆🏆",
+    "GG! Well played! 🤝", "Naam toh suna hoga! 😎",
+    "History has been made! 📜", "The king is here! 👑🎉",
+    "Ek number! 🥇", "World Cup jeet liya! 🌍🏆",
+    "Bharat mata ki jai! 🇮🇳", "Aaj toh diwali hai! 🪔",
+    "Standing ovation! 👏👏👏", "Legend! 🐐",
+    "Ye cinema hai cinema! 🎬✨", "Waheguru! Kya khel tha! 🙏"
   ],
   one: [
     "Ikke pe ikka! 🎲", "Ek - lonely number! 😢", "Baby steps! 👶",
-    "Chinti chal! 🐜", "Ek dum se ek! 😑"
+    "Chinti chal! 🐜", "Ek dum se ek! 😑",
+    "Turtle speed activated! 🐢", "One is the loneliest number! 🎵",
+    "Micro step! 🔬", "Suno ek baat! ☝️",
+    "Ek toh kam hai! 🤏", "Ek hi kaafi hai... nahi hai! 😂",
+    "Crawling mode! 🐛", "Loading... 1%! ⏳",
+    "Ek chhota sa kadam! 👣", "Plot twist nahi aaya! 📖"
   ],
   two: [
     "Do ka dum! ✌️", "Jodi number one! 💑",
-    "Do kadam chal diye! 👣", "Double roti! 🍞"
+    "Do kadam chal diye! 👣", "Double roti! 🍞",
+    "Do ankhein baarah haath! 👀", "Two is company! 🫂",
+    "Jodidar mil gaya! 💕", "Doosra! 🏏",
+    "Twins vibes! 👯", "Second gear! 🚗",
+    "Double trouble! 😈😈", "Ek ke baad ek! 🎯",
+    "Do pal ka ye jeevan hai! 🎶", "Chal diye do kadam! 🚶‍♂️"
   ],
   three: [
     "Teen maar khan! 🤠", "Teen tigada kaam bigada! 😬",
-    "Hat-trick! 🎩", "Tees maar khan vibes! ⚔️"
+    "Hat-trick! 🎩", "Tees maar khan vibes! ⚔️",
+    "Third time's a charm! 🍀", "Tirangi chal! 🇮🇳",
+    "Three musketeers! ⚔️", "Tri-force! 🔺",
+    "Teen patti vibes! 🃏", "Triple engine! 🚂🚂🚂",
+    "3 Idiots! 🎓", "Three cheers! 🥂🥂🥂",
+    "Tinku jiya! 🎵", "Average hai boss! 📊"
   ],
   four: [
     "Chaar chand laga diye! 🌙", "Almost paanch... 😏",
-    "Char kadam chal ke! 💃"
+    "Char kadam chal ke! 💃", "Chaar bottle vodka! 🍾",
+    "Boundary! 🏏", "Four more! 🔢",
+    "4G speed! 📶", "Char log kya kahenge! 🤷",
+    "Square deal! ⬛", "Char dhaam yatra! 🛕",
+    "Fantastic four! 🦸", "Not bad not bad! 👌",
+    "Solid four! 🏏", "Char guna zyada! 4️⃣"
   ],
   five: [
     "Ek aur hota toh sixer! 😩", "Paanch ka punch! 👊",
     "So close yet so far! 😤", "Panch Pandav chal pade! ⚔️",
-    "Paanchvi pass! 📚"
+    "Paanchvi pass! 📚", "High five! 🖐️",
+    "Fingers crossed tha... almost! 🤞", "5 star! ⭐⭐⭐⭐⭐",
+    "Paanch rupaiya baarah aana! 💰", "Half dozen minus one! 😅",
+    "Five alive! ✋", "Pentagon move! ⬠",
+    "5G speed! 📡", "Punch mara! 🥊",
+    "Ek number se reh gaya! 😤", "Almost glory! 🏆❌"
   ]
 };
+// Live commentary pool — shuffled copy per game for non-repetitive ordering
+let COMMENTARY = {};
+function shuffleCommentary() {
+  COMMENTARY = {};
+  for (const key of Object.keys(COMMENTARY_MASTER)) {
+    const arr = [...COMMENTARY_MASTER[key]];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    COMMENTARY[key] = arr;
+  }
+}
+shuffleCommentary(); // initial shuffle
 const COMMENTARY_COOLDOWN = 2; // minimum turns between comments
 
 function log(msg, data) {
@@ -192,6 +281,12 @@ function rollDice(color) {
     // Mercy rule: force a 6 after 5 consecutive non-6 rolls with all tokens stuck in base
     log(`MERCY 6 for ${color} (${game.noSixWhileAllBase[color]} non-6 rolls while all in base)`);
     return 6;
+  }
+  // Anti-streak rule: after 2 consecutive sixes, third roll is capped at 1-3
+  if (game.consecutiveSixes >= 2) {
+    const capped = crypto.randomInt(1, 4); // 1, 2, or 3
+    log(`CAPPED ROLL for ${color} (after ${game.consecutiveSixes} consecutive sixes): ${capped}`);
+    return capped;
   }
   return crypto.randomInt(1, 7);
 }
@@ -534,6 +629,7 @@ ludoNs.on('connection', (socket) => {
       return;
     }
     game.phase = 'playing';
+    shuffleCommentary(); // fresh shuffle each game for variety
     for (const p of game.players) {
       game.tokens[p.color] = [0, 0, 0, 0];
     }
