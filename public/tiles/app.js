@@ -171,6 +171,7 @@ function showWin() {
     winBanner.textContent = `\u{1F495} Revealed in ${game.moveCount} moves!`;
     winBanner.classList.add('visible');
     spawnHearts();
+    showVoiceNoteButton();
   });
 }
 
@@ -277,6 +278,53 @@ function spawnHearts() {
     document.body.appendChild(span);
     span.addEventListener('animationend', () => span.remove());
   }
+}
+
+// ============ Voice Note ============
+
+let voiceAudio = null;
+
+function showVoiceNoteButton() {
+  // Remove any existing button
+  const existing = document.querySelector('.voice-note-btn');
+  if (existing) existing.remove();
+
+  if (!pendingPhotoURL) return;
+
+  // Derive voice note path from photo path: photos/photo-07.jpg → voice/photo-07.m4a
+  const photoFile = pendingPhotoURL.split('/').pop(); // "photo-07.jpg"
+  const voiceFile = photoFile.replace(/\.\w+$/, '.m4a'); // "photo-07.m4a"
+  const voicePath = 'voice/' + voiceFile;
+
+  // Check if voice note exists (HEAD request)
+  fetch(voicePath, { method: 'HEAD' }).then(resp => {
+    if (!resp.ok) return; // No voice note for this photo — skip
+
+    const btn = document.createElement('button');
+    btn.className = 'voice-note-btn';
+    btn.innerHTML = '🎧';
+    btn.title = 'Play voice note';
+    btn.addEventListener('click', () => toggleVoiceNote(voicePath, btn));
+
+    boardEl.appendChild(btn);
+
+    // Gentle entrance animation
+    requestAnimationFrame(() => btn.classList.add('visible'));
+  }).catch(() => {});
+}
+
+function toggleVoiceNote(src, btn) {
+  if (voiceAudio && !voiceAudio.paused) {
+    voiceAudio.pause();
+    voiceAudio.currentTime = 0;
+    btn.classList.remove('playing');
+    return;
+  }
+
+  voiceAudio = new Audio(src);
+  btn.classList.add('playing');
+  voiceAudio.play();
+  voiceAudio.onended = () => btn.classList.remove('playing');
 }
 
 // ============ Event Listeners ============

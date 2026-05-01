@@ -1691,6 +1691,55 @@ cardsNs.on('connection', (socket) => {
 });
 
 // ============================================================
+// TILES PHOTO API — Server-side photo tracking
+// ============================================================
+const fs = require('fs');
+const PHOTO_STATE_FILE = path.join(__dirname, 'tiles-photo-state.json');
+
+// State: { dateMap: { "2026-04-30": 0, "2026-05-01": 1, ... }, nextIndex: 7 }
+function loadPhotoState() {
+  try {
+    return JSON.parse(fs.readFileSync(PHOTO_STATE_FILE, 'utf-8'));
+  } catch {
+    // Start from index 0 (photos 01-06 removed from manifest)
+    return { dateMap: {}, nextIndex: 0 };
+  }
+}
+
+function savePhotoState(state) {
+  fs.writeFileSync(PHOTO_STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+// GET /api/tiles/photo?date=2026-05-01
+// Returns: { index: N, photo: "photo-08.jpg" }
+app.get('/api/tiles/photo', (req, res) => {
+  const date = req.query.date; // client's local date "YYYY-MM-DD"
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ error: 'date query param required (YYYY-MM-DD)' });
+  }
+
+  const manifest = JSON.parse(fs.readFileSync(
+    path.join(__dirname, 'public', 'tiles', 'photos', 'manifest.json'), 'utf-8'
+  ));
+
+  const state = loadPhotoState();
+
+  if (state.dateMap[date] !== undefined) {
+    // Date already assigned — return same photo
+    const idx = state.dateMap[date];
+    return res.json({ index: idx, photo: manifest[idx] || null });
+  }
+
+  // New date — assign next photo
+  const idx = state.nextIndex % manifest.length;
+  state.dateMap[date] = idx;
+  state.nextIndex = idx + 1;
+  savePhotoState(state);
+
+  res.json({ index: idx, photo: manifest[idx] || null });
+});
+
+// ============================================================
 // START SERVER
 // ============================================================
 const PORT = process.env.PORT || 3000;
