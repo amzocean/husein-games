@@ -1691,52 +1691,38 @@ cardsNs.on('connection', (socket) => {
 });
 
 // ============================================================
-// TILES PHOTO API — Server-side photo tracking
+// TILES PHOTO API — Deterministic daily photo rotation
+// No external dependencies. Survives all restarts. Zero state.
+// Anchored: May 4 2026 = photo-08.jpg, then sequential daily.
 // ============================================================
-const fs = require('fs');
-const PHOTO_STATE_FILE = path.join(__dirname, 'tiles-photo-state.json');
+const MANIFEST_PATH = path.join(__dirname, 'public', 'tiles', 'photos', 'manifest.json');
+const ANCHOR_DAY = 20576; // Math.floor(Date.UTC(2026, 4, 4) / 86400000) - 1
 
-// State: { dateMap: { "2026-04-30": 0, "2026-05-01": 1, ... }, nextIndex: 7 }
-function loadPhotoState() {
-  try {
-    return JSON.parse(fs.readFileSync(PHOTO_STATE_FILE, 'utf-8'));
-  } catch {
-    // Start from index 0 (photos 01-06 removed from manifest)
-    return { dateMap: {}, nextIndex: 0 };
-  }
+let photoManifest = [];
+try {
+  photoManifest = JSON.parse(require('fs').readFileSync(MANIFEST_PATH, 'utf-8'));
+  console.log(`📸 Photo manifest loaded: ${photoManifest.length} photos`);
+} catch (e) {
+  console.error('⚠️  Failed to load photo manifest:', e.message);
 }
 
-function savePhotoState(state) {
-  fs.writeFileSync(PHOTO_STATE_FILE, JSON.stringify(state, null, 2));
+function getPhotoForDate(dateStr, manifest) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const day = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+  const idx = ((day - ANCHOR_DAY) % manifest.length + manifest.length) % manifest.length;
+  return { photo: manifest[idx], index: idx };
 }
 
-// GET /api/tiles/photo?date=2026-05-01
-// Returns: { index: N, photo: "photo-08.jpg" }
+// GET /api/tiles/photo?date=2026-05-04
 app.get('/api/tiles/photo', (req, res) => {
-  const date = req.query.date; // client's local date "YYYY-MM-DD"
+  const date = req.query.date;
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return res.status(400).json({ error: 'date query param required (YYYY-MM-DD)' });
   }
-
-  const manifest = JSON.parse(fs.readFileSync(
-    path.join(__dirname, 'public', 'tiles', 'photos', 'manifest.json'), 'utf-8'
-  ));
-
-  const state = loadPhotoState();
-
-  if (state.dateMap[date] !== undefined) {
-    // Date already assigned — return same photo
-    const idx = state.dateMap[date];
-    return res.json({ index: idx, photo: manifest[idx] || null });
+  if (photoManifest.length === 0) {
+    return res.status(500).json({ error: 'Photo manifest not loaded' });
   }
-
-  // New date — assign next photo
-  const idx = state.nextIndex % manifest.length;
-  state.dateMap[date] = idx;
-  state.nextIndex = idx + 1;
-  savePhotoState(state);
-
-  res.json({ index: idx, photo: manifest[idx] || null });
+  res.json(getPhotoForDate(date, photoManifest));
 });
 
 // ============================================================
