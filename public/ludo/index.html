@@ -1015,7 +1015,7 @@ function renderPlaying() {
   } else if (myTurn) {
     turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">Your turn!</span>`;
   } else {
-    turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn <button class="btn-nudge" onclick="sendNudge()">👈</button>`;
+    turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn <button class="btn-nudge" onclick="sendNudge()">🔔</button>`;
   }
 
   // Hide controls for spectators
