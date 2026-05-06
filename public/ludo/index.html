@@ -55,7 +55,7 @@ button:active { transform: scale(0.95); }
 .btn-secondary { background: #b8860b; color: #fff; box-shadow: 0 2px 8px rgba(184,134,11,0.15); }
 .btn-secondary:hover { box-shadow: 0 4px 16px rgba(184,134,11,0.25); }
 .btn-dice {
-  background: #fff; color: #2c2c2c; font-size: 1.6rem; min-width: 60px; padding: 10px 20px;
+  background: #fff; color: #2c2c2c; font-size: 2.4rem; min-width: 72px; padding: 14px 28px;
   border: 1.5px solid rgba(196,69,105,0.20); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .btn-dice:disabled { opacity: 0.35; }
@@ -111,8 +111,9 @@ button:active { transform: scale(0.95); }
 .btn-exit:active { background:#fce4ec; opacity:1; }
 .btn-end { padding:6px 12px; font-size:0.75rem; border-radius:10px; border:1px solid #c44569; background:#c44569; color:#fff; cursor:pointer; font-weight:600; opacity:0.7; }
 .btn-end:active { background:#9b1b4a; opacity:1; }
-.btn-nudge { padding:2px 8px; font-size:0.9rem; border:1px solid rgba(196,69,105,0.25); border-radius:8px; background:#fff; cursor:pointer; vertical-align:middle; margin-left:6px; transition:transform 0.1s; }
+.btn-nudge { padding:2px 8px; font-size:0.9rem; border:1px solid rgba(196,69,105,0.25); border-radius:8px; background:#fff; cursor:pointer; vertical-align:middle; margin-left:6px; transition:transform 0.1s, opacity 0.3s; }
 .btn-nudge:active { transform:scale(1.2); }
+.btn-nudge.cooldown { opacity:0.3; pointer-events:none; }
 .nudge-shake { animation: nudgeShake 0.5s ease-in-out; }
 @keyframes nudgeShake {
   0%, 100% { transform: translateX(0); }
@@ -489,6 +490,12 @@ function sendNudge() {
   lastNudgeTime = now;
   socket.emit('nudge', { sessionId: mySessionId });
   hapticLight();
+  // Visually disable the button during cooldown
+  const btn = document.querySelector('.btn-nudge');
+  if (btn) {
+    btn.classList.add('cooldown');
+    setTimeout(() => btn.classList.remove('cooldown'), 5000);
+  }
 }
 
 function spawnEmojiFloat(emoji) {
