@@ -48,7 +48,22 @@ const COMMENTARY_MASTER = {
     "Ye toh trailer tha! 🎬", "Full power shot! 💪",
     "Run out! 🏏", "Wicket gir gayi! 🎉", "Aur ek bites the dust! 💨",
     "Oopsie daisy! 🌼", "KO punch! 🥊", "Khatam, tata, bye bye! 👋",
-    "Phir milenge! 🏘️", "Bazinga! 💥", "Ye hui na baat! 🔥"
+    "Phir milenge! 🏘️", "Bazinga! 💥", "Ye hui na baat! 🔥",
+    "Stumps ukhad diye! 🏏💨", "Absolute carnage! 🔥",
+    "That was personal! 😤", "No mercy today! ⚔️",
+    "Cold blooded! 🥶", "Surgical strike! 🎯💥",
+    "Sent them packing! 📦", "Back to square one! 🔙",
+    "Revenge is a dish best served cold! 🍽️❄️",
+    "The hunter becomes the hunted! 🐅",
+    "Somebody call an ambulance! 🚑", "Brutal. Just brutal! 💀",
+    "Walk of shame incoming! 😳", "Not even close! 🤚",
+    "Umpire ne bhi taali bajayi! 👏", "Fatality! ☠️",
+    "That token had a family! 😱", "Caught and bowled! 🏏",
+    "Middle stump gone! 🏏", "Hit wicket energy! 💥",
+    "Chef's kiss elimination! 👨‍🍳💋", "Ticket cancel! 🎫❌",
+    "Eviction notice served! 📋", "Visa rejected! 🛂❌",
+    "Deported! ✈️👋", "Insurance expired! 📄💀",
+    "Plot twist nobody expected! 😮", "Rest in pieces! 💀✨"
   ],
   six: [
     "SIXER! 🏏", "Luck ka badshah!", "Kya baat hai! 🔥",
@@ -63,7 +78,18 @@ const COMMENTARY_MASTER = {
     "Form mein hai boss! 💪", "Gaadi first gear mein! 🚗",
     "All engines firing! 🚀", "Isko rokna namumkin! 🛑❌",
     "Chakka! Commentary box mein! 📺", "Dice whisperer! 🎲🤫",
-    "Six on demand! 📲", "Rajnikanth style! 😎"
+    "Six on demand! 📲", "Rajnikanth style! 😎",
+    "The dice fears this player! 🎲😨", "Pure class! 🎩",
+    "That's how legends roll! 🎲👑", "Crowd goes wild! 📣📣",
+    "Upper deck shot! 🏏🎆", "Into the stands! 🏟️",
+    "Commentators speechless! 🎙️😶", "What a monster roll! 👹",
+    "The dice gods are pleased! 🙏✨", "Chef cooked a six! 👨‍🍳🔥",
+    "Full toss dispatched! 🏏", "Picked the gap perfectly! 🎯",
+    "This player is on another level! 📈", "Touch of genius! 🧠✨",
+    "Smashed it like a free hit! 🏏💥", "Out of the park! 🏞️",
+    "Dice rolled like it owed them money! 💸",
+    "Peak performance! 📊🔝", "Main character energy! ✨",
+    "Unreal scenes! 😱🔥", "What did we just witness?! 👀"
   ],
   doubleSix: [
     "Double six?! Ye toh Don hai! 😎", "Back to back! Unstoppable! 🚂",
@@ -74,7 +100,16 @@ const COMMENTARY_MASTER = {
     "Luck OP hai! ⚡", "Dice ne loyalty de di! 🤝",
     "Sirf aapke liye chhakke! 🎁", "Train rukti nahi! 🚂💨",
     "Ye toh magic hai! ✨", "Kisi ki nazar nahi lagegi! 🧿",
-    "Double dhamaka! 💥💥", "Biryani mein double masala! 🍗🔥"
+    "Double dhamaka! 💥💥", "Biryani mein double masala! 🍗🔥",
+    "Somebody check the dice for magnets! 🧲", "Is this even legal?! ⚖️😱",
+    "The universe has a favourite! 🌌💫", "Back to back supremacy! 👑👑",
+    "Are they hacking the dice?! 🖥️😤", "Twice blessed! 🙏🙏",
+    "Lightning struck the same spot! ⚡⚡", "Two sixes walk into a bar... 🍺🎲",
+    "The prophecy is real! 📜✨", "Even the dice is shocked! 🎲😳",
+    "Investigation needed! 🔍🕵️", "This shouldn't be possible! 🚫🤯",
+    "Somebody pinch me! 😵", "RNG stands for Really Nice Going! 🎲✌️",
+    "Combo breaker? No. Combo MAKER! 💥", "Double century energy! 🏏💯💯",
+    "The stars aligned! ⭐⭐", "Chai mein extra sugar! ☕🍬"
   ],
   stuck: [
     "Kismat ke kharaab din... 😩", "Arre yaar! 😫",
@@ -88,7 +123,21 @@ const COMMENTARY_MASTER = {
     "Abhi toh party shuru hui thi! 🎉😭", "Somebody pray for them! 🙏",
     "Aaj ka din kharab hai! 📅", "Nazar lag gayi! 🧿",
     "Lagta hai puja karni padegi! 🛕", "Dice ne unfriend kar diya! 💔",
-    "404: Move not found! 🖥️", "System hang ho gaya! 💻"
+    "404: Move not found! 🖥️", "System hang ho gaya! 💻",
+    "Stuck like Mumbai traffic in monsoon! 🌧️🚗", "Did someone curse this token? 🪬",
+    "The dice doesn't know this player exists! 🎲🙈",
+    "Patience level: Gandhiji! 🕊️", "Even autorickshaw is faster! 🛺💨",
+    "Petition to fire the dice! 📝✍️", "Somewhere, luck is laughing! 😂",
+    "Coins in temple needed! 🛕🪙", "This is a test of character! 💪😤",
+    "Certified bruh moment! 😐", "The struggle is very real! 😫",
+    "Dice said no and meant it! 🎲🚫", "At this point just pray! 🙏😭",
+    "Watching paint dry is more exciting! 🎨😴",
+    "Is the dice broken? Asking for a friend! 🎲🔧",
+    "Somebody get the nimbu mirchi! 🍋🌶️", "Sabar ka phal meetha hota hai... apparently! 🍎",
+    "Even the WiFi has more bars! 📶", "Stuck in customs! 🛃⏰",
+    "Still loading... please wait! ⏳🔄", "Dice: read at 10:42 PM ✓✓",
+    "Playing hide and seek with the six! 🙈", "Zero progress report! 📊📉",
+    "Somebody bring lemon water! 🍋💧", "The dice is giving silent treatment! 🤐"
   ],
   leaveBase: [
     "Entry maarli! 🎬", "Aa raha hai! 🏃", "Chalo ji, shuru! 🎉",
@@ -101,7 +150,17 @@ const COMMENTARY_MASTER = {
     "Ready player one! 🕹️", "Scene on hai! 🎥",
     "Let's gooo! 🏃💨", "The chase begins! 🏃‍♂️",
     "New challenger approaching! ⚔️", "Naya khiladi! 🎮",
-    "Pandora's box khul gaya! 📦"
+    "Pandora's box khul gaya! 📦",
+    "Finally out of the parking lot! 🅿️➡️", "Good morning sunshine! ☀️😴",
+    "Somebody woke up! ⏰", "Passport stamped, entering the board! 🛂✅",
+    "Fresh legs on the field! 🏃‍♂️💨", "A wild token appeared! 🌟",
+    "Opening batsman walks in! 🏏", "Freshly brewed and ready! ☕✨",
+    "The bench warmer rises! 🪑➡️🏃", "Late but here! ⏰👋",
+    "Ticket confirmed! 🎫✅", "Uber arrived! 🚗",
+    "Permission granted to proceed! ✅🚦", "Out of the nest! 🐣",
+    "Finally got the memo! 📧", "Alarm went off at last! ⏰🔔",
+    "Released from jail! 🔓", "The eagle has landed! 🦅",
+    "From zero to hero... soon! 🌱", "Born ready! 💪👶"
   ],
   reachHome: [
     "Ghar aa gaya! 🏠", "Apna time aa gaya! ⭐",
@@ -113,7 +172,19 @@ const COMMENTARY_MASTER = {
     "One down, more to go! ✊", "Job done! 🎯",
     "VIP lounge mein! 🍾", "Finish line cross! 🏅",
     "Suraj doob gaya... safely! 🌅", "Ghar pohonch gaya bhai! 🏡✨",
-    "Final destination reached! 🎬", "Rest in peace... fully! 😴"
+    "Final destination reached! 🎬", "Rest in peace... fully! 😴",
+    "Package delivered! 📦✅", "Another one bites the finish line! 🏁",
+    "Smooth landing, no turbulence! ✈️😌", "Task completed successfully! ✅💚",
+    "Rang de basanti — token went home! 🎨🏠",
+    "Tiffin packed, lunch done, going home! 🍱🏡",
+    "Like reaching home before the rain! 🌧️🏃🏠",
+    "Chai is ready, come inside! ☕🏡", "Bus stop reached! 🚌🛑",
+    "No more rent — owns the place now! 🏠🔑",
+    "Retired to the Maldives! 🏝️", "Gold medal secured! 🥇",
+    "Got the window seat AND reached home! 🪟🏡",
+    "One less headache! 😮‍💨✅", "Exam over, chill mode! 📝➡️😎",
+    "Left on a jet plane, not coming back! ✈️👋",
+    "This token is on permanent vacation! 🏖️", "Namaste and goodbye! 🙏🏡"
   ],
   win: [
     "Jeet gaya bhai! 🏆", "And the Oscar goes to... 🎬",
@@ -124,7 +195,19 @@ const COMMENTARY_MASTER = {
     "Ek number! 🥇", "World Cup jeet liya! 🌍🏆",
     "Bharat mata ki jai! 🇮🇳", "Aaj toh diwali hai! 🪔",
     "Standing ovation! 👏👏👏", "Legend! 🐐",
-    "Ye cinema hai cinema! 🎬✨", "Waheguru! Kya khel tha! 🙏"
+    "Ye cinema hai cinema! 🎬✨", "Waheguru! Kya khel tha! 🙏",
+    "Take a bow, champion! 🎩👏", "Hall of fame material! 🏛️⭐",
+    "What a journey! What a finish! 🏁💫",
+    "From start to finish — dominated! 💪🏆",
+    "That's how you write a winning story! 📖✨",
+    "Ladke ne kya khela! 👏🔥", "This one's for the history books! 📚🏆",
+    "Bow down to the king/queen! 👑🧎", "Masterclass performance! 🎓🏆",
+    "The crown fits perfectly! 👑😌", "Born to win! 🌟🏆",
+    "Absolute domination! 💥👑", "Not even close! Speed run! ⚡🏆",
+    "Everybody else was playing for second! 🥈😅",
+    "Sweet sweet victory! 🍬🏆", "Write their name in the stars! ⭐✍️",
+    "Peak gaming! 🎮🔝", "This player has unlocked legendary status! ⚔️👑",
+    "Rest of us were just extras in their movie! 🎬😂"
   ],
   one: [
     "Ikke pe ikka! 🎲", "Ek - lonely number! 😢", "Baby steps! 👶",
@@ -133,7 +216,16 @@ const COMMENTARY_MASTER = {
     "Micro step! 🔬", "Suno ek baat! ☝️",
     "Ek toh kam hai! 🤏", "Ek hi kaafi hai... nahi hai! 😂",
     "Crawling mode! 🐛", "Loading... 1%! ⏳",
-    "Ek chhota sa kadam! 👣", "Plot twist nahi aaya! 📖"
+    "Ek chhota sa kadam! 👣", "Plot twist nahi aaya! 📖",
+    "At least it moved! 🤷‍♂️", "Snail mail speed! 🐌📬",
+    "Blink and you'll miss the progress! 👀", "One pixel forward! 🖥️",
+    "Economy class move! ✈️😅", "Minimum effort, minimum result! 📉",
+    "Technically not zero! 🤓", "A journey of thousand miles... just one! 🚶",
+    "The dice said 'diet version'! 🥤", "Wifi with one bar! 📶",
+    "Auto rickshaw meter: minimum fare! 🛺💰",
+    "Like walking in flip flops! 🩴🚶", "Speed: yes. Distance: no! 🏃❌",
+    "The tiniest of victories! 🏆🔬", "Even my grandma walks faster! 👵💨",
+    "One step for man, no leap for mankind! 🌙😅"
   ],
   two: [
     "Do ka dum! ✌️", "Jodi number one! 💑",
@@ -142,7 +234,15 @@ const COMMENTARY_MASTER = {
     "Jodidar mil gaya! 💕", "Doosra! 🏏",
     "Twins vibes! 👯", "Second gear! 🚗",
     "Double trouble! 😈😈", "Ek ke baad ek! 🎯",
-    "Do pal ka ye jeevan hai! 🎶", "Chal diye do kadam! 🚶‍♂️"
+    "Do pal ka ye jeevan hai! 🎶", "Chal diye do kadam! 🚶‍♂️",
+    "Two scoops of progress! 🍦🍦", "Couple goals! 💑🎯",
+    "Two chai, please! ☕☕", "Still warming up! 🏃‍♂️💨",
+    "Better than one, worse than three! 📊", "The sequel nobody asked for! 🎬2️⃣",
+    "Second serving! 🍽️", "Like two peas in a pod... but slow! 🫛🐢",
+    "Two steps closer to glory! 🏆👣👣", "Bicycle speed! 🚲",
+    "Double tap! 📱📱", "Small but noticeable! 🔍",
+    "The appetizer, not the main course! 🥗", "Eyes forward, baby steps! 👀👣",
+    "Two samosas of progress! 🥟🥟"
   ],
   three: [
     "Teen maar khan! 🤠", "Teen tigada kaam bigada! 😬",
@@ -151,7 +251,15 @@ const COMMENTARY_MASTER = {
     "Three musketeers! ⚔️", "Tri-force! 🔺",
     "Teen patti vibes! 🃏", "Triple engine! 🚂🚂🚂",
     "3 Idiots! 🎓", "Three cheers! 🥂🥂🥂",
-    "Tinku jiya! 🎵", "Average hai boss! 📊"
+    "Tinku jiya! 🎵", "Average hai boss! 📊",
+    "Middle of the road! 🛣️", "Not bad, not great! 😐👌",
+    "The safe choice! 🛡️", "Perfectly mediocre! 📏",
+    "Three rotis — standard meal! 🫓🫓🫓", "Bronze medal energy! 🥉",
+    "Tricycle speed! 🚲+1", "Three-point turn! 🚗↩️",
+    "Just about average! 📈", "The Goldilocks zone — meh! 🐻",
+    "Triangle move! 🔺🎲", "Could've been worse! 🤷",
+    "Interview mein 'decent' bolte hain! 🗣️", "Mid but not bad! 🫤✅",
+    "Three cups chai break! ☕☕☕"
   ],
   four: [
     "Chaar chand laga diye! 🌙", "Almost paanch... 😏",
@@ -160,7 +268,16 @@ const COMMENTARY_MASTER = {
     "4G speed! 📶", "Char log kya kahenge! 🤷",
     "Square deal! ⬛", "Char dhaam yatra! 🛕",
     "Fantastic four! 🦸", "Not bad not bad! 👌",
-    "Solid four! 🏏", "Char guna zyada! 4️⃣"
+    "Solid four! 🏏", "Char guna zyada! 4️⃣",
+    "Boundary along the ground! 🏏⚡", "Now we're talking! 🗣️🔥",
+    "Proper cricketing shot! 🏏👏", "Getting into rhythm! 🎵",
+    "Four chai ke cup — productive meeting! ☕☕☕☕",
+    "Four-wheel drive! 🚙💨", "Solid progress! 💪📈",
+    "Just missed the party by two! 🎉😅", "Good run rate! 🏏📊",
+    "Confident stride! 🚶‍♂️💨", "Four pillars of strength! 🏛️",
+    "Almost a six — still dangerous! ⚠️", "Quarter century in sight! 🏏👀",
+    "Respectable! Very respectable! 🎩", "The setup for something bigger! 🎬🔜",
+    "Four samosas — full plate! 🥟🥟🥟🥟"
   ],
   five: [
     "Ek aur hota toh sixer! 😩", "Paanch ka punch! 👊",
@@ -170,7 +287,16 @@ const COMMENTARY_MASTER = {
     "Paanch rupaiya baarah aana! 💰", "Half dozen minus one! 😅",
     "Five alive! ✋", "Pentagon move! ⬠",
     "5G speed! 📡", "Punch mara! 🥊",
-    "Ek number se reh gaya! 😤", "Almost glory! 🏆❌"
+    "Ek number se reh gaya! 😤", "Almost glory! 🏆❌",
+    "Thisss close to a six! 🤏😫", "The teaser before the blockbuster! 🎬",
+    "Five fingers but wanted six! 🖐️➡️6️⃣", "Almost broke the internet! 💻💥",
+    "Five spices — full flavour! 🌶️", "The build-up is real! 📈🔜",
+    "Heartbreak distance from a six! 💔6️⃣", "One short of legend! 👑❌",
+    "So close the six could taste it! 🎲👅", "The six that wasn't! 😭",
+    "99% loading — crashed! 📱💀", "Run-out on 95! 🏏😤",
+    "Missed the bus by a second! 🚌💨", "Penalty for being almost perfect! 🏆🤏",
+    "Like reaching station as train leaves! 🚂👋😫",
+    "Five wickets — one short of glory! 🏏5️⃣"
   ]
 };
 // Live commentary pool — shuffled copy per game for non-repetitive ordering
