@@ -389,6 +389,7 @@ function nextTurn(extraTurn) {
   resetIdleTimer();
   game.diceValue = null;
   game.diceRolled = false;
+  game.lastNudgeTime = null;
 
   if (!extraTurn) {
     let attempts = 0;
@@ -887,6 +888,18 @@ ludoNs.on('connection', (socket) => {
 
   socket.on('reaction', ({ sessionId, emoji }) => {
     ludoNs.emit('reaction', { sessionId, emoji });
+  });
+
+  socket.on('nudge', ({ sessionId }) => {
+    if (!game || game.phase !== 'playing') return;
+    const sender = game.players.find(p => p.sessionId === sessionId);
+    if (!sender) return;
+    const current = game.players[game.currentPlayerIndex];
+    if (!current || current.sessionId === sessionId) return; // can't nudge yourself
+    const now = Date.now();
+    if (game.lastNudgeTime && now - game.lastNudgeTime < 5000) return; // 5s universal cooldown
+    game.lastNudgeTime = now;
+    ludoNs.emit('nudge', { targetSessionId: current.sessionId, from: sender.name, fromColor: sender.color });
   });
 
   socket.on('chat', ({ sessionId, message }) => {

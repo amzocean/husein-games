@@ -107,10 +107,22 @@ button:active { transform: scale(0.95); }
   background: #fff; color: #2c2c2c; cursor: pointer; font-weight: 600;
 }
 .btn-debug:active { background: #fce4ec; }
-.btn-exit { padding:8px 16px; font-size:0.85rem; border-radius:10px; border:1px solid rgba(196,69,105,0.25); background:#fff; color:#c44569; cursor:pointer; font-weight:600; }
-.btn-exit:active { background:#fce4ec; }
-.btn-end { padding:8px 16px; font-size:0.85rem; border-radius:10px; border:1px solid #c44569; background:#c44569; color:#fff; cursor:pointer; font-weight:600; }
-.btn-end:active { background:#9b1b4a; }
+.btn-exit { padding:6px 12px; font-size:0.75rem; border-radius:10px; border:1px solid rgba(196,69,105,0.25); background:#fff; color:#c44569; cursor:pointer; font-weight:600; opacity:0.7; }
+.btn-exit:active { background:#fce4ec; opacity:1; }
+.btn-end { padding:6px 12px; font-size:0.75rem; border-radius:10px; border:1px solid #c44569; background:#c44569; color:#fff; cursor:pointer; font-weight:600; opacity:0.7; }
+.btn-end:active { background:#9b1b4a; opacity:1; }
+.btn-nudge { padding:2px 8px; font-size:0.9rem; border:1px solid rgba(196,69,105,0.25); border-radius:8px; background:#fff; cursor:pointer; vertical-align:middle; margin-left:6px; transition:transform 0.1s; }
+.btn-nudge:active { transform:scale(1.2); }
+.nudge-shake { animation: nudgeShake 0.5s ease-in-out; }
+@keyframes nudgeShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(6px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  90% { transform: translateX(2px); }
+}
 .emoji-bar { display:flex; gap:6px; justify-content:center; margin:8px 0; }
 .emoji-bar button { font-size:1.4rem; background:none; border:1.5px solid rgba(196,69,105,0.15); border-radius:10px; padding:6px 10px; cursor:pointer; transition:transform 0.1s; }
 .emoji-bar button:active { transform:scale(1.2); }
@@ -191,8 +203,6 @@ button:active { transform: scale(0.95); }
     <div id="noMoveHint" class="pick-hint" style="display:none;">No valid moves — passing...</div>
     <div id="captureBanner" class="capture-banner" style="display:none;"></div>
     <div id="commentaryToast" class="commentary-toast" style="display:none;"></div>
-    <!-- Game controls: Exit / End -->
-    <div id="gameControls" style="margin-top:10px;display:flex;gap:8px;justify-content:center;"></div>
     <div class="emoji-bar" id="emojiBar">
       <button onclick="sendReaction('❤️')">❤️</button>
       <button onclick="sendReaction('😂')">😂</button>
@@ -222,6 +232,8 @@ button:active { transform: scale(0.95); }
         <button class="btn-debug" onclick="debugRoll(6)">6</button>
       </div>
     </div>
+    <!-- Game controls: Exit / End — placed far from dice to prevent accidental taps -->
+    <div id="gameControls" style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(196,69,105,0.15);display:flex;gap:8px;justify-content:center;"></div>
   </div>
 
   <!-- FINISHED screen -->
@@ -316,6 +328,13 @@ function sfxLeaveBase() {
   playTone(330, 0.1, 'triangle', 0.2);
   setTimeout(() => playTone(440, 0.1, 'triangle', 0.25), 80);
   setTimeout(() => playTone(660, 0.15, 'triangle', 0.3), 160);
+}
+
+function sfxNudge() {
+  if (!soundEnabled) return;
+  playTone(880, 0.08, 'sine', 0.3);
+  setTimeout(() => playTone(660, 0.08, 'sine', 0.25), 100);
+  setTimeout(() => playTone(880, 0.1, 'sine', 0.3), 200);
 }
 
 // ---- Haptics ----
@@ -460,6 +479,16 @@ function sendReaction(emoji) {
   if (!mySessionId) return;
   socket.emit('reaction', { sessionId: mySessionId, emoji });
   spawnEmojiFloat(emoji);
+}
+
+let lastNudgeTime = 0;
+function sendNudge() {
+  if (!mySessionId) return;
+  const now = Date.now();
+  if (now - lastNudgeTime < 5000) return; // 5s cooldown
+  lastNudgeTime = now;
+  socket.emit('nudge', { sessionId: mySessionId });
+  hapticLight();
 }
 
 function spawnEmojiFloat(emoji) {
@@ -986,7 +1015,7 @@ function renderPlaying() {
   } else if (myTurn) {
     turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">Your turn!</span>`;
   } else {
-    turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn`;
+    turnEl.innerHTML = `<span style="color:${COLORS[current.color].fill}">${escHtml(current.name)}</span>'s turn <button class="btn-nudge" onclick="sendNudge()">👈</button>`;
   }
 
   // Hide controls for spectators
@@ -1352,6 +1381,16 @@ socket.on('error_msg', (msg) => {
 
 socket.on('reaction', (data) => {
   if (data.sessionId !== mySessionId) spawnEmojiFloat(data.emoji);
+});
+
+socket.on('nudge', (data) => {
+  if (data.targetSessionId === mySessionId) {
+    sfxNudge();
+    vibrate([50, 40, 80]);
+    const board = document.getElementById('board');
+    board.classList.add('nudge-shake');
+    setTimeout(() => board.classList.remove('nudge-shake'), 500);
+  }
 });
 
 socket.on('chat', (data) => {
