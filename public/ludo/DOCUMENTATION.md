@@ -5,7 +5,7 @@
 ---
 
 ## Overview
-Classic Ludo board game ("H&F Ludo"), 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, spectator mode, exit/end game controls, dice roll animation, token step-by-step animation, confetti on win, emoji reactions, turn timer countdown, in-game chat, and per-player board rotation.
+Classic Ludo board game ("H&F Ludo"), 2-4 players, real-time multiplayer via Socket.IO. Mobile-optimized with Canvas rendering, sound effects, haptic feedback, spectator mode, exit/end game controls, dice roll animation, token step-by-step animation, confetti on win, emoji reactions, turn timer countdown, in-game chat, per-player board rotation, live commentary toasts, and player nudge system.
 
 ## Visual Theme
 - **Romantic blush** — background `#fff5f5`, white cards with rose-tinted borders
@@ -21,7 +21,7 @@ Classic Ludo board game ("H&F Ludo"), 2-4 players, real-time multiplayer via Soc
 - Capture banner background uses `COLORS[capturer].fill`
 - **Design note on color choices**: These are Material Design primary colors chosen for maximum distinguishability on both OLED and LCD screens. The romantic theme colors (Rose/Gold/Teal/Indigo) were visually appealing but Gold and Teal were hard to distinguish on some mobile screens, and the "display name" abstraction (red key -> "Rose" label) created confusion when the base color didn't match the token color. Standard RGBY removes that mismatch entirely — the COLORS object key IS the color you see.
 
-## Client: `public/ludo/index.html` (~1140 lines)
+## Client: `public/ludo/index.html` (~1296 lines)
 
 Single file containing all HTML, CSS, and JavaScript.
 
@@ -64,7 +64,7 @@ Single file containing all HTML, CSS, and JavaScript.
 - Purely cosmetic, auto-clears after animation
 
 ### Emoji Reactions
-- Players can send quick emoji reactions (❤️ 😂 😤 🎉 👋) during gameplay
+- Players can send quick emoji reactions (❤️ 😂 😤 🎉 👏) during gameplay
 - Socket.IO `emoji` event — server validates sender, broadcasts to all
 - Emoji floats above the board briefly then fades out
 - Minimal server logic — no game state impact
@@ -107,6 +107,7 @@ Single file containing all HTML, CSS, and JavaScript.
 - `sfxCapture()` — Capture (descending sawtooth)
 - `sfxYourTurn()` — Your turn notification (gentle chime)
 - `sfxWin()` — Win fanfare (ascending arpeggio)
+- `sfxNudge()` — Nudge received (880→660→880 Hz sine sweep)
 - Sound toggle button (🔊/🔇) persisted in `localStorage` key `ludo_sound`
 - AudioContext created lazily, resumed if suspended (mobile autoplay policy)
 
@@ -114,7 +115,15 @@ Single file containing all HTML, CSS, and JavaScript.
 - `hapticLight()` — 10ms vibration (dice roll, token move)
 - `hapticMedium()` — 30ms (leave base)
 - `hapticHeavy()` — [50, 30, 100] pattern (capture)
+- Nudge received — [50, 40, 80] pattern (distinct from capture)
 - Via `navigator.vibrate()` — works on Android, limited iOS support
+
+### Nudge Feature
+- A 🔔 button appears in the turn indicator when it is **not** your turn (to nudge the current player)
+- **Client**: `sendNudge()` emits `nudge` event with `sessionId`; immediately adds `.cooldown` class (opacity 0.3, pointer-events none) for 5 seconds as visual feedback
+- **Server**: Validates sender is in the game and is NOT the current turn holder; enforces universal 5-second cooldown (`game.lastNudgeTime`); broadcasts `nudge` event with `targetSessionId` to all clients
+- **Receiver**: Targeted player's client triggers: vibration pattern `[50, 40, 80]`, `sfxNudge()` audio tone, and CSS board shake animation (200ms)
+- **Cooldown reset**: `game.lastNudgeTime` is reset to `null` in `nextTurn()`, so each new turn allows a fresh nudge immediately
 
 ### Socket.IO Connection
 - Connects to `/ludo` namespace: `io('/ludo')`
@@ -139,8 +148,9 @@ Single file containing all HTML, CSS, and JavaScript.
   - Force-ends the game for everyone, resets to idle
   - Server validates that only `players[0].sessionId` can trigger this
   - Requires confirmation dialog
+- **UI placement**: Both buttons are positioned at the very bottom of the playing screen (below chat panel) with a top border separator, smaller font, and muted opacity (0.75) to avoid accidental clicks near the dice
 
-## Server: Ludo section of `server.js` (lines 14-613)
+## Server: Ludo section of `server.js` (lines 14–1751)
 
 ### Constants
 ```javascript
@@ -170,10 +180,13 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
   tokens: { red: [0,0,0,0], green: [0,0,0,0], ... },  // step values per token
   winner: string | null,  // color name, 'idle', or 'disconnect'
   lastCapture: { by, victim, tokenIdx, pathIdx } | null,
+  consecutiveSixes: number,         // resets each turn; capped roll after 2 consecutive 6s
+  noSixWhileAllBase: { color: count },  // mercy-6 tracker; free 6 after 5 non-6 rolls with all tokens in base
+  lastNudgeTime: number | null,     // Date.now() of last nudge (universal cooldown); reset in nextTurn()
   idleTimer: timeout,
   turnTimer: timeout,
   autoPlayTimer: timeout,
-  turnDeadline: number | null     // Date.now() + AUTO_PLAY_DELAY, for client countdown
+  turnDeadline: number | null       // Date.now() + AUTO_PLAY_DELAY, for client countdown
 }
 ```
 
@@ -192,8 +205,9 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 | `exit_game` | `sessionId` | Player leaves mid-game |
 | `end_game` | `sessionId` | Creator force-ends game |
 | `reset` | (none) | Force reset game |
-| `emoji` | `{ sessionId, emoji }` | Send emoji reaction (❤️ 😂 😤 🎉 👋) |
+| `emoji` | `{ sessionId, emoji }` | Send emoji reaction (❤️ 😂 😤 🎉 👏) |
 | `chat` | `{ sessionId, text }` | Send chat message (max 200 chars) |
+| `nudge` | `{ sessionId }` | Nudge current player (sender must not be current) |
 
 **Server → Client:**
 | Event | Payload | Description |
@@ -203,6 +217,7 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 | `error_msg` | `string` | Error message |
 | `emoji` | `{ name, color, emoji }` | Broadcast emoji reaction to all clients |
 | `chat` | `{ name, color, text }` | Broadcast chat message to all clients |
+| `nudge` | `{ targetSessionId }` | Nudge event — target client plays audio/haptic/shake |
 
 ### Game Flow
 1. **Idle** → Someone creates a game → **Lobby**
@@ -216,6 +231,8 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 - Replaced `Math.floor(Math.random() * 6) + 1` which used V8's xorshift128+ PRNG — a deterministic sequence seeded once at process start that could produce perceivable clustering in short sessions
 - `crypto.randomInt()` draws from `/dev/urandom` (or OS equivalent), making each roll independently random with no sequential correlation
 - **Server-side only** — clients send a roll request, server generates the value, broadcasts result. No client-side cheating possible.
+- **Consecutive-6 cap**: After 2 consecutive 6s, the 3rd roll is capped to 1–5 (re-rolls if crypto produces 6). Tracked via `game.consecutiveSixes`, reset on non-6 roll.
+- **Dice button styling**: 2.4rem font-size, 72px min-width, 14px 28px padding — large enough for comfortable mobile tapping
 
 ### Mercy 6 Rule (All Tokens in Base)
 - If ALL 4 of a player's tokens are in base (step 0) and they roll 5 consecutive non-6 values, the 6th roll is **forced to 6**
@@ -229,11 +246,13 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 1. Clear turnTimer and autoPlayTimer
 2. Reset idle timer
 3. Clear dice state
-4. Advance to next connected player (skip disconnected)
-5. If no connected players → game over
-6. Broadcast state
-7. **Clear `game.lastCapture = null`** (after broadcast — ensures exactly-once delivery)
-8. Start 60-second auto-play timer
+4. Reset `game.lastNudgeTime = null` (allows fresh nudge for new turn)
+5. Reset `game.consecutiveSixes = 0`
+6. Advance to next connected player (skip disconnected)
+7. If no connected players → game over
+8. Broadcast state
+9. **Clear `game.lastCapture = null`** (after broadcast — ensures exactly-once delivery)
+10. Start 60-second auto-play timer
 
 ### Auto-Play Timer (`startAutoPlayTimer()`)
 - Single 60-second timer covers the ENTIRE turn (roll + token pick)
@@ -294,24 +313,28 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 - Key events: CONNECT, DISCONNECT, REJOIN, CREATE, JOIN, START, ROLL, MOVE, CAPTURE, AUTO-PLAY, GAME OVER, GRACE EXPIRED
 
 ### Commentary System
-Server-side commentary generates Bollywood/desi-flavored toast messages for game events.
+Server-side commentary generates English + Hinglish toast messages for game events. Indian cultural flavor (cricket, chai, monsoon, Bollywood, auto-rickshaws) — no American pop culture references.
 
-**12 event pools** (70 total lines):
+**10 event pools** (~350+ total lines across all pools):
 
-| Pool | Count | Trigger | Cooldown |
-|------|-------|---------|----------|
-| `capture` | 11 | Token captured | Bypasses cooldown |
-| `six` | 9 | Rolled a 6 (first consecutive) | Normal |
-| `doubleSix` | 7 | 2+ consecutive 6s | Bypasses cooldown |
-| `stuck` | 8 | No valid moves after roll | Normal |
-| `leaveBase` | 8 | Token leaves base | Normal |
-| `reachHome` | 8 | Token reaches home (step 57) | Normal |
-| `win` | 8 | Game won | Bypasses cooldown |
-| `one` | 5 | Rolled a 1 | Normal |
-| `two` | 4 | Rolled a 2 | Normal |
-| `three` | 4 | Rolled a 3 | Normal |
-| `four` | 3 | Rolled a 4 | Normal |
-| `five` | 5 | Rolled a 5 | Normal |
+| Pool | ~Count | Trigger | Cooldown |
+|------|--------|---------|----------|
+| `capture` | 35+ | Token captured | Bypasses cooldown |
+| `six` | 30+ | Rolled a 6 (first consecutive) | Normal |
+| `doubleSix` | 20+ | 2+ consecutive 6s | Bypasses cooldown |
+| `stuck` | 25+ | No valid moves after roll | Normal |
+| `leaveBase` | 25+ | Token leaves base | Normal |
+| `reachHome` | 25+ | Token reaches home (step 57) | Normal |
+| `win` | 25+ | Game won | Bypasses cooldown |
+| `one` | 25+ | Rolled a 1 | Normal |
+| `two` | 25+ | Rolled a 2 | Normal |
+| `three` | 25+ | Rolled a 3 | Normal |
+| `four` | 25+ | Rolled a 4 | Normal |
+| `five` | 25+ | Rolled a 5 | Normal |
+
+> Note: Pool names `one`–`five` are keyed by dice value string (e.g. `"1"`, `"2"`... `"5"`) in the `COMMENTARY_MASTER` object.
+
+**Shuffle**: On game start, each pool is deep-copied and shuffled (Fisher-Yates with `crypto.randomInt`) into `game.COMMENTARY`. Messages are popped from the shuffled array — once all are used, the pool is re-shuffled from master.
 
 **Cooldown**: `COMMENTARY_COOLDOWN = 2` turns between normal comments. Capture, doubleSix, and win bypass cooldown via `setCommentaryForce()`.
 

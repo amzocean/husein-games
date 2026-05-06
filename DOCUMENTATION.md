@@ -56,7 +56,7 @@ Single Node.js process serving everything:
 
 ```
 husein-games/
-├── server.js              # Express + Socket.IO server (~595 lines)
+├── server.js              # Express + Socket.IO server (~1750 lines)
 ├── package.json           # express ^4.18.2, socket.io ^4.7.4
 ├── .gitignore             # node_modules, package-lock.json
 ├── DOCUMENTATION.md       # This file — project-wide docs
