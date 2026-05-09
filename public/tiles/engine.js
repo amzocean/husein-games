@@ -27,20 +27,6 @@ const THEMES = [
     boardBg: { pattern: 'solid', color: '#42a5f5' },
   },
   {
-    name: 'Laundry', emoji: '🧺',
-    palette: {
-      bg:     ['#f8bbd0', '#81d4fa', '#a5d6a7'],
-      ring:   ['#0d47a1', '#004d40', '#4a148c', '#3e2723'],
-      shape:  ['#1a237e', '#006064', '#4e342e'],
-      accent: ['#311b92', '#01579b', '#33691e'],
-    },
-    bgPatterns:   ['clothesline', 'fabric-weave', 'tumble-dry', 'soap-suds', 'laundry-basket'],
-    ringStyles:   ['stitched', 'hemline', 'fold-crease'],
-    shapeNames:   ['sock-shape', 'hanger', 'clothespin', 'iron-shape'],
-    accentShapes: ['buttons', 'safety-pins', 'lint-balls', 'thread-spools'],
-    boardBg: { pattern: 'solid', color: '#f8bbd0' },
-  },
-  {
     name: 'Luau', emoji: '🌺',
     palette: {
       bg:     ['#ff7043', '#26a69a', '#ffee58'],
@@ -100,6 +86,20 @@ const THEMES = [
 
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
+  {
+    name: 'Laundry', emoji: '🧺',
+    palette: {
+      bg:     ['#f8bbd0', '#81d4fa', '#a5d6a7'],
+      ring:   ['#0d47a1', '#004d40', '#4a148c', '#3e2723'],
+      shape:  ['#1a237e', '#006064', '#4e342e'],
+      accent: ['#311b92', '#01579b', '#33691e'],
+    },
+    bgPatterns:   ['clothesline', 'fabric-weave', 'tumble-dry', 'soap-suds', 'laundry-basket'],
+    ringStyles:   ['stitched', 'hemline', 'fold-crease'],
+    shapeNames:   ['sock-shape', 'hanger', 'clothespin', 'iron-shape'],
+    accentShapes: ['buttons', 'safety-pins', 'lint-balls', 'thread-spools'],
+    boardBg: { pattern: 'solid', color: '#f8bbd0' },
+  },
   {
     name: 'Jeweler', emoji: '💎',
     palette: {
