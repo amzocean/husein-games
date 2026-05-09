@@ -120,11 +120,11 @@ button {
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: center;
-  gap: 8px 6px;
+  gap: 6px 6px;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 4px 12px;
+  padding: 2px 12px;
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -135,12 +135,12 @@ button {
   align-items: flex-end;
   flex-wrap: nowrap;
   gap: 3px;
-  margin: 0 4px 6px 0;
+  margin: 0 4px 4px 0;
   max-width: 100%;
 }
 
 .cipher-cell {
-  width: 34px;
+  width: var(--cell-w, 34px);
   min-width: 0;
   flex-shrink: 1;
   height: 50px;
@@ -255,14 +255,14 @@ button {
 
 .selection-hint {
   margin: 0;
-  min-height: 1.6em;
+  min-height: 1.3em;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.3;
+  font-size: 0.78rem;
+  line-height: 1.2;
   flex-shrink: 0;
 }
 
@@ -271,7 +271,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  padding: 4px 0;
+  padding: 2px 0;
   flex-shrink: 0;
 }
 
@@ -459,7 +459,7 @@ button {
 
 .keyboard {
   display: grid;
-  gap: 8px;
+  gap: 5px;
 }
 
 .keyboard-row {
@@ -875,26 +875,26 @@ button {
 
 @media (max-height: 760px) {
   .game-card {
-    padding: 10px;
-    gap: 6px;
+    padding: 8px;
+    gap: 4px;
   }
 
   .quote-panel {
-    padding: 8px;
+    padding: 6px;
   }
 
   .quote-grid {
-    gap: 6px 4px;
+    gap: 4px 4px;
   }
 
   .word-group {
     gap: 2px;
-    margin: 0 4px 4px 0;
+    margin: 0 4px 3px 0;
   }
 
   .cipher-cell {
-    width: 30px;
-    height: 44px;
+    width: var(--cell-w, 30px);
+    height: 42px;
     border-radius: 8px;
   }
 
@@ -907,16 +907,33 @@ button {
   }
 
   .key-button {
-    min-height: 40px;
-    height: 40px;
+    min-height: 38px;
+    height: 38px;
+  }
+
+  .keyboard {
+    gap: 4px;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+  }
+
+  .selection-hint {
+    min-height: 1.1em;
+    font-size: 0.72rem;
+  }
+
+  .stats-bar {
+    padding: 1px 0;
   }
 }
 
 @media (max-width: 400px) {
   .cipher-cell {
-    width: 28px;
+    width: var(--cell-w, 28px);
     min-width: 0;
-    height: 42px;
+    height: 40px;
     border-radius: 7px;
     padding: 2px 1px 3px;
   }
@@ -931,11 +948,12 @@ button {
 
   .word-group {
     gap: 2px;
-    margin: 0 4px 4px 0;
+    margin: 0 3px 3px 0;
   }
 
   .quote-grid {
-    gap: 6px 3px;
+    gap: 4px 3px;
+    padding: 2px 8px;
   }
 
   .game-card {

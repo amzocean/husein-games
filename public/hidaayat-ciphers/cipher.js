@@ -150,6 +150,9 @@ function buildDailyPuzzle() {
 
   state.puzzle = { words, plainToCipher, cipherToPlain, uniqueCipherLetters };
 
+  // Compute longest word letter count for dynamic cell sizing
+  state.puzzle.maxWordLen = Math.max(...words.map(w => w.filter(t => t.type === 'letter').length));
+
   // Preload the book page image so it's cached for the reveal
   const preload = new Image();
   preload.src = `./pages/Raudat%20Hidayaat%201-images-${picked.page - 1}.jpg`;
@@ -204,6 +207,15 @@ function render() {
 
 function renderQuoteGrid() {
   const fragment = document.createDocumentFragment();
+  const grid = state.elements.quoteGrid;
+
+  // Dynamically size cells so the longest word fits without overflow
+  const maxLen = state.puzzle.maxWordLen || 12;
+  const availW = grid.clientWidth;
+  const gap = 3;
+  const idealW = 34;
+  const cellW = Math.min(idealW, Math.floor((availW - (maxLen - 1) * gap) / maxLen));
+  grid.style.setProperty('--cell-w', cellW + 'px');
 
   let flatPos = 0;
   state.puzzle.words.forEach((word) => {
