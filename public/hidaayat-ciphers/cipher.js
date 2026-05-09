@@ -428,7 +428,6 @@ async function completePuzzle() {
   await wait(300);
   state.revealVisible = true;
   render();
-  showToast('Wisdom revealed ✨');
 }
 
 function isPuzzleSolved() {
