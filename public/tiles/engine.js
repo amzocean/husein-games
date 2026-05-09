@@ -13,63 +13,6 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
 
   {
-    name: 'Candy', emoji: '🍬',
-    palette: {
-      bg:     ['#f06292', '#81c784', '#ffcc80'],
-      ring:   ['#c2185b', '#00897b', '#ff6f00', '#6a1b9a'],
-      shape:  ['#e91e63', '#00bfa5', '#ff9100'],
-      accent: ['#d81b60', '#00acc1', '#ff6d00'],
-    },
-    bgPatterns:   ['sprinkles', 'swirl', 'wafer', 'gingham', 'frosted'],
-    ringStyles:   ['frosting', 'licorice', 'candy-dots'],
-    shapeNames:   ['lollipop', 'gumdrop', 'pretzel', 'donut'],
-    accentShapes: ['mini-sprinkles', 'cherries', 'drops', 'gumballs'],
-    boardBg: { pattern: 'gingham', color: '#f06292' },
-  },
-  {
-    name: 'Arithmetic', emoji: '🔢',
-    palette: {
-      bg:     ['#2e7d32', '#fff8e1', '#5d4037'],
-      ring:   ['#1a237e', '#e65100', '#ff7043', '#42a5f5'],
-      shape:  ['#1a237e', '#e65100', '#42a5f5'],
-      accent: ['#ff7043', '#ef5350', '#1a237e'],
-    },
-    bgPatterns:   ['graph-paper', 'chalkboard', 'notebook-lines', 'dot-grid', 'equation-scribbles'],
-    ringStyles:   ['ruler-marks', 'protractor', 'bracket-border'],
-    shapeNames:   ['plus-sign', 'divide-symbol', 'pi-symbol', 'infinity'],
-    accentShapes: ['equal-signs', 'percent', 'tally-marks', 'decimal-dots'],
-    boardBg: { pattern: 'chalkboard', color: '#2e7d32' },
-  },
-  {
-    name: 'Sky', emoji: '🌈',
-    palette: {
-      bg:     ['#64b5f6', '#90caf9', '#fff176'],
-      ring:   ['#e53935', '#ff9800', '#4caf50', '#7b1fa2'],
-      shape:  ['#e53935', '#ff9800', '#1565c0'],
-      accent: ['#4caf50', '#f48fb1', '#ffb300'],
-    },
-    bgPatterns:   ['sky-gradient', 'fluffy-clouds', 'rainbow-arc', 'cirrus-wisps', 'sunset-glow'],
-    ringStyles:   ['cloud-border', 'rainbow-ring', 'breeze-dash'],
-    shapeNames:   ['airplane', 'songbird', 'bright-sun', 'kite'],
-    accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves'],
-    boardBg: { pattern: 'sky-gradient', color: '#64b5f6' },
-  },
-
-  {
-    name: 'Arctic', emoji: '❄️',
-    palette: {
-      bg:     ['#1565c0', '#e1f5fe', '#b39ddb'],
-      ring:   ['#0d47a1', '#00838f', '#6a1b9a', '#1b5e20'],
-      shape:  ['#0d47a1', '#c62828', '#1b5e20'],
-      accent: ['#0d47a1', '#4a148c', '#00695c'],
-    },
-    bgPatterns:   ['ice-crystals', 'snowfall', 'frozen-lake', 'blizzard-wind', 'glacier-layers'],
-    ringStyles:   ['frost-border', 'icicle-ring', 'snowdrift-edge'],
-    shapeNames:   ['snowflake', 'penguin', 'igloo', 'polar-bear'],
-    accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops'],
-    boardBg: { pattern: 'ice-crystals', color: '#1565c0' },
-  },
-  {
     name: 'Apps', emoji: '📱',
     palette: {
       bg:     ['#42a5f5', '#66bb6a', '#ffa726'],
@@ -110,20 +53,6 @@ const THEMES = [
     shapeNames:   ['diamond-gem', 'pearl-drop', 'watch-face', 'tiara'],
     accentShapes: ['gem-studs', 'clasp-hooks', 'sparkle-dots', 'tiny-gems'],
     boardBg: { pattern: 'velvet-cushion', color: '#2c1810' },
-  },
-  {
-    name: 'Royal Court', emoji: '👑',
-    palette: {
-      bg:     ['#9c27b0', '#1565c0', '#c62828'],
-      ring:   ['#6d4c00', '#311b92', '#7f0000', '#0d47a1'],
-      shape:  ['#4a148c', '#1a237e', '#3e2723'],
-      accent: ['#263238', '#880e4f', '#33691e'],
-    },
-    bgPatterns:   ['royal-damask', 'throne-room', 'castle-stone', 'tapestry-weave', 'herald-banner'],
-    ringStyles:   ['crown-points', 'royal-chain', 'ermine-trim'],
-    shapeNames:   ['royal-crown', 'scepter', 'throne-shape', 'royal-shield'],
-    accentShapes: ['fleur-marks', 'royal-orbs', 'crown-jewels', 'crest-corners'],
-    boardBg: { pattern: 'royal-damask', color: '#311b92' },
   },
   {
     name: 'Origami', emoji: '🦢',
@@ -171,6 +100,76 @@ const THEMES = [
 
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
+  {
+    name: 'Candy', emoji: '🍬',
+    palette: {
+      bg:     ['#f06292', '#81c784', '#ffcc80'],
+      ring:   ['#c2185b', '#00897b', '#ff6f00', '#6a1b9a'],
+      shape:  ['#e91e63', '#00bfa5', '#ff9100'],
+      accent: ['#d81b60', '#00acc1', '#ff6d00'],
+    },
+    bgPatterns:   ['sprinkles', 'swirl', 'wafer', 'gingham', 'frosted'],
+    ringStyles:   ['frosting', 'licorice', 'candy-dots'],
+    shapeNames:   ['lollipop', 'gumdrop', 'pretzel', 'donut'],
+    accentShapes: ['mini-sprinkles', 'cherries', 'drops', 'gumballs'],
+    boardBg: { pattern: 'gingham', color: '#f06292' },
+  },
+  {
+    name: 'Arithmetic', emoji: '🔢',
+    palette: {
+      bg:     ['#2e7d32', '#fff8e1', '#5d4037'],
+      ring:   ['#1a237e', '#e65100', '#ff7043', '#42a5f5'],
+      shape:  ['#1a237e', '#e65100', '#42a5f5'],
+      accent: ['#ff7043', '#ef5350', '#1a237e'],
+    },
+    bgPatterns:   ['graph-paper', 'chalkboard', 'notebook-lines', 'dot-grid', 'equation-scribbles'],
+    ringStyles:   ['ruler-marks', 'protractor', 'bracket-border'],
+    shapeNames:   ['plus-sign', 'divide-symbol', 'pi-symbol', 'infinity'],
+    accentShapes: ['equal-signs', 'percent', 'tally-marks', 'decimal-dots'],
+    boardBg: { pattern: 'chalkboard', color: '#2e7d32' },
+  },
+  {
+    name: 'Sky', emoji: '🌈',
+    palette: {
+      bg:     ['#64b5f6', '#90caf9', '#fff176'],
+      ring:   ['#e53935', '#ff9800', '#4caf50', '#7b1fa2'],
+      shape:  ['#e53935', '#ff9800', '#1565c0'],
+      accent: ['#4caf50', '#f48fb1', '#ffb300'],
+    },
+    bgPatterns:   ['sky-gradient', 'fluffy-clouds', 'rainbow-arc', 'cirrus-wisps', 'sunset-glow'],
+    ringStyles:   ['cloud-border', 'rainbow-ring', 'breeze-dash'],
+    shapeNames:   ['airplane', 'songbird', 'bright-sun', 'kite'],
+    accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves'],
+    boardBg: { pattern: 'sky-gradient', color: '#64b5f6' },
+  },
+  {
+    name: 'Arctic', emoji: '❄️',
+    palette: {
+      bg:     ['#1565c0', '#e1f5fe', '#b39ddb'],
+      ring:   ['#0d47a1', '#00838f', '#6a1b9a', '#1b5e20'],
+      shape:  ['#0d47a1', '#c62828', '#1b5e20'],
+      accent: ['#0d47a1', '#4a148c', '#00695c'],
+    },
+    bgPatterns:   ['ice-crystals', 'snowfall', 'frozen-lake', 'blizzard-wind', 'glacier-layers'],
+    ringStyles:   ['frost-border', 'icicle-ring', 'snowdrift-edge'],
+    shapeNames:   ['snowflake', 'penguin', 'igloo', 'polar-bear'],
+    accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops'],
+    boardBg: { pattern: 'ice-crystals', color: '#1565c0' },
+  },
+  {
+    name: 'Royal Court', emoji: '👑',
+    palette: {
+      bg:     ['#9c27b0', '#1565c0', '#c62828'],
+      ring:   ['#6d4c00', '#311b92', '#7f0000', '#0d47a1'],
+      shape:  ['#4a148c', '#1a237e', '#3e2723'],
+      accent: ['#263238', '#880e4f', '#33691e'],
+    },
+    bgPatterns:   ['royal-damask', 'throne-room', 'castle-stone', 'tapestry-weave', 'herald-banner'],
+    ringStyles:   ['crown-points', 'royal-chain', 'ermine-trim'],
+    shapeNames:   ['royal-crown', 'scepter', 'throne-shape', 'royal-shield'],
+    accentShapes: ['fleur-marks', 'royal-orbs', 'crown-jewels', 'crest-corners'],
+    boardBg: { pattern: 'royal-damask', color: '#311b92' },
+  },
   {
     name: 'Noir', emoji: '🖤',
     palette: {
