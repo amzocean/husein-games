@@ -188,6 +188,7 @@ function render() {
   state.elements.keyboardWrap.hidden = solved || revealing;
   state.elements.selectionHint.hidden = solved || revealing;
   state.elements.statsBar.hidden = solved || revealing;
+  state.elements.infoBtn.hidden = revealing;
   state.elements.solveReveal.hidden = !revealing;
   state.elements.solveReveal.classList.toggle('is-visible', revealing);
   state.elements.gameCard.classList.toggle('is-complete', solved);
