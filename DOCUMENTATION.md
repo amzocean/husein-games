@@ -9,7 +9,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering → [Ludo docs](public/ludo/DOCUMENTATION.md)
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
-- **🔐 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
+- **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
