@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1a2744">
+  <meta name="description" content="Decode a daily wisdom quote with a substitution cipher.">
+  <title>Wisdom Cipher</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f0e8;
+      color: #1a2744;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #f5f0e8;
+      color: #1a2744;
+    }
+
+    body { overflow: hidden; }
+
+    .app-shell {
+      height: 100dvh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .game-card {
+      width: min(100%, 500px);
+      height: 100%;
+      border-radius: 28px;
+      background: #faf7f1;
+      border: 3px solid #1a2744;
+      box-shadow: 0 16px 40px rgba(26, 39, 68, 0.12), inset 0 0 0 1px #c9944a;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .quote-panel {
+      min-height: 0;
+      border-radius: 18px;
+      background: #f0ebe1;
+      border: 1.5px solid #1a2744;
+      padding: 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .quote-grid.loading {
+      width: 100%;
+      text-align: center;
+      color: rgba(26, 39, 68, 0.6);
+      font-size: 0.96rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root,
+      html,
+      body {
+        background: #0e1520;
+        color: #e8e0d4;
+      }
+
+      .game-card {
+        background: #182030;
+        border-color: #c9944a;
+        box-shadow: 0 16px 46px rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(201, 148, 74, 0.2);
+      }
+
+      .quote-panel {
+        background: #1e2a3e;
+        border-color: rgba(201, 148, 74, 0.25);
+      }
+
+      .quote-grid.loading {
+        color: rgba(232, 224, 212, 0.6);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./cipher.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="game-card" id="gameCard" aria-live="polite">
+
+      <section class="quote-panel" id="quotePanel">
+        <div id="quoteGrid" class="quote-grid loading">Preparing wisdom…</div>
+      </section>
+
+      <div id="statsBar" class="stats-bar">
+        <span id="progressStat" class="stat">0 / 0</span>
+        <span id="mistakesStat" class="stat">0 ✗</span>
+        <span id="hintsStat" class="stat">0 💡</span>
+        <button id="hintBtn" class="hint-btn" type="button">Hint</button>
+      </div>
+
+      <p id="selectionHint" class="selection-hint">Tap a cipher letter, then choose its real letter below.</p>
+
+      <section id="keyboardWrap" class="keyboard-wrap" aria-label="Letter picker">
+        <div id="keyboard" class="keyboard"></div>
+      </section>
+
+      <div id="solveReveal" class="solve-reveal" hidden>
+        <div class="reveal-score">Solved with <strong id="revealMistakes">0</strong> mistakes · <strong id="revealHints">0</strong> hints</div>
+        <img id="pageImage" class="page-image" alt="Book page" />
+        <button id="nextPuzzle" class="next-button">Next Puzzle ▸</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
