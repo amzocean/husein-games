@@ -149,6 +149,10 @@ function buildDailyPuzzle() {
   }));
 
   state.puzzle = { words, plainToCipher, cipherToPlain, uniqueCipherLetters };
+
+  // Preload the book page image so it's cached for the reveal
+  const preload = new Image();
+  preload.src = `./pages/Raudat%20Hidayaat%201-images-${picked.page - 1}.jpg`;
 }
 
 function hydrateProgress() {
@@ -348,8 +352,19 @@ function useHint() {
 function renderReveal(){
   if (!state.revealVisible) return;
   const imageIndex = state.quote.page - 1;
-  state.elements.pageImage.src = `./pages/Raudat Hidayaat 1-images-${imageIndex}.jpg`;
-  state.elements.pageImage.alt = `Raudat Hidayaat page ${state.quote.page}`;
+  const imgPath = `./pages/Raudat%20Hidayaat%201-images-${imageIndex}.jpg`;
+  const img = state.elements.pageImage;
+  if (img.getAttribute('src') !== imgPath) {
+    img.src = imgPath;
+    img.alt = `Raudat Hidayaat page ${state.quote.page}`;
+    img.onerror = function() {
+      if (!this.dataset.retried) {
+        this.dataset.retried = '1';
+        this.src = imgPath + '?' + Date.now();
+      }
+    };
+    img.onload = function() { delete this.dataset.retried; };
+  }
   state.elements.revealMistakes.textContent = state.progress.mistakes;
   state.elements.revealHints.textContent = state.progress.hintsUsed;
 }
