@@ -29,7 +29,7 @@ const THEMES = [
   {
     name: 'Laundry', emoji: '🧺',
     palette: {
-      bg:     ['#b39ddb', '#81d4fa', '#a5d6a7'],
+      bg:     ['#f8bbd0', '#81d4fa', '#a5d6a7'],
       ring:   ['#0d47a1', '#004d40', '#4a148c', '#3e2723'],
       shape:  ['#1a237e', '#006064', '#4e342e'],
       accent: ['#311b92', '#01579b', '#33691e'],
@@ -38,12 +38,12 @@ const THEMES = [
     ringStyles:   ['stitched', 'hemline', 'fold-crease'],
     shapeNames:   ['sock-shape', 'hanger', 'clothespin', 'iron-shape'],
     accentShapes: ['buttons', 'safety-pins', 'lint-balls', 'thread-spools'],
-    boardBg: { pattern: 'solid', color: '#b39ddb' },
+    boardBg: { pattern: 'solid', color: '#f8bbd0' },
   },
   {
     name: 'Jeweler', emoji: '💎',
     palette: {
-      bg:     ['#ef5350', '#42a5f5', '#66bb6a'],
+      bg:     ['#ef5350', '#7e57c2', '#ffd54f'],
       ring:   ['#6d4c00', '#0d47a1', '#1b5e20', '#4a148c'],
       shape:  ['#880e4f', '#004d40', '#311b92'],
       accent: ['#3e2723', '#01579b', '#33691e'],
@@ -57,7 +57,7 @@ const THEMES = [
   {
     name: 'Origami', emoji: '🦢',
     palette: {
-      bg:     ['#e8d5b7', '#c8e6c9', '#bbdefb'],
+      bg:     ['#ffab91', '#b0bec5', '#ffe082'],
       ring:   ['#b71c1c', '#1a237e', '#004d40', '#4a148c'],
       shape:  ['#c62828', '#0d47a1', '#00695c'],
       accent: ['#bf360c', '#283593', '#1b5e20'],
@@ -66,12 +66,12 @@ const THEMES = [
     ringStyles:   ['mountain-fold', 'valley-fold', 'pleated'],
     shapeNames:   ['crane', 'boat', 'fox-face', 'fortune-teller'],
     accentShapes: ['crease-marks', 'paper-corners', 'fold-tabs', 'origami-stars'],
-    boardBg: { pattern: 'solid', color: '#e8d5b7' },
+    boardBg: { pattern: 'solid', color: '#ffe0b2' },
   },
   {
     name: 'Apothecary', emoji: '🧪',
     palette: {
-      bg:     ['#d1c4e9', '#c8e6c9', '#ffe0b2'],
+      bg:     ['#ce93d8', '#a1887f', '#ffb74d'],
       ring:   ['#311b92', '#006064', '#bf360c', '#880e4f'],
       shape:  ['#4a148c', '#004d40', '#e65100'],
       accent: ['#6a1b9a', '#00695c', '#d84315'],
@@ -80,21 +80,21 @@ const THEMES = [
     ringStyles:   ['herb-wrap', 'wax-seal-ring', 'smoke-wisp'],
     shapeNames:   ['potion-bottle', 'mortar-pestle', 'flask-shape', 'cauldron'],
     accentShapes: ['herb-sprigs', 'droplets', 'crystal-shards', 'rune-marks'],
-    boardBg: { pattern: 'solid', color: '#d1c4e9' },
+    boardBg: { pattern: 'solid', color: '#4e342e' },
   },
   {
     name: 'Circus', emoji: '🎪',
     palette: {
-      bg:     ['#ef9a9a', '#fff59d', '#9fa8da'],
+      bg:     ['#e53935', '#fdd835', '#42a5f5'],
       ring:   ['#b71c1c', '#e65100', '#1b5e20', '#4a148c'],
       shape:  ['#d84315', '#1a237e', '#2e7d32'],
-      accent: ['#c62828', '#ad1457', '#0d47a1'],
+      accent: ['#004d40', '#ad1457', '#0d47a1'],
     },
     bgPatterns:   ['big-top-stripes', 'circus-banner', 'sawdust', 'tent-canvas', 'ticket-stub'],
     ringStyles:   ['ticket-edge', 'bunting-border', 'circus-rope'],
     shapeNames:   ['circus-tent', 'juggling-pins', 'cannon', 'trapeze'],
     accentShapes: ['popcorn-kernels', 'confetti-bits', 'star-badges', 'balloon-dots'],
-    boardBg: { pattern: 'big-top-stripes', color: '#ef9a9a' },
+    boardBg: { pattern: 'big-top-stripes', color: '#b71c1c' },
   },
 ];
 
