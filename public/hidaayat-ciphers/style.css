@@ -170,6 +170,26 @@ button {
   background: #fffbf0;
 }
 
+.cipher-cell.is-cursor {
+  position: relative;
+}
+.cipher-cell.is-cursor::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--gold);
+  animation: cursor-blink 1s ease-in-out infinite;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
 .cipher-cell.is-linked {
   transform: translateY(-1px);
 }

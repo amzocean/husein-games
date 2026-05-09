@@ -16,6 +16,7 @@ const state = {
   storage: loadStorage(),
   progress: null,
   selectedCipher: null,
+  selectedPos: -1,
   wrongCipher: null,
   revealVisible: false,
   toastId: null,
@@ -69,7 +70,7 @@ function bindEvents() {
   state.elements.quoteGrid.addEventListener('click', (event) => {
     const cell = event.target.closest('.cipher-cell');
     if (!cell || state.progress?.solved) return;
-    selectCipher(cell.dataset.cipher);
+    selectCipher(cell.dataset.cipher, parseInt(cell.dataset.pos, 10));
   });
 
   state.elements.keyboard.addEventListener('click', (event) => {
@@ -184,6 +185,7 @@ function render() {
 function renderQuoteGrid() {
   const fragment = document.createDocumentFragment();
 
+  let flatPos = 0;
   state.puzzle.words.forEach((word) => {
     const wordEl = document.createElement('div');
     wordEl.className = 'word-group';
@@ -195,9 +197,11 @@ function renderQuoteGrid() {
         btn.type = 'button';
         btn.className = 'cipher-cell';
         btn.dataset.cipher = token.cipherLetter;
+        btn.dataset.pos = flatPos++;
 
         if (!guessed) btn.classList.add('is-empty');
         if (state.selectedCipher === token.cipherLetter) btn.classList.add('is-selected');
+        if (state.selectedPos === (flatPos - 1)) btn.classList.add('is-cursor');
         if (guessed && guessed === token.expectedPlain) btn.classList.add('is-correct');
         if (guessed && guessed !== token.expectedPlain) btn.classList.add('is-wrong');
         if (state.wrongCipher === token.cipherLetter) btn.classList.add('is-wrong');
@@ -322,11 +326,11 @@ function useHint() {
   persistProgress();
 
   if (isPuzzleSolved()) { completePuzzle(); return; }
-  state.selectedCipher = getFirstUnresolvedCipher(target);
+  state.selectedCipher = getFirstUnresolvedCipher();
   render();
 }
 
-function renderReveal() {
+function renderReveal(){
   if (!state.revealVisible) return;
   const imageIndex = state.quote.page - 1;
   state.elements.pageImage.src = `./pages/Raudat Hidayaat 1-images-${imageIndex}.jpg`;
@@ -335,10 +339,11 @@ function renderReveal() {
   state.elements.revealHints.textContent = state.progress.hintsUsed;
 }
 
-function selectCipher(cipherLetter) {
+function selectCipher(cipherLetter, pos = -1) {
   if (!cipherLetter) return;
   vibrate(10);
   state.selectedCipher = cipherLetter;
+  state.selectedPos = pos;
   render();
 }
 
@@ -367,7 +372,7 @@ function assignPlainLetter(plainLetter) {
   persistProgress();
 
   if (isPuzzleSolved()) { completePuzzle(); return; }
-  state.selectedCipher = getFirstUnresolvedCipher(cipherLetter);
+  state.selectedCipher = getFirstUnresolvedCipher();
   render();
 }
 
@@ -385,6 +390,7 @@ async function completePuzzle() {
   if (state.progress.solved) return;
   state.progress.solved = true;
   state.selectedCipher = null;
+  state.selectedPos = -1;
   persistProgress();
   render();
   vibrate([15, 40, 20]);
@@ -398,30 +404,26 @@ function isPuzzleSolved() {
   return state.puzzle.uniqueCipherLetters.every((c) => state.progress.assignments[c] === state.puzzle.cipherToPlain[c]);
 }
 
-function getFirstUnresolvedCipher(afterCipher = null) {
-  // Scan the flat token list in reading order so the next selection is
-  // visually near the user's current position, not near the first
-  // occurrence of the solved cipher letter in the deduped list.
-  const flat = state.puzzle.words.flatMap((w) => w);
-  const letterTokens = flat.filter((t) => t.type === 'letter');
+function getFirstUnresolvedCipher() {
+  // Build flat list of letter tokens in reading order
+  const letterTokens = state.puzzle.words.flatMap((w) => w).filter((t) => t.type === 'letter');
   if (!letterTokens.length) return null;
   const unresolved = (c) => state.progress.assignments[c] !== state.puzzle.cipherToPlain[c];
 
-  if (!afterCipher) {
-    const first = letterTokens.find((t) => unresolved(t.cipherLetter));
-    return first ? first.cipherLetter : letterTokens[0].cipherLetter;
-  }
+  // Start scanning from the user's cursor position (selectedPos),
+  // so the next selection is visually near where they were working.
+  const startIdx = state.selectedPos >= 0 && state.selectedPos < letterTokens.length
+    ? state.selectedPos : -1;
 
-  // Find the first occurrence of afterCipher in reading order
-  let startIdx = letterTokens.findIndex((t) => t.cipherLetter === afterCipher);
-  if (startIdx === -1) startIdx = 0;
-
-  // Scan forward (wrapping) for the next unresolved cipher letter
   for (let i = 1; i <= letterTokens.length; i++) {
-    const t = letterTokens[(startIdx + i) % letterTokens.length];
-    if (unresolved(t.cipherLetter)) return t.cipherLetter;
+    const idx = (startIdx + i) % letterTokens.length;
+    const t = letterTokens[idx];
+    if (unresolved(t.cipherLetter)) {
+      state.selectedPos = idx;
+      return t.cipherLetter;
+    }
   }
-  return letterTokens[0].cipherLetter;
+  return null;
 }
 
 function triggerWrongFeedback(cipherLetter) {
