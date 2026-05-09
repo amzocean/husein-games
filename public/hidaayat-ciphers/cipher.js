@@ -62,7 +62,11 @@ function cacheElements() {
     mistakesStat: document.getElementById('mistakesStat'),
     hintBtn: document.getElementById('hintBtn'),
     hintsStat: document.getElementById('hintsStat'),
-    toast: document.getElementById('toast')
+    toast: document.getElementById('toast'),
+    infoBtn: document.getElementById('infoBtn'),
+    tutorialOverlay: document.getElementById('tutorialOverlay'),
+    tutorialClose: document.getElementById('tutorialClose'),
+    tutorialGotIt: document.getElementById('tutorialGotIt')
   };
 }
 
@@ -94,6 +98,17 @@ function bindEvents() {
 
   state.elements.nextPuzzle.addEventListener('click', () => {
     startNewPuzzle();
+  });
+
+  // Tutorial
+  state.elements.infoBtn.addEventListener('click', () => {
+    state.elements.tutorialOverlay.hidden = false;
+  });
+  const closeTutorial = () => { state.elements.tutorialOverlay.hidden = true; };
+  state.elements.tutorialClose.addEventListener('click', closeTutorial);
+  state.elements.tutorialGotIt.addEventListener('click', closeTutorial);
+  state.elements.tutorialOverlay.addEventListener('click', (e) => {
+    if (e.target === state.elements.tutorialOverlay) closeTutorial();
   });
 }
 

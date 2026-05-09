@@ -566,6 +566,224 @@ button {
   transform: translate(-50%, 0);
 }
 
+/* ── Info button ─────────────────────────────────────────── */
+.info-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: var(--card);
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  transition: background 120ms, color 120ms;
+}
+.info-btn:active {
+  background: var(--gold);
+  color: var(--card);
+}
+
+/* ── Tutorial overlay ────────────────────────────────────── */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 200ms ease;
+}
+.tutorial-overlay[hidden] { display: none; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.tutorial-card {
+  background: var(--card);
+  border: 2px solid var(--gold);
+  border-radius: 20px;
+  padding: 20px 18px 18px;
+  max-width: 380px;
+  width: 100%;
+  max-height: 85dvh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.tutorial-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.tutorial-title {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.tutorial-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tutorial-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold-bright);
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-demo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.step-text {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+.step-text strong {
+  color: var(--gold);
+}
+
+/* demo cells */
+.demo-cell {
+  width: 34px;
+  height: 42px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+}
+.demo-cell.demo-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201, 148, 74, 0.3);
+}
+.demo-cell.demo-correct {
+  background: var(--success-soft);
+  border-color: var(--success);
+}
+.demo-cell.demo-wrong {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  animation: demo-shake 0.4s ease infinite;
+}
+@keyframes demo-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.demo-cipher {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.demo-guess {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.demo-guess.demo-blank {
+  width: 12px;
+  height: 2px;
+  background: var(--muted);
+  border-radius: 1px;
+  margin-top: 2px;
+}
+.demo-arrow {
+  font-size: 1rem;
+  color: var(--muted);
+}
+.demo-eq {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.demo-key {
+  width: 28px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-hint-btn {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.tutorial-got-it {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: var(--navy);
+  color: var(--gold-bright);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 120ms;
+}
+.tutorial-got-it:active {
+  background: var(--navy-light);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0e1520;
@@ -639,6 +857,10 @@ button {
   .toast {
     background: rgba(245, 234, 220, 0.94);
     color: #231912;
+  }
+
+  .tutorial-title {
+    color: var(--gold-bright);
   }
 }
 
