@@ -2,13 +2,14 @@
 
 ## 1. Introduction & Project Context
 
-This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 4 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
+This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 5 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
 
-**The 4 games:**
+**The 5 games:**
 - **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels) → [Valentines docs](public/valentines/DOCUMENTATION.md)
 - **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering → [Ludo docs](public/ludo/DOCUMENTATION.md)
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
+- **🔐 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/README.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -35,6 +36,7 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 | Ludo | `public/ludo/DOCUMENTATION.md` | Multiplayer logic, 5 code paths, Socket.IO events, Ludo bug fixes |
 | H♥F Deal | `public/cards/DOCUMENTATION.md` | Card game rules, pending action state machine, rent payment flow, bug fixes |
 | Valentines | `public/valentines/DOCUMENTATION.md` | Level config, customization |
+| Hidaayat Ciphers | `public/hidaayat-ciphers/README.md` | Cipher engine, hook+reveal, quote data format, page image mapping |
 
 ## 3. Quick Resume Checklist
 
@@ -62,7 +64,7 @@ husein-games/
 ├── DOCUMENTATION.md       # This file — project-wide docs
 ├── validate-themes.js     # Pre-commit validator for tiles themes
 └── public/
-    ├── index.html          # Landing page with 4 game cards
+    ├── index.html          # Landing page with 5 game cards
     ├── valentines/         # Valentine puzzle game (static, single-player)
     │   ├── DOCUMENTATION.md
     │   ├── index.html
@@ -79,12 +81,19 @@ husein-games/
     │   ├── photos/
     │   ├── manifest.json
     │   └── sw.js
-    └── ludo/
-        ├── DOCUMENTATION.md
-        └── index.html
-    └── cards/              # H♥F Deal card game (2-player multiplayer)
-        ├── DOCUMENTATION.md
-        └── index.html
+    ├── ludo/               # Ludo board game (2-4 player multiplayer)
+    │   ├── DOCUMENTATION.md
+    │   └── index.html
+    ├── cards/              # H♥F Deal card game (2-player multiplayer)
+    │   ├── DOCUMENTATION.md
+    │   └── index.html
+    └── hidaayat-ciphers/   # Cipher puzzle game (static, single-player)
+        ├── README.md
+        ├── index.html
+        ├── cipher.js
+        ├── style.css
+        ├── quotes.json     # 78 wisdom quotes
+        └── pages/          # 243 book page JPGs (~68MB)
 ```
 
 ### Key Technical Decisions
@@ -124,11 +133,12 @@ husein-games/
 - **Colors**: Rose `#c44569` headings, gold `#b8860b` subtitle, warm pastel tag backgrounds
 - **Cards**: White with rose-tinted borders and soft shadows, hover scale effect
 - Responsive grid: 1 column on mobile, 2 columns on 700px+
-- Three game cards:
+- Five game cards:
   1. **💌 Valentines** → `/valentines/` (tag: Story)
   2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
   3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
   4. **🃏 H♥F Deal** → `/cards/` (tag: Multiplayer)
+  5. **🔐 Hidaayat Ciphers** → `/hidaayat-ciphers/` (tag: Solo)
 - Footer: "Made with ♥ by Husein"
 
 ---
@@ -201,6 +211,7 @@ These are project-wide bugs not specific to any single game:
 > - [Photo Tiles bug fixes](public/tiles/DOCUMENTATION.md#key-bug-fixes-history)
 > - [Ludo bug fixes](public/ludo/DOCUMENTATION.md#key-bug-fixes-history)
 > - [H♥F Deal bug fixes](public/cards/DOCUMENTATION.md#key-bug-fixes-history)
+> - [Hidaayat Ciphers](public/hidaayat-ciphers/README.md)
 
 ---
 

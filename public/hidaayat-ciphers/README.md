@@ -30,7 +30,7 @@ public/hidaayat-ciphers/
 ├── cipher.js           # Game engine (~475 lines) — all logic, state, rendering
 ├── style.css           # Styling (~710 lines) — navy/gold/cream theme, dark mode, responsive
 ├── quotes.json         # 78 quotes with page numbers (~21.5KB)
-├── pages/              # 243 book page JPGs (~68MB, gitignored)
+├── pages/              # 243 book page JPGs (~68MB, committed to repo)
 │   └── Raudat Hidayaat 1-images-{0-242}.jpg
 └── README.md           # This file
 ```
@@ -122,7 +122,7 @@ Example: Page 15 → `Raudat Hidayaat 1-images-14.jpg`
 - **Book**: Raudat Hidayaat 1 (رَوْضَة الْهِدَايَة)
 - **Quotes file**: `Quotes of Wisdom - Raudat Hidayaat 1.md` (project root)
 - **Page images**: `Raudat Hidayaat1_pages/` (project root, copied to `public/hidaayat-ciphers/pages/`)
-- **Image count**: 243 JPGs (~68MB total) — gitignored, must be copied manually
+- **Image count**: 243 JPGs (~68MB total) — committed to repo
 
 ## Development
 
@@ -132,12 +132,8 @@ npm start           # Starts Express server on port 3000
 # Open http://localhost:3000/hidaayat-ciphers/
 ```
 
-### Page Images Setup
-The page images are gitignored (~68MB). To set up locally:
-```bash
-# Copy from source directory
-cp -r "Raudat Hidayaat1_pages/"* "public/hidaayat-ciphers/pages/"
-```
+### Page Images
+The 243 page images (~68MB) are committed to the repo and deployed with the site. The source images were originally extracted from `Raudat Hidayaat1_pages/` (gitignored).
 
 ### Adding New Quotes
 1. Add entries to `quotes.json` with `cipher`, `full`, `source`, and `page` fields
