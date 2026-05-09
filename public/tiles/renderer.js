@@ -924,6 +924,51 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Luau ──
+    case 'luau-palms': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = 0; i < 6; i++) {
+        s += `<line x1="${5+i*18}" y1="4" x2="${5+i*18+15}" y2="96" stroke="${c}" stroke-width="0.7" opacity="${o*0.35}"/>`;
+        s += `<line x1="${12+i*18}" y1="96" x2="${12+i*18-10}" y2="4" stroke="${c}" stroke-width="0.4" opacity="${o*0.2}"/>`;
+      }
+      return s;
+    }
+    case 'tiki-torch': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="50" y1="96" x2="50" y2="30" stroke="${c}" stroke-width="1.2" opacity="${o*0.3}"/>`;
+      s += `<path d="M44,30 Q50,15 56,30" fill="${c}" opacity="${o*0.35}"/>`;
+      s += `<path d="M46,25 Q50,12 54,25" fill="${c}" opacity="${o*0.2}"/>`;
+      return s;
+    }
+    case 'ocean-waves': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 20; y < 95; y += 18) {
+        s += `<path d="M4,${y} Q20,${y-8} 35,${y} Q50,${y+8} 65,${y} Q80,${y-8} 96,${y}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'bamboo-fence': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 15; x < 90; x += 20) {
+        s += `<line x1="${x}" y1="4" x2="${x}" y2="96" stroke="${c}" stroke-width="1.5" opacity="${o*0.25}"/>`;
+        s += `<line x1="${x-1}" y1="${35+x%7}" x2="${x+1}" y2="${35+x%7}" stroke="${c}" stroke-width="2" opacity="${o*0.15}"/>`;
+      }
+      s += `<line x1="4" y1="35" x2="96" y2="35" stroke="${c}" stroke-width="0.8" opacity="${o*0.2}"/>`;
+      s += `<line x1="4" y1="65" x2="96" y2="65" stroke="${c}" stroke-width="0.8" opacity="${o*0.2}"/>`;
+      return s;
+    }
+    case 'lei-garland': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<path d="M4,50 Q25,38 50,50 Q75,62 96,50" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.3}"/>`;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let t = 0; t < 8; t++) {
+        const x = 10 + t * 11;
+        const y = 50 + Math.sin(t * 0.8) * 10;
+        s += `<circle cx="${x}" cy="${y}" r="${1.5+rng()*1}" fill="${c}" opacity="${o*0.35}"/>`;
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1300,6 +1345,21 @@ function renderRing(attr) {
              `<path d="M10,94 L18,86 L26,94 L34,86 L42,94 L50,86 L58,94 L66,86 L74,94 L82,86 L90,94" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
     case 'circus-rope':
       return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.6" stroke-dasharray="4,4"/>`;
+
+    // ── Luau ──
+    case 'rope-braid':
+      return `<rect x="5" y="5" width="90" height="90" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.65" stroke-dasharray="6,3"/>` +
+             `<rect x="9" y="9" width="82" height="82" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5" stroke-dasharray="3,6"/>`;
+    case 'bamboo-frame':
+      return `<rect x="4" y="4" width="92" height="92" rx="3" fill="none" stroke="${c}" stroke-width="4" opacity="0.65"/>` +
+             `<line x1="4" y1="30" x2="96" y2="30" stroke="${c}" stroke-width="0.8" opacity="0.3"/>` +
+             `<line x1="4" y1="70" x2="96" y2="70" stroke="${c}" stroke-width="0.8" opacity="0.3"/>`;
+    case 'flower-lei':
+      return `<rect x="5" y="5" width="90" height="90" rx="8" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>` +
+             `<circle cx="50" cy="5" r="3" fill="${c}" opacity="0.5"/>` +
+             `<circle cx="50" cy="95" r="3" fill="${c}" opacity="0.5"/>` +
+             `<circle cx="5" cy="50" r="3" fill="${c}" opacity="0.5"/>` +
+             `<circle cx="95" cy="50" r="3" fill="${c}" opacity="0.5"/>`;
 
     default: return '';
   }
@@ -1937,6 +1997,43 @@ function renderShape(attr) {
              `<circle cx="50" cy="62" r="4" fill="${c}" opacity="${o*0.8}"/>`;
     }
 
+    // ── Luau ──
+    case 'luau-hibiscus': {
+      const o = 0.85;
+      let s = '';
+      for (let i = 0; i < 5; i++) {
+        const a = (i * 72 - 90) * Math.PI / 180;
+        const px = 50 + Math.cos(a) * 12;
+        const py = 50 + Math.sin(a) * 12;
+        s += `<ellipse cx="${px}" cy="${py}" rx="7" ry="10" fill="${c}" opacity="${o}" transform="rotate(${i*72},${px},${py})"/>`;
+      }
+      s += `<circle cx="50" cy="50" r="4" fill="${c}" opacity="${o*0.6}"/>`;
+      return s;
+    }
+    case 'tiki-mask': {
+      const o = 0.85;
+      return `<rect x="38" y="32" width="24" height="30" rx="5" fill="${c}" opacity="${o}"/>` +
+             `<rect x="41" y="38" width="7" height="5" rx="2" fill="#fff" opacity="0.3"/>` +
+             `<rect x="52" y="38" width="7" height="5" rx="2" fill="#fff" opacity="0.3"/>` +
+             `<rect x="43" y="50" width="14" height="6" rx="2" fill="#fff" opacity="0.2"/>` +
+             `<line x1="38" y1="35" x2="62" y2="35" stroke="${c}" stroke-width="2" opacity="${o*0.7}"/>`;
+    }
+    case 'luau-pineapple': {
+      const o = 0.85;
+      return`<ellipse cx="50" cy="55" rx="10" ry="14" fill="${c}" opacity="${o}"/>` +
+             `<path d="M45,42 L50,30 L55,42" fill="${c}" opacity="${o*0.7}"/>` +
+             `<path d="M42,44 L38,34 L48,42" fill="${c}" opacity="${o*0.6}"/>` +
+             `<path d="M58,44 L62,34 L52,42" fill="${c}" opacity="${o*0.6}"/>` +
+             `<line x1="43" y1="50" x2="57" y2="50" stroke="#fff" stroke-width="0.5" opacity="0.2"/>` +
+             `<line x1="43" y1="55" x2="57" y2="55" stroke="#fff" stroke-width="0.5" opacity="0.2"/>` +
+             `<line x1="43" y1="60" x2="57" y2="60" stroke="#fff" stroke-width="0.5" opacity="0.2"/>`;
+    }
+    case 'luau-surfboard': {
+      const o = 0.85;
+      return`<ellipse cx="50" cy="50" rx="7" ry="20" fill="${c}" opacity="${o}" transform="rotate(-15,50,50)"/>` +
+             `<line x1="50" y1="33" x2="50" y2="67" stroke="#fff" stroke-width="0.8" opacity="0.2" transform="rotate(-15,50,50)"/>`;
+    }
+
     default: return '';
   }
 }
@@ -2406,6 +2503,23 @@ function renderAccent(attr) {
       case 'balloon-dots':
         out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}" opacity="0.7"/>` +
                `<line x1="${cx}" y1="${cy+3.5}" x2="${cx}" y2="${cy+6}" stroke="${c}" stroke-width="1" opacity="0.5"/>`; break;
+
+      // ── Luau ──
+      case 'plumeria-petals': {
+        const a = Math.atan2(cy - 50, cx - 50);
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="5" ry="3" fill="${c}" opacity="0.7" transform="rotate(${a * 180 / Math.PI},${cx},${cy})"/>`; break;
+      }
+      case 'sea-shells': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx},${cy} Q${cx+dx*5},${cy-4} ${cx+dx*3},${cy+4} Q${cx+dx*1},${cy+2} ${cx},${cy}" fill="${c}" opacity="0.7"/>`; break;
+      }
+      case 'coconut-halves':
+        out += `<path d="M${cx-4},${cy} A4,4 0 0,1 ${cx+4},${cy}" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
+      case 'fish-hooks': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx},${cy-5} L${cx},${cy+2} Q${cx},${cy+5} ${cx+dx*3},${cy+5} Q${cx+dx*5},${cy+5} ${cx+dx*5},${cy+2}" fill="none" stroke="${c}" stroke-width="2" opacity="0.7" stroke-linecap="round"/>`; break;
+      }
     }
   }
   return out;

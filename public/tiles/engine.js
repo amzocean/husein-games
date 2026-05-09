@@ -41,18 +41,18 @@ const THEMES = [
     boardBg: { pattern: 'solid', color: '#f8bbd0' },
   },
   {
-    name: 'Jeweler', emoji: '💎',
+    name: 'Luau', emoji: '🌺',
     palette: {
-      bg:     ['#ef5350', '#7e57c2', '#ffd54f'],
-      ring:   ['#6d4c00', '#0d47a1', '#1b5e20', '#4a148c'],
-      shape:  ['#880e4f', '#004d40', '#311b92'],
-      accent: ['#3e2723', '#01579b', '#33691e'],
+      bg:     ['#ff7043', '#26a69a', '#ffee58'],
+      ring:   ['#b71c1c', '#00695c', '#e65100', '#1a237e'],
+      shape:  ['#004d40', '#880e4f', '#33691e'],
+      accent: ['#bf360c', '#006064', '#4a148c'],
     },
-    bgPatterns:   ['velvet-cushion', 'display-case', 'chain-links', 'gem-facets', 'jewel-box'],
-    ringStyles:   ['band-ring', 'prong-setting', 'filigree-band'],
-    shapeNames:   ['diamond-gem', 'pearl-drop', 'watch-face', 'tiara'],
-    accentShapes: ['gem-studs', 'clasp-hooks', 'sparkle-dots', 'tiny-gems'],
-    boardBg: { pattern: 'velvet-cushion', color: '#2c1810' },
+    bgPatterns:   ['luau-palms', 'tiki-torch', 'ocean-waves', 'bamboo-fence', 'lei-garland'],
+    ringStyles:   ['rope-braid', 'bamboo-frame', 'flower-lei'],
+    shapeNames:   ['luau-hibiscus', 'tiki-mask', 'luau-pineapple', 'luau-surfboard'],
+    accentShapes: ['plumeria-petals', 'sea-shells', 'coconut-halves', 'fish-hooks'],
+    boardBg: { pattern: 'solid', color: '#00bcd4' },
   },
   {
     name: 'Origami', emoji: '🦢',
@@ -100,6 +100,20 @@ const THEMES = [
 
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
+  {
+    name: 'Jeweler', emoji: '💎',
+    palette: {
+      bg:     ['#ef5350', '#7e57c2', '#ffd54f'],
+      ring:   ['#6d4c00', '#0d47a1', '#1b5e20', '#4a148c'],
+      shape:  ['#880e4f', '#004d40', '#311b92'],
+      accent: ['#3e2723', '#01579b', '#33691e'],
+    },
+    bgPatterns:   ['velvet-cushion', 'display-case', 'chain-links', 'gem-facets', 'jewel-box'],
+    ringStyles:   ['band-ring', 'prong-setting', 'filigree-band'],
+    shapeNames:   ['diamond-gem', 'pearl-drop', 'watch-face', 'tiara'],
+    accentShapes: ['gem-studs', 'clasp-hooks', 'sparkle-dots', 'tiny-gems'],
+    boardBg: { pattern: 'velvet-cushion', color: '#2c1810' },
+  },
   {
     name: 'Candy', emoji: '🍬',
     palette: {
