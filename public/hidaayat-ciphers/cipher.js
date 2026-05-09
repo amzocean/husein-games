@@ -399,15 +399,29 @@ function isPuzzleSolved() {
 }
 
 function getFirstUnresolvedCipher(afterCipher = null) {
-  const letters = state.puzzle.uniqueCipherLetters;
-  if (!letters.length) return null;
+  // Scan the flat token list in reading order so the next selection is
+  // visually near the user's current position, not near the first
+  // occurrence of the solved cipher letter in the deduped list.
+  const flat = state.puzzle.words.flatMap((w) => w);
+  const letterTokens = flat.filter((t) => t.type === 'letter');
+  if (!letterTokens.length) return null;
   const unresolved = (c) => state.progress.assignments[c] !== state.puzzle.cipherToPlain[c];
-  const start = afterCipher ? letters.indexOf(afterCipher) : -1;
-  for (let i = 1; i <= letters.length; i++) {
-    const candidate = letters[(start + i + letters.length) % letters.length];
-    if (unresolved(candidate)) return candidate;
+
+  if (!afterCipher) {
+    const first = letterTokens.find((t) => unresolved(t.cipherLetter));
+    return first ? first.cipherLetter : letterTokens[0].cipherLetter;
   }
-  return letters[0];
+
+  // Find the first occurrence of afterCipher in reading order
+  let startIdx = letterTokens.findIndex((t) => t.cipherLetter === afterCipher);
+  if (startIdx === -1) startIdx = 0;
+
+  // Scan forward (wrapping) for the next unresolved cipher letter
+  for (let i = 1; i <= letterTokens.length; i++) {
+    const t = letterTokens[(startIdx + i) % letterTokens.length];
+    if (unresolved(t.cipherLetter)) return t.cipherLetter;
+  }
+  return letterTokens[0].cipherLetter;
 }
 
 function triggerWrongFeedback(cipherLetter) {
