@@ -360,6 +360,8 @@ function assignPlainLetter(plainLetter) {
   if (plainLetter !== state.puzzle.cipherToPlain[cipherLetter]) {
     state.progress.mistakes++;
     triggerWrongFeedback(cipherLetter);
+    // Don't persist the wrong assignment or move selection — it auto-clears
+    return;
   }
 
   persistProgress();
@@ -411,7 +413,16 @@ function getFirstUnresolvedCipher(afterCipher = null) {
 function triggerWrongFeedback(cipherLetter) {
   state.wrongCipher = cipherLetter;
   render();
-  setTimeout(() => { if (state.wrongCipher === cipherLetter) { state.wrongCipher = null; render(); } }, 320);
+  setTimeout(() => {
+    if (state.wrongCipher === cipherLetter) {
+      state.wrongCipher = null;
+      delete state.progress.assignments[cipherLetter];
+      // Keep selection on the same cipher letter
+      state.selectedCipher = cipherLetter;
+      persistProgress();
+      render();
+    }
+  }, 1000);
 }
 
 function showToast(message) {
