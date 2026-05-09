@@ -303,16 +303,16 @@ button {
 .solve-reveal {
   display: none;
   position: absolute;
-  inset: 18px;
+  inset: 0;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 8px;
+  padding: 14px;
   overflow-y: auto;
   text-align: center;
   z-index: 10;
   background: var(--card);
-  border-radius: 18px;
+  border-radius: 22px;
 }
 
 .solve-reveal.is-visible {
@@ -335,9 +335,7 @@ button {
   flex: 1 1 auto;
   min-height: 0;
   object-fit: contain;
-  border-radius: 12px;
-  border: 2px solid var(--navy);
-  box-shadow: 0 4px 16px rgba(26, 39, 68, 0.15);
+  border-radius: 8px;
 }
 
 .next-button {
