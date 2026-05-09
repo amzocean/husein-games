@@ -125,6 +125,48 @@ const THEMES = [
     accentShapes: ['fleur-marks', 'royal-orbs', 'crown-jewels', 'crest-corners'],
     boardBg: { pattern: 'royal-damask', color: '#311b92' },
   },
+  {
+    name: 'Origami', emoji: '🦢',
+    palette: {
+      bg:     ['#e8d5b7', '#c8e6c9', '#bbdefb'],
+      ring:   ['#b71c1c', '#1a237e', '#004d40', '#4a148c'],
+      shape:  ['#c62828', '#0d47a1', '#00695c'],
+      accent: ['#bf360c', '#283593', '#1b5e20'],
+    },
+    bgPatterns:   ['washi-texture', 'fold-grid', 'paper-grain', 'crease-lines', 'tatami'],
+    ringStyles:   ['mountain-fold', 'valley-fold', 'pleated'],
+    shapeNames:   ['crane', 'boat', 'fox-face', 'fortune-teller'],
+    accentShapes: ['crease-marks', 'paper-corners', 'fold-tabs', 'origami-stars'],
+    boardBg: { pattern: 'solid', color: '#e8d5b7' },
+  },
+  {
+    name: 'Apothecary', emoji: '🧪',
+    palette: {
+      bg:     ['#d1c4e9', '#c8e6c9', '#ffe0b2'],
+      ring:   ['#311b92', '#006064', '#bf360c', '#880e4f'],
+      shape:  ['#4a148c', '#004d40', '#e65100'],
+      accent: ['#6a1b9a', '#00695c', '#d84315'],
+    },
+    bgPatterns:   ['stone-shelf', 'herb-wall', 'alchemy-symbols', 'cobweb', 'apothecary-jars'],
+    ringStyles:   ['herb-wrap', 'wax-seal-ring', 'smoke-wisp'],
+    shapeNames:   ['potion-bottle', 'mortar-pestle', 'flask-shape', 'cauldron'],
+    accentShapes: ['herb-sprigs', 'droplets', 'crystal-shards', 'rune-marks'],
+    boardBg: { pattern: 'solid', color: '#d1c4e9' },
+  },
+  {
+    name: 'Circus', emoji: '🎪',
+    palette: {
+      bg:     ['#ef9a9a', '#fff59d', '#9fa8da'],
+      ring:   ['#b71c1c', '#e65100', '#1b5e20', '#4a148c'],
+      shape:  ['#d84315', '#1a237e', '#2e7d32'],
+      accent: ['#c62828', '#ad1457', '#0d47a1'],
+    },
+    bgPatterns:   ['big-top-stripes', 'circus-banner', 'sawdust', 'tent-canvas', 'ticket-stub'],
+    ringStyles:   ['ticket-edge', 'bunting-border', 'circus-rope'],
+    shapeNames:   ['circus-tent', 'juggling-pins', 'cannon', 'trapeze'],
+    accentShapes: ['popcorn-kernels', 'confetti-bits', 'star-badges', 'balloon-dots'],
+    boardBg: { pattern: 'big-top-stripes', color: '#ef9a9a' },
+  },
 ];
 
 // Archived themes — preserved for reference, not selectable in-game

@@ -798,6 +798,132 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Origami ──
+    case 'washi-texture': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = 0; i < 8; i++) s += `<line x1="${4+i*12}" y1="4" x2="${4+i*12}" y2="96" stroke="#fff" stroke-width="0.3" opacity="0.15"/>`;
+      for (let i = 0; i < 8; i++) s += `<line x1="4" y1="${4+i*12}" x2="96" y2="${4+i*12}" stroke="#fff" stroke-width="0.3" opacity="0.1"/>`;
+      return s;
+    }
+    case 'fold-grid': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="4" y1="50" x2="96" y2="50" stroke="#fff" stroke-width="0.6" opacity="0.15" stroke-dasharray="4,3"/>`;
+      s += `<line x1="50" y1="4" x2="50" y2="96" stroke="#fff" stroke-width="0.6" opacity="0.15" stroke-dasharray="4,3"/>`;
+      s += `<line x1="4" y1="4" x2="96" y2="96" stroke="#fff" stroke-width="0.4" opacity="0.1" stroke-dasharray="3,4"/>`;
+      s += `<line x1="96" y1="4" x2="4" y2="96" stroke="#fff" stroke-width="0.4" opacity="0.1" stroke-dasharray="3,4"/>`;
+      return s;
+    }
+    case 'paper-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
+      const rng = mulberry32(42);
+      for (let i = 0; i < 20; i++) {
+        const x = 8 + rng() * 84, y = 8 + rng() * 84;
+        s += `<line x1="${x}" y1="${y}" x2="${x + rng()*6 - 3}" y2="${y + rng()*2}" stroke="#fff" stroke-width="0.3" opacity="0.1"/>`;
+      }
+      return s;
+    }
+    case 'crease-lines': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="25" y1="4" x2="25" y2="96" stroke="#fff" stroke-width="0.5" opacity="0.12"/>`;
+      s += `<line x1="75" y1="4" x2="75" y2="96" stroke="#fff" stroke-width="0.5" opacity="0.12"/>`;
+      s += `<line x1="4" y1="33" x2="96" y2="33" stroke="#fff" stroke-width="0.5" opacity="0.12"/>`;
+      s += `<line x1="4" y1="66" x2="96" y2="66" stroke="#fff" stroke-width="0.5" opacity="0.12"/>`;
+      return s;
+    }
+    case 'tatami': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let r = 0; r < 4; r++) {
+        for (let col = 0; col < 2; col++) {
+          const x = 8 + col * 44, y = 8 + r * 22;
+          const horiz = (r + col) % 2 === 0;
+          if (horiz) {
+            s += `<rect x="${x}" y="${y}" width="40" height="18" rx="1" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.12"/>`;
+          } else {
+            s += `<rect x="${x}" y="${y}" width="40" height="18" rx="1" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.12"/>`;
+          }
+        }
+      }
+      return s;
+    }
+
+    // ── Apothecary ──
+    case 'stone-shelf': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
+      s += `<line x1="4" y1="35" x2="96" y2="35" stroke="#fff" stroke-width="1" opacity="0.1"/>`;
+      s += `<line x1="4" y1="65" x2="96" y2="65" stroke="#fff" stroke-width="1" opacity="0.1"/>`;
+      s += `<rect x="4" y="34" width="92" height="3" fill="#fff" opacity="0.05"/>`;
+      s += `<rect x="4" y="64" width="92" height="3" fill="#fff" opacity="0.05"/>`;
+      return s;
+    }
+    case 'herb-wall': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      const rng = mulberry32(77);
+      for (let i = 0; i < 12; i++) {
+        const x = 10 + rng() * 80, y = 10 + rng() * 80, l = 4 + rng() * 6;
+        s += `<line x1="${x}" y1="${y}" x2="${x + l * 0.5}" y2="${y - l}" stroke="#fff" stroke-width="0.5" opacity="0.1"/>`;
+      }
+      return s;
+    }
+    case 'alchemy-symbols': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<polygon points="50,20 58,34 42,34" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.1"/>`;
+      s += `<polygon points="30,65 38,79 22,79" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.1" transform="rotate(180,30,72)"/>`;
+      s += `<circle cx="70" cy="72" r="7" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.1"/>`;
+      return s;
+    }
+    case 'cobweb': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
+      s += `<path d="M4,4 Q50,30 96,4" fill="none" stroke="#fff" stroke-width="0.3" opacity="0.1"/>`;
+      s += `<path d="M4,4 Q30,50 4,96" fill="none" stroke="#fff" stroke-width="0.3" opacity="0.1"/>`;
+      s += `<line x1="4" y1="4" x2="40" y2="40" stroke="#fff" stroke-width="0.3" opacity="0.08"/>`;
+      return s;
+    }
+    case 'apothecary-jars': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<rect x="20" y="60" width="14" height="20" rx="3" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.1"/>`;
+      s += `<rect x="23" y="57" width="8" height="4" rx="1" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.1"/>`;
+      s += `<rect x="60" y="60" width="18" height="22" rx="5" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.1"/>`;
+      s += `<rect x="64" y="57" width="10" height="4" rx="1" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.1"/>`;
+      return s;
+    }
+
+    // ── Circus ──
+    case 'big-top-stripes': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = 0; i < 5; i++) {
+        s += `<rect x="${4 + i * 20}" y="4" width="10" height="92" fill="#fff" opacity="0.08"/>`;
+      }
+      return s;
+    }
+    case 'circus-banner': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<path d="M4,20 Q15,28 26,20 Q37,12 48,20 Q59,28 70,20 Q81,12 96,20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.12"/>`;
+      s += `<path d="M4,80 Q15,88 26,80 Q37,72 48,80 Q59,88 70,80 Q81,72 96,80" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.12"/>`;
+      return s;
+    }
+    case 'sawdust': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
+      const rng = mulberry32(99);
+      for (let i = 0; i < 25; i++) {
+        const x = 8 + rng() * 84, y = 8 + rng() * 84;
+        s += `<circle cx="${x}" cy="${y}" r="${0.5 + rng() * 1}" fill="#fff" opacity="0.08"/>`;
+      }
+      return s;
+    }
+    case 'tent-canvas': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="50" y1="4" x2="4" y2="96" stroke="#fff" stroke-width="0.4" opacity="0.1"/>`;
+      s += `<line x1="50" y1="4" x2="96" y2="96" stroke="#fff" stroke-width="0.4" opacity="0.1"/>`;
+      s += `<line x1="50" y1="4" x2="50" y2="96" stroke="#fff" stroke-width="0.3" opacity="0.08"/>`;
+      return s;
+    }
+    case 'ticket-stub': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="65" y1="4" x2="65" y2="96" stroke="#fff" stroke-width="0.6" opacity="0.1" stroke-dasharray="3,3"/>`;
+      s += `<rect x="10" y="25" width="50" height="50" rx="3" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.08"/>`;
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1138,6 +1264,42 @@ function renderRing(attr) {
              `<line x1="40" y1="88" x2="40" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
              `<line x1="60" y1="88" x2="60" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>` +
              `<line x1="80" y1="88" x2="80" y2="94" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+
+    // ── Origami ──
+    case 'mountain-fold':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7" stroke-dasharray="6,2"/>`;
+    case 'valley-fold':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7" stroke-dasharray="2,4"/>`;
+    case 'pleated':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="3" opacity="0.65"/>` +
+             `<line x1="6" y1="30" x2="94" y2="30" stroke="${c}" stroke-width="1.5" opacity="0.4"/>` +
+             `<line x1="6" y1="70" x2="94" y2="70" stroke="${c}" stroke-width="1.5" opacity="0.4"/>`;
+
+    // ── Apothecary ──
+    case 'herb-wrap':
+      return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<path d="M10,6 Q6,20 14,20 Q6,30 14,34" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>` +
+             `<path d="M86,94 Q94,80 86,80 Q94,70 86,66" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
+    case 'wax-seal-ring':
+      return `<rect x="8" y="8" width="84" height="84" rx="42" fill="none" stroke="${c}" stroke-width="3" opacity="0.65"/>` +
+             `<rect x="14" y="14" width="72" height="72" rx="36" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>`;
+    case 'smoke-wisp':
+      return `<path d="M6,50 Q20,20 50,6 Q80,20 94,50 Q80,80 50,94 Q20,80 6,50Z" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<path d="M20,50 Q35,30 50,20 Q65,30 80,50 Q65,70 50,80 Q35,70 20,50Z" fill="none" stroke="${c}" stroke-width="1" opacity="0.3"/>`;
+
+    // ── Circus ──
+    case 'ticket-edge':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<circle cx="6" cy="30" r="3" fill="#fff" stroke="${c}" stroke-width="1.5" opacity="0.6"/>` +
+             `<circle cx="6" cy="70" r="3" fill="#fff" stroke="${c}" stroke-width="1.5" opacity="0.6"/>` +
+             `<circle cx="94" cy="30" r="3" fill="#fff" stroke="${c}" stroke-width="1.5" opacity="0.6"/>` +
+             `<circle cx="94" cy="70" r="3" fill="#fff" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`;
+    case 'bunting-border':
+      return `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<path d="M10,6 L18,14 L26,6 L34,14 L42,6 L50,14 L58,6 L66,14 L74,6 L82,14 L90,6" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>` +
+             `<path d="M10,94 L18,86 L26,94 L34,86 L42,94 L50,86 L58,94 L66,86 L74,94 L82,86 L90,94" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
+    case 'circus-rope':
+      return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.6" stroke-dasharray="4,4"/>`;
 
     default: return '';
   }
@@ -1691,6 +1853,90 @@ function renderShape(attr) {
              `<line x1="50" y1="35" x2="50" y2="72" stroke="#fff" stroke-width="1.5" opacity="0.2"/>` +
              `<line x1="30" y1="50" x2="70" y2="50" stroke="#fff" stroke-width="1.5" opacity="0.2"/>`;
 
+    // ── Origami ──
+    case 'crane': {
+      const o = 0.85;
+      return `<polygon points="50,30 35,55 50,48 65,55" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="30" x2="42" y2="38" stroke="${c}" stroke-width="1.5" opacity="${o*0.7}"/>` +
+             `<polygon points="50,48 38,65 50,60 62,65" fill="${c}" opacity="${o*0.8}"/>`;
+    }
+    case 'boat': {
+      const o = 0.85;
+      return `<polygon points="30,55 50,38 70,55" fill="${c}" opacity="${o}"/>` +
+             `<path d="M25,58 Q50,70 75,58" fill="${c}" opacity="${o*0.9}"/>` +
+             `<line x1="50" y1="38" x2="50" y2="55" stroke="#fff" stroke-width="1" opacity="0.2"/>`;
+    }
+    case 'fox-face': {
+      const o = 0.85;
+      return `<polygon points="35,35 50,60 65,35" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="35,35 28,42 38,45" fill="${c}" opacity="${o*0.9}"/>` +
+             `<polygon points="65,35 72,42 62,45" fill="${c}" opacity="${o*0.9}"/>` +
+             `<circle cx="43" cy="45" r="2" fill="#fff" opacity="0.25"/>` +
+             `<circle cx="57" cy="45" r="2" fill="#fff" opacity="0.25"/>`;
+    }
+    case 'fortune-teller': {
+      const o = 0.85;
+      return `<polygon points="50,32 68,50 50,68 32,50" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="32" x2="50" y2="68" stroke="#fff" stroke-width="1" opacity="0.15"/>` +
+             `<line x1="32" y1="50" x2="68" y2="50" stroke="#fff" stroke-width="1" opacity="0.15"/>`;
+    }
+
+    // ── Apothecary ──
+    case 'potion-bottle': {
+      const o = 0.85;
+      return `<rect x="44" y="32" width="12" height="6" rx="1" fill="${c}" opacity="${o*0.9}"/>` +
+             `<path d="M40,38 Q38,55 38,65 Q38,72 50,72 Q62,72 62,65 Q62,55 60,38 Z" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="50" cy="60" rx="8" ry="4" fill="#fff" opacity="0.12"/>`;
+    }
+    case 'mortar-pestle': {
+      const o = 0.85;
+      return `<path d="M34,50 Q34,68 50,68 Q66,68 66,50 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="34" y1="50" x2="66" y2="50" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="58" y1="35" x2="48" y2="50" stroke="${c}" stroke-width="3" opacity="${o*0.8}" stroke-linecap="round"/>`;
+    }
+    case 'flask-shape': {
+      const o = 0.85;
+      return `<rect x="45" y="30" width="10" height="10" rx="1" fill="${c}" opacity="${o*0.8}"/>` +
+             `<polygon points="38,42 62,42 68,68 32,68" fill="${c}" opacity="${o}"/>` +
+             `<line x1="38" y1="42" x2="62" y2="42" stroke="#fff" stroke-width="1" opacity="0.15"/>`;
+    }
+    case 'cauldron': {
+      const o = 0.85;
+      return `<ellipse cx="50" cy="48" rx="18" ry="4" fill="${c}" opacity="${o*0.7}"/>` +
+             `<path d="M32,48 Q32,72 50,72 Q68,72 68,48 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M36,44 Q34,38 30,38" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.6}" stroke-linecap="round"/>` +
+             `<path d="M64,44 Q66,38 70,38" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.6}" stroke-linecap="round"/>`;
+    }
+
+    // ── Circus ──
+    case 'circus-tent': {
+      const o = 0.85;
+      return `<polygon points="50,30 30,68 70,68" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="30" x2="50" y2="25" stroke="${c}" stroke-width="2" opacity="${o}" stroke-linecap="round"/>` +
+             `<line x1="50" y1="30" x2="50" y2="68" stroke="#fff" stroke-width="1" opacity="0.15"/>` +
+             `<path d="M30,68 Q50,60 70,68" fill="#fff" opacity="0.1"/>`;
+    }
+    case 'juggling-pins': {
+      const o = 0.85;
+      return `<ellipse cx="42" cy="42" rx="4" ry="8" fill="${c}" opacity="${o}" transform="rotate(-15,42,42)"/>` +
+             `<line x1="42" y1="50" x2="42" y2="62" stroke="${c}" stroke-width="2" opacity="${o*0.8}"/>` +
+             `<ellipse cx="58" cy="40" rx="4" ry="8" fill="${c}" opacity="${o}" transform="rotate(15,58,40)"/>` +
+             `<line x1="58" y1="48" x2="58" y2="60" stroke="${c}" stroke-width="2" opacity="${o*0.8}"/>`;
+    }
+    case 'cannon': {
+      const o = 0.85;
+      return `<ellipse cx="45" cy="58" rx="12" ry="10" fill="${c}" opacity="${o}"/>` +
+             `<rect x="48" y="40" width="8" height="22" rx="2" fill="${c}" opacity="${o}" transform="rotate(-25,52,51)"/>` +
+             `<circle cx="62" cy="36" r="3" fill="${c}" opacity="${o*0.7}"/>`;
+    }
+    case 'trapeze': {
+      const o = 0.85;
+      return `<line x1="35" y1="30" x2="50" y2="60" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="65" y1="30" x2="50" y2="60" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="35" y1="30" x2="65" y2="30" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<circle cx="50" cy="62" r="4" fill="${c}" opacity="${o*0.8}"/>`;
+    }
+
     default: return '';
   }
 }
@@ -2102,6 +2348,64 @@ function renderAccent(attr) {
         const dy = cy < 50 ? 1 : -1;
         out += `<path d="M${cx},${cy} L${cx + dx * 6},${cy} L${cx + dx * 6},${cy + dy * 2} L${cx + dx * 2},${cy + dy * 2} L${cx + dx * 2},${cy + dy * 6} L${cx},${cy + dy * 6} Z" fill="${c}" opacity="0.7"/>`; break;
       }
+
+      // ── Origami ──
+      case 'crease-marks': {
+        const dx = cx < 50 ? 1 : -1;
+        const dy = cy < 50 ? 1 : -1;
+        out += `<line x1="${cx}" y1="${cy}" x2="${cx + dx*5}" y2="${cy + dy*5}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<line x1="${cx + dx*2}" y1="${cy}" x2="${cx}" y2="${cy + dy*2}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
+      }
+      case 'paper-corners': {
+        const dx = cx < 50 ? 1 : -1;
+        const dy = cy < 50 ? 1 : -1;
+        out += `<polygon points="${cx},${cy} ${cx + dx*6},${cy} ${cx},${cy + dy*6}" fill="${c}" opacity="0.7"/>`; break;
+      }
+      case 'fold-tabs': {
+        const dx = cx < 50 ? 1 : -1;
+        const dy = cy < 50 ? 1 : -1;
+        out += `<rect x="${cx - 3}" y="${cy - 3}" width="6" height="6" fill="${c}" opacity="0.65" transform="rotate(45,${cx},${cy})"/>`; break;
+      }
+      case 'origami-stars':
+        out += `<polygon points="${cx},${cy-4} ${cx+1.5},${cy-1.5} ${cx+4},${cy-1} ${cx+2},${cy+1.5} ${cx+2.5},${cy+4} ${cx},${cy+2.5} ${cx-2.5},${cy+4} ${cx-2},${cy+1.5} ${cx-4},${cy-1} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.7"/>`; break;
+
+      // ── Apothecary ──
+      case 'herb-sprigs': {
+        const dy = cy < 50 ? 1 : -1;
+        out += `<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy + dy*6}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<circle cx="${cx - 2}" cy="${cy + dy*2}" r="1.5" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx + 2}" cy="${cy + dy*4}" r="1.5" fill="${c}" opacity="0.6"/>`; break;
+      }
+      case 'droplets':
+        out += `<path d="M${cx},${cy-4} Q${cx+3},${cy} ${cx},${cy+4} Q${cx-3},${cy} ${cx},${cy-4}Z" fill="${c}" opacity="0.7"/>`; break;
+      case 'crystal-shards': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<polygon points="${cx},${cy-5} ${cx + dx*3},${cy} ${cx},${cy+3}" fill="${c}" opacity="0.7"/>` +
+               `<polygon points="${cx + dx*1},${cy-2} ${cx + dx*5},${cy+1} ${cx + dx*2},${cy+4}" fill="${c}" opacity="0.55"/>`; break;
+      }
+      case 'rune-marks':
+        out += `<line x1="${cx-3}" y1="${cy-3}" x2="${cx+3}" y2="${cy+3}" stroke="${c}" stroke-width="2" opacity="0.7"/>` +
+               `<line x1="${cx+3}" y1="${cy-3}" x2="${cx-3}" y2="${cy+3}" stroke="${c}" stroke-width="2" opacity="0.7"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1.5" fill="${c}" opacity="0.6"/>`; break;
+
+      // ── Circus ──
+      case 'popcorn-kernels':
+        out += `<circle cx="${cx-1}" cy="${cy-1}" r="2.5" fill="${c}" opacity="0.7"/>` +
+               `<circle cx="${cx+2}" cy="${cy+1}" r="2" fill="${c}" opacity="0.6"/>` +
+               `<circle cx="${cx-2}" cy="${cy+2}" r="1.5" fill="${c}" opacity="0.5"/>`; break;
+      case 'confetti-bits': {
+        const rng = mulberry32(cx * 100 + cy);
+        for (let i = 0; i < 3; i++) {
+          const dx = (rng() - 0.5) * 8, dy = (rng() - 0.5) * 8;
+          out += `<rect x="${cx + dx - 1}" y="${cy + dy - 1}" width="2.5" height="2.5" fill="${c}" opacity="0.7" transform="rotate(${rng()*60},${cx+dx},${cy+dy})"/>`;
+        }
+        break;
+      }
+      case 'star-badges':
+        out += `<polygon points="${cx},${cy-4} ${cx+1.5},${cy-1.5} ${cx+4},${cy} ${cx+1.5},${cy+1.5} ${cx},${cy+4} ${cx-1.5},${cy+1.5} ${cx-4},${cy} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.7"/>`; break;
+      case 'balloon-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}" opacity="0.7"/>` +
+               `<line x1="${cx}" y1="${cy+3.5}" x2="${cx}" y2="${cy+6}" stroke="${c}" stroke-width="1" opacity="0.5"/>`; break;
     }
   }
   return out;
