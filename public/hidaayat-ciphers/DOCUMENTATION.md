@@ -84,14 +84,17 @@ Quotes longer than 10 words are truncated to the first 10 words with `...` appen
 On completing the puzzle:
 1. All gameplay UI hides (quote panel, keyboard, stats, hint bar)
 2. `state.selectedPos` resets to -1, `state.selectedCipher` resets to null
-3. A full-screen overlay appears inside the game card (z-index 10)
+3. A full-screen overlay appears inside the game card (z-index 10), filling the entire card (`inset: 0`)
 4. Shows: score line ("Solved with X mistakes · Y hints") + book page image + "Next Puzzle ▸" button
-5. The book page image maps: `page N → ./pages/Raudat Hidayaat 1-images-{N-1}.jpg` (0-indexed)
+5. The book page image maps: `page N → ./pages/Raudat%20Hidayaat%201-images-{N-1}.jpg` (URL-encoded spaces, 0-indexed)
+6. Image is preloaded at puzzle creation time (in `buildDailyPuzzle()`) so it's cached by solve time
+7. Image `onerror` handler retries once with a cache-busting query param
+8. The `?` info button is hidden during the reveal to prevent z-index overlap
 
 ### Tutorial / How to Play
 A `?` button (`.info-btn`) sits in the top-right corner of the game card. Tapping it opens a full-screen tutorial overlay (`#tutorialOverlay`) with:
 
-1. **Goal line**: "Each letter has been swapped for another. Figure out the real letters to reveal the hidden Hidaayat quote."
+1. **Goal line**: "A quote from Raudat Hidayaat has been encrypted by substituting each letter with another random letter. Your challenge is to decrypt it back using your linguistic intuition."
 2. **5 visual steps** with animated demo cells:
    - Step 1: Tap a cipher cell to select it (demo cell with gold border)
    - Step 2: Type real letter on keyboard (demo cell + keyboard key)
@@ -278,15 +281,15 @@ The layout is a **flex column that fills the viewport** with the keyboard pinned
 └── .game-card (height: 100%, flex column, 14px padding, 6px gap, position: relative)
     ├── .info-btn (position: absolute, top: 10px, right: 10px, z-index: 10) ← ? button
     ├── .quote-panel (flex: 1 1 auto, min-height: 0) ← fills available space
-    │   └── .quote-grid (flex-wrap: wrap, overflow-y: auto, padding: 4px 12px)
-    │       └── .word-group × N (flex-wrap: nowrap) ← each word is one group
-    │           └── .cipher-cell × N (34×50px grid cells, data-pos, data-cipher)
+    │   └── .quote-grid (flex-wrap: wrap, overflow-y: auto, padding: 2px 12px)
+    │       └── .word-group × N (flex-wrap: nowrap, max-width: 100%) ← each word is one group
+    │           └── .cipher-cell × N (var(--cell-w)×50px, flex-shrink, data-pos, data-cipher)
     ├── .stats-bar (flex-shrink: 0) ← progress, mistakes, hints, Hint button
     ├── .selection-hint (flex-shrink: 0) ← contextual text
     ├── .keyboard-wrap (flex-shrink: 0) ← QWERTY keyboard pinned at bottom
     │   └── .keyboard (grid, 3 rows)
     │       └── .key-button × 26 + backspace
-    └── .solve-reveal (position: absolute, inset: 18px, z-index: 10) ← post-solve overlay
+    └── .solve-reveal (position: absolute, inset: 0, z-index: 10) ← post-solve overlay
 
 #tutorialOverlay (position: fixed, inset: 0, z-index: 100) ← outside .game-card
 └── .tutorial-card (max-width: 380px, max-height: 85dvh, overflow-y: auto)
@@ -298,7 +301,8 @@ The layout is a **flex column that fills the viewport** with the keyboard pinned
 ```
 
 **Critical layout rules:**
-- `.word-group` must be `flex-wrap: nowrap` — keeps all letters of a single word together. The parent `.quote-grid` (`flex-wrap: wrap`) handles line breaks between word groups.
+- `.word-group` must be `flex-wrap: nowrap` — keeps all letters of a single word together. The parent `.quote-grid` (`flex-wrap: wrap`) handles line breaks between word groups. `max-width: 100%` combined with `flex-shrink: 1` and `min-width: 0` on cells ensures long words compress instead of overflowing.
+- Cipher cell width uses CSS variable `--cell-w`, computed dynamically in `renderQuoteGrid()` based on the longest word length and available grid width. This ensures long words (e.g., "inquisitiveness" at 15 letters) shrink only as much as needed while shorter-word puzzles use full-size cells.
 - `.quote-panel` gets `flex: 1 1 auto; min-height: 0` so it takes available space but shrinks for keyboard.
 - `.keyboard-wrap`, `.stats-bar`, `.selection-hint` all have `flex-shrink: 0` — they never compress.
 - `.app-shell` uses `height: 100dvh` (not `min-height`) to prevent scroll and ensure keyboard is always visible.
@@ -336,9 +340,9 @@ The layout is a **flex column that fills the viewport** with the keyboard pinned
 
 | Breakpoint | Purpose | Key Changes |
 |------------|---------|-------------|
-| Default | Mobile-first | 34×50px cells, 14px card padding |
-| `max-height: 760px` | Short screens | 30×44px cells, 10px padding, 40px keyboard keys |
-| `max-width: 400px` | Narrow phones | 28×42px cells, 8px padding, 6px shell padding, 18px card radius |
+| Default | Mobile-first | var(--cell-w, 34px)×50px cells, 14px card padding |
+| `max-height: 760px` | Short screens | 42px cell height, 8px padding, 38px keyboard keys, tighter gaps |
+| `max-width: 400px` | Narrow phones | 40px cell height, 8px padding, 6px shell padding, tighter grid gaps |
 | `min-width: 720px` | Desktop | Card capped at 860px height, centered in viewport |
 
 ### Dark Mode
@@ -383,11 +387,11 @@ Full `prefers-color-scheme: dark` support via CSS custom properties. Both inline
 
 ### Image Mapping
 
-Book page N → `./pages/Raudat Hidayaat 1-images-{N-1}.jpg`
+Book page N → `./pages/Raudat%20Hidayaat%201-images-{N-1}.jpg`
 
-Example: Page 15 → `Raudat Hidayaat 1-images-14.jpg`
+Example: Page 15 → `Raudat%20Hidayaat%201-images-14.jpg`
 
-243 JPGs totaling ~68MB, committed to the repo (needed for the live site). The source images were originally in `Raudat Hidayaat1_pages/` (project root, gitignored).
+243 JPGs totaling ~68MB, committed to the repo (needed for the live site). The source images were originally in `Raudat Hidayaat1_pages/` (project root, gitignored). **Note:** Spaces in filenames must be URL-encoded as `%20` when used in `src` attributes.
 
 ---
 
@@ -580,6 +584,11 @@ The cursor is a `::after` pseudo-element on `.is-cursor` (lines 173-191 in style
 | **Wrong guesses stayed displayed, selection advanced** | `assignPlainLetter()` always persisted the assignment and advanced to next cipher, even for wrong guesses | Wrong path now returns early after `triggerWrongFeedback()`, which auto-clears after 1s and keeps selection on same cipher |
 | **Long quotes overflow cipher grid** | 8 quotes (140–225 chars) had too many cells for mobile screens | Implemented hook+reveal: `hookQuote()` truncates to first 10 words + `...`; full quote shown on book page after solving |
 | **Selection jumps to wrong instance after solving** | Only `selectedCipher` (letter) was tracked, not which cell was tapped. `getFirstUnresolvedCipher()` scanned from start of unique letters array, not from user's position | Added `selectedPos` (flat token index), `data-pos` on cells, `is-cursor` class. `getFirstUnresolvedCipher()` now scans forward from cursor position in reading order |
+| **Book page image fails to load after solving** | Image filenames have spaces (`Raudat Hidayaat 1-images-X.jpg`) — unencoded in `src` attribute, intermittent mobile failures | URL-encode spaces as `%20`, add `onerror` retry with cache-busting param, preload image at puzzle creation time |
+| **Info button (?) peeks through reveal overlay** | Both `.info-btn` and `.solve-reveal` had `z-index: 10` | Hide info button (`hidden = true`) during reveal in `render()` |
+| **Triple nested rectangle borders on reveal** | `.solve-reveal` had `inset: 18px` (gap from card) + `.page-image` had its own `border` | Changed to `inset: 0` (fills entire card), removed image border/shadow |
+| **"Wisdom Revealed" toast covers Next Puzzle button** | Toast appeared at bottom of reveal overlay, overlapping the button | Removed the toast call from `completePuzzle()` |
+| **Long words (e.g., EXTRAVAGANCE) overflow on mobile** | Fixed cell width (34px) × 12+ letters exceeded narrow screen width | Dynamic `--cell-w` CSS variable computed in JS based on longest word; cells use `flex-shrink: 1` + `min-width: 0` |
 
 ---
 
@@ -596,4 +605,4 @@ When starting a new session to add features, read this checklist:
 7. **Event binding** — add to `bindEvents()`, not inline onclick handlers
 8. **Render cycle** — all visual updates go through `render()` → sub-renderers. Don't manipulate DOM outside render functions
 9. **Git push** — use browser credential manager, NOT `gh` CLI (linked to work account). Standard flow: `git add -A && git commit -m "..." && git push origin main`
-10. **The `.word-group` must stay `flex-wrap: nowrap`** — this is the #1 cause of the word-splitting bug. Never change this.
+10. **The `.word-group` must stay `flex-wrap: nowrap`** — this is the #1 cause of the word-splitting bug. Never change this. Long words are handled by dynamic cell sizing (`--cell-w` variable) and `flex-shrink`, not by wrapping.
