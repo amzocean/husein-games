@@ -636,11 +636,19 @@ button {
 }
 
 .tutorial-title {
-  margin: 0 0 16px;
+  margin: 0 0 6px;
   font-size: 1.15rem;
   color: var(--navy);
   text-align: center;
   letter-spacing: -0.02em;
+}
+
+.tutorial-goal {
+  margin: 0 0 14px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.35;
 }
 
 .tutorial-steps {
