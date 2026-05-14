@@ -155,7 +155,7 @@ function buildDailyPuzzle() {
 
   // Preload the book page image so it's cached for the reveal
   const preload = new Image();
-  preload.src = `./pages/Raudat%20Hidayaat%201-images-${picked.page - 1}.jpg`;
+  preload.src = pageImagePath(picked);
 }
 
 function hydrateProgress() {
@@ -364,12 +364,12 @@ function useHint() {
 
 function renderReveal(){
   if (!state.revealVisible) return;
-  const imageIndex = state.quote.page - 1;
-  const imgPath = `./pages/Raudat%20Hidayaat%201-images-${imageIndex}.jpg`;
+  const imgPath = pageImagePath(state.quote);
+  const book = state.quote.book || 1;
   const img = state.elements.pageImage;
   if (img.getAttribute('src') !== imgPath) {
     img.src = imgPath;
-    img.alt = `Raudat Hidayaat page ${state.quote.page}`;
+    img.alt = `Raudat Hidayaat ${book} page ${state.quote.page}`;
     img.onerror = function() {
       if (!this.dataset.retried) {
         this.dataset.retried = '1';
@@ -541,6 +541,12 @@ function loadStorage() {
 
 function saveStorage(s) {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+
+function pageImagePath(quote) {
+  const book = quote.book || 1;
+  const idx = quote.page - 1;
+  return `./pages/Raudat%20Hidayaat%20${book}-images-${idx}.jpg`;
 }
 
 function vibrate(pattern) { try { navigator.vibrate?.(pattern); } catch {} }

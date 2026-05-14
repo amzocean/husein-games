@@ -6,7 +6,7 @@
 
 ## Overview
 
-A substitution cipher puzzle game built around wisdom quotes from **Raudat Hidayaat 1** (رَوْضَة الْهِدَايَة) — a collection of sayings of Syedna Mohammed Burhanuddin (RA). Players decode encrypted quotes letter-by-letter, then see the original Arabic manuscript page upon solving. Purely static, single-player, no server logic.
+A substitution cipher puzzle game built around wisdom quotes from **Raudat Hidayaat 1 & 2** (رَوْضَة الْهِدَايَة) — a collection of sayings of Syedna Mohammed Burhanuddin (RA). Players decode encrypted quotes letter-by-letter, then see the original Arabic manuscript page upon solving. Purely static, single-player, no server logic.
 
 **Core loop:** See cipher → tap cell → pick real letter → green = correct, shake + auto-clear = wrong → solve all → book page reveal.
 
@@ -22,9 +22,10 @@ public/hidaayat-ciphers/
 ├── cipher.js               # Game engine (~522 lines) — all logic, state, rendering, events
 ├── style.css               # Styling (~973 lines) — navy/gold/cream theme, dark mode, responsive,
 │                           #   tutorial modal, info button, cursor blink animation
-├── quotes.json             # 78 quotes with page numbers (~21.5KB)
-├── pages/                  # 243 book page JPGs (~68MB, committed to repo)
-│   └── Raudat Hidayaat 1-images-{0-242}.jpg
+├── quotes.json             # 142 quotes (78 Book 1 + 64 Book 2) with page numbers and book field
+├── pages/                  # 560 book page JPGs (243 Book 1 + 317 Book 2, committed to repo)
+│   ├── Raudat Hidayaat 1-images-{0-242}.jpg
+│   └── Raudat Hidayaat 2-images-{0-316}.jpg
 └── DOCUMENTATION.md        # This file
 ```
 
@@ -123,7 +124,7 @@ const KEYBOARD_LAYOUT = [['Q','W',...], ['A','S',...], ['BACKSPACE','Z',...]];
 
 ```javascript
 state = {
-  quotes: [],           // All 78 quotes loaded from JSON
+  quotes: [],           // All 142 quotes loaded from JSON (78 Book 1 + 64 Book 2)
   quote: null,          // Current quote object { cipher, full, source, page }
   puzzle: null,         // { words, plainToCipher, cipherToPlain, uniqueCipherLetters }
   quoteIndex: 0,        // Index into quotes array
@@ -371,7 +372,8 @@ Full `prefers-color-scheme: dark` support via CSS custom properties. Both inline
     "cipher": "The bane of beauty is vanity.",
     "full": "The bane of beauty is vanity.",
     "source": "Rasulullah (SA)",
-    "page": 15
+    "page": 15,
+    "book": 1
   }
 ]
 ```
@@ -382,16 +384,21 @@ Full `prefers-color-scheme: dark` support via CSS custom properties. Both inline
 | `full` | The complete quote text |
 | `source` | Attribution (speaker/author) |
 | `page` | Book page number — maps to image via `page - 1` (0-indexed filenames) |
+| `book` | Which volume: `1` = Raudat Hidayaat 1, `2` = Raudat Hidayaat 2. Defaults to 1 if omitted |
 
-**Stats:** 78 quotes, 27–225 characters, median ~70 characters, 8 quotes exceed 10 words (get hook-truncated).
+**Stats:** 142 quotes (78 Book 1 + 64 Book 2). Book 1: pages 15–100. Book 2: pages 35–112.
 
 ### Image Mapping
 
-Book page N → `./pages/Raudat%20Hidayaat%201-images-{N-1}.jpg`
+Book page N, volume V → `./pages/Raudat%20Hidayaat%20{V}-images-{N-1}.jpg`
 
-Example: Page 15 → `Raudat%20Hidayaat%201-images-14.jpg`
+Examples:
+- Book 1, Page 15 → `Raudat%20Hidayaat%201-images-14.jpg`
+- Book 2, Page 35 → `Raudat%20Hidayaat%202-images-34.jpg`
 
-243 JPGs totaling ~68MB, committed to the repo (needed for the live site). The source images were originally in `Raudat Hidayaat1_pages/` (project root, gitignored). **Note:** Spaces in filenames must be URL-encoded as `%20` when used in `src` attributes.
+The `pageImagePath(quote)` helper in `cipher.js` builds the path from the quote's `book` and `page` fields.
+
+560 JPGs total (243 Book 1 + 317 Book 2), committed to the repo. Source images: `Raudat Hidayaat1_pages/` and `RaudatHidaayaat2/` (gitignored). **Note:** Spaces in filenames must be URL-encoded as `%20` when used in `src` attributes.
 
 ---
 
@@ -527,10 +534,12 @@ The following CSS classes exist in `style.css` but have NO corresponding HTML el
 
 | Item | Location | Notes |
 |------|----------|-------|
-| Book | Raudat Hidayaat 1 (رَوْضَة الْهِدَايَة) | Sayings of Syedna Mohammed Burhanuddin (RA) |
-| Quotes markdown | `Quotes of Wisdom - Raudat Hidayaat 1.md` (project root) | Source extraction file, in repo |
-| Source page images | `Raudat Hidayaat1_pages/` (project root) | Original extractions, gitignored |
-| Deployed page images | `public/hidaayat-ciphers/pages/` | 243 JPGs, committed to repo |
+| Book | Raudat Hidayaat 1 & 2 (رَوْضَة الْهِدَايَة) | Sayings of Syedna Mohammed Burhanuddin (RA) |
+| Quotes markdown (Book 1) | `Quotes of Wisdom - Raudat Hidayaat 1.md` (project root) | Source extraction file, in repo |
+| Quotes markdown (Book 2) | `Quotes_of_Wisdom_Raudat_Hidayaat_2.md` (Downloads) | Source extraction file |
+| Source page images (Book 1) | `Raudat Hidayaat1_pages/` (project root) | Original extractions, gitignored |
+| Source page images (Book 2) | `RaudatHidaayaat2/` (Downloads) | Original extractions |
+| Deployed page images | `public/hidaayat-ciphers/pages/` | 560 JPGs (Book 1 + 2), committed to repo |
 
 ---
 
@@ -538,8 +547,8 @@ The following CSS classes exist in `style.css` but have NO corresponding HTML el
 
 ### Adding New Quotes
 
-1. Add entries to `quotes.json` with `cipher`, `full`, `source`, and `page` fields
-2. Ensure corresponding page image exists in `pages/` (filename: `Raudat Hidayaat 1-images-{page-1}.jpg`)
+1. Add entries to `quotes.json` with `cipher`, `full`, `source`, `page`, and `book` fields
+2. Ensure corresponding page image exists in `pages/` (filename: `Raudat Hidayaat {book}-images-{page-1}.jpg`)
 3. The game auto-discovers all quotes on load — no registration needed
 
 ### Running Locally
