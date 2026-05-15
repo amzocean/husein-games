@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wisdom Quote Search — Raudat Hidayaat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #faf7f2;
+  min-height: 100vh;
+  color: #2c2c2c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(184,134,11,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139,90,43,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+header {
+  text-align: center;
+  padding: 40px 20px 10px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+}
+header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2em;
+  font-weight: 700;
+  color: #8b5a2b;
+}
+header p {
+  color: #b8860b;
+  margin-top: 6px;
+  font-size: 0.9em;
+  font-weight: 300;
+}
+
+.search-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  padding: 20px 20px 0;
+}
+.search-box {
+  width: 100%;
+  padding: 14px 18px 14px 46px;
+  border: 1.5px solid rgba(139,90,43,0.25);
+  border-radius: 14px;
+  font-size: 1em;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus {
+  border-color: #b8860b;
+  box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+}
+.search-box::placeholder { color: #bbb; }
+.search-icon {
+  position: absolute;
+  left: 34px;
+  top: 34px;
+  font-size: 1.1em;
+  color: #b8860b;
+  pointer-events: none;
+}
+
+.stats {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  padding: 10px 20px;
+  font-size: 0.8em;
+  color: #999;
+  font-weight: 300;
+}
+
+.results {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  padding: 0 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quote-card {
+  background: #fff;
+  border: 1px solid rgba(139,90,43,0.1);
+  border-radius: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  box-shadow: 0 1px 6px rgba(139,90,43,0.05);
+}
+.quote-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(184,134,11,0.3);
+  box-shadow: 0 6px 20px rgba(139,90,43,0.1);
+}
+.quote-card.active {
+  border-color: #b8860b;
+  box-shadow: 0 4px 16px rgba(184,134,11,0.15);
+}
+.quote-text {
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: #333;
+}
+.quote-text mark {
+  background: rgba(184,134,11,0.2);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+.quote-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 0.75em;
+  color: #aaa;
+  font-weight: 400;
+}
+.quote-meta span { display: flex; align-items: center; gap: 3px; }
+
+.page-image-wrap {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+  border-radius: 0 0 10px 10px;
+  margin-top: 0;
+}
+.quote-card.active .page-image-wrap {
+  max-height: 800px;
+  margin-top: 14px;
+}
+.page-image-wrap img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #bbb;
+  position: relative;
+  z-index: 1;
+}
+.empty-state .icon { font-size: 3em; margin-bottom: 12px; }
+.empty-state h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  color: #999;
+  margin-bottom: 6px;
+}
+.empty-state p { font-size: 0.85em; font-weight: 300; }
+
+.suggestions {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  padding: 0 20px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.suggestions button {
+  background: rgba(184,134,11,0.08);
+  border: 1px solid rgba(184,134,11,0.15);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.78em;
+  color: #8b5a2b;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s, border-color 0.2s;
+}
+.suggestions button:hover {
+  background: rgba(184,134,11,0.15);
+  border-color: rgba(184,134,11,0.3);
+}
+
+.back-link {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 20px;
+  font-size: 0.8em;
+}
+.back-link a {
+  color: #b8860b;
+  text-decoration: none;
+  font-weight: 400;
+}
+.back-link a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Wisdom Quote Search</h1>
+  <p>Search 266 quotes across 3 volumes of Raudat Hidayaat</p>
+</header>
+
+<div class="search-wrap">
+  <span class="search-icon">🔍</span>
+  <input type="text" class="search-box" id="searchInput"
+    placeholder="Search by topic — greed, patience, prayer, wealth..."
+    autocomplete="off" autofocus>
+</div>
+
+<div class="suggestions" id="suggestions"></div>
+<div class="stats" id="stats"></div>
+<div class="results" id="results"></div>
+<div class="empty-state" id="emptyState" style="display:none">
+  <div class="icon">📜</div>
+  <h3>No quotes found</h3>
+  <p>Try a different keyword or topic</p>
+</div>
+
+<div class="back-link">
+  <a href="/">← Back to Game Room</a>
+</div>
+
+<script>
+const SUGGESTED_TOPICS = [
+  'patience', 'wealth', 'greed', 'prayer', 'kindness',
+  'death', 'knowledge', 'forgiveness', 'anger', 'humility',
+  'charity', 'mother', 'jannat', 'tongue', 'food'
+];
+
+let allQuotes = [];
+let activeCard = null;
+
+async function init() {
+  const res = await fetch('../hidaayat-ciphers/quotes.json');
+  allQuotes = await res.json();
+
+  document.querySelector('header p').textContent =
+    `Search ${allQuotes.length} quotes across 3 volumes of Raudat Hidayaat`;
+
+  renderSuggestions();
+
+  const input = document.getElementById('searchInput');
+  input.addEventListener('input', debounce(onSearch, 200));
+
+  // Check URL hash for pre-filled search
+  if (location.hash) {
+    const term = decodeURIComponent(location.hash.slice(1));
+    input.value = term;
+    onSearch();
+  }
+}
+
+function renderSuggestions() {
+  const wrap = document.getElementById('suggestions');
+  wrap.innerHTML = SUGGESTED_TOPICS.map(t =>
+    `<button onclick="searchFor('${t}')">${t}</button>`
+  ).join('');
+}
+
+function searchFor(term) {
+  const input = document.getElementById('searchInput');
+  input.value = term;
+  onSearch();
+  input.focus();
+}
+
+function onSearch() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const resultsEl = document.getElementById('results');
+  const statsEl = document.getElementById('stats');
+  const emptyEl = document.getElementById('emptyState');
+  const suggestionsEl = document.getElementById('suggestions');
+  activeCard = null;
+
+  if (!query) {
+    resultsEl.innerHTML = '';
+    statsEl.textContent = '';
+    emptyEl.style.display = 'none';
+    suggestionsEl.style.display = 'flex';
+    location.hash = '';
+    return;
+  }
+
+  suggestionsEl.style.display = 'none';
+  location.hash = encodeURIComponent(query);
+
+  const words = query.split(/\s+/).filter(Boolean);
+  const matches = allQuotes
+    .map((q, idx) => {
+      const text = q.full.toLowerCase();
+      const score = words.reduce((s, w) => {
+        const re = new RegExp(w, 'gi');
+        const hits = (text.match(re) || []).length;
+        return s + hits;
+      }, 0);
+      return { quote: q, idx, score };
+    })
+    .filter(m => m.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (matches.length === 0) {
+    resultsEl.innerHTML = '';
+    statsEl.textContent = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  statsEl.textContent = `${matches.length} quote${matches.length === 1 ? '' : 's'} found`;
+
+  resultsEl.innerHTML = matches.map(({ quote, idx }) => {
+    const highlighted = highlightText(quote.full, words);
+    const book = quote.book || 1;
+    return `
+      <div class="quote-card" data-idx="${idx}" onclick="toggleCard(this, ${idx})">
+        <div class="quote-text">"${highlighted}"</div>
+        <div class="quote-meta">
+          <span>📕 Vol. ${book}</span>
+          <span>📄 Page ${quote.page}</span>
+          <span>— ${quote.source}</span>
+        </div>
+        <div class="page-image-wrap">
+          <img data-src="${pageImagePath(quote)}" alt="Page ${quote.page} from ${quote.source}">
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function highlightText(text, words) {
+  let result = escapeHtml(text);
+  words.forEach(w => {
+    const re = new RegExp(`(${escapeRegex(w)})`, 'gi');
+    result = result.replace(re, '<mark>$1</mark>');
+  });
+  return result;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function pageImagePath(quote) {
+  const book = quote.book || 1;
+  const idx = quote.page - 1;
+  return `../hidaayat-ciphers/pages/Raudat%20Hidayaat%20${book}-images-${idx}.jpg`;
+}
+
+function toggleCard(el, idx) {
+  if (activeCard === el) {
+    el.classList.remove('active');
+    activeCard = null;
+    return;
+  }
+  if (activeCard) activeCard.classList.remove('active');
+  el.classList.add('active');
+  activeCard = el;
+
+  // Lazy-load the image
+  const img = el.querySelector('img[data-src]');
+  if (img) {
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+  }
+
+  // Scroll into view
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+init();
+</script>
+</body>
+</html>
