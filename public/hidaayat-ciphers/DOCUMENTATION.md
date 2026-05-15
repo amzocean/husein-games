@@ -23,10 +23,18 @@ public/hidaayat-ciphers/
 ├── style.css               # Styling (~973 lines) — navy/gold/cream theme, dark mode, responsive,
 │                           #   tutorial modal, info button, cursor blink animation
 ├── quotes.json             # 142 quotes (78 Book 1 + 64 Book 2) with page numbers and book field
-├── pages/                  # 560 book page JPGs (243 Book 1 + 317 Book 2, committed to repo)
-│   ├── Raudat Hidayaat 1-images-{0-242}.jpg
-│   └── Raudat Hidayaat 2-images-{0-316}.jpg
+├── pages/                  # 731 book page JPGs (committed to repo)
+│   ├── Raudat Hidayaat 1-images-{0-242}.jpg   (243 pages)
+│   ├── Raudat Hidayaat 2-images-{0-316}.jpg   (317 pages)
+│   └── Raudat Hidayaat 3-images-{0-170}.jpg   (171 pages, quotes disabled — pending corrected MD)
 └── DOCUMENTATION.md        # This file
+
+public/quote-search/
+└── index.html              # Hidaayaat Lookup — keyword search across all active quotes
+```
+
+**Hidaayaat Lookup** (`/quote-search/`) shares the same `quotes.json` and page images.
+It provides keyword-based topic search with clickable results that expand to show page images.
 ```
 
 **No build step.** Everything is vanilla JS/CSS served statically by the Express server.
@@ -398,7 +406,7 @@ Examples:
 
 The `pageImagePath(quote)` helper in `cipher.js` builds the path from the quote's `book` and `page` fields.
 
-560 JPGs total (243 Book 1 + 317 Book 2), committed to the repo. Source images: `Raudat Hidayaat1_pages/` and `RaudatHidaayaat2/` (gitignored). **Note:** Spaces in filenames must be URL-encoded as `%20` when used in `src` attributes.
+731 JPGs total (243 Book 1 + 317 Book 2 + 171 Book 3), committed to the repo. Book 3 images are present but **Book 3 quotes are disabled** in `quotes.json` pending a corrected markdown source file. Source images: `Raudat Hidayaat1_pages/`, `RaudatHidaayaat2/`, and `RaudatHidaayaat3/` (gitignored). **Note:** Spaces in filenames must be URL-encoded as `%20` when used in `src` attributes.
 
 ---
 
@@ -550,6 +558,14 @@ The following CSS classes exist in `style.css` but have NO corresponding HTML el
 1. Add entries to `quotes.json` with `cipher`, `full`, `source`, `page`, and `book` fields
 2. Ensure corresponding page image exists in `pages/` (filename: `Raudat Hidayaat {book}-images-{page-1}.jpg`)
 3. The game auto-discovers all quotes on load — no registration needed
+4. Both **Hidaayat Ciphers** and **Hidaayaat Lookup** share the same `quotes.json` — changes apply to both apps
+
+### Re-enabling Book 3
+
+Book 3 images (171 pages) are already deployed in `pages/`. To re-enable:
+1. Obtain a corrected Book 3 markdown with accurate page numbers
+2. Parse quotes and append to `quotes.json` with `"book": 3`
+3. Verify each quote's `page` field maps to the correct image
 
 ### Running Locally
 
