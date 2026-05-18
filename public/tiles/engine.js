@@ -13,21 +13,6 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
 
   {
-    name: 'Circus', emoji: '🎪',
-    palette: {
-      bg:     ['#e53935', '#fdd835', '#42a5f5'],
-      ring:   ['#b71c1c', '#e65100', '#1b5e20', '#4a148c'],
-      shape:  ['#d84315', '#1a237e', '#2e7d32'],
-      accent: ['#004d40', '#ad1457', '#0d47a1'],
-    },
-    bgPatterns:   ['big-top-stripes', 'circus-banner', 'sawdust', 'tent-canvas', 'ticket-stub'],
-    ringStyles:   ['ticket-edge', 'bunting-border', 'circus-rope'],
-    shapeNames:   ['circus-tent', 'juggling-pins', 'cannon', 'trapeze'],
-    accentShapes: ['popcorn-kernels', 'confetti-bits', 'star-badges', 'balloon-dots'],
-    boardBg: { pattern: 'big-top-stripes', color: '#b71c1c' },
-  },
-
-  {
     name: 'Skyline', emoji: '🏙️',
     palette: {
       bg:     ['#e65100', '#4527a0', '#ffb300'],
@@ -116,6 +101,20 @@ const THEMES = [
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
   // Archived May 2026
+  {
+    name: 'Circus', emoji: '🎪',
+    palette: {
+      bg:     ['#e53935', '#fdd835', '#42a5f5'],
+      ring:   ['#b71c1c', '#e65100', '#1b5e20', '#4a148c'],
+      shape:  ['#d84315', '#1a237e', '#2e7d32'],
+      accent: ['#004d40', '#ad1457', '#0d47a1'],
+    },
+    bgPatterns:   ['big-top-stripes', 'circus-banner', 'sawdust', 'tent-canvas', 'ticket-stub'],
+    ringStyles:   ['ticket-edge', 'bunting-border', 'circus-rope'],
+    shapeNames:   ['circus-tent', 'juggling-pins', 'cannon', 'trapeze'],
+    accentShapes: ['popcorn-kernels', 'confetti-bits', 'star-badges', 'balloon-dots'],
+    boardBg: { pattern: 'big-top-stripes', color: '#b71c1c' },
+  },
   {
     name: 'Apps', emoji: '📱',
     palette: {
