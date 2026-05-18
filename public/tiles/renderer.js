@@ -969,6 +969,142 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Skyline ──
+    case 'skyline-gradient': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 10) {
+        const p = (y - 14) / 72;
+        s += `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="${c}" stroke-width="1.2" opacity="${0.12 + p * 0.16}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'skyline-haze': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 18; i++) {
+        const x = 12 + rng() * 62;
+        const y = 20 + rng() * 52;
+        const w = 8 + rng() * 14;
+        s += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + w).toFixed(1)}" y2="${(y + rng() * 1.5 - 0.75).toFixed(1)}" stroke="${c}" stroke-width="1.4" opacity="${0.12 + rng() * 0.1}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'skyline-reflection': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 18; x <= 82; x += 10) {
+        const sway = ((x / 10) % 2) ? 2 : -2;
+        s += `<path d="M${x},32 Q${x + sway},50 ${x},68 Q${x - sway},80 ${x},90" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.16" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'skyline-clouds': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (const y of [26, 46, 66]) {
+        s += `<path d="M10,${y} Q22,${y-5} 34,${y} Q46,${y+5} 58,${y} Q70,${y-5} 82,${y} Q88,${y+2} 90,${y}" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.14" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'skyline-rays': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 10; x <= 90; x += 10) {
+        s += `<line x1="50" y1="10" x2="${x}" y2="90" stroke="${c}" stroke-width="1.1" opacity="0.12" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+
+    // ── Dusk ──
+    case 'dusk-horizon': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<line x1="10" y1="68" x2="90" y2="68" stroke="${c}" stroke-width="1.8" opacity="0.18" stroke-linecap="round"/>`;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 8; i++) {
+        const x = 14 + i * 9 + rng() * 4;
+        const y = 28 + rng() * 24;
+        s += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + 6 + rng() * 6).toFixed(1)}" y2="${(y + rng() * 1.2).toFixed(1)}" stroke="${c}" stroke-width="1.2" opacity="0.12" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'dusk-mist': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 20; i++) {
+        const x = 12 + rng() * 68;
+        const y = 18 + rng() * 60;
+        const w = 5 + rng() * 10;
+        s += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + w).toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.1" opacity="${0.1 + rng() * 0.08}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'dusk-streaks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = 0; i < 7; i++) {
+        const x1 = 8 + i * 11;
+        const y1 = 24 + i * 5;
+        s += `<line x1="${x1}" y1="${y1}" x2="${x1 + 28}" y2="${y1 - 10}" stroke="${c}" stroke-width="1.2" opacity="0.14" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'dusk-haze': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (const y of [24, 38, 52, 66]) {
+        s += `<line x1="12" y1="${y}" x2="88" y2="${y}" stroke="${c}" stroke-width="6" opacity="0.06" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'dusk-glow': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 16; x <= 84; x += 8) {
+        s += `<line x1="50" y1="90" x2="${x}" y2="26" stroke="${c}" stroke-width="1.1" opacity="0.12" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+
+    // ── Medina ──
+    case 'medina-mosaic': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 16; x <= 84; x += 12) {
+        s += `<line x1="${x}" y1="12" x2="${x}" y2="88" stroke="${c}" stroke-width="1" opacity="0.12"/>`;
+      }
+      for (let y = 16; y <= 84; y += 12) {
+        s += `<line x1="12" y1="${y}" x2="88" y2="${y}" stroke="${c}" stroke-width="1" opacity="0.12"/>`;
+      }
+      return s;
+    }
+    case 'medina-lattice': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = -24; i <= 48; i += 12) {
+        s += `<line x1="${12 + i}" y1="12" x2="${52 + i}" y2="88" stroke="${c}" stroke-width="1.1" opacity="0.12"/>`;
+        s += `<line x1="${88 - i}" y1="12" x2="${48 - i}" y2="88" stroke="${c}" stroke-width="1.1" opacity="0.12"/>`;
+      }
+      return s;
+    }
+    case 'medina-archway': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      s += `<path d="M24,44 L24,30 Q50,10 76,30 L76,44" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.16" stroke-linecap="round"/>`;
+      s += `<path d="M32,44 L32,34 Q50,20 68,34 L68,44" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.12" stroke-linecap="round"/>`;
+      return s;
+    }
+    case 'medina-plaster': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      const rng = mulberry32(c.charCodeAt(1));
+      for (let i = 0; i < 16; i++) {
+        const x = 14 + rng() * 68;
+        const y = 16 + rng() * 64;
+        s += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + 4 + rng() * 4).toFixed(1)}" y2="${(y + rng() * 3 - 1.5).toFixed(1)}" stroke="${c}" stroke-width="1.1" opacity="${0.1 + rng() * 0.08}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'medina-tile': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 20; x <= 80; x += 15) {
+        for (let y = 20; y <= 80; y += 15) {
+          s += `<line x1="${x-3}" y1="${y}" x2="${x+3}" y2="${y}" stroke="${c}" stroke-width="1.1" opacity="0.14" stroke-linecap="round"/>`;
+          s += `<line x1="${x}" y1="${y-3}" x2="${x}" y2="${y+3}" stroke="${c}" stroke-width="1.1" opacity="0.14" stroke-linecap="round"/>`;
+        }
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1360,6 +1496,61 @@ function renderRing(attr) {
              `<circle cx="50" cy="95" r="3" fill="${c}" opacity="0.5"/>` +
              `<circle cx="5" cy="50" r="3" fill="${c}" opacity="0.5"/>` +
              `<circle cx="95" cy="50" r="3" fill="${c}" opacity="0.5"/>`;
+
+    // ── Skyline ──
+    case 'skyline-steel':
+      return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="4" opacity="0.7"/>` +
+             `<line x1="18" y1="6" x2="28" y2="6" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="72" y1="6" x2="82" y2="6" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="18" y1="94" x2="28" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="72" y1="94" x2="82" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+    case 'skyline-glass':
+      return `<rect x="6" y="6" width="88" height="88" rx="6" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.65"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+    case 'skyline-concrete':
+      return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="5" opacity="0.65"/>` +
+             `<line x1="34" y1="5" x2="34" y2="13" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<line x1="66" y1="5" x2="66" y2="13" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<line x1="34" y1="87" x2="34" y2="95" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<line x1="66" y1="87" x2="66" y2="95" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+
+    // ── Dusk ──
+    case 'dusk-railing': {
+      let s = `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.68"/>`;
+      for (let x = 18; x <= 82; x += 16) {
+        s += `<line x1="${x}" y1="6" x2="${x}" y2="14" stroke="${c}" stroke-width="2.5" opacity="0.62"/>`;
+        s += `<line x1="${x}" y1="86" x2="${x}" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.62"/>`;
+      }
+      return s;
+    }
+    case 'dusk-neon':
+      return `<rect x="7" y="7" width="86" height="86" rx="10" fill="none" stroke="${c}" stroke-width="6" opacity="0.6"/>` +
+             `<rect x="11" y="11" width="78" height="78" rx="8" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.72"/>`;
+    case 'dusk-fire-escape': {
+      let s = `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="3" opacity="0.66" stroke-dasharray="8,5"/>`;
+      for (const y of [24, 50, 76]) {
+        s += `<line x1="6" y1="${y}" x2="14" y2="${y}" stroke="${c}" stroke-width="2.5" opacity="0.62"/>`;
+        s += `<line x1="86" y1="${y}" x2="94" y2="${y}" stroke="${c}" stroke-width="2.5" opacity="0.62"/>`;
+      }
+      return s;
+    }
+
+    // ── Medina ──
+    case 'medina-horseshoe':
+      return `<rect x="6" y="12" width="88" height="82" rx="5" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.66"/>` +
+             `<path d="M36,12 Q36,26 50,26 Q64,26 64,12" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.62" stroke-linecap="round"/>`;
+    case 'medina-carved':
+      return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="4" opacity="0.68"/>` +
+             `<path d="M28,6 L32,12 L36,6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.62"/>` +
+             `<path d="M64,6 L68,12 L72,6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.62"/>` +
+             `<path d="M28,94 L32,88 L36,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.62"/>` +
+             `<path d="M64,94 L68,88 L72,94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.62"/>`;
+    case 'medina-zellige':
+      return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.66"/>` +
+             `<circle cx="50" cy="6" r="2.5" fill="${c}" opacity="0.62"/>` +
+             `<circle cx="50" cy="94" r="2.5" fill="${c}" opacity="0.62"/>` +
+             `<circle cx="6" cy="50" r="2.5" fill="${c}" opacity="0.62"/>` +
+             `<circle cx="94" cy="50" r="2.5" fill="${c}" opacity="0.62"/>`;
 
     default: return '';
   }
@@ -2034,6 +2225,73 @@ function renderShape(attr) {
              `<line x1="50" y1="33" x2="50" y2="67" stroke="#fff" stroke-width="0.8" opacity="0.2" transform="rotate(-15,50,50)"/>`;
     }
 
+    // ── Skyline ──
+    case 'skyline-tower': {
+      return `<rect x="43" y="30" width="14" height="36" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="26" x2="50" y2="30" stroke="${c}" stroke-width="2" opacity="${o}" stroke-linecap="round"/>` +
+             `<line x1="46" y1="42" x2="54" y2="42" stroke="${c}" stroke-width="1.5" opacity="${o*0.45}"/>`;
+    }
+    case 'skyline-apartment': {
+      let s = `<rect x="34" y="34" width="32" height="30" rx="1" fill="${c}" opacity="${o}"/>`;
+      for (const x of [42, 50, 58]) {
+        s += `<line x1="${x}" y1="38" x2="${x}" y2="60" stroke="${c}" stroke-width="1" opacity="${o*0.22}"/>`;
+      }
+      for (const y of [42, 50, 58]) {
+        s += `<line x1="38" y1="${y}" x2="62" y2="${y}" stroke="${c}" stroke-width="1" opacity="${o*0.22}"/>`;
+      }
+      return s;
+    }
+    case 'skyline-dome':
+      return `<rect x="36" y="50" width="28" height="14" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<path d="M36,50 Q50,28 64,50 Z" fill="${c}" opacity="${o}"/>`;
+    case 'skyline-spire':
+      return `<polygon points="50,28 39,66 61,66" fill="${c}" opacity="${o}"/>` +
+             `<rect x="46" y="66" width="8" height="6" fill="${c}" opacity="${o*0.9}"/>`;
+
+    // ── Dusk ──
+    case 'dusk-watertower':
+      return `<ellipse cx="50" cy="38" rx="12" ry="8" fill="${c}" opacity="${o}"/>` +
+             `<rect x="39" y="38" width="22" height="8" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<line x1="42" y1="46" x2="38" y2="68" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="50" y1="46" x2="50" y2="68" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<line x1="58" y1="46" x2="62" y2="68" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+    case 'dusk-brownstone':
+      return `<polygon points="50,28 32,40 68,40" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="40" width="32" height="22" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<path d="M40,62 L44,58 L56,58 L60,62" fill="${c}" opacity="${o*0.85}"/>` +
+             `<rect x="46" y="50" width="8" height="12" fill="${c}" opacity="${o*0.22}"/>`;
+    case 'dusk-bridge': {
+      let s = `<path d="M30,60 Q50,34 70,60" fill="none" stroke="${c}" stroke-width="5" opacity="${o}" stroke-linecap="round"/>` +
+              `<line x1="30" y1="60" x2="70" y2="60" stroke="${c}" stroke-width="2.5" opacity="${o*0.8}"/>`;
+      for (const x of [38, 46, 54, 62]) {
+        const yTop = 60 - (26 - Math.abs(50 - x) * 1.3);
+        s += `<line x1="${x}" y1="${yTop.toFixed(1)}" x2="${x}" y2="60" stroke="${c}" stroke-width="2" opacity="${o*0.9}"/>`;
+      }
+      return s;
+    }
+    case 'dusk-clocktower':
+      return `<rect x="42" y="28" width="16" height="38" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="42" r="5" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.3}"/>` +
+             `<line x1="50" y1="42" x2="50" y2="38" stroke="${c}" stroke-width="1" opacity="${o*0.3}"/>` +
+             `<line x1="50" y1="42" x2="53" y2="42" stroke="${c}" stroke-width="1" opacity="${o*0.3}"/>`;
+
+    // ── Medina ──
+    case 'medina-minaret':
+      return `<rect x="44" y="30" width="12" height="32" fill="${c}" opacity="${o}"/>` +
+             `<rect x="42" y="26" width="16" height="8" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,26 46,30 54,30" fill="${c}" opacity="${o}"/>`;
+    case 'medina-arch':
+      return `<path d="M36,66 L36,48 Q36,32 50,32 Q64,32 64,48 L64,66 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M42,66 L42,50 Q42,40 50,40 Q58,40 58,50 L58,66 Z" fill="${c}" opacity="${o*0.18}"/>`;
+    case 'medina-riad':
+      return `<rect x="34" y="34" width="32" height="32" fill="${c}" opacity="${o}"/>` +
+             `<rect x="42" y="42" width="16" height="16" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.26}"/>` +
+             `<circle cx="50" cy="50" r="3" fill="${c}" opacity="${o*0.26}"/>`;
+    case 'medina-dome':
+      return `<rect x="38" y="54" width="24" height="12" fill="${c}" opacity="${o}"/>` +
+             `<path d="M38,54 Q40,38 50,30 Q60,38 62,54 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="26" x2="50" y2="30" stroke="${c}" stroke-width="2" opacity="${o}" stroke-linecap="round"/>`;
+
     default: return '';
   }
 }
@@ -2520,6 +2778,50 @@ function renderAccent(attr) {
         const dx = cx < 50 ? 1 : -1;
         out += `<path d="M${cx},${cy-5} L${cx},${cy+2} Q${cx},${cy+5} ${cx+dx*3},${cy+5} Q${cx+dx*5},${cy+5} ${cx+dx*5},${cy+2}" fill="none" stroke="${c}" stroke-width="2" opacity="0.7" stroke-linecap="round"/>`; break;
       }
+
+      // ── Skyline ──
+      case 'skyline-windows':
+        out += `<rect x="${cx-2}" y="${cy-2}" width="4" height="4" fill="${c}" opacity="0.72"/>`; break;
+      case 'skyline-antenna':
+        out += `<line x1="${cx}" y1="${cy+3}" x2="${cx}" y2="${cy-3}" stroke="${c}" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>` +
+               `<circle cx="${cx}" cy="${cy-4.5}" r="2.5" fill="${c}" opacity="0.68"/>`; break;
+      case 'skyline-lights':
+        out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.72"/>`; break;
+      case 'skyline-vents':
+        out += `<line x1="${cx-4}" y1="${cy-3}" x2="${cx+4}" y2="${cy-3}" stroke="${c}" stroke-width="1.5" opacity="0.66" stroke-linecap="round"/>` +
+               `<line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>` +
+               `<line x1="${cx-4}" y1="${cy+3}" x2="${cx+4}" y2="${cy+3}" stroke="${c}" stroke-width="1.5" opacity="0.66" stroke-linecap="round"/>`; break;
+
+      // ── Dusk ──
+      case 'dusk-litwindow':
+        out += `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" fill="${c}" opacity="0.72"/>` +
+               `<rect x="${cx-1.5}" y="${cy-1.5}" width="3" height="3" fill="${c}" opacity="0.95"/>`; break;
+      case 'dusk-lamppost':
+        out += `<line x1="${cx}" y1="${cy+4}" x2="${cx}" y2="${cy-1}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<circle cx="${cx}" cy="${cy-4}" r="2.5" fill="${c}" opacity="0.68"/>`; break;
+      case 'dusk-stars':
+        out += `<line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>` +
+               `<line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>`; break;
+      case 'dusk-sparks':
+        out += `<line x1="${cx-3.5}" y1="${cy-3.5}" x2="${cx+3.5}" y2="${cy+3.5}" stroke="${c}" stroke-width="1.5" opacity="0.68"/>` +
+               `<line x1="${cx+3.5}" y1="${cy-3.5}" x2="${cx-3.5}" y2="${cy+3.5}" stroke="${c}" stroke-width="1.5" opacity="0.68"/>`; break;
+
+      // ── Medina ──
+      case 'medina-lantern':
+        out += `<polygon points="${cx},${cy-3.5} ${cx+3},${cy} ${cx},${cy+3.5} ${cx-3},${cy}" fill="${c}" opacity="0.72"/>` +
+               `<line x1="${cx}" y1="${cy+3.5}" x2="${cx}" y2="${cy+6}" stroke="${c}" stroke-width="1.5" opacity="0.66"/>`; break;
+      case 'medina-star':
+        out += `<polygon points="${cx},${cy-4} ${cx+3.5},${cy+2} ${cx-3.5},${cy+2}" fill="${c}" opacity="0.68"/>` +
+               `<polygon points="${cx},${cy+4} ${cx+3.5},${cy-2} ${cx-3.5},${cy-2}" fill="${c}" opacity="0.68"/>`; break;
+      case 'medina-crescent':
+        out += `<path d="M${cx+3},${cy-4} A5,5 0 1,1 ${cx+3},${cy+4} A3,3 0 1,0 ${cx+3},${cy-4}" fill="${c}" opacity="0.68"/>`; break;
+      case 'medina-rosette':
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.72"/>` +
+               `<circle cx="${cx}" cy="${cy-5}" r="2.5" fill="${c}" opacity="0.64"/>` +
+               `<circle cx="${cx+5}" cy="${cy}" r="2.5" fill="${c}" opacity="0.64"/>` +
+               `<circle cx="${cx}" cy="${cy+5}" r="2.5" fill="${c}" opacity="0.64"/>` +
+               `<circle cx="${cx-5}" cy="${cy}" r="2.5" fill="${c}" opacity="0.64"/>`; break;
+
     }
   }
   return out;

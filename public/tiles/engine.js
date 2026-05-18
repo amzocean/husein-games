@@ -82,6 +82,49 @@ const THEMES = [
     accentShapes: ['popcorn-kernels', 'confetti-bits', 'star-badges', 'balloon-dots'],
     boardBg: { pattern: 'big-top-stripes', color: '#b71c1c' },
   },
+
+  {
+    name: 'Skyline', emoji: '🏙️',
+    palette: {
+      bg:     ['#e65100', '#4527a0', '#ffb300'],
+      ring:   ['#1a237e', '#880e4f', '#004d40', '#4a148c'],
+      shape:  ['#1b5e20', '#0d47a1', '#b71c1c'],
+      accent: ['#ad1457', '#00695c', '#263238'],
+    },
+    bgPatterns:   ['skyline-gradient', 'skyline-haze', 'skyline-reflection', 'skyline-clouds', 'skyline-rays'],
+    ringStyles:   ['skyline-steel', 'skyline-glass', 'skyline-concrete'],
+    shapeNames:   ['skyline-tower', 'skyline-apartment', 'skyline-dome', 'skyline-spire'],
+    accentShapes: ['skyline-windows', 'skyline-antenna', 'skyline-lights', 'skyline-vents'],
+    boardBg: { pattern: 'solid', color: '#4527a0' },
+  },
+  {
+    name: 'Dusk', emoji: '🌆',
+    palette: {
+      bg:     ['#0d2137', '#e91e63', '#00838f'],
+      ring:   ['#b71c1c', '#1a237e', '#6a1b9a', '#e65100'],
+      shape:  ['#c62828', '#1a237e', '#1b5e20'],
+      accent: ['#bf360c', '#4a148c', '#0d47a1'],
+    },
+    bgPatterns:   ['dusk-horizon', 'dusk-mist', 'dusk-streaks', 'dusk-haze', 'dusk-glow'],
+    ringStyles:   ['dusk-railing', 'dusk-neon', 'dusk-fire-escape'],
+    shapeNames:   ['dusk-watertower', 'dusk-brownstone', 'dusk-bridge', 'dusk-clocktower'],
+    accentShapes: ['dusk-litwindow', 'dusk-lamppost', 'dusk-stars', 'dusk-sparks'],
+    boardBg: { pattern: 'solid', color: '#0d2137' },
+  },
+  {
+    name: 'Medina', emoji: '🕌',
+    palette: {
+      bg:     ['#bf360c', '#00695c', '#f9a825'],
+      ring:   ['#1a237e', '#b71c1c', '#311b92', '#880e4f'],
+      shape:  ['#263238', '#1a237e', '#ad1457'],
+      accent: ['#1b5e20', '#6a1b9a', '#0d47a1'],
+    },
+    bgPatterns:   ['medina-mosaic', 'medina-lattice', 'medina-archway', 'medina-plaster', 'medina-tile'],
+    ringStyles:   ['medina-horseshoe', 'medina-carved', 'medina-zellige'],
+    shapeNames:   ['medina-minaret', 'medina-arch', 'medina-riad', 'medina-dome'],
+    accentShapes: ['medina-lantern', 'medina-star', 'medina-crescent', 'medina-rosette'],
+    boardBg: { pattern: 'solid', color: '#bf360c' },
+  },
 ];
 
 // Archived themes — preserved for reference, not selectable in-game
