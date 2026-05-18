@@ -13,62 +13,6 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
 
   {
-    name: 'Apps', emoji: '📱',
-    palette: {
-      bg:     ['#42a5f5', '#66bb6a', '#ffa726'],
-      ring:   ['#1a237e', '#1b5e20', '#b71c1c', '#4a148c'],
-      shape:  ['#004d40', '#4e342e', '#263238'],
-      accent: ['#bf360c', '#006064', '#880e4f'],
-    },
-    bgPatterns:   ['app-grid', 'status-bar', 'home-screen', 'swipe-trail', 'notification-shade'],
-    ringStyles:   ['app-border', 'rounded-badge', 'pill-outline'],
-    shapeNames:   ['chat-bubble', 'wifi-icon', 'battery-shape', 'bell-icon'],
-    accentShapes: ['app-dot', 'signal-bars-corner', 'toggle-switch', 'pin-badge'],
-    boardBg: { pattern: 'solid', color: '#42a5f5' },
-  },
-  {
-    name: 'Luau', emoji: '🌺',
-    palette: {
-      bg:     ['#ff7043', '#26a69a', '#ffee58'],
-      ring:   ['#b71c1c', '#00695c', '#e65100', '#1a237e'],
-      shape:  ['#004d40', '#880e4f', '#33691e'],
-      accent: ['#bf360c', '#006064', '#4a148c'],
-    },
-    bgPatterns:   ['luau-palms', 'tiki-torch', 'ocean-waves', 'bamboo-fence', 'lei-garland'],
-    ringStyles:   ['rope-braid', 'bamboo-frame', 'flower-lei'],
-    shapeNames:   ['luau-hibiscus', 'tiki-mask', 'luau-pineapple', 'luau-surfboard'],
-    accentShapes: ['plumeria-petals', 'sea-shells', 'coconut-halves', 'fish-hooks'],
-    boardBg: { pattern: 'solid', color: '#00bcd4' },
-  },
-  {
-    name: 'Origami', emoji: '🦢',
-    palette: {
-      bg:     ['#ffab91', '#b0bec5', '#ffe082'],
-      ring:   ['#b71c1c', '#1a237e', '#004d40', '#4a148c'],
-      shape:  ['#c62828', '#0d47a1', '#00695c'],
-      accent: ['#bf360c', '#283593', '#1b5e20'],
-    },
-    bgPatterns:   ['washi-texture', 'fold-grid', 'paper-grain', 'crease-lines', 'tatami'],
-    ringStyles:   ['mountain-fold', 'valley-fold', 'pleated'],
-    shapeNames:   ['crane', 'boat', 'fox-face', 'fortune-teller'],
-    accentShapes: ['crease-marks', 'paper-corners', 'fold-tabs', 'origami-stars'],
-    boardBg: { pattern: 'solid', color: '#ffe0b2' },
-  },
-  {
-    name: 'Apothecary', emoji: '🧪',
-    palette: {
-      bg:     ['#ce93d8', '#a1887f', '#ffb74d'],
-      ring:   ['#311b92', '#006064', '#bf360c', '#880e4f'],
-      shape:  ['#4a148c', '#004d40', '#e65100'],
-      accent: ['#6a1b9a', '#00695c', '#d84315'],
-    },
-    bgPatterns:   ['stone-shelf', 'herb-wall', 'alchemy-symbols', 'cobweb', 'apothecary-jars'],
-    ringStyles:   ['herb-wrap', 'wax-seal-ring', 'smoke-wisp'],
-    shapeNames:   ['potion-bottle', 'mortar-pestle', 'flask-shape', 'cauldron'],
-    accentShapes: ['herb-sprigs', 'droplets', 'crystal-shards', 'rune-marks'],
-    boardBg: { pattern: 'solid', color: '#4e342e' },
-  },
-  {
     name: 'Circus', emoji: '🎪',
     palette: {
       bg:     ['#e53935', '#fdd835', '#42a5f5'],
@@ -125,10 +69,109 @@ const THEMES = [
     accentShapes: ['medina-lantern', 'medina-star', 'medina-crescent', 'medina-rosette'],
     boardBg: { pattern: 'solid', color: '#bf360c' },
   },
+  {
+    name: 'Volt', emoji: '⚡',
+    palette: {
+      bg:     ['#7c4dff', '#00e676', '#f50057'],
+      ring:   ['#1a237e', '#004d40', '#b71c1c', '#311b92'],
+      shape:  ['#263238', '#4a148c', '#006064'],
+      accent: ['#1b5e20', '#880e4f', '#0d47a1'],
+    },
+    bgPatterns:   ['volt-circuit', 'volt-pulse', 'volt-grid', 'volt-static', 'volt-surge'],
+    ringStyles:   ['volt-trace', 'volt-arc', 'volt-coil'],
+    shapeNames:   ['volt-bolt', 'volt-chip', 'volt-cell', 'volt-plug'],
+    accentShapes: ['volt-sparks', 'volt-pixels', 'volt-pulses', 'volt-nodes'],
+    boardBg: { pattern: 'solid', color: '#7c4dff' },
+  },
+  {
+    name: 'Glacier', emoji: '🧊',
+    palette: {
+      bg:     ['#0277bd', '#00c853', '#6a1b9a'],
+      ring:   ['#1a237e', '#b71c1c', '#004d40', '#311b92'],
+      shape:  ['#263238', '#1a237e', '#4a148c'],
+      accent: ['#bf360c', '#00695c', '#880e4f'],
+    },
+    bgPatterns:   ['glacier-cracks', 'glacier-layers', 'glacier-facets', 'glacier-drift', 'glacier-shimmer'],
+    ringStyles:   ['glacier-frost', 'glacier-crystal', 'glacier-rime'],
+    shapeNames:   ['glacier-peak', 'glacier-shard', 'glacier-berg', 'glacier-igloo'],
+    accentShapes: ['glacier-flakes', 'glacier-chips', 'glacier-aurora', 'glacier-dots'],
+    boardBg: { pattern: 'solid', color: '#0277bd' },
+  },
+  {
+    name: 'Hanami', emoji: '🌸',
+    palette: {
+      bg:     ['#f8bbd0', '#81c784', '#b39ddb'],
+      ring:   ['#1a237e', '#880e4f', '#004d40', '#4a148c'],
+      shape:  ['#b71c1c', '#1b5e20', '#4a148c'],
+      accent: ['#ad1457', '#00695c', '#311b92'],
+    },
+    bgPatterns:   ['hanami-petals', 'hanami-branches', 'hanami-ripple', 'hanami-breeze', 'hanami-canopy'],
+    ringStyles:   ['hanami-bamboo', 'hanami-silk', 'hanami-wave'],
+    shapeNames:   ['hanami-blossom', 'hanami-torii', 'hanami-lantern', 'hanami-koi'],
+    accentShapes: ['hanami-falling', 'hanami-dewdrops', 'hanami-buds', 'hanami-fireflies'],
+    boardBg: { pattern: 'solid', color: '#f8bbd0' },
+  },
 ];
 
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
+  // Archived May 2026
+  {
+    name: 'Apps', emoji: '📱',
+    palette: {
+      bg:     ['#42a5f5', '#66bb6a', '#ffa726'],
+      ring:   ['#1a237e', '#1b5e20', '#b71c1c', '#4a148c'],
+      shape:  ['#004d40', '#4e342e', '#263238'],
+      accent: ['#bf360c', '#006064', '#880e4f'],
+    },
+    bgPatterns:   ['app-grid', 'status-bar', 'home-screen', 'swipe-trail', 'notification-shade'],
+    ringStyles:   ['app-border', 'rounded-badge', 'pill-outline'],
+    shapeNames:   ['chat-bubble', 'wifi-icon', 'battery-shape', 'bell-icon'],
+    accentShapes: ['app-dot', 'signal-bars-corner', 'toggle-switch', 'pin-badge'],
+    boardBg: { pattern: 'solid', color: '#42a5f5' },
+  },
+  {
+    name: 'Luau', emoji: '🌺',
+    palette: {
+      bg:     ['#ff7043', '#26a69a', '#ffee58'],
+      ring:   ['#b71c1c', '#00695c', '#e65100', '#1a237e'],
+      shape:  ['#004d40', '#880e4f', '#33691e'],
+      accent: ['#bf360c', '#006064', '#4a148c'],
+    },
+    bgPatterns:   ['luau-palms', 'tiki-torch', 'ocean-waves', 'bamboo-fence', 'lei-garland'],
+    ringStyles:   ['rope-braid', 'bamboo-frame', 'flower-lei'],
+    shapeNames:   ['luau-hibiscus', 'tiki-mask', 'luau-pineapple', 'luau-surfboard'],
+    accentShapes: ['plumeria-petals', 'sea-shells', 'coconut-halves', 'fish-hooks'],
+    boardBg: { pattern: 'solid', color: '#00bcd4' },
+  },
+  {
+    name: 'Origami', emoji: '🦢',
+    palette: {
+      bg:     ['#ffab91', '#b0bec5', '#ffe082'],
+      ring:   ['#b71c1c', '#1a237e', '#004d40', '#4a148c'],
+      shape:  ['#c62828', '#0d47a1', '#00695c'],
+      accent: ['#bf360c', '#283593', '#1b5e20'],
+    },
+    bgPatterns:   ['washi-texture', 'fold-grid', 'paper-grain', 'crease-lines', 'tatami'],
+    ringStyles:   ['mountain-fold', 'valley-fold', 'pleated'],
+    shapeNames:   ['crane', 'boat', 'fox-face', 'fortune-teller'],
+    accentShapes: ['crease-marks', 'paper-corners', 'fold-tabs', 'origami-stars'],
+    boardBg: { pattern: 'solid', color: '#ffe0b2' },
+  },
+  {
+    name: 'Apothecary', emoji: '🧪',
+    palette: {
+      bg:     ['#ce93d8', '#a1887f', '#ffb74d'],
+      ring:   ['#311b92', '#006064', '#bf360c', '#880e4f'],
+      shape:  ['#4a148c', '#004d40', '#e65100'],
+      accent: ['#6a1b9a', '#00695c', '#d84315'],
+    },
+    bgPatterns:   ['stone-shelf', 'herb-wall', 'alchemy-symbols', 'cobweb', 'apothecary-jars'],
+    ringStyles:   ['herb-wrap', 'wax-seal-ring', 'smoke-wisp'],
+    shapeNames:   ['potion-bottle', 'mortar-pestle', 'flask-shape', 'cauldron'],
+    accentShapes: ['herb-sprigs', 'droplets', 'crystal-shards', 'rune-marks'],
+    boardBg: { pattern: 'solid', color: '#4e342e' },
+  },
   {
     name: 'Laundry', emoji: '🧺',
     palette: {
@@ -207,7 +250,7 @@ const ARCHIVED_THEMES = [
       shape:  ['#0d47a1', '#c62828', '#1b5e20'],
       accent: ['#0d47a1', '#4a148c', '#00695c'],
     },
-    bgPatterns:   ['ice-crystals', 'snowfall', 'frozen-lake', 'blizzard-wind', 'glacier-layers'],
+    bgPatterns:   ['ice-crystals', 'snowfall', 'frozen-lake', 'blizzard-wind', 'arctic-layers'],
     ringStyles:   ['frost-border', 'icicle-ring', 'snowdrift-edge'],
     shapeNames:   ['snowflake', 'penguin', 'igloo', 'polar-bear'],
     accentShapes: ['ice-shards', 'snowflakes-tiny', 'frost-dots', 'icicle-drops'],

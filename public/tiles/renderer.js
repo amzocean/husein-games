@@ -641,7 +641,7 @@ function renderBg(attr) {
         s += `<path d="M${5 + i * 4},${15 + i * 13} Q${40 + i * 5},${10 + i * 12} ${90 - i * 3},${18 + i * 13}" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.15"/>`;
       return s;
     }
-    case 'glacier-layers': {
+    case 'arctic-layers': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="0.7"/>`;
       s += `<path d="M4,30 Q30,25 50,32 Q70,38 96,28" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.15"/>`;
       s += `<path d="M4,50 Q25,45 50,52 Q75,58 96,48" fill="none" stroke="#fff" stroke-width="1" opacity="0.12"/>`;
@@ -1105,6 +1105,137 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Volt ──
+    case 'volt-circuit': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      const traces = [
+        'M12,18 L34,18 L34,34 L58,34',
+        'M68,14 L68,30 L88,30',
+        'M16,52 L28,52 L28,70 L48,70',
+        'M56,52 L56,80 L84,80',
+        'M20,88 L20,62 L40,62',
+        'M74,44 L90,44 L90,62'
+      ];
+      for (const d of traces) s += `<path d="${d}" fill="none" stroke="${c}" stroke-width="2" opacity="0.16" stroke-linecap="round" stroke-linejoin="round"/>`;
+      for (const [x, y] of [[34,18],[34,34],[58,34],[68,14],[68,30],[88,30],[28,52],[28,70],[48,70],[56,52],[56,80],[84,80],[20,62],[40,62],[90,44],[90,62]]) {
+        s += `<rect x="${x-1.5}" y="${y-1.5}" width="3" height="3" fill="${c}" opacity="0.2"/>`;
+      }
+      return s;
+    }
+    case 'volt-pulse': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (const y of [24, 50, 76]) {
+        s += `<path d="M8,${y} L22,${y} L30,${y-8} L38,${y+10} L48,${y-14} L60,${y+8} L70,${y} L92,${y}" fill="none" stroke="${c}" stroke-width="2" opacity="0.16" stroke-linecap="round" stroke-linejoin="round"/>`;
+      }
+      return s;
+    }
+    case 'volt-grid': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let x = 16; x <= 84; x += 17) {
+        for (let y = 16; y <= 84; y += 17) {
+          s += `<rect x="${x-2}" y="${y-2}" width="4" height="4" fill="${c}" opacity="0.16"/>`;
+        }
+      }
+      return s;
+    }
+    case 'volt-static': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      const dashes = [[14,14],[30,22],[48,12],[68,20],[84,14],[20,40],[40,34],[58,46],[78,38],[14,62],[34,56],[52,68],[72,62],[24,84],[46,80],[68,88],[86,78]];
+      for (const [x, y] of dashes) s += `<line x1="${x-3}" y1="${y-3}" x2="${x+3}" y2="${y+3}" stroke="${c}" stroke-width="1.8" opacity="0.15" stroke-linecap="round"/>`;
+      return s;
+    }
+    case 'volt-surge': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.19}"/>`;
+      for (const d of ['M8,18 L24,10 L18,26 L36,20 L30,38 L50,30','M28,58 L46,50 L38,68 L58,62 L48,82 L70,74','M52,22 L70,14 L62,34 L82,28 L74,46 L92,38']) {
+        s += `<path d="${d}" fill="none" stroke="${c}" stroke-width="2" opacity="0.15" stroke-linecap="round" stroke-linejoin="round"/>`;
+      }
+      return s;
+    }
+
+    // ── Glacier ──
+    case 'glacier-cracks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      const cracks = [
+        'M18,10 L28,28 L22,46 L34,64 L28,88',
+        'M54,6 L46,24 L58,44 L48,66 L60,92',
+        'M84,14 L70,30 L76,48 L64,70',
+        'M22,46 L10,54',
+        'M58,44 L74,38',
+        'M48,66 L34,76',
+        'M76,48 L90,56'
+      ];
+      for (const d of cracks) s += `<path d="${d}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.15" stroke-linecap="round" stroke-linejoin="round"/>`;
+      return s;
+    }
+    case 'glacier-layers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      for (const y of [20, 34, 48, 64, 80]) {
+        s += `<path d="M4,${y} Q22,${y-5} 40,${y} Q58,${y+5} 76,${y} Q88,${y-4} 96,${y}" fill="none" stroke="${c}" stroke-width="2" opacity="0.14" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'glacier-facets': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (const pts of ['8,18 30,8 24,34','30,8 54,14 24,34','54,14 82,10 70,36','18,44 42,32 36,58','42,32 70,36 56,60','12,74 34,60 30,88','34,60 56,60 44,90','56,60 84,66 72,90']) {
+        s += `<polygon points="${pts}" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.14" stroke-linejoin="round"/>`;
+      }
+      return s;
+    }
+    case 'glacier-drift': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (const y of [18, 34, 50, 66, 82]) {
+        s += `<path d="M8,${y} C24,${y-8} 42,${y-6} 60,${y} C76,${y+6} 86,${y+4} 92,${y-2}" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.13" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'glacier-shimmer': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (const [x, y] of [[18,16],[40,12],[70,18],[84,34],[24,40],[52,32],[72,54],[14,68],[38,76],[60,70],[82,82]]) {
+        s += `<polygon points="${x},${y-4} ${x+4},${y} ${x},${y+4} ${x-4},${y}" fill="${c}" opacity="0.14"/>`;
+      }
+      return s;
+    }
+
+    // ── Hanami ──
+    case 'hanami-petals': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>`;
+      for (const [x, y, sc] of [[18,18,0.8],[46,16,0.9],[76,24,0.75],[28,48,0.85],[58,42,0.8],[82,62,0.9],[22,78,0.75],[52,76,0.85]]) {
+        s += `<path d="M${x},${y-5*sc} C${x+2*sc},${y-7*sc} ${x+5*sc},${y-5*sc} ${x+4*sc},${y-1*sc} C${x+7*sc},${y} ${x+6*sc},${y+3*sc} ${x+2*sc},${y+3*sc} C${x+1*sc},${y+6*sc} ${x-1*sc},${y+6*sc} ${x-2*sc},${y+3*sc} C${x-6*sc},${y+3*sc} ${x-7*sc},${y} ${x-4*sc},${y-1*sc} C${x-5*sc},${y-5*sc} ${x-2*sc},${y-7*sc} ${x},${y-5*sc} Z" fill="${c}" opacity="0.13"/>`;
+      }
+      return s;
+    }
+    case 'hanami-branches': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      s += `<path d="M10,82 Q28,64 42,56 Q62,44 90,24" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.14" stroke-linecap="round"/>`;
+      s += `<path d="M30,66 Q24,56 18,48" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.12" stroke-linecap="round"/>`;
+      s += `<path d="M48,52 Q42,42 36,34" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.12" stroke-linecap="round"/>`;
+      s += `<path d="M66,40 Q60,30 54,22" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.12" stroke-linecap="round"/>`;
+      s += `<path d="M74,34 Q82,28 88,18" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.12" stroke-linecap="round"/>`;
+      return s;
+    }
+    case 'hanami-ripple': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>`;
+      for (const inset of [12, 24, 36]) {
+        const size = 100 - inset * 2;
+        s += `<rect x="${inset}" y="${inset}" width="${size}" height="${size}" rx="${12 - inset / 6}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.14"/>`;
+      }
+      return s;
+    }
+    case 'hanami-breeze': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>`;
+      for (const y of [20, 36, 54, 72]) {
+        s += `<path d="M8,${y} Q24,${y-6} 40,${y} T72,${y} T92,${y-4}" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.13" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'hanami-canopy': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.15}"/>`;
+      for (const d of ['M10,30 Q18,12 34,20 Q46,8 58,22 Q74,10 90,28 L90,40 Q74,30 58,38 Q44,26 30,40 Q18,30 10,38 Z','M14,58 Q24,42 40,50 Q52,38 66,54 Q78,44 88,58 L88,68 Q74,60 62,66 Q48,56 34,68 Q22,58 14,66 Z']) {
+        s += `<path d="${d}" fill="${c}" opacity="0.12"/>`;
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1551,6 +1682,57 @@ function renderRing(attr) {
              `<circle cx="50" cy="94" r="2.5" fill="${c}" opacity="0.62"/>` +
              `<circle cx="6" cy="50" r="2.5" fill="${c}" opacity="0.62"/>` +
              `<circle cx="94" cy="50" r="2.5" fill="${c}" opacity="0.62"/>`;
+
+    // ── Volt ──
+    case 'volt-trace':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3.5" stroke-dasharray="10 6" opacity="0.7"/>` +
+             `<rect x="47" y="6" width="6" height="6" fill="${c}" opacity="0.72"/>` +
+             `<rect x="88" y="47" width="6" height="6" fill="${c}" opacity="0.72"/>` +
+             `<rect x="47" y="88" width="6" height="6" fill="${c}" opacity="0.72"/>` +
+             `<rect x="6" y="47" width="6" height="6" fill="${c}" opacity="0.72"/>`;
+    case 'volt-arc':
+      return `<path d="M50,10 A40,40 0 0,1 82,26" fill="none" stroke="${c}" stroke-width="4" opacity="0.72" stroke-linecap="round"/>` +
+             `<path d="M90,50 A40,40 0 0,1 74,82" fill="none" stroke="${c}" stroke-width="4" opacity="0.72" stroke-linecap="round"/>` +
+             `<path d="M50,90 A40,40 0 0,1 18,74" fill="none" stroke="${c}" stroke-width="4" opacity="0.72" stroke-linecap="round"/>` +
+             `<path d="M10,50 A40,40 0 0,1 26,18" fill="none" stroke="${c}" stroke-width="4" opacity="0.72" stroke-linecap="round"/>`;
+    case 'volt-coil':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.68"/>` +
+             `<circle cx="53" cy="47" r="32" fill="none" stroke="${c}" stroke-width="2.4" opacity="0.58"/>`;
+
+    // ── Glacier ──
+    case 'glacier-frost':
+      return `<circle cx="50" cy="50" r="38" fill="none" stroke="${c}" stroke-width="3" opacity="0.68"/>` +
+             `<polygon points="50,4 54,14 46,14" fill="${c}" opacity="0.68"/>` +
+             `<polygon points="96,50 86,54 86,46" fill="${c}" opacity="0.68"/>` +
+             `<polygon points="50,96 54,86 46,86" fill="${c}" opacity="0.68"/>` +
+             `<polygon points="4,50 14,54 14,46" fill="${c}" opacity="0.68"/>` +
+             `<polygon points="22,14 28,18 18,24" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="86,22 82,28 76,18" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="78,86 72,82 82,76" fill="${c}" opacity="0.6"/>` +
+             `<polygon points="14,78 18,72 24,82" fill="${c}" opacity="0.6"/>`;
+    case 'glacier-crystal':
+      return `<polygon points="50,8 84,28 84,72 50,92 16,72 16,28" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.7" stroke-linejoin="round"/>` +
+             `<polygon points="50,16 76,31 76,69 50,84 24,69 24,31" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.45" stroke-linejoin="round"/>`;
+    case 'glacier-rime':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3" opacity="0.66"/>` +
+             `<path d="M22,22 L14,14 M22,22 L20,12 M22,22 L12,20" fill="none" stroke="${c}" stroke-width="2" opacity="0.6" stroke-linecap="round"/>` +
+             `<path d="M78,22 L86,14 M78,22 L80,12 M78,22 L88,20" fill="none" stroke="${c}" stroke-width="2" opacity="0.6" stroke-linecap="round"/>` +
+             `<path d="M22,78 L14,86 M22,78 L12,80 M22,78 L20,88" fill="none" stroke="${c}" stroke-width="2" opacity="0.6" stroke-linecap="round"/>` +
+             `<path d="M78,78 L86,86 M78,78 L88,80 M78,78 L80,88" fill="none" stroke="${c}" stroke-width="2" opacity="0.6" stroke-linecap="round"/>`;
+
+    // ── Hanami ──
+    case 'hanami-bamboo':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3.5" stroke-dasharray="14 7" opacity="0.68"/>` +
+             `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="1.2" stroke-dasharray="2 19" opacity="0.48"/>`;
+    case 'hanami-silk':
+      return `<circle cx="50" cy="50" r="39" fill="none" stroke="${c}" stroke-width="3" opacity="0.66"/>` +
+             `<path d="M50,12 C56,6 62,6 68,12 C62,16 56,18 50,12 Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.58"/>` +
+             `<path d="M88,50 C94,44 94,38 88,32 C84,38 82,44 88,50 Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.58"/>` +
+             `<path d="M50,88 C44,94 38,94 32,88 C38,84 44,82 50,88 Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.58"/>` +
+             `<path d="M12,50 C6,56 6,62 12,68 C16,62 18,56 12,50 Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.58"/>`;
+    case 'hanami-wave':
+      return `<path d="M50,10 C62,12 72,18 80,28 C88,36 92,48 90,60 C88,72 82,82 72,88 C60,92 48,92 36,88 C24,84 14,74 10,62 C8,50 10,38 18,28 C26,18 36,12 50,10 Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.68" stroke-linejoin="round"/>` +
+             `<path d="M50,18 C60,20 68,25 74,33 C80,40 83,50 82,60 C80,69 74,77 66,82 C56,85 46,85 36,82 C27,79 20,72 18,63 C17,52 18,42 24,34 C30,26 39,20 50,18 Z" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.42" stroke-linejoin="round"/>`;
 
     default: return '';
   }
@@ -2292,6 +2474,68 @@ function renderShape(attr) {
              `<path d="M38,54 Q40,38 50,30 Q60,38 62,54 Z" fill="${c}" opacity="${o}"/>` +
              `<line x1="50" y1="26" x2="50" y2="30" stroke="${c}" stroke-width="2" opacity="${o}" stroke-linecap="round"/>`;
 
+    // ── Volt ──
+    case 'volt-bolt':
+      return `<polygon points="54,26 42,48 50,48 40,72 62,44 54,44 64,26" fill="${c}" opacity="${o}"/>`;
+    case 'volt-chip': {
+      let s = `<rect x="36" y="36" width="28" height="28" rx="4" fill="${c}" opacity="${o}"/>`;
+      for (const y of [40, 48, 56, 64]) {
+        s += `<rect x="31" y="${y-1}" width="5" height="2" fill="${c}" opacity="${o*0.9}"/>`;
+        s += `<rect x="64" y="${y-1}" width="5" height="2" fill="${c}" opacity="${o*0.9}"/>`;
+      }
+      return s;
+    }
+    case 'volt-cell':
+      return `<rect x="38" y="34" width="24" height="34" rx="3" fill="${c}" opacity="${o}"/>` +
+             `<rect x="45" y="28" width="10" height="6" rx="1.5" fill="${c}" opacity="${o*0.92}"/>` +
+             `<rect x="42" y="40" width="16" height="3" rx="1.5" fill="${c}" opacity="${o*0.35}"/>`;
+    case 'volt-plug':
+      return `<rect x="40" y="40" width="20" height="18" rx="4" fill="${c}" opacity="${o}"/>` +
+             `<rect x="44" y="28" width="4" height="12" rx="1" fill="${c}" opacity="${o*0.95}"/>` +
+             `<rect x="52" y="28" width="4" height="12" rx="1" fill="${c}" opacity="${o*0.95}"/>` +
+             `<path d="M50,58 Q50,66 58,70" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.85}" stroke-linecap="round"/>`;
+
+    // ── Glacier ──
+    case 'glacier-peak':
+      return `<polygon points="50,26 34,44 40,48 44,44 50,50 56,44 60,48 66,44" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="34,44 50,26 66,44 62,70 38,70" fill="${c}" opacity="${o*0.92}"/>`;
+    case 'glacier-shard':
+      return `<polygon points="50,24 60,42 56,72 44,72 40,42" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="24" x2="50" y2="72" stroke="${c}" stroke-width="2" opacity="${o*0.32}"/>`;
+    case 'glacier-berg':
+      return `<path d="M34,64 L30,52 L38,40 L48,44 L58,36 L68,42 L70,54 L66,64 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M38,64 L40,54 L48,50 L54,56 L62,52 L62,64 Z" fill="${c}" opacity="${o*0.82}"/>`;
+    case 'glacier-igloo':
+      return `<path d="M34,66 Q34,40 50,32 Q66,40 66,66 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M44,66 Q44,54 50,54 Q56,54 56,66 Z" fill="${c}" opacity="${o*0.28}"/>` +
+             `<line x1="40" y1="46" x2="60" y2="46" stroke="${c}" stroke-width="1.5" opacity="${o*0.28}"/>`;
+
+    // ── Hanami ──
+    case 'hanami-blossom': {
+      let s = '';
+      for (let i = 0; i < 5; i++) {
+        const a = (i * 72 - 90) * Math.PI / 180;
+        const px = (50 + 12 * Math.cos(a)).toFixed(1);
+        const py = (50 + 12 * Math.sin(a)).toFixed(1);
+        s += `<ellipse cx="${px}" cy="${py}" rx="8" ry="6" fill="${c}" opacity="${o}" transform="rotate(${i * 72},${px},${py})"/>`;
+      }
+      return s + `<circle cx="50" cy="50" r="4" fill="${c}" opacity="${o*0.88}"/>`;
+    }
+    case 'hanami-torii':
+      return `<rect x="34" y="34" width="32" height="5" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<rect x="30" y="40" width="40" height="4" rx="1" fill="${c}" opacity="${o*0.95}"/>` +
+             `<rect x="36" y="44" width="5" height="24" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<rect x="59" y="44" width="5" height="24" rx="1" fill="${c}" opacity="${o}"/>`;
+    case 'hanami-lantern':
+      return `<rect x="42" y="32" width="16" height="4" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<path d="M40,36 Q36,50 40,64 L60,64 Q64,50 60,36 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="42" y="64" width="16" height="4" rx="1" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="30" x2="50" y2="32" stroke="${c}" stroke-width="2" opacity="${o}" stroke-linecap="round"/>`;
+    case 'hanami-koi':
+      return `<ellipse cx="48" cy="50" rx="16" ry="10" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="64,50 74,42 74,58" fill="${c}" opacity="${o*0.92}"/>` +
+             `<path d="M40,50 Q48,44 56,50 Q48,56 40,50 Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.28}"/>`;
+
     default: return '';
   }
 }
@@ -2821,6 +3065,51 @@ function renderAccent(attr) {
                `<circle cx="${cx+5}" cy="${cy}" r="2.5" fill="${c}" opacity="0.64"/>` +
                `<circle cx="${cx}" cy="${cy+5}" r="2.5" fill="${c}" opacity="0.64"/>` +
                `<circle cx="${cx-5}" cy="${cy}" r="2.5" fill="${c}" opacity="0.64"/>`; break;
+
+      // ── Volt ──
+      case 'volt-sparks':
+        out += `<line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="${c}" stroke-width="1.5" opacity="0.72" stroke-linecap="round"/>` +
+               `<line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.72" stroke-linecap="round"/>` +
+               `<line x1="${cx-3}" y1="${cy-3}" x2="${cx+3}" y2="${cy+3}" stroke="${c}" stroke-width="1.2" opacity="0.66" stroke-linecap="round"/>` +
+               `<line x1="${cx+3}" y1="${cy-3}" x2="${cx-3}" y2="${cy+3}" stroke="${c}" stroke-width="1.2" opacity="0.66" stroke-linecap="round"/>`; break;
+      case 'volt-pixels':
+        out += `<rect x="${cx-3}" y="${cy-3}" width="6" height="6" fill="${c}" opacity="0.72"/>`; break;
+      case 'volt-pulses':
+        out += `<path d="M${cx-5},${cy} L${cx-2},${cy} L${cx},${cy-3} L${cx+2},${cy+3} L${cx+5},${cy+3}" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.72" stroke-linecap="round" stroke-linejoin="round"/>`; break;
+      case 'volt-nodes':
+        out += `<polygon points="${cx},${cy-4} ${cx+4},${cy} ${cx},${cy+4} ${cx-4},${cy}" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Glacier ──
+      case 'glacier-flakes':
+        out += `<line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="${c}" stroke-width="1.2" opacity="0.72" stroke-linecap="round"/>` +
+               `<line x1="${cx-3.5}" y1="${cy-2}" x2="${cx+3.5}" y2="${cy+2}" stroke="${c}" stroke-width="1.2" opacity="0.72" stroke-linecap="round"/>` +
+               `<line x1="${cx-3.5}" y1="${cy+2}" x2="${cx+3.5}" y2="${cy-2}" stroke="${c}" stroke-width="1.2" opacity="0.72" stroke-linecap="round"/>`; break;
+      case 'glacier-chips':
+        out += `<polygon points="${cx-4},${cy+3} ${cx+1},${cy-4} ${cx+4},${cy+2}" fill="${c}" opacity="0.72"/>`; break;
+      case 'glacier-aurora':
+        out += `<path d="M${cx-1},${cy+4} Q${cx+2},${cy+1} ${cx},${cy-2} Q${cx-2},${cy-4} ${cx+1},${cy-6}" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.68" stroke-linecap="round"/>`; break;
+      case 'glacier-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Hanami ──
+      case 'hanami-falling': {
+        let petals = '';
+        for (let j = 0; j < 5; j++) {
+          const a = (j * 72 - 90) * Math.PI / 180;
+          const px = (cx + 3 * Math.cos(a)).toFixed(1);
+          const py = (cy + 3 * Math.sin(a)).toFixed(1);
+          petals += `<ellipse cx="${px}" cy="${py}" rx="2.4" ry="1.8" fill="${c}" opacity="0.72" transform="rotate(${j * 72},${px},${py})"/>`;
+        }
+        out += petals + `<circle cx="${cx}" cy="${cy}" r="1.3" fill="${c}" opacity="0.78"/>`;
+        break;
+      }
+      case 'hanami-dewdrops':
+        out += `<path d="M${cx},${cy-4} Q${cx+3},${cy} ${cx},${cy+4} Q${cx-3},${cy} ${cx},${cy-4} Z" fill="${c}" opacity="0.7"/>`; break;
+      case 'hanami-buds':
+        out += `<path d="M${cx},${cy-4} Q${cx+2},${cy-1} ${cx+1},${cy+3} Q${cx},${cy+1} ${cx-1},${cy+3} Q${cx-2},${cy-1} ${cx},${cy-4} Z" fill="${c}" opacity="0.72"/>`; break;
+      case 'hanami-fireflies':
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" opacity="0.18"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.76"/>`; break;
 
     }
   }
