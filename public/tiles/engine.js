@@ -11,7 +11,109 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 // Pool math: ring 4×3=12, shape 4×3=12, accent 4×3=12 (bg is board-level only, not matchable)
 
 const THEMES = [
+  {
+    name: 'Atlas Cartography', emoji: '🗺️',
+    palette: {
+      bg:     ['#d7c8a4', '#6d8b74', '#8b5e3c'],
+      ring:   ['#3e2723', '#1f4d3a', '#7f0000', '#1a237e'],
+      shape:  ['#4e342e', '#2e7d32', '#0d47a1'],
+      accent: ['#5d4037', '#6a1b9a', '#bf360c'],
+    },
+    bgPatterns:   ['parchment', 'woodgrain', 'linen', 'coffee-stain', 'aged-paper'],
+    ringStyles:   ['ornate', 'worn', 'gilded'],
+    shapeNames:   ['quill', 'compass', 'anchor', 'fleur'],
+    accentShapes: ['filigree', 'rivets', 'scrolls', 'stamps'],
+    boardBg: { pattern: 'parchment', color: '#d7c8a4' },
+  },
+  {
+    name: 'Opera Velvet', emoji: '🎭',
+    palette: {
+      bg:     ['#2a0f1f', '#6b1038', '#c08a2e'],
+      ring:   ['#6d4c00', '#311b92', '#7f0000', '#0d47a1'],
+      shape:  ['#4a148c', '#1a237e', '#3e2723'],
+      accent: ['#263238', '#880e4f', '#33691e'],
+    },
+    bgPatterns:   ['royal-damask', 'throne-room', 'castle-stone', 'tapestry-weave', 'herald-banner'],
+    ringStyles:   ['crown-points', 'royal-chain', 'ermine-trim'],
+    shapeNames:   ['royal-crown', 'scepter', 'throne-shape', 'royal-shield'],
+    accentShapes: ['fleur-marks', 'royal-orbs', 'crown-jewels', 'crest-corners'],
+    boardBg: { pattern: 'royal-damask', color: '#6b1038' },
+  },
+  {
+    name: 'Solarpunk', emoji: '🌞',
+    palette: {
+      bg:     ['#b7e36b', '#2ec4b6', '#ff8a65'],
+      ring:   ['#0d47a1', '#1b5e20', '#4a148c', '#bf360c'],
+      shape:  ['#00695c', '#2e7d32', '#1a237e'],
+      accent: ['#ad1457', '#33691e', '#004d40'],
+    },
+    bgPatterns:   ['grid-lines', 'circuit', 'pixel-blocks', 'laser-beams', 'digital-rain'],
+    ringStyles:   ['neon-glow', 'pulse', 'wireframe'],
+    shapeNames:   ['lightning', 'pixel-heart', 'pac-ghost', 'controller'],
+    accentShapes: ['glitch-dots', 'brackets', 'pixels', 'signal-bars'],
+    boardBg: { pattern: 'solid', color: '#2ec4b6' },
+  },
+  {
+    name: 'Fjord Harbor', emoji: '⛵',
+    palette: {
+      bg:     ['#355c7d', '#e1a95f', '#6b8e23'],
+      ring:   ['#1a237e', '#e65100', '#ff7043', '#42a5f5'],
+      shape:  ['#1a237e', '#e65100', '#42a5f5'],
+      accent: ['#ff7043', '#ef5350', '#1a237e'],
+    },
+    bgPatterns:   ['sky-gradient', 'fluffy-clouds', 'rainbow-arc', 'cirrus-wisps', 'sunset-glow'],
+    ringStyles:   ['cloud-border', 'rainbow-ring', 'breeze-dash'],
+    shapeNames:   ['airplane', 'songbird', 'bright-sun', 'kite'],
+    accentShapes: ['tiny-birds', 'butterflies', 'raindrops', 'drifting-leaves'],
+    boardBg: { pattern: 'sky-gradient', color: '#355c7d' },
+  },
+  {
+    name: 'Papercut Folklore', emoji: '✂️',
+    palette: {
+      bg:     ['#f4e9d8', '#d46a6a', '#5d7a9a'],
+      ring:   ['#b71c1c', '#1a237e', '#004d40', '#4a148c'],
+      shape:  ['#c62828', '#0d47a1', '#00695c'],
+      accent: ['#bf360c', '#283593', '#1b5e20'],
+    },
+    bgPatterns:   ['washi-texture', 'fold-grid', 'paper-grain', 'crease-lines', 'tatami'],
+    ringStyles:   ['mountain-fold', 'valley-fold', 'pleated'],
+    shapeNames:   ['crane', 'boat', 'fox-face', 'fortune-teller'],
+    accentShapes: ['crease-marks', 'paper-corners', 'fold-tabs', 'origami-stars'],
+    boardBg: { pattern: 'solid', color: '#f4e9d8' },
+  },
+  {
+    name: 'Volcanic Glass', emoji: '🌋',
+    palette: {
+      bg:     ['#1c1b22', '#7a1f1f', '#d97706'],
+      ring:   ['#311b92', '#006064', '#bf360c', '#880e4f'],
+      shape:  ['#4a148c', '#004d40', '#e65100'],
+      accent: ['#6a1b9a', '#00695c', '#d84315'],
+    },
+    bgPatterns:   ['stone-shelf', 'herb-wall', 'alchemy-symbols', 'cobweb', 'apothecary-jars'],
+    ringStyles:   ['herb-wrap', 'wax-seal-ring', 'smoke-wisp'],
+    shapeNames:   ['potion-bottle', 'mortar-pestle', 'flask-shape', 'cauldron'],
+    accentShapes: ['herb-sprigs', 'droplets', 'crystal-shards', 'rune-marks'],
+    boardBg: { pattern: 'solid', color: '#1c1b22' },
+  },
+  {
+    name: 'Mint Bazaar', emoji: '🧿',
+    palette: {
+      bg:     ['#2a9d8f', '#7a5cfa', '#f4a261'],
+      ring:   ['#2E7D32', '#C2185B', '#1565C0', '#6A1B9A'],
+      shape:  ['#43A047', '#E91E63', '#1E88E5'],
+      accent: ['#FF6D00', '#00ACC1', '#AB47BC'],
+    },
+    bgPatterns:   ['checkerboard', 'diagonal', 'hBars', 'vBars', 'solid'],
+    ringStyles:   ['solid', 'dashed', 'double'],
+    shapeNames:   ['cross', 'flower', 'star', 'diamond'],
+    accentShapes: ['circles', 'diamonds', 'squares', 'triangles'],
+    boardBg: { pattern: 'checkerboard', color: '#2a9d8f' },
+  },
+];
 
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived July 2026
   {
     name: 'Skyline', emoji: '🏙️',
     palette: {
@@ -96,10 +198,7 @@ const THEMES = [
     accentShapes: ['hanami-falling', 'hanami-dewdrops', 'hanami-buds', 'hanami-fireflies'],
     boardBg: { pattern: 'solid', color: '#f8bbd0' },
   },
-];
 
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived May 2026
   {
     name: 'Circus', emoji: '🎪',
