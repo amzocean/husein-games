@@ -1236,6 +1236,248 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── London ──
+    case 'lon-brick': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        const y = 6 + r * 15, off = (r % 2) * 15;
+        for (let x = -15 + off; x < 96; x += 30) s += `<rect x="${x+2}" y="${y}" width="26" height="12" rx="1" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*1.1}"/>`;
+      }
+      return s;
+    }
+    case 'lon-fog':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             `<path d="M4,30 Q30,22 50,30 Q72,38 96,30" fill="none" stroke="${c}" stroke-width="7" opacity="${o*0.4}"/>` +
+             `<path d="M4,52 Q28,44 50,52 Q74,60 96,52" fill="none" stroke="${c}" stroke-width="8" opacity="${o*0.3}"/>` +
+             `<path d="M4,74 Q30,66 50,74 Q72,82 96,74" fill="none" stroke="${c}" stroke-width="7" opacity="${o*0.35}"/>`;
+    case 'lon-tubemap':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>` +
+             `<path d="M10,20 L40,20 L60,40 L90,40" fill="none" stroke="${c}" stroke-width="3" opacity="${o*1.1}" stroke-linecap="round"/>` +
+             `<path d="M10,80 L35,80 L55,60 L90,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.9}" stroke-linecap="round"/>` +
+             `<path d="M20,10 L20,90" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.8}" stroke-linecap="round"/>` +
+             `<path d="M75,10 L75,90" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.8}" stroke-linecap="round"/>`;
+    case 'lon-rain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let x = 10; x < 96; x += 12) s += `<line x1="${x}" y1="8" x2="${x-8}" y2="92" stroke="${c}" stroke-width="1.2" opacity="${o*0.7}"/>`;
+      return s;
+    }
+    case 'lon-unionweave':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             `<line x1="4" y1="4" x2="96" y2="96" stroke="${c}" stroke-width="6" opacity="${o*0.5}"/>` +
+             `<line x1="96" y1="4" x2="4" y2="96" stroke="${c}" stroke-width="6" opacity="${o*0.5}"/>` +
+             `<line x1="50" y1="4" x2="50" y2="96" stroke="${c}" stroke-width="8" opacity="${o*0.4}"/>` +
+             `<line x1="4" y1="50" x2="96" y2="50" stroke="${c}" stroke-width="8" opacity="${o*0.4}"/>`;
+
+    // ── Tokyo ──
+    case 'tok-seigaiha': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let ry = 0; ry < 4; ry++) {
+        for (let rx = 0; rx < 5; rx++) {
+          const cx0 = 6 + rx * 22 + (ry % 2) * 11, cy0 = 12 + ry * 24;
+          s += `<path d="M${cx0-11},${cy0} A11,11 0 0 1 ${cx0+11},${cy0}" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.9}"/>` +
+               `<path d="M${cx0-7},${cy0} A7,7 0 0 1 ${cx0+7},${cy0}" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.7}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'tok-ricepaper': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let gx = 0; gx < 5; gx++) s += `<line x1="${12+gx*19}" y1="4" x2="${12+gx*19}" y2="96" stroke="${c}" stroke-width="0.8" opacity="${o*0.5}"/>`;
+      for (let gy = 0; gy < 5; gy++) s += `<line x1="4" y1="${12+gy*19}" x2="96" y2="${12+gy*19}" stroke="${c}" stroke-width="0.8" opacity="${o*0.5}"/>`;
+      return s;
+    }
+    case 'tok-neon': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      const xs = [16, 34, 52, 70, 88];
+      for (let n2 = 0; n2 < xs.length; n2++) {
+        const h = 30 + (n2 % 3) * 18;
+        s += `<rect x="${xs[n2]-3}" y="${10 + (n2%2)*14}" width="6" height="${h}" rx="2" fill="${c}" opacity="${o*(0.5+0.12*(n2%3))}"/>`;
+      }
+      return s;
+    }
+    case 'tok-asanoha': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let ax = 0; ax < 4; ax++) {
+        for (let ay = 0; ay < 4; ay++) {
+          const px = 16 + ax * 24, py = 16 + ay * 24;
+          s += `<path d="M${px},${py-10} L${px},${py+10} M${px-9},${py-5} L${px+9},${py+5} M${px+9},${py-5} L${px-9},${py+5}" stroke="${c}" stroke-width="1" opacity="${o*0.6}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'tok-skyline': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      const hs = [30, 50, 40, 62, 36, 54, 44];
+      for (let b = 0; b < hs.length; b++) s += `<rect x="${6 + b*13}" y="${96 - hs[b]}" width="11" height="${hs[b]}" fill="${c}" opacity="${o*0.55}"/>`;
+      return s;
+    }
+
+    // ── Paris ──
+    case 'par-ironlattice': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let d = -80; d < 96; d += 18) {
+        s += `<line x1="${d}" y1="4" x2="${d+92}" y2="96" stroke="${c}" stroke-width="1.2" opacity="${o*0.6}"/>` +
+             `<line x1="${d}" y1="96" x2="${d+92}" y2="4" stroke="${c}" stroke-width="1.2" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'par-awning': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let x = 4; x < 96; x += 16) s += `<rect x="${x}" y="4" width="8" height="30" fill="${c}" opacity="${o*0.6}"/>`;
+      s += `<path d="M4,34 q8,10 16,0 t16,0 t16,0 t16,0 t16,0" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.7}"/>`;
+      return s;
+    }
+    case 'par-cobbles': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        for (let cbx = 0; cbx < 6; cbx++) {
+          const px = 8 + cbx*15 + (r%2)*7;
+          s += `<rect x="${px}" y="${8 + r*14}" width="11" height="9" rx="4" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.7}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'par-bokeh': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      const bk = [[20,24,8],[46,16,5],[70,30,10],[30,60,6],[58,54,9],[80,68,6],[24,82,7],[60,84,5]];
+      for (const [x,y,r] of bk) s += `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.55}"/>`;
+      return s;
+    }
+    case 'par-script': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 5; r++) {
+        const y = 16 + r*17;
+        s += `<path d="M8,${y} q6,-6 12,0 t12,0 t12,0 t12,0 t12,0 t12,0" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+
+    // ── New York ──
+    case 'ny-brick': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        const y = 6 + r*15, off = (r%2)*15;
+        for (let x = -15+off; x < 96; x += 30) s += `<rect x="${x+2}" y="${y}" width="26" height="12" rx="1" fill="${c}" opacity="${o*0.5}"/>`;
+      }
+      return s;
+    }
+    case 'ny-checkercab': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let row = 0; row < 2; row++) {
+        for (let col = 0; col < 8; col++) {
+          if ((row+col)%2===0) s += `<rect x="${4+col*11.5}" y="${40+row*11}" width="11.5" height="11" fill="${c}" opacity="${o*0.6}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'ny-subwaytiles': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let r = 0; r < 5; r++) {
+        const off = (r%2)*11;
+        for (let x = -11+off; x < 96; x += 22) s += `<rect x="${x+5}" y="${8+r*17}" width="20" height="14" rx="2" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.7}"/>`;
+      }
+      return s;
+    }
+    case 'ny-avenues':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             `<line x1="28" y1="4" x2="28" y2="96" stroke="${c}" stroke-width="3" opacity="${o*0.6}"/>` +
+             `<line x1="50" y1="4" x2="50" y2="96" stroke="${c}" stroke-width="4" opacity="${o*0.6}"/>` +
+             `<line x1="72" y1="4" x2="72" y2="96" stroke="${c}" stroke-width="3" opacity="${o*0.6}"/>` +
+             `<line x1="4" y1="34" x2="96" y2="34" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>` +
+             `<line x1="4" y1="66" x2="96" y2="66" stroke="${c}" stroke-width="2" opacity="${o*0.5}"/>`;
+    case 'ny-halftone': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let r = 0; r < 6; r++) {
+        for (let col = 0; col < 6; col++) {
+          const sz = 2 + ((r+col)%3);
+          s += `<rect x="${(12+col*15 - sz/2).toFixed(1)}" y="${(12+r*15 - sz/2).toFixed(1)}" width="${sz}" height="${sz}" rx="1" fill="${c}" opacity="${o*0.7}"/>`;
+        }
+      }
+      return s;
+    }
+
+    // ── Amsterdam ──
+    case 'ams-canalripples': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        const y = 14 + r*14;
+        s += `<path d="M4,${y} q11,-5 22,0 t22,0 t22,0 t22,0" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'ams-rowhouses': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      const hs = [40, 52, 46, 58, 44, 50];
+      for (let b = 0; b < hs.length; b++) {
+        const x = 6 + b*15;
+        s += `<rect x="${x}" y="${96-hs[b]}" width="13" height="${hs[b]}" fill="${c}" opacity="${o*0.5}"/>` +
+             `<polygon points="${x},${96-hs[b]} ${x+6.5},${96-hs[b]-8} ${x+13},${96-hs[b]}" fill="${c}" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'ams-gableskyline': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let b = 0; b < 4; b++) {
+        const x = 8 + b*22;
+        s += `<path d="M${x},96 L${x},50 L${x+4},50 L${x+4},44 L${x+9},44 L${x+9},38 L${x+13},38 L${x+13},44 L${x+18},44 L${x+18},50 L${x+18},96 Z" fill="${c}" opacity="${o*0.5}"/>`;
+      }
+      return s;
+    }
+    case 'ams-cobbles': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        for (let cbx = 0; cbx < 6; cbx++) {
+          const px = 8 + cbx*15 + (r%2)*7;
+          s += `<rect x="${px}" y="${8+r*14}" width="10" height="9" rx="3" fill="${c}" opacity="${o*0.4}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'ams-bunting': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      s += `<path d="M4,14 Q50,22 96,14" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.6}"/>`;
+      for (let x = 10; x < 92; x += 14) s += `<polygon points="${x},15 ${x+10},15 ${x+5},27" fill="${c}" opacity="${o*0.55}"/>`;
+      return s;
+    }
+
+    // ── Dubai ──
+    case 'dxb-glassfacade': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 6; r++) {
+        for (let col = 0; col < 6; col++) s += `<rect x="${8+col*14}" y="${8+r*14}" width="11" height="11" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'dxb-dunes':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             `<path d="M4,60 Q30,44 55,58 Q78,70 96,54 L96,96 L4,96 Z" fill="${c}" opacity="${o*0.4}"/>` +
+             `<path d="M4,74 Q28,62 52,74 Q76,84 96,70 L96,96 L4,96 Z" fill="${c}" opacity="${o*0.5}"/>`;
+    case 'dxb-lattice': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let d = -80; d < 96; d += 14) {
+        s += `<line x1="${d}" y1="4" x2="${d+92}" y2="96" stroke="${c}" stroke-width="1" opacity="${o*0.5}"/>` +
+             `<line x1="${d}" y1="96" x2="${d+92}" y2="4" stroke="${c}" stroke-width="1" opacity="${o*0.5}"/>`;
+      }
+      return s;
+    }
+    case 'dxb-skyline': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      const hs = [46, 70, 54, 82, 50, 64];
+      for (let b = 0; b < hs.length; b++) {
+        const x = 8 + b*14;
+        s += `<rect x="${x}" y="${96-hs[b]}" width="10" height="${hs[b]}" fill="${c}" opacity="${o*0.5}"/>`;
+      }
+      return s;
+    }
+    case 'dxb-sand': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+      for (let r = 0; r < 7; r++) {
+        const y = 12 + r*12;
+        s += `<path d="M4,${y} q23,-4 46,0 t46,0" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.45}"/>`;
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -1733,6 +1975,103 @@ function renderRing(attr) {
     case 'hanami-wave':
       return `<path d="M50,10 C62,12 72,18 80,28 C88,36 92,48 90,60 C88,72 82,82 72,88 C60,92 48,92 36,88 C24,84 14,74 10,62 C8,50 10,38 18,28 C26,18 36,12 50,10 Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.68" stroke-linejoin="round"/>` +
              `<path d="M50,18 C60,20 68,25 74,33 C80,40 83,50 82,60 C80,69 74,77 66,82 C56,85 46,85 36,82 C27,79 20,72 18,63 C17,52 18,42 24,34 C30,26 39,20 50,18 Z" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.42" stroke-linejoin="round"/>`;
+
+    // ── London ──
+    case 'lon-brickarch':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.7"/>` +
+             `<line x1="26" y1="4" x2="26" y2="16" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="50" y1="4" x2="50" y2="16" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="74" y1="4" x2="74" y2="16" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="26" y1="84" x2="26" y2="96" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="50" y1="84" x2="50" y2="96" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<line x1="74" y1="84" x2="74" y2="96" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+    case 'lon-railing': {
+      let s = `<rect x="6" y="6" width="88" height="88" rx="4" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+      for (let x = 16; x <= 84; x += 12) s += `<line x1="${x}" y1="6" x2="${x}" y2="16" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+      return s;
+    }
+    case 'lon-roundelband':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<circle cx="50" cy="4" r="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<circle cx="50" cy="96" r="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<circle cx="4" cy="50" r="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>` +
+             `<circle cx="96" cy="50" r="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.7"/>`;
+
+    // ── Tokyo ──
+    case 'tok-lanternband': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+      for (const x of [26, 50, 74]) s += `<rect x="${x-4}" y="2" width="8" height="12" rx="3" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+      return s;
+    }
+    case 'tok-waveborder':
+      return `<path d="M4,14 q11,-8 22,0 t22,0 t22,0 t22,0" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<path d="M4,86 q11,-8 22,0 t22,0 t22,0 t22,0" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+    case 'tok-seigaiarc': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.65"/>`;
+      for (const x of [20, 50, 80]) s += `<path d="M${x-12},8 A12,12 0 0 1 ${x+12},8" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+      return s;
+    }
+
+    // ── Paris ──
+    case 'par-ironscroll':
+      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<path d="M50,5 q-8,6 0,12 q8,-6 0,-12" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>` +
+             `<path d="M50,95 q-8,-6 0,-12 q8,6 0,12" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+    case 'par-ribbonband':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.7" stroke-dasharray="10 4"/>`;
+    case 'par-archframe':
+      return `<path d="M8,92 L8,30 Q50,4 92,30 L92,92" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.7"/>` +
+             `<line x1="8" y1="92" x2="92" y2="92" stroke="${c}" stroke-width="3" opacity="0.65"/>`;
+
+    // ── New York ──
+    case 'ny-checkerband': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.65"/>`;
+      for (let i2 = 0; i2 < 8; i2++) {
+        if (i2%2===0) s += `<rect x="${4+i2*11.5}" y="4" width="11.5" height="7" fill="${c}" opacity="0.6"/>` +
+                            `<rect x="${4+i2*11.5}" y="89" width="11.5" height="7" fill="${c}" opacity="0.6"/>`;
+      }
+      return s;
+    }
+    case 'ny-fireescape': {
+      let s = `<rect x="6" y="6" width="88" height="88" rx="3" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+      for (let y = 24; y <= 72; y += 24) s += `<line x1="6" y1="${y}" x2="94" y2="${y}" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+      return s;
+    }
+    case 'ny-subwayframe':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
+             `<rect x="10" y="10" width="80" height="80" rx="4" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.6"/>`;
+
+    // ── Amsterdam ──
+    case 'ams-gableframe':
+      return `<path d="M4,96 L4,20 L18,8 L32,20 L32,96" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.68"/>` +
+             `<path d="M68,96 L68,20 L82,8 L96,20 L96,96" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.68"/>` +
+             `<line x1="4" y1="92" x2="96" y2="92" stroke="${c}" stroke-width="3" opacity="0.65"/>`;
+    case 'ams-mooring': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>`;
+      for (const x of [24, 50, 76]) s += `<circle cx="${x}" cy="96" r="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.65"/>`;
+      return s;
+    }
+    case 'ams-bridgearch':
+      return `<path d="M4,60 Q50,20 96,60" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.7"/>` +
+             `<line x1="4" y1="60" x2="4" y2="92" stroke="${c}" stroke-width="3" opacity="0.65"/>` +
+             `<line x1="96" y1="60" x2="96" y2="92" stroke="${c}" stroke-width="3" opacity="0.65"/>`;
+
+    // ── Dubai ──
+    case 'dxb-mashrabiya': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.65"/>`;
+      for (const x of [22, 50, 78]) {
+        s += `<polygon points="${x},6 ${x+7},13 ${x},20 ${x-7},13" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>` +
+             `<polygon points="${x},80 ${x+7},87 ${x},94 ${x-7},87" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6"/>`;
+      }
+      return s;
+    }
+    case 'dxb-goldband':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4" opacity="0.7"/>` +
+             `<rect x="11" y="11" width="78" height="78" rx="4" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.6" stroke-dasharray="6 4"/>`;
+    case 'dxb-archframe':
+      return `<path d="M10,92 L10,34 Q50,6 90,34 L90,92" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.7"/>` +
+             `<path d="M22,92 L22,40 Q50,20 78,40 L78,92" fill="none" stroke="${c}" stroke-width="2.6" opacity="0.6"/>`;
 
     default: return '';
   }
@@ -2536,6 +2875,135 @@ function renderShape(attr) {
              `<polygon points="64,50 74,42 74,58" fill="${c}" opacity="${o*0.92}"/>` +
              `<path d="M40,50 Q48,44 56,50 Q48,56 40,50 Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.28}"/>`;
 
+    // ── London ──
+    case 'lon-bigben':
+      return `<rect x="44" y="26" width="12" height="44" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="44,26 50,14 56,26" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="40" r="4" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o}"/>` +
+             `<rect x="42" y="70" width="16" height="6" fill="${c}" opacity="${o}"/>`;
+    case 'lon-bus':
+      return `<rect x="26" y="38" width="48" height="26" rx="3" fill="${c}" opacity="${o}"/>` +
+             `<rect x="30" y="42" width="8" height="7" fill="white" opacity="0.5"/>` +
+             `<rect x="42" y="42" width="8" height="7" fill="white" opacity="0.5"/>` +
+             `<rect x="54" y="42" width="8" height="7" fill="white" opacity="0.5"/>` +
+             `<circle cx="36" cy="66" r="5" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="64" cy="66" r="5" fill="${c}" opacity="${o}"/>`;
+    case 'lon-phonebox':
+      return `<rect x="38" y="28" width="24" height="46" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="42" y="34" width="16" height="20" rx="1" fill="white" opacity="0.5"/>` +
+             `<rect x="38" y="24" width="24" height="6" rx="1" fill="${c}" opacity="${o}"/>`;
+    case 'lon-umbrella':
+      return `<path d="M28,50 Q50,24 72,50 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="50" x2="50" y2="72" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<path d="M50,72 q-6,0 -6,-6" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+
+    // ── Tokyo ──
+    case 'tok-torii':
+      return `<rect x="26" y="30" width="48" height="6" fill="${c}" opacity="${o}"/>` +
+             `<rect x="30" y="38" width="40" height="4" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="30" width="5" height="42" fill="${c}" opacity="${o}"/>` +
+             `<rect x="61" y="30" width="5" height="42" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="24,30 76,30 72,24 28,24" fill="${c}" opacity="${o}"/>`;
+    case 'tok-shinkansen':
+      return `<path d="M26,54 Q30,42 46,42 L72,42 Q76,42 76,52 L76,58 L26,58 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="48" y="46" width="24" height="6" fill="white" opacity="0.5"/>` +
+             `<circle cx="38" cy="60" r="3.5" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="66" cy="60" r="3.5" fill="${c}" opacity="${o}"/>`;
+    case 'tok-lantern':
+      return `<rect x="38" y="30" width="24" height="40" rx="12" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="28" width="32" height="5" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<rect x="34" y="67" width="32" height="5" rx="2" fill="${c}" opacity="${o}"/>` +
+             `<line x1="38" y1="50" x2="62" y2="50" stroke="white" stroke-width="1.5" opacity="0.5"/>`;
+    case 'tok-fuji':
+      return `<polygon points="50,28 74,70 26,70" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,28 58,42 52,40 50,46 46,40 42,42" fill="white" opacity="0.6"/>`;
+
+    // ── Paris ──
+    case 'par-eiffel':
+      return `<polygon points="50,22 58,72 42,72" fill="${c}" opacity="${o}"/>` +
+             `<rect x="40" y="44" width="20" height="4" fill="${c}" opacity="${o}"/>` +
+             `<path d="M44,72 Q50,60 56,72" fill="none" stroke="${c}" stroke-width="2" opacity="${o}"/>` +
+             `<line x1="50" y1="22" x2="50" y2="16" stroke="${c}" stroke-width="2" opacity="${o}"/>`;
+    case 'par-macaron':
+      return `<ellipse cx="50" cy="40" rx="20" ry="12" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="50" cy="60" rx="20" ry="12" fill="${c}" opacity="${o}"/>` +
+             `<rect x="30" y="46" width="40" height="8" fill="white" opacity="0.45"/>`;
+    case 'par-beret':
+      return `<path d="M28,56 Q28,36 50,36 Q72,36 72,56 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="28" y="56" width="44" height="6" rx="3" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="34" r="3" fill="${c}" opacity="${o}"/>`;
+    case 'par-cafechair':
+      return `<rect x="36" y="30" width="28" height="20" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<line x1="40" y1="50" x2="40" y2="72" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<line x1="60" y1="50" x2="60" y2="72" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<line x1="36" y1="50" x2="64" y2="50" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+
+    // ── New York ──
+    case 'ny-liberty':
+      return `<rect x="45" y="40" width="10" height="34" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="34" r="7" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,20 46,30 54,30" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="20" x2="50" y2="14" stroke="${c}" stroke-width="2" opacity="${o}"/>` +
+             `<rect x="40" y="74" width="20" height="5" fill="${c}" opacity="${o}"/>`;
+    case 'ny-cab':
+      return `<path d="M26,56 L32,44 L68,44 L74,56 L74,62 L26,62 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="44" y="38" width="12" height="6" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="37" cy="62" r="4" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="63" cy="62" r="4" fill="${c}" opacity="${o}"/>`;
+    case 'ny-skyscraper':
+      return `<rect x="40" y="26" width="20" height="48" fill="${c}" opacity="${o}"/>` +
+             `<rect x="46" y="18" width="8" height="10" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="18" x2="50" y2="12" stroke="${c}" stroke-width="2" opacity="${o}"/>` +
+             `<rect x="44" y="32" width="4" height="6" fill="white" opacity="0.5"/>` +
+             `<rect x="52" y="32" width="4" height="6" fill="white" opacity="0.5"/>` +
+             `<rect x="44" y="44" width="4" height="6" fill="white" opacity="0.5"/>` +
+             `<rect x="52" y="44" width="4" height="6" fill="white" opacity="0.5"/>`;
+    case 'ny-pretzel':
+      return `<path d="M34,64 Q26,40 50,40 Q74,40 66,64" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/>` +
+             `<path d="M40,42 L60,62 M60,42 L40,62" stroke="${c}" stroke-width="4" opacity="${o}" fill="none"/>`;
+
+    // ── Amsterdam ──
+    case 'ams-canalhouse':
+      return `<rect x="38" y="36" width="24" height="38" fill="${c}" opacity="${o}"/>` +
+             `<path d="M38,36 L38,28 L44,28 L44,22 L56,22 L56,28 L62,28 L62,36 Z" fill="${c}" opacity="${o}"/>` +
+             `<rect x="43" y="42" width="6" height="8" fill="white" opacity="0.5"/>` +
+             `<rect x="51" y="42" width="6" height="8" fill="white" opacity="0.5"/>` +
+             `<rect x="46" y="58" width="8" height="16" fill="white" opacity="0.4"/>`;
+    case 'ams-bicycle':
+      return `<circle cx="34" cy="58" r="12" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<circle cx="66" cy="58" r="12" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<path d="M34,58 L48,40 L60,40 M48,40 L58,58 M34,58 L66,58" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+    case 'ams-windmill':
+      return `<polygon points="42,72 58,72 54,40 46,40" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="40" r="4" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,40 30,30 34,26 50,40" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,40 70,30 66,26 50,40" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,40 60,20 64,24 50,40" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,40 40,20 36,24 50,40" fill="${c}" opacity="${o}"/>`;
+    case 'ams-tulip':
+      return `<path d="M40,40 Q40,30 50,30 Q60,30 60,40 Q60,52 50,58 Q40,52 40,40 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M44,36 L44,44 M50,34 L50,46 M56,36 L56,44" stroke="white" stroke-width="1.2" opacity="0.45"/>` +
+             `<line x1="50" y1="58" x2="50" y2="74" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+
+    // ── Dubai ──
+    case 'dxb-burj':
+      return `<polygon points="50,16 44,74 56,74" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,16 47,44 53,44" fill="${c}" opacity="${o}"/>` +
+             `<rect x="44" y="72" width="12" height="4" fill="${c}" opacity="${o}"/>`;
+    case 'dxb-dhow':
+      return `<path d="M28,62 L72,62 L66,70 L34,70 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,26 L50,60 L30,60 Z" fill="${c}" opacity="${o}"/>` +
+             `<line x1="50" y1="26" x2="50" y2="62" stroke="${c}" stroke-width="2" opacity="${o}"/>`;
+    case 'dxb-falcon':
+      return `<path d="M50,40 Q40,30 26,32 Q40,40 46,46 Q40,42 30,46 Q42,50 50,48 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M50,40 Q60,30 74,32 Q60,40 54,46 Q60,42 70,46 Q58,50 50,48 Z" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="44" r="6" fill="${c}" opacity="${o}"/>` +
+             `<polygon points="50,50 47,62 53,62" fill="${c}" opacity="${o}"/>`;
+    case 'dxb-palmisland':
+      return `<line x1="50" y1="30" x2="50" y2="72" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M50,36 Q34,30 26,36 M50,44 Q32,40 24,48 M50,52 Q34,50 26,58" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
+             `<path d="M50,36 Q66,30 74,36 M50,44 Q68,40 76,48 M50,52 Q66,50 74,58" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+
     default: return '';
   }
 }
@@ -3110,6 +3578,78 @@ function renderAccent(attr) {
       case 'hanami-fireflies':
         out += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" opacity="0.18"/>` +
                `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.76"/>`; break;
+
+      // ── London ──
+      case 'lon-pips':
+        out += `<polygon points="${cx},${cy-5} ${cx+1.5},${cy-1.5} ${cx+5},${cy-1.5} ${cx+2},${cy+1.5} ${cx+3},${cy+5} ${cx},${cy+2.5} ${cx-3},${cy+5} ${cx-2},${cy+1.5} ${cx-5},${cy-1.5} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.72"/>`; break;
+      case 'lon-raindrops':
+        out += `<path d="M${cx},${cy-5} Q${cx+3.5},${cy} ${cx},${cy+5} Q${cx-3.5},${cy} ${cx},${cy-5} Z" fill="${c}" opacity="0.7"/>`; break;
+      case 'lon-roundels':
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${c}" stroke-width="2" opacity="0.75"/>` +
+               `<rect x="${cx-6}" y="${cy-1.6}" width="12" height="3.2" fill="${c}" opacity="0.7"/>`; break;
+      case 'lon-crowns':
+        out += `<path d="M${cx-5},${cy+4} L${cx-5},${cy-2} L${cx-2.5},${cy+1} L${cx},${cy-4} L${cx+2.5},${cy+1} L${cx+5},${cy-2} L${cx+5},${cy+4} Z" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Tokyo ──
+      case 'tok-blossoms':
+        out += `<path d="M${cx},${cy-4} Q${cx+2.5},${cy-1} ${cx},${cy+1.5} Q${cx-2.5},${cy-1} ${cx},${cy-4} Z" fill="${c}" opacity="0.72" transform="rotate(0,${cx},${cy})"/>` +
+               `<path d="M${cx},${cy-4} Q${cx+2.5},${cy-1} ${cx},${cy+1.5} Q${cx-2.5},${cy-1} ${cx},${cy-4} Z" fill="${c}" opacity="0.72" transform="rotate(120,${cx},${cy})"/>` +
+               `<path d="M${cx},${cy-4} Q${cx+2.5},${cy-1} ${cx},${cy+1.5} Q${cx-2.5},${cy-1} ${cx},${cy-4} Z" fill="${c}" opacity="0.72" transform="rotate(240,${cx},${cy})"/>`; break;
+      case 'tok-lanterndots':
+        out += `<rect x="${cx-3}" y="${cy-5}" width="6" height="10" rx="3" fill="${c}" opacity="0.72"/>` +
+               `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="white" stroke-width="1" opacity="0.5"/>`; break;
+      case 'tok-wavecrests':
+        out += `<path d="M${cx-6},${cy} q3,-5 6,0 t6,0" fill="none" stroke="${c}" stroke-width="2" opacity="0.72"/>`; break;
+      case 'tok-koi':
+        out += `<ellipse cx="${cx-1}" cy="${cy}" rx="5" ry="3" fill="${c}" opacity="0.72"/>` +
+               `<polygon points="${cx+4},${cy} ${cx+7},${cy-2.5} ${cx+7},${cy+2.5}" fill="${c}" opacity="0.7"/>`; break;
+
+      // ── Paris ──
+      case 'par-fleur':
+        out += `<path d="M${cx},${cy-5} Q${cx+4},${cy} ${cx},${cy+4} Q${cx-4},${cy} ${cx},${cy-5} Z" fill="${c}" opacity="0.72"/>` +
+               `<rect x="${cx-5}" y="${cy+2}" width="10" height="2.5" fill="${c}" opacity="0.7"/>`; break;
+      case 'par-croissantdots':
+        out += `<path d="M${cx-5},${cy+3} Q${cx},${cy-6} ${cx+5},${cy+3} Q${cx},${cy} ${cx-5},${cy+3} Z" fill="${c}" opacity="0.72"/>`; break;
+      case 'par-hearts':
+        out += `<path d="M${cx},${cy+4} C${cx-6},${cy-2} ${cx-2},${cy-6} ${cx},${cy-2} C${cx+2},${cy-6} ${cx+6},${cy-2} ${cx},${cy+4} Z" fill="${c}" opacity="0.72"/>`; break;
+      case 'par-petals':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="2.6" ry="5" fill="${c}" opacity="0.7" transform="rotate(${cx<50?-30:30},${cx},${cy})"/>`; break;
+
+      // ── New York ──
+      case 'ny-tokens':
+        out += `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${c}" stroke-width="2" opacity="0.75"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1.6" fill="${c}" opacity="0.7"/>`; break;
+      case 'ny-checkerdots':
+        out += `<rect x="${cx-5}" y="${cy-5}" width="5" height="5" fill="${c}" opacity="0.72"/>` +
+               `<rect x="${cx}" y="${cy}" width="5" height="5" fill="${c}" opacity="0.72"/>`; break;
+      case 'ny-steam':
+        out += `<path d="M${cx},${cy+5} q-4,-4 0,-6 q4,-2 0,-5" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>`; break;
+      case 'ny-stars':
+        out += `<polygon points="${cx},${cy-5} ${cx+1.5},${cy-1.5} ${cx+5},${cy-1.5} ${cx+2},${cy+1.5} ${cx+3},${cy+5} ${cx},${cy+2.5} ${cx-3},${cy+5} ${cx-2},${cy+1.5} ${cx-5},${cy-1.5} ${cx-1.5},${cy-1.5}" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Amsterdam ──
+      case 'ams-cheese':
+        out += `<polygon points="${cx-5},${cy+4} ${cx+5},${cy+4} ${cx+3},${cy-4} Z" fill="${c}" opacity="0.72"/>` +
+               `<circle cx="${cx-1}" cy="${cy+1}" r="1" fill="white" opacity="0.5"/>`; break;
+      case 'ams-belldots':
+        out += `<path d="M${cx-4},${cy+3} Q${cx-4},${cy-4} ${cx},${cy-4} Q${cx+4},${cy-4} ${cx+4},${cy+3} Z" fill="${c}" opacity="0.72"/>` +
+               `<rect x="${cx-4}" y="${cy+3}" width="8" height="2" fill="${c}" opacity="0.7"/>`; break;
+      case 'ams-ripples':
+        out += `<path d="M${cx-6},${cy} q3,-4 6,0 t6,0" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>`; break;
+      case 'ams-clogs':
+        out += `<path d="M${cx-5},${cy+2} L${cx+2},${cy+2} Q${cx+6},${cy+2} ${cx+6},${cy-2} L${cx+4},${cy-2} Q${cx-5},${cy-3} ${cx-5},${cy+2} Z" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Dubai ──
+      case 'dxb-goldflecks':
+        out += `<polygon points="${cx},${cy-5} ${cx+2},${cy} ${cx},${cy+5} ${cx-2},${cy} Z" fill="${c}" opacity="0.75"/>`; break;
+      case 'dxb-dunecurves':
+        out += `<path d="M${cx-6},${cy+2} Q${cx},${cy-5} ${cx+6},${cy+2}" fill="none" stroke="${c}" stroke-width="2" opacity="0.72"/>`; break;
+      case 'dxb-lanterndots':
+        out += `<path d="M${cx},${cy-5} L${cx+4},${cy} L${cx},${cy+5} L${cx-4},${cy} Z" fill="${c}" opacity="0.72"/>` +
+               `<line x1="${cx}" y1="${cy-5}" x2="${cx}" y2="${cy-7}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>`; break;
+      case 'dxb-gems':
+        out += `<polygon points="${cx},${cy-5} ${cx+4},${cy-1} ${cx},${cy+5} ${cx-4},${cy-1} Z" fill="${c}" opacity="0.72"/>` +
+               `<line x1="${cx-4}" y1="${cy-1}" x2="${cx+4}" y2="${cy-1}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
 
     }
   }

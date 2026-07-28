@@ -12,6 +12,95 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 
 const THEMES = [
   {
+    name: 'London', emoji: '🎡',
+    palette: {
+      bg:     ['#c8102e', '#10233f', '#8a99a6'],
+      ring:   ['#b00020', '#1a2a4a', '#4a5560', '#6a1b1b'],
+      shape:  ['#a3132e', '#16305a', '#3d4650'],
+      accent: ['#8b0000', '#274060', '#5c6670'],
+    },
+    bgPatterns:   ['lon-brick', 'lon-fog', 'lon-tubemap', 'lon-rain', 'lon-unionweave'],
+    ringStyles:   ['lon-brickarch', 'lon-railing', 'lon-roundelband'],
+    shapeNames:   ['lon-bigben', 'lon-bus', 'lon-phonebox', 'lon-umbrella'],
+    accentShapes: ['lon-pips', 'lon-raindrops', 'lon-roundels', 'lon-crowns'],
+    boardBg:      { pattern: 'solid', color: '#10233f' },
+  },
+  {
+    name: 'Tokyo', emoji: '⛩️',
+    palette: {
+      bg:     ['#2b3a67', '#c1272d', '#f4a6c0'],
+      ring:   ['#1f2d54', '#a01d22', '#7b3f61', '#2e4a6b'],
+      shape:  ['#24325c', '#b0222a', '#8e4585'],
+      accent: ['#34406b', '#9c1f26', '#b0567f'],
+    },
+    bgPatterns:   ['tok-seigaiha', 'tok-ricepaper', 'tok-neon', 'tok-asanoha', 'tok-skyline'],
+    ringStyles:   ['tok-lanternband', 'tok-waveborder', 'tok-seigaiarc'],
+    shapeNames:   ['tok-torii', 'tok-shinkansen', 'tok-lantern', 'tok-fuji'],
+    accentShapes: ['tok-blossoms', 'tok-lanterndots', 'tok-wavecrests', 'tok-koi'],
+    boardBg:      { pattern: 'solid', color: '#2b3a67' },
+  },
+  {
+    name: 'Paris', emoji: '🥐',
+    palette: {
+      bg:     ['#a7c4e0', '#e7a9bf', '#f2e8d5'],
+      ring:   ['#34567a', '#a24d68', '#6b4f7a', '#7a5a3c'],
+      shape:  ['#3d5f86', '#b05070', '#8a6d3b'],
+      accent: ['#4a6b8f', '#9c4a63', '#7a6a4a'],
+    },
+    bgPatterns:   ['par-ironlattice', 'par-awning', 'par-cobbles', 'par-bokeh', 'par-script'],
+    ringStyles:   ['par-ironscroll', 'par-ribbonband', 'par-archframe'],
+    shapeNames:   ['par-eiffel', 'par-macaron', 'par-beret', 'par-cafechair'],
+    accentShapes: ['par-fleur', 'par-croissantdots', 'par-hearts', 'par-petals'],
+    boardBg:      { pattern: 'solid', color: '#a7c4e0' },
+  },
+  {
+    name: 'New York', emoji: '🗽',
+    palette: {
+      bg:     ['#f2b705', '#37414d', '#9e3b30'],
+      ring:   ['#b08600', '#2b2f36', '#7a2a22', '#4a4038'],
+      shape:  ['#a37400', '#33373e', '#8f3327'],
+      accent: ['#8a6d00', '#40454d', '#6e2b22'],
+    },
+    bgPatterns:   ['ny-brick', 'ny-checkercab', 'ny-subwaytiles', 'ny-avenues', 'ny-halftone'],
+    ringStyles:   ['ny-checkerband', 'ny-fireescape', 'ny-subwayframe'],
+    shapeNames:   ['ny-liberty', 'ny-cab', 'ny-skyscraper', 'ny-pretzel'],
+    accentShapes: ['ny-tokens', 'ny-checkerdots', 'ny-steam', 'ny-stars'],
+    boardBg:      { pattern: 'solid', color: '#37414d' },
+  },
+  {
+    name: 'Amsterdam', emoji: '🚲',
+    palette: {
+      bg:     ['#e8791e', '#2f6d8c', '#b34a35'],
+      ring:   ['#c85a12', '#1f5670', '#8a3524', '#5a4a2e'],
+      shape:  ['#b85416', '#23617f', '#9c3f2b'],
+      accent: ['#a34a10', '#2a5f7d', '#7a3626'],
+    },
+    bgPatterns:   ['ams-canalripples', 'ams-rowhouses', 'ams-gableskyline', 'ams-cobbles', 'ams-bunting'],
+    ringStyles:   ['ams-gableframe', 'ams-mooring', 'ams-bridgearch'],
+    shapeNames:   ['ams-canalhouse', 'ams-bicycle', 'ams-windmill', 'ams-tulip'],
+    accentShapes: ['ams-cheese', 'ams-belldots', 'ams-ripples', 'ams-clogs'],
+    boardBg:      { pattern: 'solid', color: '#2f6d8c' },
+  },
+  {
+    name: 'Dubai', emoji: '🏙️',
+    palette: {
+      bg:     ['#d4a017', '#2a8a8a', '#e6c992'],
+      ring:   ['#9a7410', '#1f6b6b', '#7a5a1e', '#4a5d3a'],
+      shape:  ['#a37c10', '#227575', '#8a6a2a'],
+      accent: ['#8a6a12', '#2a7d7d', '#6b5320'],
+    },
+    bgPatterns:   ['dxb-glassfacade', 'dxb-dunes', 'dxb-lattice', 'dxb-skyline', 'dxb-sand'],
+    ringStyles:   ['dxb-mashrabiya', 'dxb-goldband', 'dxb-archframe'],
+    shapeNames:   ['dxb-burj', 'dxb-dhow', 'dxb-falcon', 'dxb-palmisland'],
+    accentShapes: ['dxb-goldflecks', 'dxb-dunecurves', 'dxb-lanterndots', 'dxb-gems'],
+    boardBg:      { pattern: 'solid', color: '#d4a017' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived July 2026 (city rotation)
+  {
     name: 'Bioluminescent Reef', emoji: '🐠',
     palette: {
       bg:     ['#003049', '#00bcd4', '#ffd166'],
@@ -109,10 +198,6 @@ const THEMES = [
     accentShapes: ['circles', 'diamonds', 'squares', 'triangles'],
     boardBg: { pattern: 'checkerboard', color: '#2a9d8f' },
   },
-];
-
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived July 2026
   {
     name: 'Skyline', emoji: '🏙️',
