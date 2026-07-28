@@ -347,6 +347,7 @@ function newGame(creatorSession, creatorName) {
     commentaryTurn: -99,
     consecutiveSixes: 0,
     noSixWhileAllBase: {},  // per-color counter: consecutive non-6 rolls while all 4 tokens in base
+    diceBag: {},            // per-color shuffled bag of faces (drought/streak control)
     awaitingCheatPick: false,
     turnNumber: 0,
     idleTimer: null,
@@ -401,20 +402,73 @@ const HOME_STRETCHES = {
 };
 const SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
 
+// ---- Dice bag (per-player) ----
+// Instead of independent crypto rolls (which can produce long low/high droughts
+// and one-sided games), each player draws from their OWN shuffled bag containing
+// DICE_BAG_COPIES of each face 1-6. Over every (6 * copies) rolls the distribution
+// is guaranteed balanced, so no player can get stuck on 10 straight lows/highs —
+// while turn-to-turn draws still feel random. Refilled + reshuffled when empty.
+const DICE_BAG_COPIES = 3; // 3 → 18-roll bags; drought bounded, still hard to card-count
+
+function makeDiceBag() {
+  const bag = [];
+  for (let c = 0; c < DICE_BAG_COPIES; c++) {
+    for (let v = 1; v <= 6; v++) bag.push(v);
+  }
+  // Fisher-Yates shuffle with cryptographic RNG
+  for (let i = bag.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(0, i + 1);
+    [bag[i], bag[j]] = [bag[j], bag[i]];
+  }
+  return bag;
+}
+
+// Draw one value from a color's bag; refill+reshuffle when empty.
+// Optional predicate constrains the value (used by mercy-6 and the anti-streak cap).
+// Rejected cards are returned to the bag so the per-color distribution stays balanced.
+function drawFromBag(color, predicate) {
+  if (!game.diceBag[color] || game.diceBag[color].length === 0) {
+    game.diceBag[color] = makeDiceBag();
+  }
+  let bag = game.diceBag[color];
+  if (!predicate) return bag.pop();
+
+  // If no card in the current bag satisfies the predicate, refill first
+  // (a fresh bag always contains every face, so a match is guaranteed).
+  if (!bag.some(predicate)) {
+    game.diceBag[color] = makeDiceBag();
+    bag = game.diceBag[color];
+  }
+  const rejected = [];
+  let value;
+  while (bag.length) {
+    const v = bag.pop();
+    if (predicate(v)) { value = v; break; }
+    rejected.push(v);
+  }
+  // Return rejected cards and reshuffle so counts are preserved.
+  for (const v of rejected) bag.push(v);
+  for (let i = bag.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(0, i + 1);
+    [bag[i], bag[j]] = [bag[j], bag[i]];
+  }
+  return value;
+}
+
 function rollDice(color) {
   const allInBase = game.tokens[color] && game.tokens[color].every(s => s === 0);
   if (allInBase && (game.noSixWhileAllBase[color] || 0) >= 5) {
     // Mercy rule: force a 6 after 5 consecutive non-6 rolls with all tokens stuck in base
     log(`MERCY 6 for ${color} (${game.noSixWhileAllBase[color]} non-6 rolls while all in base)`);
-    return 6;
+    return drawFromBag(color, v => v === 6);
   }
   // Anti-streak rule: after 2 consecutive sixes, third roll is capped at 1-3
   if (game.consecutiveSixes >= 2) {
-    const capped = crypto.randomInt(1, 4); // 1, 2, or 3
+    const capped = drawFromBag(color, v => v <= 3);
     log(`CAPPED ROLL for ${color} (after ${game.consecutiveSixes} consecutive sixes): ${capped}`);
     return capped;
   }
-  return crypto.randomInt(1, 7);
+  return drawFromBag(color);
 }
 
 function getAbsolutePathIndex(color, step) {
@@ -759,6 +813,7 @@ ludoNs.on('connection', (socket) => {
     shuffleCommentary(); // fresh shuffle each game for variety
     for (const p of game.players) {
       game.tokens[p.color] = [0, 0, 0, 0];
+      game.diceBag[p.color] = makeDiceBag(); // fresh shuffled bag per player
     }
     game.currentPlayerIndex = 0;
     resetIdleTimer();

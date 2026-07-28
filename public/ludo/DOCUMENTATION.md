@@ -182,6 +182,7 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
   lastCapture: { by, victim, tokenIdx, pathIdx } | null,
   consecutiveSixes: number,         // resets each turn; capped roll after 2 consecutive 6s
   noSixWhileAllBase: { color: count },  // mercy-6 tracker; free 6 after 5 non-6 rolls with all tokens in base
+  diceBag: { color: [faces...] },   // per-player shuffled bag (3 copies of 1-6); refilled when empty
   lastNudgeTime: number | null,     // Date.now() of last nudge (universal cooldown); reset in nextTurn()
   idleTimer: timeout,
   turnTimer: timeout,
@@ -226,21 +227,22 @@ COMMENTARY_COOLDOWN = 2             // minimum turns between non-forced comments
 4. **Finished** → Someone gets all 4 tokens to step 57, or timeout/disconnect
 5. Auto-reset to **Idle** after 30 seconds (10s for idle timeout)
 
-### Dice Roll — Cryptographic RNG
-- Uses `crypto.randomInt(1, 7)` — cryptographically secure uniform random from the OS entropy pool
-- Replaced `Math.floor(Math.random() * 6) + 1` which used V8's xorshift128+ PRNG — a deterministic sequence seeded once at process start that could produce perceivable clustering in short sessions
-- `crypto.randomInt()` draws from `/dev/urandom` (or OS equivalent), making each roll independently random with no sequential correlation
-- **Server-side only** — clients send a roll request, server generates the value, broadcasts result. No client-side cheating possible.
-- **Consecutive-6 cap**: After 2 consecutive 6s, the 3rd roll is capped to 1–5 (re-rolls if crypto produces 6). Tracked via `game.consecutiveSixes`, reset on non-6 roll.
+### Dice Roll — Per-Player Bag (crypto-shuffled)
+- **Bag model, not independent draws.** Each player (color) has their **own** bag containing `DICE_BAG_COPIES` (=3) copies of every face 1–6 → an 18-roll bag. Rolls `pop()` from the bag; when empty it is refilled and re-shuffled. This guarantees a balanced distribution over every 18 rolls, preventing the long low/high droughts that make games one-sided — while individual draws still feel random.
+- **Why bags instead of `crypto.randomInt(1,7)`:** pure IID rolls can produce arbitrarily long streaks (e.g. 10 straight lows). A per-player bag caps the worst-case drought (≤9 consecutive lows/highs, realistically ~3–5) without biasing the long-run odds (still uniform 1/6 each).
+- **Per-player isolation:** bags are keyed by color (`game.diceBag[color]`), so one player draining the 6s can't starve another. Initialized in the `start` handler; also part of fresh game state.
+- **Cryptographic shuffle:** `makeDiceBag()` builds the bag and Fisher-Yates shuffles it using `crypto.randomInt` (OS entropy pool) — no deterministic PRNG seed, hard to card-count (each player only advances their bag ~1 roll/turn).
+- **Server-side only** — clients send a roll request, server draws from the bag and broadcasts the result. No client-side cheating possible.
+- **Consecutive-6 cap**: After 2 consecutive 6s, the 3rd roll is capped to **1–3** via `drawFromBag(color, v => v <= 3)` (draws the next qualifying card, rejected cards returned to the bag to keep it balanced). Tracked via `game.consecutiveSixes`, reset on non-6 roll.
 - **Dice button styling**: 2.4rem font-size, 72px min-width, 14px 28px padding — large enough for comfortable mobile tapping
 
 ### Mercy 6 Rule (All Tokens in Base)
-- If ALL 4 of a player's tokens are in base (step 0) and they roll 5 consecutive non-6 values, the 6th roll is **forced to 6**
+- If ALL 4 of a player's tokens are in base (step 0) and they roll 5 consecutive non-6 values, the 6th roll is **forced to 6** via `drawFromBag(color, v => v === 6)` (pulls a 6 from the bag; refills first if none remain)
 - Per-color counter `game.noSixWhileAllBase[color]` tracks consecutive non-6 rolls while all tokens are in base
 - Counter is **reset immediately when a token leaves base** (inside `moveToken()`), not when the turn ends
 - Counter is also reset when the player rolls a natural 6 (even if they don't move out)
 - If the player already has tokens on the board (not all in base), the counter is not incremented
-- Uses `crypto.randomInt` for all non-forced rolls
+- Mercy and the consecutive-6 cap are constraints layered on top of the bag draw; rejected cards are returned so the bag distribution stays balanced
 
 ### Turn Logic (`nextTurn()`)
 1. Clear turnTimer and autoPlayTimer
