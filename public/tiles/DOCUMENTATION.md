@@ -123,13 +123,14 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Four Workflows
+### Five Workflows
 
 | # | Workflow | When | Files Modified |
 |---|---------|------|---------------|
 | 1 | [Brainstorm New Themes](#workflow-1-brainstorm-new-themes) | User asks for theme ideas | None (ideas only) |
 | 2 | [Implement New Themes](#workflow-2-implement-new-themes) | User picks themes to build | `engine.js`, `renderer.js` |
 | 2B | [Implement Bold Sticker Themes](#workflow-2b-implement-bold-sticker-themes) | User requests the Bold Sticker look | `engine.js`, `renderer.js` |
+| 2C | [Implement Graphic Composition Themes](#workflow-2c-implement-graphic-composition-themes) | User requests full-tile graphic matching cues | `engine.js`, `renderer.js` |
 | 3 | [Archive / Reactivate Themes](#workflow-3-archive--reactivate-themes) | User wants to rotate themes | `engine.js` only |
 
 ### Architecture Quick Reference
@@ -169,6 +170,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 |-------|----------------|--------------------|
 | Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
 | Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
+| Graphic Composition | `style: 'graphic-composition'` | Full-tile layouts, distributed textures, and motif arrangements replace fixed border/center/corner cues |
 
 `style` is descriptive metadata. The engine does not branch on it, and the existing validator rules remain unchanged. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks.
 
@@ -737,6 +739,271 @@ All 10 checks must pass. Then perform these Bold Sticker-specific checks:
 10. Start several boards to see every palette color and as many variants as possible.
 
 The first approved reference implementation is `Stadium Stickers` in `engine.js` and the `stkstd-*` cases in `renderer.js`.
+
+---
+
+### Workflow 2C: Implement Graphic Composition Themes
+
+**Trigger**: User asks for "Graphic Composition", "full-tile graphics", "poster style", or a theme that does not use the standard border/center/corner visual grammar.
+
+Graphic Composition keeps the game completely free-flowing:
+
+- No new player instructions
+- No prompted match dimension
+- No turn phases
+- No scoring or matching-rule changes
+- Any two tiles still clear when they share one complete attribute
+
+Only the visual grammar changes. Players identify shared properties across the whole tile instead of checking a border, center icon, and four corner accents.
+
+#### Theme Object and Semantic Mapping
+
+Use the standard theme schema and exact pool counts, with the style marker:
+
+```javascript
+  {
+    name: 'Theme Composition', emoji: '🖨️',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#hex1', '#hex2', '#hex3'],
+      ring:   ['#hex1', '#hex2', '#hex3', '#hex4'],
+      shape:  ['#hex1', '#hex2', '#hex3'],
+      accent: ['#hex1', '#hex2', '#hex3'],
+    },
+    bgPatterns:   ['prefix-surface1', 'prefix-surface2', 'prefix-surface3', 'prefix-surface4', 'prefix-surface5'],
+    ringStyles:   ['prefix-layout1', 'prefix-layout2', 'prefix-layout3'],
+    shapeNames:   ['prefix-texture1', 'prefix-texture2', 'prefix-texture3', 'prefix-texture4'],
+    accentShapes: ['prefix-motif1', 'prefix-motif2', 'prefix-motif3', 'prefix-motif4'],
+    boardBg:      { pattern: 'prefix-surface1', color: '#hex1' },
+  },
+```
+
+The existing engine property names remain for compatibility, but their visual meaning changes:
+
+| Engine dimension | Graphic Composition role | Count |
+|------------------|--------------------------|-------|
+| `ringStyles` / `renderRing()` | Full-tile **layout** | 3 variants × 4 colors = 12 |
+| `shapeNames` / `renderShape()` | Distributed **texture** | 4 variants × 3 colors = 12 |
+| `accentShapes` / `renderAccent()` | Full-tile **motif arrangement** | 4 variants × 3 colors = 12 |
+
+The attribute ID still combines variant and color. Two tiles with the same layout geometry but different layout colors are not a match. Make color differences obvious enough that players do not mistake them for identical attributes.
+
+#### Theme-Specific Vocabulary Is Mandatory
+
+The roles are standardized; the actual elements are not.
+
+Every Graphic Composition theme must create layouts, textures, and motifs derived from its subject. Do not copy the Stadium Composition vocabulary into unrelated themes.
+
+Examples:
+
+| Theme subject | Possible layouts | Possible textures | Possible motif arrangements |
+|---------------|------------------|-------------------|-----------------------------|
+| Stadium | Field divisions, scoreboard bands, seating blocks | Turf dots, speed stripes, ticket mesh | Play arrows, score discs, capsule markers |
+| Airport | Runway intersections, terminal zones, taxiway blocks | Radar sweeps, window lines, baggage-grid marks | Flight paths, gate tabs, beacon clusters |
+| Museum | Gallery walls, exhibit panels, asymmetric placards | Canvas grain, brush hatching, label rows | Frame clusters, sculpture silhouettes, guide marks |
+| Marina | Dock slips, water channels, pier blocks | Ripples, rope weave, plank rhythm | Buoy trails, sail groups, navigation marks |
+
+These examples show the translation process; they are not a required universal library. The implementer must inspect current active and archived themes, then design new subject-specific vocabulary.
+
+#### Layer Hierarchy
+
+Graphic Composition layers intentionally overlap, so their visual strength must be controlled:
+
+```
+back:   board surface treatment  — subtle and non-matchable
+layer1: full-tile layout         — broad areas, lowest matchable strength
+layer2: distributed texture      — medium strength and repeated rhythm
+front:  motif arrangement        — strongest edges and clearest silhouettes
+```
+
+Recommended strength ranges:
+
+| Layer | Typical opacity | Typical geometry |
+|-------|-----------------|------------------|
+| Surface treatment | `${o*0.20}` to `${o*0.28}` | Fine grain, fibers, scan lines, wash |
+| Layout | `0.18` to `0.52` | Large polygons, bands, blocks, open zones |
+| Texture | `${o*0.65}` to `${o*0.80}` | Small repeated dots, stripes, checker cells, hatch lines |
+| Motif arrangement | `0.76` to `0.92` | Repeated symbols with strong filled or stroked silhouettes |
+
+Do not make all three matchable layers equally heavy. If layout, texture, and motifs have the same stroke weight and opacity, tiles become visually muddy and matches become difficult to recognize.
+
+#### Surface Treatments (5)
+
+`renderBg()` continues to render non-matchable board texture:
+
+- Start with the standard base tint rect.
+- Use subtle paper grain, registration lines, fibers, scan lines, ink wash, or another subject-appropriate surface.
+- Do not duplicate any matchable layout, texture, or motif geometry.
+- Avoid heavy fills that reduce contrast between matchable layers.
+- Keep the treatment visually consistent across the board.
+
+#### Full-Tile Layouts (3)
+
+`renderRing()` no longer renders a ring or frame. Each case defines the broad composition of the tile.
+
+Good layout families:
+
+- Diagonal or curved division
+- Stacked horizontal or vertical bands
+- Offset blocks or asymmetric panels
+- Intersecting lanes
+- Large open wedges
+
+Layout requirements:
+
+- Occupy multiple regions of the tile rather than tracing its perimeter.
+- Avoid closed border rectangles that resemble Standard rings.
+- Use broad shapes at low-to-medium opacity.
+- Keep enough unfilled space for textures and motifs.
+- Make all three variants structurally different at a glance.
+
+Template:
+
+```javascript
+case 'prefix-diagonal-layout':
+  return `<polygon points="4,4 82,4 24,96 4,96"
+      fill="${c}" opacity="0.38"/>` +
+    `<polygon points="82,4 96,4 96,96 24,96"
+      fill="${c}" opacity="0.18"/>` +
+    `<path d="M24,96 L82,4" fill="none"
+      stroke="${c}" stroke-width="3" opacity="0.52"/>`;
+```
+
+#### Distributed Textures (4)
+
+`renderShape()` no longer renders one center shape. Each case creates a repeated texture across most of the tile.
+
+Good texture families:
+
+- Dot fields with staggered spacing
+- Diagonal, horizontal, or vertical stripes
+- Checker or modular meshes
+- Crosshatching or woven lines
+- Subject-specific repeated micro-marks
+
+Texture requirements:
+
+- Distribute marks across the tile; do not cluster them around `(50,50)`.
+- Keep individual marks smaller than motif elements.
+- Leave enough gaps for the layout beneath to remain visible.
+- Make texture variants differ in both geometry and rhythm, not only line angle.
+- Use the standard shape opacity variable `o`, multiplied down as needed.
+
+Template:
+
+```javascript
+case 'prefix-dot-field': {
+  let s = '';
+  for (let y = 12; y <= 88; y += 19) {
+    for (let x = 12; x <= 88; x += 19) {
+      s += `<circle cx="${x}" cy="${y}" r="2.2"
+        fill="${c}" opacity="${o*0.78}"/>`;
+    }
+  }
+  return s;
+}
+```
+
+#### Full-Tile Motif Arrangements (4)
+
+`renderAccent()` must not use the legacy four-corner loop for Graphic Composition motifs. Add a narrowly scoped switch before that loop:
+
+```javascript
+function renderAccent(attr) {
+  const c = attr.color;
+
+  switch (attr.accentShape) {
+    case 'prefix-motif-arrangement':
+      return `...full-tile motif SVG...`;
+    // Other Graphic Composition motif cases.
+    default:
+      break;
+  }
+
+  // Existing Standard and Bold Sticker corner behavior remains unchanged.
+  let out = '';
+  for (const [cx, cy] of CORNERS) {
+    // Existing cases.
+  }
+  return out;
+}
+```
+
+Good motif families:
+
+- Repeated circles or discs at varied sizes
+- Parallel arrows or motion marks
+- Scattered capsules, tabs, or labels
+- Mirrored symbols
+- Subject-specific symbol clusters
+
+Motif requirements:
+
+- Use at least five visible marks distributed across multiple tile regions.
+- Do not place one dominant icon in the center.
+- Do not place four identical badges only at the legacy corner coordinates.
+- Motifs are the strongest layer, but must not cover most of the layout or texture.
+- The four variants must have clearly different spatial arrangements.
+
+#### Palette and Contrast Rules
+
+Graphic Composition depends on overlapping colors, so contrast discipline is stricter than Standard themes.
+
+1. All ring/layout, shape/texture, and accent/motif palette colors must have HSL lightness <= 50%.
+2. All colors within each palette group must remain distinct.
+3. The three bg colors must meet the normal 40-degree hue-spread rule.
+4. Layout, texture, and motif palettes must not reuse the same hex value across groups.
+5. Avoid three groups dominated by the same hue family. For example, dark blue layouts + dark blue textures + dark blue motifs will merge even when their hex values differ.
+6. At least one matchable group should use cool hues and another should use warm or contrasting hues.
+7. Motifs need the strongest edge contrast because they render above both other matchable layers.
+8. Do not use white, near-white, light gray, bright yellow, or pastel matchable colors.
+
+#### Cross-Layer Contrast Matrix
+
+Every layout can combine with every texture and motif. Review combinations as a system, not as isolated SVG cases:
+
+| Pair | Required result |
+|------|-----------------|
+| Tile tint vs layout | Large layout regions remain visible but do not become opaque walls |
+| Layout vs texture | Texture rhythm remains readable over every layout color |
+| Layout vs motif | Motif silhouettes remain obvious over broad filled regions |
+| Texture vs motif | Motifs remain distinguishable from repeated texture marks |
+| Surface vs texture | Non-matchable surface never looks like the matchable texture |
+| Surface vs motif | Surface marks never resemble motif symbols |
+| Variant vs variant | Each of the 3 layouts, 4 textures, and 4 motifs is identifiable without relying only on color |
+| Same geometry, different color | Attribute colors are different enough to avoid false visual matches |
+
+When reviewing manually, generate several boards and inspect the hardest combinations:
+
+- Dark layout + dark texture + dark motif
+- Similar-hue layout and texture
+- Dense texture beneath dense motif arrangement
+- Brightest tile tint beneath the lowest-opacity layout
+
+If any combination becomes muddy, fix the layer design or palette. Do not solve it by adding player instructions.
+
+#### Validation and Review
+
+Run the unchanged validator:
+
+```bash
+node validate-themes.js
+```
+
+All 10 checks must pass. Then perform Graphic Composition-specific checks:
+
+1. Confirm exactly 5 surface, 3 layout, 4 texture, and 4 motif cases.
+2. Confirm all 16 identifiers use the theme's unique prefix.
+3. Confirm layout cases occupy broad internal regions and are not border frames.
+4. Confirm texture cases cover multiple tile regions and are not center icons.
+5. Confirm motif cases return before the legacy corner loop.
+6. Confirm motif cases use distributed arrangements rather than four corner badges.
+7. Audit all matchable palette colors for HSL lightness <= 50%.
+8. Verify no hex value is reused across layout, texture, and motif palette groups.
+9. Compare the theme against every active Graphic Composition theme so their composition vocabulary and color identity are different.
+10. Test multiple generated boards at normal mobile size and inspect cross-layer combinations.
+
+The first approved reference implementation is `Stadium Composition` in `engine.js` and the `cmpstd-*` cases in `renderer.js`.
 
 ---
 
