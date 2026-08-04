@@ -41,35 +41,6 @@ const THEMES = [
     boardBg:      { pattern: 'solid', color: '#704264' },
   },
   {
-    name: 'Stadium', emoji: '🏟️',
-    palette: {
-      bg:     ['#00875a', '#2f4eb5', '#c72c41'],
-      ring:   ['#004d40', '#1a237e', '#8e1b2f', '#4e342e'],
-      shape:  ['#00695c', '#283593', '#9b1c31'],
-      accent: ['#6a1b9a', '#e65100', '#37474f'],
-    },
-    bgPatterns:   ['std-turf-lines', 'std-seat-bands', 'std-score-streaks', 'std-concourse-grid', 'std-field-grain'],
-    ringStyles:   ['std-scoreboard-frame', 'std-track-lanes', 'std-ticket-border'],
-    shapeNames:   ['std-trophy', 'std-jersey', 'std-scoreboard', 'std-stadium-light'],
-    accentShapes: ['std-seat-dots', 'std-flags', 'std-score-pips', 'std-play-arrows'],
-    boardBg:      { pattern: 'solid', color: '#00875a' },
-  },
-  {
-    name: 'Stadium Stickers', emoji: '🏷️',
-    style: 'bold-sticker',
-    palette: {
-      bg:     ['#f0642d', '#00a896', '#7b2cbf'],
-      ring:   ['#0b5d1e', '#153e75', '#8a1c41', '#5a3a00'],
-      shape:  ['#005f73', '#7f1d1d', '#3b2f8f'],
-      accent: ['#5b21b6', '#b42318', '#1f4e5f'],
-    },
-    bgPatterns:   ['stkstd-turf-scuffs', 'stkstd-seat-stitches', 'stkstd-speed-hatch', 'stkstd-ticket-fibers', 'stkstd-scoreboard-scan'],
-    ringStyles:   ['stkstd-patch-frame', 'stkstd-varsity-double', 'stkstd-ticket-patch'],
-    shapeNames:   ['stkstd-champion-cup', 'stkstd-varsity-jersey', 'stkstd-scoreboard', 'stkstd-foam-finger'],
-    accentShapes: ['stkstd-seat-badges', 'stkstd-pennants', 'stkstd-score-tabs', 'stkstd-play-chevrons'],
-    boardBg:      { pattern: 'stkstd-speed-hatch', color: '#00a896' },
-  },
-  {
     name: 'Stadium Composition', emoji: '🖨️',
     style: 'graphic-composition',
     palette: {
@@ -113,10 +84,55 @@ const THEMES = [
     accentShapes: ['trn-signal-lights', 'trn-tickets', 'trn-arrows', 'trn-track-bolts'],
     boardBg:      { pattern: 'solid', color: '#9aa7b2' },
   },
+  {
+    name: 'Shopping Mall Composition', emoji: '🛍️',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#2f7f83', '#b54c63', '#b07a28'],
+      ring:   ['#2f5964', '#71395f', '#98502b', '#566b2f'],
+      shape:  ['#2457a6', '#a23f45', '#9a6b12'],
+      accent: ['#653b9b', '#b23a2a', '#087f8c'],
+    },
+    bgPatterns:   ['cmpmall-polished-floor-grain', 'cmpmall-skylight-wash', 'cmpmall-glass-seams', 'cmpmall-directory-scan', 'cmpmall-ambient-terrazzo'],
+    ringStyles:   ['cmpmall-atrium-axis', 'cmpmall-storefront-bands', 'cmpmall-escalator-level-blocks'],
+    shapeNames:   ['cmpmall-terrazzo-speckles', 'cmpmall-floor-tile-grid', 'cmpmall-glass-stripe-rhythm', 'cmpmall-wayfinding-ticks'],
+    accentShapes: ['cmpmall-shopping-bag-clusters', 'cmpmall-directional-arrows', 'cmpmall-storefront-tabs', 'cmpmall-food-court-arrangements'],
+    boardBg:      { pattern: 'cmpmall-polished-floor-grain', color: '#2f7f83' },
+  },
 ];
 
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
+  // Archived August 2026 (active style-balance rotation)
+  {
+    name: 'Stadium', emoji: '🏟️',
+    palette: {
+      bg:     ['#00875a', '#2f4eb5', '#c72c41'],
+      ring:   ['#004d40', '#1a237e', '#8e1b2f', '#4e342e'],
+      shape:  ['#00695c', '#283593', '#9b1c31'],
+      accent: ['#6a1b9a', '#e65100', '#37474f'],
+    },
+    bgPatterns:   ['std-turf-lines', 'std-seat-bands', 'std-score-streaks', 'std-concourse-grid', 'std-field-grain'],
+    ringStyles:   ['std-scoreboard-frame', 'std-track-lanes', 'std-ticket-border'],
+    shapeNames:   ['std-trophy', 'std-jersey', 'std-scoreboard', 'std-stadium-light'],
+    accentShapes: ['std-seat-dots', 'std-flags', 'std-score-pips', 'std-play-arrows'],
+    boardBg:      { pattern: 'solid', color: '#00875a' },
+  },
+  {
+    name: 'Stadium Stickers', emoji: '🏷️',
+    style: 'bold-sticker',
+    palette: {
+      bg:     ['#f0642d', '#00a896', '#7b2cbf'],
+      ring:   ['#0b5d1e', '#153e75', '#8a1c41', '#5a3a00'],
+      shape:  ['#005f73', '#7f1d1d', '#3b2f8f'],
+      accent: ['#5b21b6', '#b42318', '#1f4e5f'],
+    },
+    bgPatterns:   ['stkstd-turf-scuffs', 'stkstd-seat-stitches', 'stkstd-speed-hatch', 'stkstd-ticket-fibers', 'stkstd-scoreboard-scan'],
+    ringStyles:   ['stkstd-patch-frame', 'stkstd-varsity-double', 'stkstd-ticket-patch'],
+    shapeNames:   ['stkstd-champion-cup', 'stkstd-varsity-jersey', 'stkstd-scoreboard', 'stkstd-foam-finger'],
+    accentShapes: ['stkstd-seat-badges', 'stkstd-pennants', 'stkstd-score-tabs', 'stkstd-play-chevrons'],
+    boardBg:      { pattern: 'stkstd-speed-hatch', color: '#00a896' },
+  },
   // Archived August 2026 (Modern Places rotation)
   {
     name: 'London', emoji: '🎡',

@@ -1629,6 +1629,37 @@ function renderBg(attr) {
              `<path d="M12,57 C36,66 61,48 88,61" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round" opacity="${o*0.06}"/>` +
              `<path d="M18,82 C39,75 64,87 84,78" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="${o*0.07}"/>`;
 
+    // ── Shopping Mall Composition ──
+    case 'cmpmall-polished-floor-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      const grain = [[9,18,31,17],[37,13,58,15],[66,20,91,18],[14,36,42,38],[51,31,82,33],[8,55,28,53],[35,60,64,58],[72,51,92,54],[12,76,39,74],[46,80,69,82],[76,72,90,70],[23,91,53,89]];
+      for (const [x1,y1,x2,y2] of grain) s += `<path d="M${x1},${y1} Q${(x1+x2)/2},${y1-2} ${x2},${y2}" fill="none" stroke="${c}" stroke-width="0.6" opacity="${o*0.16}"/>`;
+      return s;
+    }
+    case 'cmpmall-skylight-wash':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.15}"/>` +
+             `<path d="M18,4 L47,4 L76,96 L47,96 Z" fill="${c}" opacity="${o*0.055}"/>` +
+             `<path d="M55,4 L72,4 L96,69 L96,94 Z" fill="${c}" opacity="${o*0.045}"/>` +
+             `<path d="M4,10 L14,4 L42,96 L28,96 Z" fill="${c}" opacity="${o*0.04}"/>`;
+    case 'cmpmall-glass-seams':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M27,8 L24,92 M68,8 L72,92 M8,43 L92,40 M8,75 L92,78" fill="none" stroke="${c}" stroke-width="0.55" opacity="${o*0.16}"/>` +
+             `<path d="M25,26 L70,25 M26,61 L70,63" fill="none" stroke="${c}" stroke-width="0.35" opacity="${o*0.1}"/>`;
+    case 'cmpmall-directory-scan': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>`;
+      for (let y = 10; y <= 90; y += 6) {
+        const inset = y % 12 === 4 ? 13 : 8;
+        s += `<line x1="${inset}" y1="${y}" x2="${100-inset}" y2="${y}" stroke="${c}" stroke-width="0.45" opacity="${o*0.13}"/>`;
+      }
+      return s;
+    }
+    case 'cmpmall-ambient-terrazzo':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M8,23 C20,8 36,15 42,29 C48,43 28,48 14,42 C6,38 5,30 8,23 Z" fill="${c}" opacity="${o*0.045}"/>` +
+             `<path d="M58,8 C76,5 93,17 91,31 C89,45 70,47 59,37 C49,28 47,13 58,8 Z" fill="${c}" opacity="${o*0.05}"/>` +
+             `<path d="M20,63 C34,52 53,56 57,72 C61,87 45,96 29,91 C15,87 9,72 20,63 Z" fill="${c}" opacity="${o*0.045}"/>` +
+             `<path d="M70,58 C83,53 95,63 94,78 C93,91 80,96 69,88 C58,80 58,63 70,58 Z" fill="${c}" opacity="${o*0.05}"/>`;
+
     // ── Marina ──
     case 'mar-water-lines': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
@@ -2348,6 +2379,27 @@ function renderRing(attr) {
       return `<rect x="6" y="8" width="56" height="28" rx="2" fill="${c}" opacity="0.36"/>` +
              `<rect x="43" y="38" width="51" height="25" rx="2" fill="${c}" opacity="0.27"/>` +
              `<rect x="13" y="66" width="64" height="27" rx="2" fill="${c}" opacity="0.34"/>`;
+
+    // ── Shopping Mall Composition ──
+    case 'cmpmall-atrium-axis':
+      return `<rect x="38" y="4" width="24" height="92" rx="3" fill="${c}" opacity="0.28"/>` +
+             `<rect x="4" y="35" width="92" height="26" rx="3" fill="${c}" opacity="0.2"/>` +
+             `<path d="M50,4 V96 M4,48 H96" fill="none" stroke="${c}" stroke-width="3" opacity="0.46"/>` +
+             `<rect x="7" y="67" width="24" height="25" rx="3" fill="${c}" opacity="0.34"/>` +
+             `<rect x="69" y="8" width="24" height="21" rx="3" fill="${c}" opacity="0.3"/>`;
+    case 'cmpmall-storefront-bands':
+      return `<path d="M4,10 H73 V29 H4 Z" fill="${c}" opacity="0.34"/>` +
+             `<path d="M25,36 H96 V55 H25 Z" fill="${c}" opacity="0.23"/>` +
+             `<path d="M4,63 H65 V82 H4 Z" fill="${c}" opacity="0.38"/>` +
+             `<path d="M72,63 H96 V92 H72 Z" fill="${c}" opacity="0.25"/>` +
+             `<path d="M18,10 V29 M45,10 V29 M48,36 V55 M77,36 V55 M26,63 V82 M51,63 V82" fill="none" stroke="${c}" stroke-width="2" opacity="0.5"/>`;
+    case 'cmpmall-escalator-level-blocks':
+      return `<rect x="5" y="7" width="39" height="23" rx="3" fill="${c}" opacity="0.34"/>` +
+             `<rect x="56" y="7" width="39" height="23" rx="3" fill="${c}" opacity="0.2"/>` +
+             `<rect x="5" y="70" width="39" height="23" rx="3" fill="${c}" opacity="0.2"/>` +
+             `<rect x="56" y="70" width="39" height="23" rx="3" fill="${c}" opacity="0.36"/>` +
+             `<path d="M20,70 L58,30 H80 L42,70 Z" fill="${c}" opacity="0.3"/>` +
+             `<path d="M25,72 L63,32 M37,68 L75,28" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.5"/>`;
 
     // ── Marina ──
     case 'mar-pier-frame':
@@ -3445,6 +3497,25 @@ function renderShape(attr) {
     case 'cmpstd-crosshatch':
       return `<path d="M8,28 L72,92 M8,52 L48,92 M8,76 L24,92 M28,8 L92,72 M52,8 L92,48 M76,8 L92,24 M72,8 L8,72 M48,8 L8,48 M92,28 L28,92 M92,52 L52,92 M92,76 L76,92 M24,8 L8,24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round" opacity="${o*0.74}"/>`;
 
+    // ── Shopping Mall Composition ──
+    case 'cmpmall-terrazzo-speckles': {
+      let s = '';
+      const chips = [[10,13,3,2],[25,10,2,3],[43,16,4,2],[61,11,2,2],[78,17,3,3],[90,12,2,3],[16,31,4,2],[34,27,2,3],[53,33,3,2],[70,29,4,2],[87,35,2,3],[9,49,3,2],[27,45,2,2],[44,53,4,3],[63,47,2,3],[81,52,3,2],[18,65,2,3],[36,70,3,2],[55,66,2,2],[73,72,4,3],[90,67,2,2],[11,86,4,2],[29,82,2,3],[48,89,3,2],[67,84,2,3],[85,88,4,2]];
+      for (const [x,y,w,h] of chips) s += `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="0.7" transform="rotate(${(x+y)%28-14} ${x} ${y})" fill="${c}" opacity="${o*0.76}"/>`;
+      return s;
+    }
+    case 'cmpmall-floor-tile-grid': {
+      let s = '';
+      for (let x = 13; x <= 87; x += 15) s += `<line x1="${x}" y1="7" x2="${x}" y2="93" stroke="${c}" stroke-width="1.5" opacity="${o*0.68}"/>`;
+      for (let y = 12; y <= 88; y += 19) s += `<line x1="7" y1="${y}" x2="93" y2="${y}" stroke="${c}" stroke-width="1.5" opacity="${o*0.68}"/>`;
+      return s;
+    }
+    case 'cmpmall-glass-stripe-rhythm':
+      return `<path d="M10,8 V92 M17,8 V92 M31,8 V92 M42,8 V92 M49,8 V92 M64,8 V92 M76,8 V92 M84,8 V92" fill="none" stroke="${c}" stroke-width="2.1" opacity="${o*0.7}"/>` +
+             `<path d="M13,8 V92 M38,8 V92 M69,8 V92 M89,8 V92" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.52}"/>`;
+    case 'cmpmall-wayfinding-ticks':
+      return `<path d="M8,15 H20 M27,15 H35 M43,15 H59 M68,15 H77 M84,15 H92 M8,34 H16 M23,34 H39 M48,34 H57 M65,34 H80 M87,34 H92 M8,53 H22 M30,53 H38 M46,53 H62 M71,53 H79 M86,53 H92 M8,72 H17 M25,72 H41 M49,72 H58 M66,72 H82 M89,72 H92 M8,89 H21 M29,89 H45 M54,89 H63 M71,89 H84 M90,89 H92" fill="none" stroke="${c}" stroke-width="2.8" stroke-linecap="square" opacity="${o*0.78}"/>`;
+
     // ── Marina ──
     case 'mar-sailboat':
       return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
@@ -3550,6 +3621,43 @@ function renderAccent(attr) {
              `<polygon points="82,77 63,69 57,82 73,91"/>` +
              `</g>` +
              `<path d="M43,16 V34 M57,16 V34 M42,68 V88 M58,68 V88" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.82"/>`;
+
+    // ── Shopping Mall Composition ──
+    case 'cmpmall-shopping-bag-clusters': {
+      let s = '';
+      const bags = [[10,13,17,19],[37,9,15,17],[70,16,19,21],[18,47,18,20],[53,43,16,18],[76,67,17,20],[35,72,19,19]];
+      for (const [x,y,w,h] of bags) {
+        s += `<path d="M${x},${y+6} H${x+w} L${x+w-1},${y+h} H${x+1} Z" fill="${c}" opacity="0.86"/>` +
+             `<path d="M${x+w*0.3},${y+7} C${x+w*0.3},${y} ${x+w*0.7},${y} ${x+w*0.7},${y+7}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round" opacity="0.92"/>`;
+      }
+      return s;
+    }
+    case 'cmpmall-directional-arrows':
+      return `<path d="M8,18 H35 L35,11 L49,23 L35,35 L35,28 H8 Z" fill="${c}" opacity="0.9"/>` +
+             `<path d="M61,9 H91 V20 H61 L61,27 L48,14 L61,2 Z" fill="${c}" opacity="0.82"/>` +
+             `<path d="M13,45 H42 V38 L56,50 L42,62 V55 H13 Z" fill="${c}" opacity="0.86"/>` +
+             `<path d="M67,36 H92 V46 H67 V53 L54,41 L67,29 Z" fill="${c}" opacity="0.92"/>` +
+             `<path d="M7,74 H31 V67 L45,79 L31,91 V84 H7 Z" fill="${c}" opacity="0.82"/>` +
+             `<path d="M62,66 H91 V77 H62 V84 L49,72 L62,59 Z" fill="${c}" opacity="0.88"/>`;
+    case 'cmpmall-storefront-tabs':
+      return `<rect x="7" y="10" width="31" height="12" rx="3" fill="${c}" opacity="0.88"/>` +
+             `<rect x="51" y="8" width="41" height="14" rx="3" fill="${c}" opacity="0.8"/>` +
+             `<rect x="18" y="34" width="36" height="13" rx="3" fill="${c}" opacity="0.92"/>` +
+             `<rect x="64" y="38" width="29" height="12" rx="3" fill="${c}" opacity="0.84"/>` +
+             `<rect x="6" y="60" width="39" height="14" rx="3" fill="${c}" opacity="0.82"/>` +
+             `<rect x="53" y="61" width="34" height="13" rx="3" fill="${c}" opacity="0.9"/>` +
+             `<rect x="27" y="82" width="46" height="11" rx="3" fill="${c}" opacity="0.86"/>` +
+             `<path d="M14,22 V27 M59,22 V28 M27,47 V53 M71,50 V56 M15,74 V80 M61,74 V80 M36,82 V76" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/>`;
+    case 'cmpmall-food-court-arrangements': {
+      let s = '';
+      const trays = [[8,10,24,16],[40,8,22,17],[69,16,23,16],[15,43,25,18],[54,40,25,17],[8,72,23,17],[39,69,24,19],[70,70,22,17]];
+      for (const [x,y,w,h] of trays) {
+        s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="none" stroke="${c}" stroke-width="3" opacity="0.88"/>` +
+             `<circle cx="${x+w*0.34}" cy="${y+h*0.5}" r="${Math.min(w,h)*0.2}" fill="${c}" opacity="0.9"/>` +
+             `<circle cx="${x+w*0.7}" cy="${y+h*0.5}" r="${Math.min(w,h)*0.13}" fill="${c}" opacity="0.82"/>`;
+      }
+      return s;
+    }
     default:
       break;
   }
