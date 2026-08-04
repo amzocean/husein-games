@@ -1561,6 +1561,46 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Stadium Stickers ──
+    case 'stkstd-turf-scuffs': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 12) {
+        const shift = y % 24 === 0 ? 8 : 0;
+        s += `<line x1="${10+shift}" y1="${y}" x2="${34+shift}" y2="${y-1}" stroke="${c}" stroke-width="1.4" opacity="${o*0.28}" stroke-linecap="round"/>`;
+        s += `<line x1="${54-shift}" y1="${y+2}" x2="${88-shift}" y2="${y}" stroke="${c}" stroke-width="1.1" opacity="${o*0.24}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'stkstd-seat-stitches': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 14; x <= 86; x += 12) {
+        s += `<line x1="${x}" y1="10" x2="${x+2}" y2="90" stroke="${c}" stroke-width="1.2" stroke-dasharray="7 8" opacity="${o*0.27}"/>`;
+      }
+      return s;
+    }
+    case 'stkstd-speed-hatch': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let d = -60; d <= 90; d += 15) {
+        s += `<line x1="${d}" y1="92" x2="${d+54}" y2="8" stroke="${c}" stroke-width="1.2" opacity="${o*0.24}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'stkstd-ticket-fibers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      const fibers = [[12,18,26,16],[34,12,48,15],[62,18,84,16],[18,34,38,36],[54,32,72,30],[76,42,90,45],[10,58,30,56],[40,52,58,55],[66,62,88,60],[16,76,36,79],[48,72,64,70],[70,84,88,82]];
+      for (const [x1,y1,x2,y2] of fibers) {
+        s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.1" opacity="${o*0.26}" stroke-linecap="round"/>`;
+      }
+      return s;
+    }
+    case 'stkstd-scoreboard-scan': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 9) {
+        s += `<line x1="12" y1="${y}" x2="88" y2="${y}" stroke="${c}" stroke-width="1" stroke-dasharray="18 6 5 6" opacity="${o*0.25}"/>`;
+      }
+      return s;
+    }
+
     // ── Marina ──
     case 'mar-water-lines': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
@@ -2244,6 +2284,22 @@ function renderRing(attr) {
       return `<rect x="6" y="6" width="88" height="88" rx="5" fill="none" stroke="${c}" stroke-width="3" opacity="0.7" stroke-dasharray="10 5"/>` +
              `<line x1="20" y1="6" x2="20" y2="14" stroke="${c}" stroke-width="2.5" opacity="0.64"/>` +
              `<line x1="80" y1="86" x2="80" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
+
+    // ── Stadium Stickers ──
+    case 'stkstd-patch-frame':
+      return `<rect x="8" y="8" width="88" height="88" rx="11" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="11" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="11" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>`;
+    case 'stkstd-varsity-double':
+      return `<rect x="8" y="8" width="88" height="88" rx="9" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="#fff4d6" stroke-width="7" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.96"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="5" fill="none" stroke="#fff4d6" stroke-width="5" opacity="0.94"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.96"/>`;
+    case 'stkstd-ticket-patch':
+      return `<rect x="8" y="8" width="88" height="88" rx="8" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="13 7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="13 7" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="13 7" opacity="0.96"/>`;
 
     // ── Marina ──
     case 'mar-pier-frame':
@@ -3251,6 +3307,43 @@ function renderShape(attr) {
              `<line x1="50" y1="28" x2="50" y2="46" stroke="${c}" stroke-width="2.5" opacity="${o}"/>` +
              `<line x1="58" y1="28" x2="58" y2="46" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
 
+    // ── Stadium Stickers ──
+    case 'stkstd-champion-cup':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033">` +
+             `<path d="M38,30 L62,30 L59,49 Q57,60 50,60 Q43,60 41,49 Z" stroke-width="5"/>` +
+             `<path d="M39,36 Q29,34 30,45 Q31,54 42,53 M61,36 Q71,34 70,45 Q69,54 58,53" fill="none" stroke-width="7"/>` +
+             `<rect x="46" y="59" width="8" height="9" rx="2"/><rect x="37" y="67" width="26" height="7" rx="2"/>` +
+             `</g>` +
+             `<path d="M38,30 L62,30 L59,49 Q57,60 50,60 Q43,60 41,49 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M39,36 Q29,34 30,45 Q31,54 42,53 M61,36 Q71,34 70,45 Q69,54 58,53" fill="none" stroke="#fff4d6" stroke-width="8"/>` +
+             `<path d="M39,36 Q29,34 30,45 Q31,54 42,53 M61,36 Q71,34 70,45 Q69,54 58,53" fill="none" stroke="${c}" stroke-width="3.5"/>` +
+             `<rect x="46" y="59" width="8" height="9" rx="2" fill="${c}" stroke="#fff4d6" stroke-width="5" paint-order="stroke"/>` +
+             `<rect x="37" y="67" width="26" height="7" rx="2" fill="${c}" stroke="#fff4d6" stroke-width="5" paint-order="stroke"/>` +
+             `</g>`;
+    case 'stkstd-varsity-jersey':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<path d="M38,31 L46,27 Q50,34 54,27 L62,31 L73,42 L64,51 L60,45 L60,71 L40,71 L40,45 L36,51 L27,42 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M38,31 L46,27 Q50,34 54,27 L62,31 L73,42 L64,51 L60,45 L60,71 L40,71 L40,45 L36,51 L27,42 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M45,42 L50,38 L55,42 L55,59 L45,59 Z" fill="none" stroke="#172033" stroke-width="3.5" stroke-linejoin="round"/>` +
+             `</g>`;
+    case 'stkstd-scoreboard':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<rect x="28" y="34" width="44" height="29" rx="5" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<rect x="28" y="34" width="44" height="29" rx="5" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<line x1="50" y1="36" x2="50" y2="61" stroke="#172033" stroke-width="3.5"/>` +
+             `<line x1="36" y1="48" x2="44" y2="48" stroke="#172033" stroke-width="4"/>` +
+             `<line x1="56" y1="48" x2="64" y2="48" stroke="#172033" stroke-width="4"/>` +
+             `<path d="M38,63 L38,70 M62,63 L62,70" stroke="#fff4d6" stroke-width="7"/>` +
+             `<path d="M38,63 L38,70 M62,63 L62,70" stroke="${c}" stroke-width="3.5"/>` +
+             `</g>`;
+    case 'stkstd-foam-finger':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M39,70 L37,49 Q37,44 41,44 Q44,44 45,48 L45,30 Q45,25 50,25 Q55,25 55,30 L55,45 L59,38 Q61,34 65,36 Q69,38 67,43 L61,57 Q58,70 50,73 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M39,70 L37,49 Q37,44 41,44 Q44,44 45,48 L45,30 Q45,25 50,25 Q55,25 55,30 L55,45 L59,38 Q61,34 65,36 Q69,38 67,43 L61,57 Q58,70 50,73 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,31 L50,55 M46,55 L55,55" fill="none" stroke="#172033" stroke-width="3.5"/>` +
+             `</g>`;
+
     // ── Marina ──
     case 'mar-sailboat':
       return `<polygon points="50,28 50,58 30,58" fill="${c}" opacity="${o}"/>` +
@@ -3980,6 +4073,30 @@ function renderAccent(attr) {
       case 'std-play-arrows': {
         const dx = cx < 50 ? 1 : -1;
         out += `<polygon points="${cx-4*dx},${cy-5} ${cx+5*dx},${cy} ${cx-4*dx},${cy+5}" fill="${c}" opacity="0.72"/>`; break;
+      }
+
+      // ── Stadium Stickers ──
+      case 'stkstd-seat-badges':
+        out += `<circle cx="${cx+2.5}" cy="${cy+3}" r="7" fill="#172033" opacity="0.9"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="7" fill="#fff4d6" opacity="0.96"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.92"/>`; break;
+      case 'stkstd-pennants': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<polygon points="${cx-3*dx+2.5},${cy-6+3} ${cx+6*dx+2.5},${cy-2+3} ${cx-3*dx+2.5},${cy+2+3}" fill="#172033" opacity="0.9"/>` +
+               `<line x1="${cx-3*dx+2.5}" y1="${cy-6+3}" x2="${cx-3*dx+2.5}" y2="${cy+6+3}" stroke="#172033" stroke-width="3" opacity="0.9"/>` +
+               `<polygon points="${cx-3*dx},${cy-6} ${cx+6*dx},${cy-2} ${cx-3*dx},${cy+2}" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<line x1="${cx-3*dx}" y1="${cy-6}" x2="${cx-3*dx}" y2="${cy+6}" stroke="#fff4d6" stroke-width="5" opacity="0.96"/>` +
+               `<line x1="${cx-3*dx}" y1="${cy-6}" x2="${cx-3*dx}" y2="${cy+6}" stroke="${c}" stroke-width="2" opacity="0.94"/>`; break;
+      }
+      case 'stkstd-score-tabs':
+        out += `<rect x="${cx-6+2.5}" y="${cy-4+3}" width="12" height="8" rx="2" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-6}" y="${cy-4}" width="12" height="8" rx="2" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<line x1="${cx}" y1="${cy-3}" x2="${cx}" y2="${cy+3}" stroke="#172033" stroke-width="1.5" opacity="0.82"/>`; break;
+      case 'stkstd-play-chevrons': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx-5*dx+2.5},${cy-5+3} L${cx+5*dx+2.5},${cy+3} L${cx-5*dx+2.5},${cy+5+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>`; break;
       }
 
       // ── Marina ──

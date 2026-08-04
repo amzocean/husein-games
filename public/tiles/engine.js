@@ -54,6 +54,20 @@ const THEMES = [
     boardBg:      { pattern: 'solid', color: '#00875a' },
   },
   {
+    name: 'Stadium Stickers', emoji: '🏷️',
+    palette: {
+      bg:     ['#f0642d', '#00a896', '#7b2cbf'],
+      ring:   ['#0b5d1e', '#153e75', '#8a1c41', '#5a3a00'],
+      shape:  ['#005f73', '#7f1d1d', '#3b2f8f'],
+      accent: ['#5b21b6', '#b42318', '#1f4e5f'],
+    },
+    bgPatterns:   ['stkstd-turf-scuffs', 'stkstd-seat-stitches', 'stkstd-speed-hatch', 'stkstd-ticket-fibers', 'stkstd-scoreboard-scan'],
+    ringStyles:   ['stkstd-patch-frame', 'stkstd-varsity-double', 'stkstd-ticket-patch'],
+    shapeNames:   ['stkstd-champion-cup', 'stkstd-varsity-jersey', 'stkstd-scoreboard', 'stkstd-foam-finger'],
+    accentShapes: ['stkstd-seat-badges', 'stkstd-pennants', 'stkstd-score-tabs', 'stkstd-play-chevrons'],
+    boardBg:      { pattern: 'stkstd-speed-hatch', color: '#00a896' },
+  },
+  {
     name: 'Marina', emoji: '⛵',
     palette: {
       bg:     ['#007c83', '#cc5a3c', '#a17b29'],
