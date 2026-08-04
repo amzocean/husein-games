@@ -12,6 +12,81 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 
 const THEMES = [
   {
+    name: 'Airport', emoji: '✈️',
+    palette: {
+      bg:     ['#17324d', '#4f6272', '#a6273f'],
+      ring:   ['#0d47a1', '#4a148c', '#2e5d34', '#7a3e00'],
+      shape:  ['#174c4f', '#7f1d1d', '#3f3c8f'],
+      accent: ['#1b5e20', '#6a1b4d', '#6b4f00'],
+    },
+    bgPatterns:   ['air-runway-grain', 'air-concourse-lines', 'air-gate-stripes', 'air-taxiway-tracks', 'air-window-rain'],
+    ringStyles:   ['air-runway-border', 'air-gate-frame', 'air-boarding-band'],
+    shapeNames:   ['air-jet', 'air-control-tower', 'air-suitcase', 'air-gate-sign'],
+    accentShapes: ['air-beacons', 'air-chevrons', 'air-tags', 'air-flightmarks'],
+    boardBg:      { pattern: 'solid', color: '#17324d' },
+  },
+  {
+    name: 'Museum', emoji: '🖼️',
+    palette: {
+      bg:     ['#704264', '#667b4f', '#a85d3d'],
+      ring:   ['#283593', '#00695c', '#8b3a3a', '#5d4037'],
+      shape:  ['#1a4f63', '#6a1b4d', '#3d5a2a'],
+      accent: ['#123a63', '#006064', '#37474f'],
+    },
+    bgPatterns:   ['mus-gallery-wash', 'mus-wall-seams', 'mus-tracklight-lines', 'mus-label-lines', 'mus-concrete-grain'],
+    ringStyles:   ['mus-gallery-frame', 'mus-display-edge', 'mus-guide-rail'],
+    shapeNames:   ['mus-frame-art', 'mus-sculpture', 'mus-pedestal', 'mus-audio-guide'],
+    accentShapes: ['mus-labels', 'mus-wayfinding', 'mus-ticket-tabs', 'mus-trackmarks'],
+    boardBg:      { pattern: 'solid', color: '#704264' },
+  },
+  {
+    name: 'Stadium', emoji: '🏟️',
+    palette: {
+      bg:     ['#00875a', '#2f4eb5', '#c72c41'],
+      ring:   ['#004d40', '#1a237e', '#8e1b2f', '#4e342e'],
+      shape:  ['#00695c', '#283593', '#9b1c31'],
+      accent: ['#6a1b9a', '#e65100', '#37474f'],
+    },
+    bgPatterns:   ['std-turf-lines', 'std-seat-bands', 'std-score-streaks', 'std-concourse-grid', 'std-field-grain'],
+    ringStyles:   ['std-scoreboard-frame', 'std-track-lanes', 'std-ticket-border'],
+    shapeNames:   ['std-trophy', 'std-jersey', 'std-scoreboard', 'std-stadium-light'],
+    accentShapes: ['std-seat-dots', 'std-flags', 'std-score-pips', 'std-play-arrows'],
+    boardBg:      { pattern: 'solid', color: '#00875a' },
+  },
+  {
+    name: 'Marina', emoji: '⛵',
+    palette: {
+      bg:     ['#007c83', '#cc5a3c', '#a17b29'],
+      ring:   ['#004d5a', '#8a2f20', '#6b4f00', '#283593'],
+      shape:  ['#006064', '#9b3324', '#735714'],
+      accent: ['#1a237e', '#6a1b9a', '#37474f'],
+    },
+    bgPatterns:   ['mar-water-lines', 'mar-dock-planks', 'mar-rigging-lines', 'mar-wake-streaks', 'mar-harbor-rain'],
+    ringStyles:   ['mar-pier-frame', 'mar-nautical-dash', 'mar-slip-outline'],
+    shapeNames:   ['mar-sailboat', 'mar-yacht', 'mar-anchor', 'mar-lighthouse'],
+    accentShapes: ['mar-cleats', 'mar-buoys', 'mar-knots', 'mar-fenders'],
+    boardBg:      { pattern: 'solid', color: '#007c83' },
+  },
+  {
+    name: 'Train Station', emoji: '🚉',
+    palette: {
+      bg:     ['#9aa7b2', '#c58458', '#6f8f75'],
+      ring:   ['#37474f', '#7a3e1d', '#2f5d3a', '#3f3c8f'],
+      shape:  ['#263238', '#82401f', '#315b42'],
+      accent: ['#0d47a1', '#7f1d3a', '#4a148c'],
+    },
+    bgPatterns:   ['trn-platform-lines', 'trn-track-lines', 'trn-timetable-rows', 'trn-canopy-ribs', 'trn-floor-grain'],
+    ringStyles:   ['trn-platform-edge', 'trn-window-frame', 'trn-route-border'],
+    shapeNames:   ['trn-commuter-train', 'trn-station-clock', 'trn-ticket-machine', 'trn-departure-board'],
+    accentShapes: ['trn-signal-lights', 'trn-tickets', 'trn-arrows', 'trn-track-bolts'],
+    boardBg:      { pattern: 'solid', color: '#9aa7b2' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived August 2026 (Modern Places rotation)
+  {
     name: 'London', emoji: '🎡',
     palette: {
       bg:     ['#c8102e', '#10233f', '#8a99a6'],
@@ -95,10 +170,6 @@ const THEMES = [
     accentShapes: ['dxb-goldflecks', 'dxb-dunecurves', 'dxb-lanterndots', 'dxb-gems'],
     boardBg:      { pattern: 'solid', color: '#d4a017' },
   },
-];
-
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived July 2026 (city rotation)
   {
     name: 'Bioluminescent Reef', emoji: '🐠',
