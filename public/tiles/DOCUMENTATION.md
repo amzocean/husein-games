@@ -198,23 +198,39 @@ The theme schema and matching engine stay the same for every visual style. A sty
    
    Identify which intensity bands are over/under-represented. If 4 of 6 themes are light pastels, new themes should be medium or bold.
 
-4. **Identify dominant hue families** — list which hue families are already used across all active themes' bg colors. If blue appears in 3 themes, avoid proposing another blue-dominant theme.
+4. **Assess the current style spread** — count active themes by rendering style:
+   - **Standard**: no `style` property
+   - **Bold Sticker**: `style: 'bold-sticker'`
+   - **Graphic Composition**: `style: 'graphic-composition'`
 
-5. **Generate 5–7 theme ideas** with these criteria:
+   Identify under-represented styles. Recommendations should improve or preserve style variety rather than defaulting every new idea to Standard.
+
+5. **Identify dominant hue families** — list which hue families are already used across all active themes' bg colors. If blue appears in 3 themes, avoid proposing another blue-dominant theme.
+
+6. **Generate 5–7 theme ideas** with these criteria:
    - **Novelty**: Not similar to any active OR recently archived theme
    - **Rich element vocabulary**: The theme concept must support at least 4 distinct shapes, 4 distinct accents, 3 distinct ring styles, and 5 bg patterns — all visually different from each other
    - **Unique color identity**: Each proposed theme should have a signature color family NOT already dominant in active themes
    - **Variety of intensity**: Propose a mix of light, medium, and bold themes
+   - **Variety of style**: Recommend ideas across all supported rendering styles. A normal 5–7 idea set should include Standard, Bold Sticker, and Graphic Composition options unless the user explicitly restricts the style.
+   - **Style fit is the primary rule**: Assign each idea the style that best supports its subject and visual vocabulary. Never force a theme into a style merely to satisfy a numerical balance.
+   - **Do not rotate styles mechanically**: Bold Sticker needs chunky recognizable silhouettes. Graphic Composition needs strong subject-specific layouts, textures, and motif arrangements. Standard is best when the subject naturally reads through borders, a central icon, and corner accents.
+   - **Style balance is the tie-breaker**: Only when two styles fit equally well, prefer the style with fewer active themes.
    - **Implementability**: Shapes/accents should be achievable in simple SVG (paths, circles, rects, polygons). Avoid themes that require complex illustrations.
 
-6. **Present ideas** to the user with:
+7. **Present ideas** to the user with:
    - Theme name + emoji
    - 1-line vibe description
+   - Recommended rendering style
+   - Why that style fits the subject
    - Proposed signature colors (bg feel)
    - Intensity category (light/medium/bold)
-   - Sample element ideas (shapes, accents, ring styles)
+   - Style-appropriate visual vocabulary:
+     - Standard: sample rings, center shapes, and corner accents
+     - Bold Sticker: sample chunky sticker silhouettes, patch borders, and decal accents
+     - Graphic Composition: sample layouts, distributed textures, and motif arrangements
    
-   Let user pick which to implement.
+   Let the user pick which themes to implement. If the user selects a theme but does not confirm its recommended style, ask whether to use the recommended style before coding.
 
 ---
 
