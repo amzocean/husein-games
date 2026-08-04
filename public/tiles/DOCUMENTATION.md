@@ -570,7 +570,8 @@ If making a sticker variant of an existing theme:
 1. Keep the original theme unchanged unless the user explicitly asks to replace it.
 2. Give the variant a distinct display name such as `Stadium Stickers`.
 3. Give every identifier a new global prefix. Never reuse the original theme's renderer case names.
-4. Use related subject matter so the visual-style comparison is meaningful, but do not simply duplicate the original SVG paths.
+4. Create a new style-specific palette. Never copy the Standard theme palette unchanged.
+5. Use related subject matter so the visual-style comparison is meaningful, but do not simply duplicate the original SVG paths.
 
 #### Visual Identity
 
@@ -596,11 +597,14 @@ These constants may change for a future collection only if the replacement keyli
 
 All standard palette rules still apply, plus:
 
-- Prefer saturated `palette.bg` colors so the theme reads as bold rather than pastel.
+- A Bold Sticker theme MUST have a style-specific palette. Adding keylines and shadows to an unchanged Standard palette is not a complete style conversion.
+- Use saturated `palette.bg` colors so the theme reads as bold rather than pastel or muted.
+- Change the palette's overall identity, not only one hex value. The three bg colors should form an unmistakably bolder fingerprint than the Standard theme or the theme's previous version.
 - Keep ring, shape, and accent palette colors dark or medium (HSL lightness <= 50%).
 - The foreground palette color must contrast with both the cream keyline and dark shadow.
 - Internal details drawn over the foreground should normally use the shadow color.
 - Do not rely on the cream keyline to rescue an extremely light foreground color.
+- Compare the proposed palette against every active Bold Sticker theme. Avoid reusing the same saturated triad, even when the subject matter is different.
 
 #### Background Patterns (5)
 
@@ -706,6 +710,8 @@ The validator does not check the support layers. Manually verify every new stick
 | Accent vs ring | Corner stickers remain separate from the ring border |
 | Shape vs accent | Center silhouette remains dominant |
 | Background texture vs matchable layers | Texture never resembles a ring, center icon, or corner badge |
+| Sticker palette vs Standard palette | Sticker theme has a clearly bolder, independently recognizable color fingerprint |
+| Sticker palette vs other sticker themes | No two Bold Sticker themes share the same dominant color triad |
 
 Also compare the sticker theme directly beside its standard counterpart. The sticker version should be recognizable as the same subject but immediately distinguishable by silhouette weight, keyline, shadow, and saturated presentation.
 
@@ -725,8 +731,10 @@ All 10 checks must pass. Then perform these Bold Sticker-specific checks:
 4. Search each shape for a translated shadow and cream keyline.
 5. Search each accent for offset shadow, keyline, foreground, and `out += ...; break;`.
 6. Verify no support color was added to a matchable palette.
-7. Perform browser review at normal mobile game size, not only zoomed-in SVG inspection.
-8. Start several boards to see every palette color and as many variants as possible.
+7. Confirm the theme did not retain an unchanged Standard-era palette.
+8. Compare its bg triad with every other active Bold Sticker theme.
+9. Perform browser review at normal mobile game size, not only zoomed-in SVG inspection.
+10. Start several boards to see every palette color and as many variants as possible.
 
 The first approved reference implementation is `Stadium Stickers` in `engine.js` and the `stkstd-*` cases in `renderer.js`.
 
