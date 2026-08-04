@@ -70,6 +70,21 @@ const THEMES = [
     boardBg:      { pattern: 'stkstd-speed-hatch', color: '#00a896' },
   },
   {
+    name: 'Stadium Composition', emoji: '🖨️',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#d7f205', '#ff4d6d', '#5f4bdb'],
+      ring:   ['#17324d', '#74205f', '#176b57', '#a23b0a'],
+      shape:  ['#1e3a5f', '#8c1c4f', '#3a5f0b'],
+      accent: ['#51258a', '#a61b29', '#006466'],
+    },
+    bgPatterns:   ['cmpstd-paper-grain', 'cmpstd-registration-lines', 'cmpstd-print-fibers', 'cmpstd-soft-scan', 'cmpstd-ink-wash'],
+    ringStyles:   ['cmpstd-diagonal-split', 'cmpstd-stacked-bands', 'cmpstd-offset-blocks'],
+    shapeNames:   ['cmpstd-dot-field', 'cmpstd-stripe-field', 'cmpstd-checker-mesh', 'cmpstd-crosshatch'],
+    accentShapes: ['cmpstd-repeated-circles', 'cmpstd-parallel-arrows', 'cmpstd-scattered-capsules', 'cmpstd-mirrored-marks'],
+    boardBg:      { pattern: 'cmpstd-paper-grain', color: '#d7f205' },
+  },
+  {
     name: 'Marina', emoji: '⛵',
     style: 'bold-sticker',
     palette: {

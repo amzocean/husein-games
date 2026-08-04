@@ -1601,6 +1601,34 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Stadium Composition ──
+    case 'cmpstd-paper-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      const grain = [[11,16,20,15],[28,12,39,14],[55,18,66,16],[74,11,88,13],[17,31,29,30],[43,27,53,29],[68,34,83,32],[10,49,22,51],[34,45,48,44],[60,53,72,51],[78,47,90,49],[15,68,26,66],[39,63,52,65],[64,72,79,70],[21,85,34,83],[48,81,59,84],[74,88,88,86]];
+      for (const [x1,y1,x2,y2] of grain) s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="0.55" opacity="${o*0.16}"/>`;
+      return s;
+    }
+    case 'cmpstd-registration-lines':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M10,32 H90 M10,68 H90 M34,10 V90 M66,10 V90" fill="none" stroke="${c}" stroke-width="0.45" opacity="${o*0.14}"/>` +
+             `<path d="M22,29 V35 M78,65 V71 M31,20 H37 M63,80 H69" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.18}"/>`;
+    case 'cmpstd-print-fibers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>`;
+      const fibers = [[12,20,23,17],[31,16,40,19],[52,12,64,15],[71,22,87,18],[18,39,32,42],[43,35,55,32],[66,42,81,39],[10,58,26,55],[35,52,47,56],[58,61,73,57],[79,54,90,58],[17,76,31,72],[42,69,55,73],[65,81,80,77],[28,89,42,86],[75,91,89,88]];
+      for (const [x1,y1,x2,y2] of fibers) s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="0.65" opacity="${o*0.18}" stroke-linecap="round"/>`;
+      return s;
+    }
+    case 'cmpstd-soft-scan': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>`;
+      for (let y = 11; y <= 89; y += 5) s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="0.45" opacity="${o*0.13}"/>`;
+      return s;
+    }
+    case 'cmpstd-ink-wash':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.15}"/>` +
+             `<path d="M10,28 C28,21 50,34 90,24" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="${o*0.07}"/>` +
+             `<path d="M12,57 C36,66 61,48 88,61" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round" opacity="${o*0.06}"/>` +
+             `<path d="M18,82 C39,75 64,87 84,78" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="${o*0.07}"/>`;
+
     // ── Marina ──
     case 'mar-water-lines': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
@@ -2306,6 +2334,20 @@ function renderRing(attr) {
       return `<rect x="8" y="8" width="88" height="88" rx="8" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="13 7" opacity="0.9"/>` +
              `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="13 7" opacity="0.96"/>` +
              `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="13 7" opacity="0.96"/>`;
+
+    // ── Stadium Composition: full-tile layouts ──
+    case 'cmpstd-diagonal-split':
+      return `<polygon points="4,4 82,4 24,96 4,96" fill="${c}" opacity="0.38"/>` +
+             `<polygon points="82,4 96,4 96,96 24,96" fill="${c}" opacity="0.18"/>` +
+             `<path d="M24,96 L82,4" fill="none" stroke="${c}" stroke-width="3" opacity="0.52"/>`;
+    case 'cmpstd-stacked-bands':
+      return `<rect x="6" y="8" width="88" height="23" rx="2" fill="${c}" opacity="0.34"/>` +
+             `<rect x="14" y="38" width="80" height="24" rx="2" fill="${c}" opacity="0.24"/>` +
+             `<rect x="6" y="69" width="74" height="23" rx="2" fill="${c}" opacity="0.38"/>`;
+    case 'cmpstd-offset-blocks':
+      return `<rect x="6" y="8" width="56" height="28" rx="2" fill="${c}" opacity="0.36"/>` +
+             `<rect x="43" y="38" width="51" height="25" rx="2" fill="${c}" opacity="0.27"/>` +
+             `<rect x="13" y="66" width="64" height="27" rx="2" fill="${c}" opacity="0.34"/>`;
 
     // ── Marina ──
     case 'mar-pier-frame':
@@ -3376,6 +3418,33 @@ function renderShape(attr) {
              `<path d="M50,31 L50,55 M46,55 L55,55" fill="none" stroke="#172033" stroke-width="3.5"/>` +
              `</g>`;
 
+    // ── Stadium Composition: full-tile textures ──
+    case 'cmpstd-dot-field': {
+      let s = '';
+      for (let y = 12; y <= 88; y += 19) {
+        for (let x = 12; x <= 88; x += 19) {
+          const shift = ((y - 12) / 19) % 2 ? 6 : 0;
+          s += `<circle cx="${Math.min(x + shift, 90)}" cy="${y}" r="2.2" fill="${c}" opacity="${o*0.78}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'cmpstd-stripe-field':
+      return `<path d="M8,31 L31,8 M8,55 L55,8 M8,79 L79,8 M21,92 L92,21 M45,92 L92,45 M69,92 L92,69" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" opacity="${o*0.76}"/>`;
+    case 'cmpstd-checker-mesh': {
+      let s = '';
+      for (let row = 0; row < 6; row++) {
+        for (let col = 0; col < 6; col++) {
+          if ((row + col) % 2 === 0) {
+            s += `<rect x="${10 + col*14}" y="${10 + row*14}" width="7" height="7" rx="1" fill="${c}" opacity="${o*0.72}"/>`;
+          }
+        }
+      }
+      return s;
+    }
+    case 'cmpstd-crosshatch':
+      return `<path d="M8,28 L72,92 M8,52 L48,92 M8,76 L24,92 M28,8 L92,72 M52,8 L92,48 M76,8 L92,24 M72,8 L8,72 M48,8 L8,48 M92,28 L28,92 M92,52 L52,92 M92,76 L76,92 M24,8 L8,24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round" opacity="${o*0.74}"/>`;
+
     // ── Marina ──
     case 'mar-sailboat':
       return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
@@ -3446,6 +3515,45 @@ const CORNERS = [[16, 16], [84, 16], [16, 84], [84, 84]];
 
 function renderAccent(attr) {
   const c = attr.color;
+
+  // Graphic-composition motifs occupy the full tile instead of the legacy corners.
+  switch (attr.accentShape) {
+    case 'cmpstd-repeated-circles':
+      return `<circle cx="18" cy="24" r="8" fill="${c}" opacity="0.86"/>` +
+             `<circle cx="43" cy="17" r="5" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.9"/>` +
+             `<circle cx="74" cy="28" r="10" fill="${c}" opacity="0.78"/>` +
+             `<circle cx="27" cy="57" r="6" fill="none" stroke="${c}" stroke-width="4" opacity="0.88"/>` +
+             `<circle cx="58" cy="53" r="5" fill="${c}" opacity="0.9"/>` +
+             `<circle cx="83" cy="68" r="8" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.86"/>` +
+             `<circle cx="45" cy="82" r="9" fill="${c}" opacity="0.82"/>`;
+    case 'cmpstd-parallel-arrows':
+      return `<path d="M10,24 H73" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="0.88"/>` +
+             `<polygon points="73,15 91,24 73,33" fill="${c}" opacity="0.9"/>` +
+             `<path d="M9,50 H64" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="0.82"/>` +
+             `<polygon points="64,41 82,50 64,59" fill="${c}" opacity="0.86"/>` +
+             `<path d="M18,76 H72" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="0.9"/>` +
+             `<polygon points="72,67 90,76 72,85" fill="${c}" opacity="0.92"/>`;
+    case 'cmpstd-scattered-capsules':
+      return `<rect x="10" y="15" width="28" height="10" rx="5" transform="rotate(-12 24 20)" fill="${c}" opacity="0.88"/>` +
+             `<rect x="57" y="12" width="30" height="11" rx="5.5" transform="rotate(17 72 17.5)" fill="${c}" opacity="0.8"/>` +
+             `<rect x="30" y="39" width="35" height="11" rx="5.5" transform="rotate(-8 47.5 44.5)" fill="${c}" opacity="0.92"/>` +
+             `<rect x="8" y="65" width="31" height="10" rx="5" transform="rotate(14 23.5 70)" fill="${c}" opacity="0.82"/>` +
+             `<rect x="58" y="70" width="32" height="11" rx="5.5" transform="rotate(-15 74 75.5)" fill="${c}" opacity="0.9"/>` +
+             `<rect x="38" y="84" width="24" height="8" rx="4" fill="${c}" opacity="0.76"/>`;
+    case 'cmpstd-mirrored-marks':
+      return `<g fill="${c}" opacity="0.88">` +
+             `<polygon points="12,18 31,12 39,22 20,29"/>` +
+             `<polygon points="88,18 69,12 61,22 80,29"/>` +
+             `<polygon points="10,46 29,38 38,50 29,62 10,54"/>` +
+             `<polygon points="90,46 71,38 62,50 71,62 90,54"/>` +
+             `<polygon points="18,77 37,69 43,82 27,91"/>` +
+             `<polygon points="82,77 63,69 57,82 73,91"/>` +
+             `</g>` +
+             `<path d="M43,16 V34 M57,16 V34 M42,68 V88 M58,68 V88" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.82"/>`;
+    default:
+      break;
+  }
+
   let out = '';
   for (const [cx, cy] of CORNERS) {
     switch (attr.accentShape) {
@@ -4239,7 +4347,9 @@ function createTileSVG(tile, theme) {
   }
 
   // Matchable attribute layers (ring, shape, accent only — no bg)
-  const attrs = sortAttributes([...tile.attributes.values()]);
+  const attrs = theme && theme.style === 'graphic-composition'
+    ? [...tile.attributes.values()].sort((a, b) => ({ ring: 0, shape: 1, accent: 2 }[a.type] - { ring: 0, shape: 1, accent: 2 }[b.type]))
+    : sortAttributes([...tile.attributes.values()]);
   for (const attr of attrs) {
     html += `<g class="attr-layer" data-attr-id="${attr.id}">${renderAttributeInner(attr)}</g>`;
   }
