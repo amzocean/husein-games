@@ -123,12 +123,13 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Three Workflows
+### Four Workflows
 
 | # | Workflow | When | Files Modified |
 |---|---------|------|---------------|
 | 1 | [Brainstorm New Themes](#workflow-1-brainstorm-new-themes) | User asks for theme ideas | None (ideas only) |
 | 2 | [Implement New Themes](#workflow-2-implement-new-themes) | User picks themes to build | `engine.js`, `renderer.js` |
+| 2B | [Implement Bold Sticker Themes](#workflow-2b-implement-bold-sticker-themes) | User requests the Bold Sticker look | `engine.js`, `renderer.js` |
 | 3 | [Archive / Reactivate Themes](#workflow-3-archive--reactivate-themes) | User wants to rotate themes | `engine.js` only |
 
 ### Architecture Quick Reference
@@ -138,7 +139,8 @@ engine.js (THEMES array)                     renderer.js (SVG rendering)
 ─────────────────────────────────            ──────────────────────────────────────
 Theme {                                      renderBg(attr)     → switch(attr.pattern)
   name, emoji,                                 attr.color = boardBg.color
-  palette: {                                   const o = 0.35  (global bg opacity)
+  style?,  ← optional rendering convention    const o = 0.35  (global bg opacity)
+  palette: {
     bg:     [3 colors],  ← per-tile tint       → 5 cases per theme
     ring:   [4 colors],  ← matchable
     shape:  [3 colors],  ← matchable         renderRing(attr)   → switch(attr.style)
@@ -158,6 +160,17 @@ accent: 4 shapes × 3 colors = 12.             → 4 cases per theme
 bg is NOT in pools (board-level only).
                                              TOTAL: 16 new renderer cases per theme
 ```
+
+### Supported Rendering Styles
+
+The theme schema and matching engine stay the same for every visual style. A style changes only how a theme's 16 renderer cases are drawn.
+
+| Style | Theme property | Rendering approach |
+|-------|----------------|--------------------|
+| Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
+| Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
+
+`style` is descriptive metadata. The engine does not branch on it, and the existing validator rules remain unchanged. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks.
 
 ---
 
@@ -528,6 +541,194 @@ git push
 Auto-deploys to Render.com (~2 min). Hard-refresh (Ctrl+Shift+R) to bypass cache.
 
 **If implementing multiple themes at once**: Add all theme objects to engine.js and all renderer cases to renderer.js, then run the validator once and commit once. Don't do one theme at a time.
+
+---
+
+### Workflow 2B: Implement Bold Sticker Themes
+
+**Trigger**: User asks for "Bold Sticker", "sticker style", "decal style", or wants a visually heavier alternative to the standard themes.
+
+Bold Sticker is a rendering convention, not a new game mode. Matching, board generation, palettes, pool math, and validator behavior are identical to Workflow 2. Follow every step in Workflow 2, then apply the rules below to all 16 renderer cases.
+
+#### Theme Object
+
+Add the optional style marker immediately after `name` and `emoji`:
+
+```javascript
+  {
+    name: 'Theme Stickers', emoji: '🏷️',
+    style: 'bold-sticker',
+    palette: {
+      // Standard palette counts and color rules still apply.
+    },
+    // Standard pattern/style/shape/accent arrays and boardBg.
+  },
+```
+
+If making a sticker variant of an existing theme:
+
+1. Keep the original theme unchanged unless the user explicitly asks to replace it.
+2. Give the variant a distinct display name such as `Stadium Stickers`.
+3. Give every identifier a new global prefix. Never reuse the original theme's renderer case names.
+4. Use related subject matter so the visual-style comparison is meaningful, but do not simply duplicate the original SVG paths.
+
+#### Visual Identity
+
+Every matchable sticker element uses three layers:
+
+```
+back:   dark shadow/backing, offset approximately (+2.5,+3) to (+3,+4)
+middle: cream keyline, thick enough to separate the element from every tile tint
+front:  palette color, carrying the actual matchable color identity
+```
+
+Reference defaults from the first approved pilot:
+
+| Role | Default | Purpose |
+|------|---------|---------|
+| Keyline | `#fff4d6` | Warm cream separation without introducing a matchable palette color |
+| Shadow | `#172033` | Deep navy backing visible against light and saturated tints |
+| Shadow offset | `translate(3 4)` or coordinate offset `(+2.5,+3)` | Creates the physical decal effect |
+
+These constants may change for a future collection only if the replacement keyline and shadow pass the same contrast matrix. Do not add keyline or shadow colors to the theme palette: they are rendering support colors, not matchable attributes.
+
+#### Palette Rules
+
+All standard palette rules still apply, plus:
+
+- Prefer saturated `palette.bg` colors so the theme reads as bold rather than pastel.
+- Keep ring, shape, and accent palette colors dark or medium (HSL lightness <= 50%).
+- The foreground palette color must contrast with both the cream keyline and dark shadow.
+- Internal details drawn over the foreground should normally use the shadow color.
+- Do not rely on the cream keyline to rescue an extremely light foreground color.
+
+#### Background Patterns (5)
+
+Backgrounds are not stickers and do not receive keylines or shadows. They remain subtle, non-matchable textures:
+
+- Start with the standard base tint rect at `opacity="${o*0.25}"`.
+- Use sparse scuffs, fibers, stitches, hatching, scan lines, or print grain.
+- Keep decorative line opacity around `${o*0.24}` to `${o*0.28}`.
+- Avoid centered icons, closed frames, circles, corner decorations, or anything resembling a ring, shape, or accent.
+- A patterned `boardBg` is allowed only when the pattern remains visually subordinate. Otherwise use `solid`.
+
+#### Sticker Rings (3)
+
+Rings use nested outlines in this order:
+
+1. Offset or expanded dark backing: `stroke-width` approximately 7.
+2. Cream keyline: `stroke-width` approximately 7-8.
+3. Palette-colored foreground: `stroke-width` approximately 3.5-4.5.
+
+Template:
+
+```javascript
+case 'prefix-patch-frame':
+  return `<rect x="8" y="8" width="88" height="88" rx="11"
+      fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+    `<rect x="4" y="4" width="92" height="92" rx="11"
+      fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+    `<rect x="4" y="4" width="92" height="92" rx="11"
+      fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>`;
+```
+
+Ring requirements:
+
+- Keep all strokes inside the 100x100 viewBox.
+- Preserve the minimum standard ring stroke and opacity requirements.
+- The three ring styles must remain structurally distinct, not merely different dash arrays.
+- Good variants include patch frame, varsity double border, ticket/perforated patch, stitched badge, or shield edge.
+
+#### Sticker Center Shapes (4)
+
+Shapes should use chunky, immediately recognizable silhouettes. Build each shape inside a group using:
+
+1. A translated dark filled/stroked copy for the shadow.
+2. A foreground copy with a cream stroke and `paint-order="stroke"`.
+3. Optional internal details in the dark shadow color.
+
+Template:
+
+```javascript
+case 'prefix-sticker-shape':
+  return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+    `<path d="..." transform="translate(3 4)"
+      fill="#172033" stroke="#172033" stroke-width="6"/>` +
+    `<path d="..." fill="${c}" stroke="#fff4d6"
+      stroke-width="6" paint-order="stroke"/>` +
+    `<path d="..." fill="none" stroke="#172033" stroke-width="3.5"/>` +
+    `</g>`;
+```
+
+Shape requirements:
+
+- Keep the cream keyline visually continuous around the silhouette.
+- Use rounded line joins where sharp SVG joins would create spikes.
+- Keep the shadow visibly offset; a centered dark outline alone does not create the sticker effect.
+- Keep the complete sticker approximately within x:23-77 and y:21-77 so the keyline and shadow do not collide with rings or accents.
+- Retain the shape opacity convention `o = 0.85`.
+
+#### Sticker Corner Accents (4)
+
+Accents use the same shadow-keyline-foreground layering at a smaller scale. Continue using `out += ...; break;` inside the four-corner loop.
+
+Template:
+
+```javascript
+case 'prefix-sticker-badge':
+  out += `<circle cx="${cx+2.5}" cy="${cy+3}" r="7"
+      fill="#172033" opacity="0.9"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="7"
+      fill="#fff4d6" opacity="0.96"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="4.5"
+      fill="${c}" opacity="0.92"/>`; break;
+```
+
+Accent requirements:
+
+- Use an offset of roughly `(+2.5,+3)`, scaled consistently across all four accents.
+- The cream keyline must remain visible between shadow and foreground.
+- Keep accents inside the corner safe area around `(16,16)`, `(84,16)`, `(16,84)`, `(84,84)`.
+- Preserve standard accent minimums: opacity >= 0.6, circle radius >= 2.5, outline stroke >= 1.5.
+- Avoid excessive detail; accents must remain identifiable at game size.
+
+#### Bold Sticker Contrast Matrix
+
+The validator does not check the support layers. Manually verify every new sticker theme:
+
+| Pair | Required result |
+|------|-----------------|
+| Tile tint vs dark shadow | Shadow remains clearly visible on all 3 bg tints |
+| Tile tint vs cream keyline | Keyline remains visible and does not blend into the tile surface |
+| Cream keyline vs foreground | Foreground edge is unmistakable |
+| Dark shadow vs foreground | Offset depth is visible rather than merging into one dark mass |
+| Internal detail vs foreground | Detail remains legible on all 3 shape colors |
+| Accent vs ring | Corner stickers remain separate from the ring border |
+| Shape vs accent | Center silhouette remains dominant |
+| Background texture vs matchable layers | Texture never resembles a ring, center icon, or corner badge |
+
+Also compare the sticker theme directly beside its standard counterpart. The sticker version should be recognizable as the same subject but immediately distinguishable by silhouette weight, keyline, shadow, and saturated presentation.
+
+#### Validation and Review
+
+Run the unchanged validator from the repository root:
+
+```bash
+node validate-themes.js
+```
+
+All 10 checks must pass. Then perform these Bold Sticker-specific checks:
+
+1. Confirm exactly 5 bg, 3 ring, 4 shape, and 4 accent cases.
+2. Confirm all case names use the sticker theme's unique prefix.
+3. Search each ring for all three layers: shadow, keyline, foreground.
+4. Search each shape for a translated shadow and cream keyline.
+5. Search each accent for offset shadow, keyline, foreground, and `out += ...; break;`.
+6. Verify no support color was added to a matchable palette.
+7. Perform browser review at normal mobile game size, not only zoomed-in SVG inspection.
+8. Start several boards to see every palette color and as many variants as possible.
+
+The first approved reference implementation is `Stadium Stickers` in `engine.js` and the `stkstd-*` cases in `renderer.js`.
 
 ---
 

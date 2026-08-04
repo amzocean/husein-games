@@ -1486,17 +1486,17 @@ function renderBg(attr) {
     }
     case 'air-concourse-lines': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
-      for (let x = 16; x <= 84; x += 17) s += `<line x1="${x}" y1="10" x2="${x}" y2="90" stroke="${c}" stroke-width="0.9" opacity="${o*0.3}"/>`;
+      for (let x = 16; x <= 84; x += 17) s += `<line x1="${x}" y1="10" x2="${x}" y2="90" stroke="${c}" stroke-width="0.9" opacity="${o*0.27}"/>`;
       return s;
     }
     case 'air-gate-stripes': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
-      for (let y = 16; y <= 84; y += 17) s += `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="${c}" stroke-width="1.2" stroke-dasharray="12 8" opacity="${o*0.3}"/>`;
+      for (let y = 16; y <= 84; y += 17) s += `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="${c}" stroke-width="1.2" stroke-dasharray="12 8" opacity="${o*0.28}"/>`;
       return s;
     }
     case 'air-taxiway-tracks': {
       let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
-      for (const x of [26, 50, 74]) s += `<path d="M${x},8 C${x-6},30 ${x+6},70 ${x},92" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.3}"/>`;
+      for (const x of [26, 50, 74]) s += `<path d="M${x},8 C${x-6},30 ${x+6},70 ${x},92" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.27}"/>`;
       return s;
     }
     case 'air-window-rain': {
@@ -2253,13 +2253,19 @@ function renderRing(attr) {
 
     // ── Airport ──
     case 'air-runway-border':
-      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72" stroke-dasharray="14 7"/>`;
+      return `<rect x="5" y="4" width="88" height="88" rx="7" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="15 7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="7" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="15 7" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="7" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="15 7" opacity="0.96"/>`;
     case 'air-gate-frame':
-      return `<rect x="6" y="6" width="88" height="88" rx="8" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
-             `<rect x="12" y="12" width="76" height="76" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
+      return `<rect x="5" y="4" width="88" height="88" rx="10" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="${c}" stroke-width="4" opacity="0.96"/>` +
+             `<rect x="13" y="13" width="74" height="74" rx="5" fill="none" stroke="#fff4d6" stroke-width="5" opacity="0.94"/>` +
+             `<rect x="13" y="13" width="74" height="74" rx="5" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.96"/>`;
     case 'air-boarding-band':
-      return `<path d="M8,20 L8,8 L92,8 L92,20" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72"/>` +
-             `<path d="M8,80 L8,92 L92,92 L92,80" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72"/>`;
+      return `<path d="M8,20 L8,8 L89,8 L89,20 M8,77 L8,89 L89,89 L89,77" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>` +
+             `<path d="M8,20 L8,8 L92,8 L92,20 M8,80 L8,92 L92,92 L92,80" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M8,20 L8,8 L92,8 L92,20 M8,80 L8,92 L92,92 L92,80" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>`;
 
     // ── Museum ──
     case 'mus-gallery-frame':
@@ -2303,15 +2309,21 @@ function renderRing(attr) {
 
     // ── Marina ──
     case 'mar-pier-frame':
-      return `<rect x="5" y="5" width="90" height="90" rx="5" fill="none" stroke="${c}" stroke-width="4" opacity="0.7"/>` +
-             `<line x1="5" y1="26" x2="14" y2="26" stroke="${c}" stroke-width="2.5" opacity="0.64"/>` +
-             `<line x1="86" y1="74" x2="95" y2="74" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
+      return `<rect x="5" y="4" width="88" height="88" rx="6" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>` +
+             `<path d="M4,27 H16 M84,73 H96" fill="none" stroke="#fff4d6" stroke-width="6" opacity="0.96"/>` +
+             `<path d="M4,27 H16 M84,73 H96" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.96"/>`;
     case 'mar-nautical-dash':
-      return `<rect x="5" y="5" width="90" height="90" rx="8" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72" stroke-dasharray="12 6"/>`;
+      return `<rect x="5" y="4" width="88" height="88" rx="12" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="12 6" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="12" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="12 6" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="12" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="12 6" opacity="0.96"/>`;
     case 'mar-slip-outline':
-      return `<path d="M8,28 L8,8 L92,8 L92,28" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
-             `<path d="M8,72 L8,92 L92,92 L92,72" fill="none" stroke="${c}" stroke-width="3" opacity="0.7"/>` +
-             `<line x1="50" y1="8" x2="50" y2="18" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
+      return `<path d="M8,28 L8,8 L89,8 L89,28 M8,69 L8,89 L89,89 L89,69" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>` +
+             `<path d="M8,28 L8,8 L92,8 L92,28 M8,72 L8,92 L92,92 L92,72" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M8,28 L8,8 L92,8 L92,28 M8,72 L8,92 L92,92 L92,72" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M50,8 V19 M50,81 V92" fill="none" stroke="#fff4d6" stroke-width="6" opacity="0.96"/>` +
+             `<path d="M50,8 V19 M50,81 V92" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.96"/>`;
 
     // ── Train Station ──
     case 'trn-platform-edge':
@@ -3257,19 +3269,39 @@ function renderShape(attr) {
 
     // ── Airport ──
     case 'air-jet':
-      return `<polygon points="50,26 56,46 74,54 56,52 58,70 50,62 42,70 44,52 26,54 44,46" fill="${c}" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<polygon points="50,25 56,44 71,52 56,51 58,68 50,60 42,68 44,51 29,52 44,44" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<polygon points="50,25 56,44 71,52 56,51 58,68 50,60 42,68 44,51 29,52 44,44" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,31 V57 M42,49 H58" fill="none" stroke="#172033" stroke-width="3" opacity="0.86"/>` +
+             `</g>`;
     case 'air-control-tower':
-      return `<polygon points="38,34 62,34 58,44 42,44" fill="${c}" opacity="${o}"/>` +
-             `<rect x="45" y="44" width="10" height="26" rx="2" fill="${c}" opacity="${o}"/>` +
-             `<rect x="40" y="68" width="20" height="5" rx="1" fill="${c}" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M37,32 H63 L59,44 H56 V67 H62 V73 H38 V67 H44 V44 H41 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M37,32 H63 L59,44 H56 V67 H62 V73 H38 V67 H44 V44 H41 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M42,37 H58 M48,47 V65 M52,47 V65" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
     case 'air-suitcase':
-      return `<rect x="34" y="38" width="32" height="30" rx="5" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
-             `<path d="M42,38 L42,33 Q42,30 46,30 L54,30 Q58,30 58,33 L58,38" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
-             `<line x1="44" y1="44" x2="44" y2="62" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033">` +
+             `<rect x="34" y="37" width="32" height="32" rx="6" stroke-width="6"/>` +
+             `<path d="M42,37 V33 Q42,29 46,29 H54 Q58,29 58,33 V37" fill="none" stroke-width="8"/>` +
+             `</g>` +
+             `<rect x="34" y="37" width="32" height="32" rx="6" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M42,37 V33 Q42,29 46,29 H54 Q58,29 58,33 V37" fill="none" stroke="#fff4d6" stroke-width="8"/>` +
+             `<path d="M42,37 V33 Q42,29 46,29 H54 Q58,29 58,33 V37" fill="none" stroke="${c}" stroke-width="3"/>` +
+             `<path d="M44,44 V62 M56,44 V62 M41,68 V72 M59,68 V72" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
     case 'air-gate-sign':
-      return `<rect x="30" y="34" width="40" height="25" rx="3" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
-             `<line x1="50" y1="59" x2="50" y2="70" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
-             `<line x1="40" y1="70" x2="60" y2="70" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033">` +
+             `<rect x="29" y="32" width="42" height="28" rx="5" stroke-width="6"/>` +
+             `<path d="M50,60 V70 M39,70 H61" fill="none" stroke-width="7"/>` +
+             `</g>` +
+             `<rect x="29" y="32" width="42" height="28" rx="5" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,60 V70 M39,70 H61" fill="none" stroke="#fff4d6" stroke-width="7"/>` +
+             `<path d="M50,60 V70 M39,70 H61" fill="none" stroke="${c}" stroke-width="3"/>` +
+             `<path d="M37,41 H45 V51 H37 Z M52,41 H64 M52,51 H61" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
 
     // ── Museum ──
     case 'mus-frame-art':
@@ -3346,22 +3378,43 @@ function renderShape(attr) {
 
     // ── Marina ──
     case 'mar-sailboat':
-      return `<polygon points="50,28 50,58 30,58" fill="${c}" opacity="${o}"/>` +
-             `<polygon points="54,34 70,58 54,58" fill="${c}" opacity="${o}"/>` +
-             `<path d="M28,60 L72,60 L65,70 L35,70 Z" fill="${c}" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6">` +
+             `<polygon points="49,27 49,57 30,57"/><polygon points="54,33 70,57 54,57"/>` +
+             `<path d="M28,60 H72 L65,70 H35 Z"/>` +
+             `</g>` +
+             `<polygon points="49,27 49,57 30,57" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<polygon points="54,33 70,57 54,57" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M28,60 H72 L65,70 H35 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M52,28 V58 M36,64 H65" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
     case 'mar-yacht':
-      return `<path d="M28,55 L72,55 L66,68 L36,68 Z" fill="${c}" opacity="${o}"/>` +
-             `<path d="M40,42 L62,42 L68,55 L36,55 Z" fill="${c}" opacity="${o}"/>` +
-             `<line x1="48" y1="34" x2="48" y2="42" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6">` +
+             `<path d="M27,55 H73 L66,69 H36 Z"/>` +
+             `<path d="M39,41 H61 L68,55 H35 Z"/>` +
+             `</g>` +
+             `<path d="M27,55 H73 L66,69 H36 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M39,41 H61 L68,55 H35 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M47,34 V41 M43,47 H49 M54,47 H61 M36,61 H66" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
     case 'mar-anchor':
-      return `<circle cx="50" cy="34" r="6" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
-             `<line x1="50" y1="40" x2="50" y2="68" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
-             `<line x1="40" y1="48" x2="60" y2="48" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
-             `<path d="M34,58 Q34,70 50,68 Q66,70 66,58" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<g transform="translate(3 4)" fill="none" stroke="#172033">` +
+             `<circle cx="50" cy="33" r="6" stroke-width="10"/>` +
+             `<path d="M50,39 V68 M39,48 H61 M34,57 Q34,71 50,68 Q66,71 66,57 M34,57 L30,62 M66,57 L70,62" stroke-width="10"/>` +
+             `</g>` +
+             `<circle cx="50" cy="33" r="6" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,39 V68 M39,48 H61 M34,57 Q34,71 50,68 Q66,71 66,57 M34,57 L30,62 M66,57 L70,62" fill="none" stroke="#fff4d6" stroke-width="10"/>` +
+             `<path d="M50,39 V68 M39,48 H61 M34,57 Q34,71 50,68 Q66,71 66,57 M34,57 L30,62 M66,57 L70,62" fill="none" stroke="${c}" stroke-width="4"/>` +
+             `<circle cx="50" cy="33" r="2.5" fill="#172033"/>` +
+             `</g>`;
     case 'mar-lighthouse':
-      return `<polygon points="43,34 57,34 62,70 38,70" fill="${c}" opacity="${o}"/>` +
-             `<rect x="38" y="28" width="24" height="8" rx="2" fill="${c}" opacity="${o}"/>` +
-             `<line x1="34" y1="28" x2="66" y2="28" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M42,35 H58 L63,71 H37 Z M38,27 H62 V36 H38 Z M34,27 H66 L60,22 H40 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M42,35 H58 L63,71 H37 Z M38,27 H62 V36 H38 Z M34,27 H66 L60,22 H40 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M43,31 H48 M52,31 H57 M41,48 H59 M40,59 H60 M47,65 V71 H53 V65" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
 
     // ── Train Station ──
     case 'trn-commuter-train':
@@ -4034,16 +4087,24 @@ function renderAccent(attr) {
 
       // ── Airport ──
       case 'air-beacons':
-        out += `<circle cx="${cx}" cy="${cy}" r="4" fill="${c}" opacity="0.72"/>`; break;
+        out += `<circle cx="${cx+2.5}" cy="${cy+3}" r="7" fill="#172033" opacity="0.9"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="7" fill="#fff4d6" opacity="0.96"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.94"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="1.5" fill="#172033" opacity="0.84"/>`; break;
       case 'air-chevrons': {
         const dx = cx < 50 ? 1 : -1;
-        out += `<path d="M${cx-5*dx},${cy-4} L${cx+4*dx},${cy} L${cx-5*dx},${cy+4}" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>`; break;
+        out += `<path d="M${cx-5*dx+2.5},${cy-5+3} L${cx+5*dx+2.5},${cy+3} L${cx-5*dx+2.5},${cy+5+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>`; break;
       }
       case 'air-tags':
-        out += `<rect x="${cx-5}" y="${cy-3.5}" width="10" height="7" rx="1.5" fill="${c}" opacity="0.7"/>`; break;
+        out += `<rect x="${cx-6+2.5}" y="${cy-4+3}" width="12" height="8" rx="2.5" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-6}" y="${cy-4}" width="12" height="8" rx="2.5" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<circle cx="${cx-3.5}" cy="${cy}" r="1.3" fill="#172033" opacity="0.84"/>`; break;
       case 'air-flightmarks':
-        out += `<line x1="${cx}" y1="${cy-5}" x2="${cx}" y2="${cy+5}" stroke="${c}" stroke-width="1.8" opacity="0.72"/>` +
-               `<line x1="${cx-4}" y1="${cy+2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="1.8" opacity="0.68"/>`; break;
+        out += `<path d="M${cx+2.5},${cy-6+3} V${cy+6+3} M${cx-5+2.5},${cy+2+3} L${cx+5+2.5},${cy-2+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+               `<path d="M${cx},${cy-6} V${cy+6} M${cx-5},${cy+2} L${cx+5},${cy-2}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" opacity="0.96"/>` +
+               `<path d="M${cx},${cy-6} V${cy+6} M${cx-5},${cy+2} L${cx+5},${cy-2}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.94"/>`; break;
 
       // ── Museum ──
       case 'mus-labels':
@@ -4101,16 +4162,25 @@ function renderAccent(attr) {
 
       // ── Marina ──
       case 'mar-cleats':
-        out += `<line x1="${cx-5}" y1="${cy}" x2="${cx+5}" y2="${cy}" stroke="${c}" stroke-width="2.5" opacity="0.72" stroke-linecap="round"/>` +
-               `<line x1="${cx-3}" y1="${cy-4}" x2="${cx-3}" y2="${cy+4}" stroke="${c}" stroke-width="1.8" opacity="0.68"/>` +
-               `<line x1="${cx+3}" y1="${cy-4}" x2="${cx+3}" y2="${cy+4}" stroke="${c}" stroke-width="1.8" opacity="0.68"/>`; break;
+        out += `<path d="M${cx-6+2.5},${cy+3} H${cx+6+2.5} M${cx-3+2.5},${cy-4+3} V${cy+4+3} M${cx+3+2.5},${cy-4+3} V${cy+4+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+               `<path d="M${cx-6},${cy} H${cx+6} M${cx-3},${cy-4} V${cy+4} M${cx+3},${cy-4} V${cy+4}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" opacity="0.96"/>` +
+               `<path d="M${cx-6},${cy} H${cx+6} M${cx-3},${cy-4} V${cy+4} M${cx+3},${cy-4} V${cy+4}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.94"/>`; break;
       case 'mar-buoys':
-        out += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.72"/>` +
-               `<line x1="${cx}" y1="${cy-4.5}" x2="${cx}" y2="${cy-7}" stroke="${c}" stroke-width="1.5" opacity="0.68"/>`; break;
+        out += `<circle cx="${cx+2.5}" cy="${cy+3}" r="7" fill="#172033" opacity="0.9"/>` +
+               `<line x1="${cx+2.5}" y1="${cy-7+3}" x2="${cx+2.5}" y2="${cy-4+3}" stroke="#172033" stroke-width="5" opacity="0.9"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="7" fill="#fff4d6" opacity="0.96"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.94"/>` +
+               `<line x1="${cx}" y1="${cy-7}" x2="${cx}" y2="${cy-4}" stroke="#fff4d6" stroke-width="5" opacity="0.96"/>` +
+               `<line x1="${cx}" y1="${cy-7}" x2="${cx}" y2="${cy-4}" stroke="${c}" stroke-width="2" opacity="0.94"/>` +
+               `<path d="M${cx-3.5},${cy} H${cx+3.5}" stroke="#172033" stroke-width="1.5" opacity="0.84"/>`; break;
       case 'mar-knots':
-        out += `<path d="M${cx-5},${cy} C${cx-5},${cy-5} ${cx+1},${cy-5} ${cx+1},${cy} C${cx+1},${cy+5} ${cx+5},${cy+5} ${cx+5},${cy}" fill="none" stroke="${c}" stroke-width="2" opacity="0.7"/>`; break;
+        out += `<path d="M${cx-5+2.5},${cy+3} C${cx-5+2.5},${cy-5+3} ${cx+1+2.5},${cy-5+3} ${cx+1+2.5},${cy+3} C${cx+1+2.5},${cy+5+3} ${cx+5+2.5},${cy+5+3} ${cx+5+2.5},${cy+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+               `<path d="M${cx-5},${cy} C${cx-5},${cy-5} ${cx+1},${cy-5} ${cx+1},${cy} C${cx+1},${cy+5} ${cx+5},${cy+5} ${cx+5},${cy}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" opacity="0.96"/>` +
+               `<path d="M${cx-5},${cy} C${cx-5},${cy-5} ${cx+1},${cy-5} ${cx+1},${cy} C${cx+1},${cy+5} ${cx+5},${cy+5} ${cx+5},${cy}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.94"/>`; break;
       case 'mar-fenders':
-        out += `<rect x="${cx-3}" y="${cy-5}" width="6" height="10" rx="3" fill="${c}" opacity="0.72"/>`; break;
+        out += `<rect x="${cx-4+2.5}" y="${cy-6+3}" width="8" height="12" rx="4" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-4}" y="${cy-6}" width="8" height="12" rx="4" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<line x1="${cx}" y1="${cy-5}" x2="${cx}" y2="${cy+4}" stroke="#172033" stroke-width="1.5" opacity="0.84"/>`; break;
 
       // ── Train Station ──
       case 'trn-signal-lights':

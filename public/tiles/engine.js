@@ -13,6 +13,7 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
   {
     name: 'Airport', emoji: '✈️',
+    style: 'bold-sticker',
     palette: {
       bg:     ['#17324d', '#4f6272', '#a6273f'],
       ring:   ['#0d47a1', '#4a148c', '#2e5d34', '#7a3e00'],
@@ -55,6 +56,7 @@ const THEMES = [
   },
   {
     name: 'Stadium Stickers', emoji: '🏷️',
+    style: 'bold-sticker',
     palette: {
       bg:     ['#f0642d', '#00a896', '#7b2cbf'],
       ring:   ['#0b5d1e', '#153e75', '#8a1c41', '#5a3a00'],
@@ -69,6 +71,7 @@ const THEMES = [
   },
   {
     name: 'Marina', emoji: '⛵',
+    style: 'bold-sticker',
     palette: {
       bg:     ['#007c83', '#cc5a3c', '#a17b29'],
       ring:   ['#004d5a', '#8a2f20', '#6b4f00', '#283593'],
