@@ -12,6 +12,99 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 
 const THEMES = [
   {
+    name: 'Istanbul', emoji: '🌉',
+    palette: {
+      bg:     ['#0f6b78', '#c65d35', '#6e5aa8'],
+      ring:   ['#183153', '#7a2432', '#3f5f2a', '#5b2c83'],
+      shape:  ['#164e63', '#7f1d1d', '#3f6212'],
+      accent: ['#8a3b12', '#14532d', '#4c1d70'],
+    },
+    bgPatterns:   ['ist-bosphorus-lines', 'ist-tram-tracks', 'ist-tile-hatch', 'ist-market-stripes', 'ist-rain-streaks'],
+    ringStyles:   ['ist-arch-frame', 'ist-bridge-rail', 'ist-tulip-border'],
+    shapeNames:   ['ist-mosque', 'ist-ferry', 'ist-tram', 'ist-tea-glass'],
+    accentShapes: ['ist-tulips', 'ist-seagulls', 'ist-lanterns', 'ist-tiles'],
+    boardBg:      { pattern: 'solid', color: '#0f6b78' },
+  },
+  {
+    name: 'Cairo', emoji: '🐪',
+    style: 'bold-sticker',
+    palette: {
+      bg:     ['#d97706', '#0e7490', '#be185d'],
+      ring:   ['#713f12', '#164e63', '#7f1d1d', '#4c1d95'],
+      shape:  ['#854d0e', '#155e75', '#6b21a8'],
+      accent: ['#9f1239', '#166534', '#3730a3'],
+    },
+    bgPatterns:   ['cai-sand-grain', 'cai-nile-lines', 'cai-market-weave', 'cai-stone-hatch', 'cai-sun-streaks'],
+    ringStyles:   ['cai-temple-patch', 'cai-nile-patch', 'cai-desert-ticket'],
+    shapeNames:   ['cai-pyramid', 'cai-sphinx', 'cai-felucca', 'cai-obelisk'],
+    accentShapes: ['cai-sun-discs', 'cai-papyrus', 'cai-cartouches', 'cai-scarabs'],
+    boardBg:      { pattern: 'solid', color: '#d97706' },
+  },
+  {
+    name: 'Singapore', emoji: '🌳',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#13a86b', '#e24a68', '#5167d9'],
+      ring:   ['#164e63', '#7c2d12', '#365314', '#581c87'],
+      shape:  ['#1e40af', '#9f1239', '#166534'],
+      accent: ['#6b21a8', '#b91c1c', '#0f766e'],
+    },
+    bgPatterns:   ['sgp-rain-wash', 'sgp-glass-seams', 'sgp-garden-fibers', 'sgp-transit-scan', 'sgp-harbor-haze'],
+    ringStyles:   ['sgp-skyline-bands', 'sgp-garden-arcs', 'sgp-harbor-blocks'],
+    shapeNames:   ['sgp-window-matrix', 'sgp-canopy-weave', 'sgp-rain-rhythm', 'sgp-transit-ticks'],
+    accentShapes: ['sgp-supertree-clusters', 'sgp-merlion-jets', 'sgp-orchid-trails', 'sgp-ship-lanes'],
+    boardBg:      { pattern: 'sgp-rain-wash', color: '#13a86b' },
+  },
+  {
+    name: 'Rio de Janeiro', emoji: '🚠',
+    style: 'bold-sticker',
+    palette: {
+      bg:     ['#65a30d', '#0369a1', '#c026d3'],
+      ring:   ['#14532d', '#1e3a8a', '#86198f', '#9a3412'],
+      shape:  ['#166534', '#075985', '#7e22ce'],
+      accent: ['#9f1239', '#115e59', '#7c2d12'],
+    },
+    bgPatterns:   ['rio-boardwalk-grain', 'rio-mountain-lines', 'rio-samba-stripes', 'rio-ocean-streaks', 'rio-city-rain'],
+    ringStyles:   ['rio-promenade-patch', 'rio-cable-frame', 'rio-samba-ticket'],
+    shapeNames:   ['rio-sugarloaf', 'rio-cable-car', 'rio-tram', 'rio-boardwalk'],
+    accentShapes: ['rio-drums', 'rio-waves', 'rio-kites', 'rio-leaves'],
+    boardBg:      { pattern: 'solid', color: '#0369a1' },
+  },
+  {
+    name: 'Cape Town', emoji: '🏔️',
+    palette: {
+      bg:     ['#6b8e23', '#c45d42', '#3b82a0'],
+      ring:   ['#365314', '#7f1d1d', '#164e63', '#4c1d95'],
+      shape:  ['#3f6212', '#9a3412', '#155e75'],
+      accent: ['#831843', '#14532d', '#312e81'],
+    },
+    bgPatterns:   ['cpt-fynbos-grain', 'cpt-coast-lines', 'cpt-mountain-hatch', 'cpt-harbor-stripes', 'cpt-cloud-streaks'],
+    ringStyles:   ['cpt-mountain-edge', 'cpt-coast-route', 'cpt-cable-frame'],
+    shapeNames:   ['cpt-table-mountain', 'cpt-cable-car', 'cpt-protea', 'cpt-penguin'],
+    accentShapes: ['cpt-waves', 'cpt-flowers', 'cpt-seals', 'cpt-stars'],
+    boardBg:      { pattern: 'solid', color: '#6b8e23' },
+  },
+  {
+    name: 'Mexico City', emoji: '🌵',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#c2415d', '#2f855a', '#b7791f'],
+      ring:   ['#1e3a5f', '#7f1d1d', '#14532d', '#581c87'],
+      shape:  ['#1d4ed8', '#9f1239', '#3f6212'],
+      accent: ['#6b21a8', '#b45309', '#0f766e'],
+    },
+    bgPatterns:   ['mxc-plaza-grain', 'mxc-avenida-lines', 'mxc-market-fibers', 'mxc-tile-wash', 'mxc-highland-haze'],
+    ringStyles:   ['mxc-plaza-axis', 'mxc-avenida-lanes', 'mxc-market-blocks'],
+    shapeNames:   ['mxc-papel-cutouts', 'mxc-tile-grid', 'mxc-woven-stripes', 'mxc-confetti-field'],
+    accentShapes: ['mxc-metro-diamonds', 'mxc-trajinera-flags', 'mxc-cactus-clusters', 'mxc-sunbursts'],
+    boardBg:      { pattern: 'mxc-plaza-grain', color: '#c2415d' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived August 2026 (city collection rotation)
+  {
     name: 'Airport', emoji: '✈️',
     style: 'bold-sticker',
     palette: {
@@ -99,10 +192,6 @@ const THEMES = [
     accentShapes: ['cmpmall-shopping-bag-clusters', 'cmpmall-directional-arrows', 'cmpmall-storefront-tabs', 'cmpmall-food-court-arrangements'],
     boardBg:      { pattern: 'cmpmall-polished-floor-grain', color: '#2f7f83' },
   },
-];
-
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived August 2026 (active style-balance rotation)
   {
     name: 'Stadium', emoji: '🏟️',

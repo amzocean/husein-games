@@ -1715,6 +1715,159 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Istanbul ──
+    case 'ist-bosphorus-lines': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 12) s += `<path d="M8,${y} C28,${y-4} 68,${y+4} 92,${y}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.26}"/>`;
+      return s;
+    }
+    case 'ist-tram-tracks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (const x of [31, 69]) s += `<line x1="${x}" y1="8" x2="${x}" y2="92" stroke="${c}" stroke-width="1" opacity="${o*0.27}"/>`;
+      for (let y = 12; y <= 88; y += 10) s += `<line x1="24" y1="${y}" x2="76" y2="${y}" stroke="${c}" stroke-width="0.55" opacity="${o*0.2}"/>`;
+      return s;
+    }
+    case 'ist-tile-hatch': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 8; x <= 80; x += 18) s += `<path d="M${x},8 L${x+36},92 M${x+18},8 L${x-18},92" fill="none" stroke="${c}" stroke-width="0.55" opacity="${o*0.2}"/>`;
+      return s;
+    }
+    case 'ist-market-stripes': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 13; y <= 89; y += 9) s += `<line x1="${8+(y%18)}" y1="${y}" x2="${92-(y%18)}" y2="${y}" stroke="${c}" stroke-width="1" stroke-dasharray="10 6" opacity="${o*0.25}"/>`;
+      return s;
+    }
+    case 'ist-rain-streaks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 10; x <= 94; x += 12) s += `<line x1="${x}" y1="9" x2="${x-17}" y2="91" stroke="${c}" stroke-width="0.7" opacity="${o*0.23}"/>`;
+      return s;
+    }
+
+    // ── Cairo ──
+    case 'cai-sand-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 12; y <= 90; y += 8) s += `<path d="M9,${y} Q31,${y-3} 52,${y+1} T91,${y-1}" fill="none" stroke="${c}" stroke-width="0.65" opacity="${o*0.22}"/>`;
+      return s;
+    }
+    case 'cai-nile-lines': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 16; x <= 84; x += 17) s += `<path d="M${x},8 C${x-8},30 ${x+8},65 ${x},92" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.26}"/>`;
+      return s;
+    }
+    case 'cai-market-weave': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 12; y <= 88; y += 12) s += `<path d="M8,${y} L92,${y+6} M8,${y+6} L92,${y}" fill="none" stroke="${c}" stroke-width="0.55" opacity="${o*0.21}"/>`;
+      return s;
+    }
+    case 'cai-stone-hatch': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 14) s += `<path d="M8,${y} H92 M${20+(y%20)},${y-7} V${y+7} M${62-(y%16)},${y-7} V${y+7}" fill="none" stroke="${c}" stroke-width="0.65" opacity="${o*0.22}"/>`;
+      return s;
+    }
+    case 'cai-sun-streaks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 8; x <= 88; x += 10) s += `<line x1="${x}" y1="8" x2="${x+18}" y2="92" stroke="${c}" stroke-width="0.75" opacity="${o*0.22}"/>`;
+      return s;
+    }
+
+    // ── Singapore Composition ──
+    case 'sgp-rain-wash': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let x = 9; x <= 93; x += 9) s += `<line x1="${x}" y1="8" x2="${x-12}" y2="92" stroke="${c}" stroke-width="0.45" opacity="${o*0.14}"/>`;
+      return s;
+    }
+    case 'sgp-glass-seams':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>` +
+             `<path d="M24,8 L28,92 M51,8 L48,92 M78,8 L73,92 M8,29 L92,26 M8,57 L92,61 M8,82 L92,79" fill="none" stroke="${c}" stroke-width="0.5" opacity="${o*0.15}"/>`;
+    case 'sgp-garden-fibers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>`;
+      for (let y = 12; y <= 88; y += 11) s += `<path d="M9,${y} C28,${y-5} 47,${y+5} 91,${y-1}" fill="none" stroke="${c}" stroke-width="0.55" opacity="${o*0.16}"/>`;
+      return s;
+    }
+    case 'sgp-transit-scan': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>`;
+      for (let y = 10; y <= 90; y += 5) s += `<line x1="${y%10===0?8:15}" y1="${y}" x2="${y%10===0?92:85}" y2="${y}" stroke="${c}" stroke-width="0.45" opacity="${o*0.13}"/>`;
+      return s;
+    }
+    case 'sgp-harbor-haze':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M8,24 C30,17 53,31 92,20 M8,51 C34,60 64,43 92,55 M8,80 C31,72 60,88 92,76" fill="none" stroke="${c}" stroke-width="7" stroke-linecap="round" opacity="${o*0.05}"/>`;
+
+    // ── Rio de Janeiro ──
+    case 'rio-boardwalk-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 12) s += `<path d="M8,${y} Q18,${y-7} 28,${y} T48,${y} T68,${y} T92,${y}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
+      return s;
+    }
+    case 'rio-mountain-lines': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 20; y <= 80; y += 15) s += `<path d="M8,${y+8} L27,${y-3} L42,${y+5} L61,${y-7} L92,${y+8}" fill="none" stroke="${c}" stroke-width="0.75" opacity="${o*0.23}"/>`;
+      return s;
+    }
+    case 'rio-samba-stripes': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 8; x <= 88; x += 13) s += `<path d="M${x},8 C${x+10},30 ${x-10},68 ${x+4},92" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.25}"/>`;
+      return s;
+    }
+    case 'rio-ocean-streaks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 16; y <= 84; y += 13) s += `<path d="M10,${y} C34,${y-6} 65,${y+6} 90,${y}" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.26}"/>`;
+      return s;
+    }
+    case 'rio-city-rain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 13; x <= 91; x += 13) s += `<line x1="${x}" y1="9" x2="${x-15}" y2="91" stroke="${c}" stroke-width="0.7" opacity="${o*0.23}"/>`;
+      return s;
+    }
+
+    // ── Cape Town ──
+    case 'cpt-fynbos-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 11; x <= 89; x += 13) s += `<path d="M${x},91 C${x-7},69 ${x+7},39 ${x},9" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.22}"/>`;
+      return s;
+    }
+    case 'cpt-coast-lines': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 15; y <= 85; y += 14) s += `<path d="M8,${y} C29,${y-5} 65,${y+6} 92,${y-2}" fill="none" stroke="${c}" stroke-width="0.85" opacity="${o*0.25}"/>`;
+      return s;
+    }
+    case 'cpt-mountain-hatch': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 17; y <= 83; y += 13) s += `<path d="M8,${y+7} L30,${y-4} L58,${y-4} L92,${y+7}" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.23}"/>`;
+      return s;
+    }
+    case 'cpt-harbor-stripes': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let x = 12; x <= 88; x += 12) s += `<line x1="${x}" y1="8" x2="${x+3}" y2="92" stroke="${c}" stroke-width="0.8" stroke-dasharray="12 6" opacity="${o*0.23}"/>`;
+      return s;
+    }
+    case 'cpt-cloud-streaks': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 18; y <= 82; y += 16) s += `<path d="M12,${y} C28,${y-4} 38,${y+2} 52,${y} S74,${y-3} 88,${y}" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.24}"/>`;
+      return s;
+    }
+
+    // ── Mexico City Composition ──
+    case 'mxc-plaza-grain': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+      for (let y = 11; y <= 89; y += 7) s += `<line x1="${8+(y%14)}" y1="${y}" x2="${92-(y%14)}" y2="${y+1}" stroke="${c}" stroke-width="0.5" opacity="${o*0.14}"/>`;
+      return s;
+    }
+    case 'mxc-avenida-lines':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>` +
+             `<path d="M25,8 L31,92 M49,8 L47,92 M75,8 L69,92 M8,32 L92,28 M8,64 L92,69" fill="none" stroke="${c}" stroke-width="0.55" opacity="${o*0.15}"/>`;
+    case 'mxc-market-fibers': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.17}"/>`;
+      for (let x = 9; x <= 91; x += 10) s += `<path d="M${x},8 C${x-6},32 ${x+6},63 ${x},92" fill="none" stroke="${c}" stroke-width="0.5" opacity="${o*0.15}"/>`;
+      return s;
+    }
+    case 'mxc-tile-wash':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M8,25 H92 M8,50 H92 M8,75 H92 M25,8 V92 M50,8 V92 M75,8 V92" fill="none" stroke="${c}" stroke-width="0.4" opacity="${o*0.12}"/>`;
+    case 'mxc-highland-haze':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
+             `<path d="M8,27 C26,18 52,35 92,22 M8,58 C35,68 64,49 92,61 M8,84 C29,76 60,90 92,80" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="${o*0.05}"/>`;
+
     default: return '';
   }
 }
@@ -2429,6 +2582,86 @@ function renderRing(attr) {
              `<line x1="50" y1="82" x2="50" y2="94" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
     case 'trn-route-border':
       return `<rect x="5" y="5" width="90" height="90" rx="6" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72" stroke-dasharray="16 5 4 5"/>`;
+
+    // ── Istanbul ──
+    case 'ist-arch-frame':
+      return `<path d="M7,94 V35 Q7,7 35,7 H65 Q93,7 93,35 V94" fill="none" stroke="${c}" stroke-width="4" opacity="0.76"/>` +
+             `<path d="M14,94 V38 Q14,14 38,14 H62 Q86,14 86,38 V94" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.64"/>`;
+    case 'ist-bridge-rail':
+      return `<rect x="5" y="5" width="90" height="90" rx="7" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72"/>` +
+             `<path d="M13,18 H87 M13,82 H87 M24,5 V18 M50,5 V18 M76,5 V18 M24,82 V95 M50,82 V95 M76,82 V95" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.66"/>`;
+    case 'ist-tulip-border':
+      return `<rect x="6" y="6" width="88" height="88" rx="13" fill="none" stroke="${c}" stroke-width="3.5" stroke-dasharray="16 5 3 5" opacity="0.74"/>`;
+
+    // ── Cairo Stickers ──
+    case 'cai-temple-patch':
+      return `<path d="M9,91 V21 L18,8 H82 L91,21 V91 Z" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linejoin="round" opacity="0.9"/>` +
+             `<path d="M6,88 V18 L15,5 H85 L94,18 V94 H6 Z" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M6,88 V18 L15,5 H85 L94,18 V94 H6 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round" opacity="0.96"/>`;
+    case 'cai-nile-patch':
+      return `<rect x="8" y="8" width="88" height="88" rx="13" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="17 6" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="13" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="17 6" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="13" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="17 6" opacity="0.96"/>`;
+    case 'cai-desert-ticket':
+      return `<path d="M8,22 V8 H89 V22 M8,75 V89 H89 V75" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+             `<path d="M8,22 V8 H92 V22 M8,78 V92 H92 V78" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linecap="round" opacity="0.96"/>` +
+             `<path d="M8,22 V8 H92 V22 M8,78 V92 H92 V78" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="0.96"/>`;
+
+    // ── Singapore Composition ──
+    case 'sgp-skyline-bands':
+      return `<rect x="5" y="61" width="17" height="34" fill="${c}" opacity="0.34"/>` +
+             `<rect x="27" y="39" width="20" height="56" fill="${c}" opacity="0.22"/>` +
+             `<rect x="52" y="21" width="17" height="74" fill="${c}" opacity="0.38"/>` +
+             `<rect x="74" y="47" width="21" height="48" fill="${c}" opacity="0.26"/>` +
+             `<path d="M5,61 H22 M27,39 H47 M52,21 H69 M74,47 H95" stroke="${c}" stroke-width="3" opacity="0.5"/>`;
+    case 'sgp-garden-arcs':
+      return `<path d="M4,84 Q22,25 50,8 Q78,25 96,84" fill="${c}" opacity="0.18"/>` +
+             `<path d="M8,89 Q26,38 50,21 Q74,38 92,89 M18,93 Q33,52 50,38 Q67,52 82,93" fill="none" stroke="${c}" stroke-width="4" opacity="0.48"/>`;
+    case 'sgp-harbor-blocks':
+      return `<path d="M4,10 H64 V34 H4 Z M37,39 H96 V63 H37 Z M4,68 H73 V92 H4 Z" fill="${c}" opacity="0.28"/>` +
+             `<path d="M18,10 V34 M46,10 V34 M55,39 V63 M81,39 V63 M23,68 V92 M51,68 V92" stroke="${c}" stroke-width="2.5" opacity="0.5"/>`;
+
+    // ── Rio Stickers ──
+    case 'rio-promenade-patch':
+      return `<rect x="8" y="8" width="88" height="88" rx="15" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="15" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="15" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>`;
+    case 'rio-cable-frame':
+      return `<path d="M8,26 V8 H89 V26 M8,71 V89 H89 V71" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linejoin="round" opacity="0.9"/>` +
+             `<path d="M8,26 V8 H92 V26 M8,74 V92 H92 V74" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M8,26 V8 H92 V26 M8,74 V92 H92 V74" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round" opacity="0.96"/>`;
+    case 'rio-samba-ticket':
+      return `<rect x="8" y="8" width="88" height="88" rx="9" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="10 6" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="10 6" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="10 6" opacity="0.96"/>`;
+
+    // ── Cape Town ──
+    case 'cpt-mountain-edge':
+      return `<path d="M5,94 V24 L24,10 H66 L95,31 V94" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round" opacity="0.74"/>` +
+             `<path d="M12,94 V30 L29,17 H62 L88,36 V94" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round" opacity="0.64"/>`;
+    case 'cpt-coast-route':
+      return `<rect x="5" y="5" width="90" height="90" rx="18" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72"/>` +
+             `<rect x="12" y="12" width="76" height="76" rx="14" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="14 6" opacity="0.64"/>`;
+    case 'cpt-cable-frame':
+      return `<rect x="6" y="6" width="88" height="88" rx="7" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.72"/>` +
+             `<path d="M6,23 H22 M78,23 H94 M6,77 H22 M78,77 H94" stroke="${c}" stroke-width="2.5" opacity="0.66"/>`;
+
+    // ── Mexico City Composition ──
+    case 'mxc-plaza-axis':
+      return `<rect x="38" y="4" width="24" height="92" fill="${c}" opacity="0.24"/>` +
+             `<rect x="4" y="38" width="92" height="24" fill="${c}" opacity="0.18"/>` +
+             `<rect x="7" y="7" width="25" height="25" fill="${c}" opacity="0.35"/>` +
+             `<rect x="68" y="68" width="25" height="25" fill="${c}" opacity="0.35"/>` +
+             `<path d="M50,4 V96 M4,50 H96" stroke="${c}" stroke-width="3" opacity="0.5"/>`;
+    case 'mxc-avenida-lanes':
+      return `<path d="M4,13 H78 V33 H4 Z M23,40 H96 V60 H23 Z M4,67 H72 V87 H4 Z" fill="${c}" opacity="0.3"/>` +
+             `<path d="M15,13 V33 M42,13 V33 M69,13 V33 M35,40 V60 M64,40 V60 M15,67 V87 M44,67 V87" stroke="${c}" stroke-width="2.3" opacity="0.5"/>`;
+    case 'mxc-market-blocks':
+      return `<rect x="5" y="8" width="42" height="27" rx="2" fill="${c}" opacity="0.34"/>` +
+             `<rect x="53" y="8" width="42" height="18" rx="2" fill="${c}" opacity="0.2"/>` +
+             `<rect x="18" y="40" width="64" height="21" rx="2" fill="${c}" opacity="0.28"/>` +
+             `<rect x="5" y="67" width="35" height="26" rx="2" fill="${c}" opacity="0.2"/>` +
+             `<rect x="46" y="67" width="49" height="26" rx="2" fill="${c}" opacity="0.36"/>`;
 
     default: return '';
   }
@@ -3578,6 +3811,139 @@ function renderShape(attr) {
              `<line x1="42" y1="62" x2="42" y2="70" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
              `<line x1="58" y1="62" x2="58" y2="70" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
 
+    // ── Istanbul ──
+    case 'ist-mosque':
+      return `<path d="M31,69 H69 M36,69 V47 Q50,30 64,47 V69 M29,47 H71 M34,47 L50,31 L66,47 M25,69 V38 M75,69 V38" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"/>` +
+             `<path d="M22,38 H28 L25,30 Z M72,38 H78 L75,30 Z" fill="${c}" opacity="${o}"/>`;
+    case 'ist-ferry':
+      return `<path d="M27,55 H73 L66,69 H34 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M36,41 H64 L70,55 H30 Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M42,47 H48 M53,47 H59 M39,61 H65" stroke="white" stroke-width="2.5" opacity="0.68"/>`;
+    case 'ist-tram':
+      return `<rect x="31" y="29" width="38" height="42" rx="8" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M37,42 H63 M50,29 V20 M42,20 H58 M37,55 H63" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<circle cx="40" cy="66" r="4" fill="${c}" opacity="${o}"/><circle cx="60" cy="66" r="4" fill="${c}" opacity="${o}"/>`;
+    case 'ist-tea-glass':
+      return `<path d="M38,29 Q50,36 62,29 L58,64 Q50,72 42,64 Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M41,45 H59 M43,59 H57" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+             `<path d="M62,39 Q73,39 69,51 Q67,57 59,55" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+
+    // ── Cairo Stickers ──
+    case 'cai-pyramid':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<polygon points="50,25 76,70 24,70" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<polygon points="50,25 76,70 24,70" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,25 L50,70 M37,48 H63" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'cai-sphinx':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M28,66 Q31,49 43,46 L44,34 Q50,26 56,34 L57,46 Q69,49 72,66 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M28,66 Q31,49 43,46 L44,34 Q50,26 56,34 L57,46 Q69,49 72,66 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M46,38 H54 M47,43 Q50,46 53,43 M37,56 H63" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'cai-felucca':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M27,62 H73 L65,71 H35 Z M49,27 V61 L31,55 Z M53,35 V61 L69,57 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M27,62 H73 L65,71 H35 Z M49,27 V61 L31,55 Z M53,35 V61 L69,57 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M51,28 V63 M37,66 H65" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'cai-obelisk':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<path d="M44,71 L47,33 L50,24 L53,33 L56,71 Z M37,71 H63 V77 H37 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M44,71 L47,33 L50,24 L53,33 L56,71 Z M37,71 H63 V77 H37 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,35 V66 M46,52 H54" stroke="#172033" stroke-width="2.8"/>` +
+             `</g>`;
+
+    // ── Singapore Composition textures ──
+    case 'sgp-window-matrix': {
+      let s = '';
+      for (let y = 10; y <= 82; y += 12) {
+        for (let x = 10; x <= 82; x += 12) {
+          s += `<rect x="${x}" y="${y}" width="6" height="7" rx="1" fill="${c}" opacity="${o*0.72}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'sgp-canopy-weave':
+      return `<path d="M8,22 C28,8 72,8 92,22 M8,42 C28,28 72,28 92,42 M8,62 C28,48 72,48 92,62 M8,82 C28,68 72,68 92,82 M20,8 C8,28 8,72 20,92 M42,8 C30,28 30,72 42,92 M64,8 C52,28 52,72 64,92 M86,8 C74,28 74,72 86,92" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.72}"/>`;
+    case 'sgp-rain-rhythm':
+      return `<path d="M14,8 L7,36 M30,8 L17,58 M47,8 L30,75 M64,8 L43,92 M81,8 L60,92 M94,20 L76,92" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.76}"/>`;
+    case 'sgp-transit-ticks':
+      return `<path d="M8,16 H21 M29,16 H45 M53,16 H62 M71,16 H92 M8,35 H17 M26,35 H42 M50,35 H66 M75,35 H92 M8,54 H24 M33,54 H43 M51,54 H70 M79,54 H92 M8,73 H19 M28,73 H47 M56,73 H68 M77,73 H92 M8,90 H25 M34,90 H52 M61,90 H74 M83,90 H92" fill="none" stroke="${c}" stroke-width="2.8" opacity="${o*0.78}"/>`;
+
+    // ── Rio Stickers ──
+    case 'rio-sugarloaf':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<path d="M25,70 Q31,36 47,32 Q63,35 72,70 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M25,70 Q31,36 47,32 Q63,35 72,70 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M30,62 Q46,50 68,61" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'rio-cable-car':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M26,29 H74 M50,29 V38 M34,38 H66 L63,65 H37 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M26,29 H74 M50,29 V38 M34,38 H66 L63,65 H37 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M41,46 H48 M52,46 H59 M40,57 H60" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'rio-tram':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M31,31 H69 V67 H31 Z M39,67 V73 M61,67 V73 M42,31 L50,23 L58,31" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M31,31 H69 V67 H31 Z M39,67 V73 M61,67 V73 M42,31 L50,23 L58,31" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M38,40 H47 V51 H38 Z M53,40 H62 V51 H53 Z M36,58 H64" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'rio-boardwalk':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M25,31 C34,22 43,40 52,31 S70,22 78,31 M22,48 C31,39 40,57 49,48 S67,39 76,48 M25,65 C34,56 43,74 52,65 S70,56 78,65" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="10"/>` +
+             `<path d="M25,31 C34,22 43,40 52,31 S70,22 78,31 M22,48 C31,39 40,57 49,48 S67,39 76,48 M25,65 C34,56 43,74 52,65 S70,56 78,65" fill="none" stroke="#fff4d6" stroke-width="10"/>` +
+             `<path d="M25,31 C34,22 43,40 52,31 S70,22 78,31 M22,48 C31,39 40,57 49,48 S67,39 76,48 M25,65 C34,56 43,74 52,65 S70,56 78,65" fill="none" stroke="${c}" stroke-width="4"/>` +
+             `</g>`;
+
+    // ── Cape Town ──
+    case 'cpt-table-mountain':
+      return `<path d="M22,70 L31,43 L40,34 H64 L72,43 L80,70 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M40,34 H64 M28,62 H75" fill="none" stroke="white" stroke-width="3" opacity="0.58"/>`;
+    case 'cpt-cable-car':
+      return `<path d="M25,28 H75 M50,28 V38" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M34,38 H66 L62,66 H38 Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M42,47 H48 M52,47 H58 M40,58 H60" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+    case 'cpt-protea':
+      return `<g fill="${c}" opacity="${o}">` +
+             `<ellipse cx="50" cy="34" rx="7" ry="16"/><ellipse cx="50" cy="66" rx="7" ry="16"/>` +
+             `<ellipse cx="34" cy="50" rx="16" ry="7"/><ellipse cx="66" cy="50" rx="16" ry="7"/>` +
+             `<ellipse cx="39" cy="39" rx="7" ry="15" transform="rotate(-45 39 39)"/><ellipse cx="61" cy="61" rx="7" ry="15" transform="rotate(-45 61 61)"/>` +
+             `<ellipse cx="61" cy="39" rx="7" ry="15" transform="rotate(45 61 39)"/><ellipse cx="39" cy="61" rx="7" ry="15" transform="rotate(45 39 61)"/>` +
+             `<circle cx="50" cy="50" r="11" fill="white" opacity="0.55"/>` +
+             `</g>`;
+    case 'cpt-penguin':
+      return `<ellipse cx="50" cy="51" rx="19" ry="27" fill="${c}" opacity="${o}"/>` +
+             `<ellipse cx="50" cy="55" rx="12" ry="20" fill="white" opacity="0.62"/>` +
+             `<circle cx="43" cy="42" r="2.5" fill="white"/><circle cx="57" cy="42" r="2.5" fill="white"/>` +
+             `<polygon points="50,47 44,51 56,51" fill="${c}" opacity="${o}"/>`;
+
+    // ── Mexico City Composition textures ──
+    case 'mxc-papel-cutouts': {
+      let s = '';
+      for (let y = 12; y <= 82; y += 18) {
+        for (let x = 10; x <= 82; x += 18) {
+          s += `<path d="M${x},${y} H${x+12} V${y+10} L${x+9},${y+7} L${x+6},${y+10} L${x+3},${y+7} L${x},${y+10} Z" fill="${c}" opacity="${o*0.72}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'mxc-tile-grid': {
+      let s = '';
+      for (let x = 10; x <= 90; x += 16) s += `<line x1="${x}" y1="8" x2="${x}" y2="92" stroke="${c}" stroke-width="1.8" opacity="${o*0.66}"/>`;
+      for (let y = 10; y <= 90; y += 16) s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="1.8" opacity="${o*0.66}"/>`;
+      return s;
+    }
+    case 'mxc-woven-stripes':
+      return `<path d="M8,18 H92 M8,34 H92 M8,50 H92 M8,66 H92 M8,82 H92 M18,8 V92 M38,8 V92 M58,8 V92 M78,8 V92" fill="none" stroke="${c}" stroke-width="2.3" stroke-dasharray="9 5" opacity="${o*0.72}"/>`;
+    case 'mxc-confetti-field': {
+      let s = '';
+      const marks = [[12,14,8,1],[31,10,2,8],[49,17,7,-1],[70,12,1,8],[87,19,7,2],[18,35,2,8],[39,31,8,2],[58,38,7,-2],[82,33,2,8],[10,55,8,-1],[30,61,2,8],[51,53,8,2],[72,59,2,8],[90,50,7,-2],[18,78,2,8],[40,73,8,-1],[61,82,2,8],[82,76,8,2]];
+      for (const [x,y,dx,dy] of marks) s += `<line x1="${x}" y1="${y}" x2="${x+dx}" y2="${y+dy}" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.78}"/>`;
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -3658,6 +4024,72 @@ function renderAccent(attr) {
       }
       return s;
     }
+
+    // ── Singapore Composition motifs ──
+    case 'sgp-supertree-clusters':
+      return `<g fill="${c}" stroke="${c}" opacity="0.88">` +
+             `<path d="M16,29 V14 M9,18 Q16,8 23,18 M11,22 Q16,14 21,22" stroke-width="3" fill="none"/>` +
+             `<path d="M48,43 V22 M39,28 Q48,14 57,28 M42,34 Q48,22 54,34" stroke-width="3.5" fill="none"/>` +
+             `<path d="M80,25 V10 M73,14 Q80,5 87,14 M75,19 Q80,11 85,19" stroke-width="3" fill="none"/>` +
+             `<path d="M24,79 V58 M15,65 Q24,50 33,65 M18,71 Q24,59 30,71" stroke-width="3.5" fill="none"/>` +
+             `<path d="M68,84 V61 M58,68 Q68,51 78,68 M61,75 Q68,62 75,75" stroke-width="3.5" fill="none"/>` +
+             `</g>`;
+    case 'sgp-merlion-jets':
+      return `<path d="M9,21 C24,8 37,8 48,20 M9,29 C26,16 40,16 52,28 M47,51 C62,38 77,39 91,51 M43,59 C61,46 77,47 92,60 M8,78 C24,65 37,65 50,77 M51,85 C66,72 80,73 92,84" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="0.86"/>`;
+    case 'sgp-orchid-trails':
+      return `<g fill="${c}" opacity="0.86">` +
+             `<ellipse cx="17" cy="18" rx="7" ry="3" transform="rotate(-25 17 18)"/><ellipse cx="25" cy="25" rx="7" ry="3" transform="rotate(45 25 25)"/>` +
+             `<ellipse cx="54" cy="14" rx="7" ry="3" transform="rotate(20 54 14)"/><ellipse cx="62" cy="22" rx="7" ry="3" transform="rotate(-45 62 22)"/>` +
+             `<ellipse cx="79" cy="46" rx="8" ry="3" transform="rotate(-20 79 46)"/><ellipse cx="70" cy="53" rx="7" ry="3" transform="rotate(45 70 53)"/>` +
+             `<ellipse cx="24" cy="60" rx="8" ry="3" transform="rotate(25 24 60)"/><ellipse cx="32" cy="68" rx="7" ry="3" transform="rotate(-45 32 68)"/>` +
+             `<ellipse cx="55" cy="82" rx="8" ry="3" transform="rotate(-15 55 82)"/><ellipse cx="66" cy="77" rx="7" ry="3" transform="rotate(40 66 77)"/>` +
+             `</g>`;
+    case 'sgp-ship-lanes':
+      return `<g fill="${c}" stroke="${c}" opacity="0.88">` +
+             `<path d="M8,17 H35 L30,26 H13 Z M18,12 V17" stroke-width="2"/>` +
+             `<path d="M56,12 H90 L84,22 H62 Z M72,7 V12" stroke-width="2"/>` +
+             `<path d="M27,40 H61 L55,50 H33 Z M43,34 V40" stroke-width="2"/>` +
+             `<path d="M64,58 H93 L88,68 H69 Z M79,52 V58" stroke-width="2"/>` +
+             `<path d="M8,72 H40 L34,83 H14 Z M24,66 V72" stroke-width="2"/>` +
+             `<path d="M44,82 H73 L68,92 H50 Z M59,76 V82" stroke-width="2"/>` +
+             `</g>`;
+
+    // ── Mexico City Composition motifs ──
+    case 'mxc-metro-diamonds':
+      return `<g fill="none" stroke="${c}" stroke-width="4" opacity="0.9">` +
+             `<path d="M17,9 L27,19 L17,29 L7,19 Z"/><path d="M51,7 L62,18 L51,29 L40,18 Z"/>` +
+             `<path d="M83,16 L93,26 L83,36 L73,26 Z"/><path d="M29,39 L40,50 L29,61 L18,50 Z"/>` +
+             `<path d="M68,43 L80,55 L68,67 L56,55 Z"/><path d="M14,69 L25,80 L14,91 L3,80 Z"/>` +
+             `<path d="M47,70 L58,81 L47,92 L36,81 Z"/><path d="M82,68 L93,79 L82,90 L71,79 Z"/>` +
+             `</g>`;
+    case 'mxc-trajinera-flags':
+      return `<g fill="${c}" stroke="${c}" opacity="0.88">` +
+             `<path d="M10,9 V32 M10,10 L29,16 L10,22 Z" stroke-width="2.5"/>` +
+             `<path d="M43,6 V31 M43,8 L62,14 L43,21 Z" stroke-width="2.5"/>` +
+             `<path d="M74,15 V40 M74,16 L93,22 L74,29 Z" stroke-width="2.5"/>` +
+             `<path d="M22,43 V69 M22,45 L41,51 L22,58 Z" stroke-width="2.5"/>` +
+             `<path d="M59,43 V69 M59,45 L78,51 L59,58 Z" stroke-width="2.5"/>` +
+             `<path d="M9,70 V94 M9,72 L28,78 L9,85 Z" stroke-width="2.5"/>` +
+             `<path d="M45,68 V93 M45,70 L64,76 L45,83 Z" stroke-width="2.5"/>` +
+             `<path d="M77,68 V93 M77,70 L96,76 L77,83 Z" stroke-width="2.5"/>` +
+             `</g>`;
+    case 'mxc-cactus-clusters':
+      return `<g fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="0.88">` +
+             `<path d="M15,31 V12 M15,22 H9 V16 M15,26 H22 V19"/>` +
+             `<path d="M48,40 V15 M48,25 H40 V18 M48,31 H57 V22"/>` +
+             `<path d="M82,31 V10 M82,19 H75 V14 M82,25 H90 V17"/>` +
+             `<path d="M27,84 V57 M27,68 H18 V61 M27,75 H36 V65"/>` +
+             `<path d="M66,90 V60 M66,73 H57 V65 M66,80 H76 V70"/>` +
+             `</g>`;
+    case 'mxc-sunbursts':
+      return `<g fill="${c}" stroke="${c}" stroke-width="2.5" opacity="0.88">` +
+             `<path d="M15,16 H31 M23,8 V24 M17,10 L29,22 M29,10 L17,22"/><circle cx="23" cy="16" r="4"/>` +
+             `<path d="M57,20 H75 M66,11 V29 M60,14 L72,26 M72,14 L60,26"/><circle cx="66" cy="20" r="4"/>` +
+             `<path d="M26,48 H44 M35,39 V57 M29,42 L41,54 M41,42 L29,54"/><circle cx="35" cy="48" r="4"/>` +
+             `<path d="M70,54 H90 M80,44 V64 M73,47 L87,61 M87,47 L73,61"/><circle cx="80" cy="54" r="4"/>` +
+             `<path d="M9,78 H27 M18,69 V87 M12,72 L24,84 M24,72 L12,84"/><circle cx="18" cy="78" r="4"/>` +
+             `<path d="M47,81 H67 M57,71 V91 M50,74 L64,88 M64,74 L50,88"/><circle cx="57" cy="81" r="4"/>` +
+             `</g>`;
     default:
       break;
   }
@@ -4411,6 +4843,69 @@ function renderAccent(attr) {
       case 'trn-track-bolts':
         out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.72"/>` +
                `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="${c}" stroke-width="1.5" opacity="0.68"/>`; break;
+
+      // ── Istanbul ──
+      case 'ist-tulips':
+        out += `<path d="M${cx-5},${cy-4} Q${cx},${cy-8} ${cx+5},${cy-4} Q${cx+3},${cy+4} ${cx},${cy+6} Q${cx-3},${cy+4} ${cx-5},${cy-4} Z" fill="${c}" opacity="0.76"/>`; break;
+      case 'ist-seagulls':
+        out += `<path d="M${cx-7},${cy+2} Q${cx-3},${cy-4} ${cx},${cy+1} Q${cx+3},${cy-4} ${cx+7},${cy+2}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.74"/>`; break;
+      case 'ist-lanterns':
+        out += `<path d="M${cx},${cy-6} L${cx+5},${cy} L${cx},${cy+6} L${cx-5},${cy} Z" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.74"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="2.8" fill="${c}" opacity="0.72"/>`; break;
+      case 'ist-tiles':
+        out += `<polygon points="${cx},${cy-6} ${cx+6},${cy} ${cx},${cy+6} ${cx-6},${cy}" fill="none" stroke="${c}" stroke-width="2" opacity="0.74"/>` +
+               `<polygon points="${cx},${cy-3} ${cx+3},${cy} ${cx},${cy+3} ${cx-3},${cy}" fill="${c}" opacity="0.7"/>`; break;
+
+      // ── Cairo Stickers ──
+      case 'cai-sun-discs':
+        out += `<circle cx="${cx+2.5}" cy="${cy+3}" r="7" fill="#172033" opacity="0.9"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="7" fill="#fff4d6" opacity="0.96"/>` +
+               `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.94"/>`; break;
+      case 'cai-papyrus':
+        out += `<path d="M${cx+2.5},${cy+6+3} V${cy-2+3} M${cx+2.5},${cy-2+3} L${cx-5+2.5},${cy-6+3} M${cx+2.5},${cy-2+3} L${cx+5+2.5},${cy-6+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+               `<path d="M${cx},${cy+6} V${cy-2} M${cx},${cy-2} L${cx-5},${cy-6} M${cx},${cy-2} L${cx+5},${cy-6}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" opacity="0.96"/>` +
+               `<path d="M${cx},${cy+6} V${cy-2} M${cx},${cy-2} L${cx-5},${cy-6} M${cx},${cy-2} L${cx+5},${cy-6}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.94"/>`; break;
+      case 'cai-cartouches':
+        out += `<rect x="${cx-6+2.5}" y="${cy-4+3}" width="12" height="8" rx="4" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-6}" y="${cy-4}" width="12" height="8" rx="4" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<line x1="${cx-3}" y1="${cy}" x2="${cx+3}" y2="${cy}" stroke="#172033" stroke-width="1.5" opacity="0.82"/>`; break;
+      case 'cai-scarabs':
+        out += `<ellipse cx="${cx+2.5}" cy="${cy+3}" rx="6" ry="7" fill="#172033" opacity="0.9"/>` +
+               `<ellipse cx="${cx}" cy="${cy}" rx="6" ry="7" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<path d="M${cx},${cy-5} V${cy+5} M${cx-6},${cy} H${cx+6}" stroke="#172033" stroke-width="1.5" opacity="0.84"/>`; break;
+
+      // ── Rio Stickers ──
+      case 'rio-drums':
+        out += `<ellipse cx="${cx+2.5}" cy="${cy-4+3}" rx="6" ry="3" fill="#172033" opacity="0.9"/>` +
+               `<path d="M${cx-6+2.5},${cy-4+3} L${cx-4+2.5},${cy+6+3} H${cx+4+2.5} L${cx+6+2.5},${cy-4+3} Z" fill="#172033" opacity="0.9"/>` +
+               `<ellipse cx="${cx}" cy="${cy-4}" rx="6" ry="3" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<path d="M${cx-6},${cy-4} L${cx-4},${cy+6} H${cx+4} L${cx+6},${cy-4} Z" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>`; break;
+      case 'rio-waves':
+        out += `<path d="M${cx-6+2.5},${cy+3} Q${cx-3+2.5},${cy-5+3} ${cx+2.5},${cy+3} T${cx+6+2.5},${cy+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" opacity="0.9"/>` +
+               `<path d="M${cx-6},${cy} Q${cx-3},${cy-5} ${cx},${cy} T${cx+6},${cy}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" opacity="0.96"/>` +
+               `<path d="M${cx-6},${cy} Q${cx-3},${cy-5} ${cx},${cy} T${cx+6},${cy}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.94"/>`; break;
+      case 'rio-kites':
+        out += `<polygon points="${cx+2.5},${cy-7+3} ${cx+7+2.5},${cy+3} ${cx+2.5},${cy+7+3} ${cx-7+2.5},${cy+3}" fill="#172033" opacity="0.9"/>` +
+               `<polygon points="${cx},${cy-7} ${cx+7},${cy} ${cx},${cy+7} ${cx-7},${cy}" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<path d="M${cx},${cy+7} Q${cx+5},${cy+9} ${cx+4},${cy+12}" fill="none" stroke="#172033" stroke-width="1.8"/>`; break;
+      case 'rio-leaves':
+        out += `<path d="M${cx-6+2.5},${cy+4+3} Q${cx-3+2.5},${cy-7+3} ${cx+6+2.5},${cy-5+3} Q${cx+6+2.5},${cy+4+3} ${cx-6+2.5},${cy+4+3} Z" fill="#172033" opacity="0.9"/>` +
+               `<path d="M${cx-6},${cy+4} Q${cx-3},${cy-7} ${cx+6},${cy-5} Q${cx+6},${cy+4} ${cx-6},${cy+4} Z" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
+               `<path d="M${cx-4},${cy+2} L${cx+4},${cy-3}" stroke="#172033" stroke-width="1.5"/>`; break;
+
+      // ── Cape Town ──
+      case 'cpt-waves':
+        out += `<path d="M${cx-7},${cy+2} Q${cx-3.5},${cy-4} ${cx},${cy+2} T${cx+7},${cy+2}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="0.74"/>`; break;
+      case 'cpt-flowers':
+        out += `<g fill="${c}" opacity="0.74">` +
+               `<circle cx="${cx}" cy="${cy-4}" r="3"/><circle cx="${cx+4}" cy="${cy}" r="3"/><circle cx="${cx}" cy="${cy+4}" r="3"/><circle cx="${cx-4}" cy="${cy}" r="3"/>` +
+               `</g><circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.65"/>`; break;
+      case 'cpt-seals':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="6" ry="4" fill="${c}" opacity="0.74"/>` +
+               `<circle cx="${cx+5}" cy="${cy-2}" r="3" fill="${c}" opacity="0.74"/>` +
+               `<path d="M${cx-5},${cy+1} L${cx-8},${cy-4} L${cx-2},${cy-2} Z" fill="${c}" opacity="0.72"/>`; break;
+      case 'cpt-stars':
+        out += `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" opacity="0.74"/>`; break;
 
     }
   }
