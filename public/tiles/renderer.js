@@ -2621,6 +2621,20 @@ function renderRing(attr) {
       return `<path d="M4,10 H64 V34 H4 Z M37,39 H96 V63 H37 Z M4,68 H73 V92 H4 Z" fill="${c}" opacity="0.28"/>` +
              `<path d="M18,10 V34 M46,10 V34 M55,39 V63 M81,39 V63 M23,68 V92 M51,68 V92" stroke="${c}" stroke-width="2.5" opacity="0.5"/>`;
 
+    // ── Singapore Stickers ──
+    case 'sgp-skyline-patch':
+      return `<path d="M8,91 V34 H22 V18 H36 V42 H49 V12 H65 V29 H78 V21 H92 V91" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-linejoin="round" opacity="0.9"/>` +
+             `<path d="M5,88 V31 H19 V15 H33 V39 H46 V9 H62 V26 H75 V18 H95 V95 H5 Z" fill="none" stroke="#fff4d6" stroke-width="8" stroke-linejoin="round" opacity="0.96"/>` +
+             `<path d="M5,88 V31 H19 V15 H33 V39 H46 V9 H62 V26 H75 V18 H95 V95 H5 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round" opacity="0.96"/>`;
+    case 'sgp-garden-badge':
+      return `<path d="M50,5 Q85,13 94,48 Q86,84 50,95 Q14,84 6,48 Q15,13 50,5 Z" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+             `<path d="M50,5 Q85,13 94,48 Q86,84 50,95 Q14,84 6,48 Q15,13 50,5 Z" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+             `<path d="M50,5 Q85,13 94,48 Q86,84 50,95 Q14,84 6,48 Q15,13 50,5 Z" fill="none" stroke="${c}" stroke-width="4" opacity="0.96"/>`;
+    case 'sgp-harbor-ticket':
+      return `<rect x="8" y="8" width="88" height="88" rx="10" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" stroke-dasharray="14 6" opacity="0.9"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="#fff4d6" stroke-width="8" stroke-dasharray="14 6" opacity="0.96"/>` +
+             `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="14 6" opacity="0.96"/>`;
+
     // ── Rio Stickers ──
     case 'rio-promenade-patch':
       return `<rect x="8" y="8" width="88" height="88" rx="15" transform="translate(3 4)" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
@@ -2662,6 +2676,16 @@ function renderRing(attr) {
              `<rect x="18" y="40" width="64" height="21" rx="2" fill="${c}" opacity="0.28"/>` +
              `<rect x="5" y="67" width="35" height="26" rx="2" fill="${c}" opacity="0.2"/>` +
              `<rect x="46" y="67" width="49" height="26" rx="2" fill="${c}" opacity="0.36"/>`;
+
+    // ── Mexico City ──
+    case 'mxc-plaza-frame':
+      return `<rect x="5" y="5" width="90" height="90" rx="4" fill="none" stroke="${c}" stroke-width="4" opacity="0.76"/>` +
+             `<path d="M24,5 V16 M50,5 V16 M76,5 V16 M24,84 V95 M50,84 V95 M76,84 V95" stroke="${c}" stroke-width="2.5" opacity="0.66"/>`;
+    case 'mxc-avenida-border':
+      return `<rect x="6" y="6" width="88" height="88" rx="12" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.74"/>` +
+             `<rect x="13" y="13" width="74" height="74" rx="8" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="13 6" opacity="0.64"/>`;
+    case 'mxc-papel-border':
+      return `<path d="M6,18 L14,7 L22,18 L30,7 L38,18 L46,7 L54,18 L62,7 L70,18 L78,7 L86,18 L94,7 V93 L86,82 L78,93 L70,82 L62,93 L54,82 L46,93 L38,82 L30,93 L22,82 L14,93 L6,82 Z" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round" opacity="0.72"/>`;
 
     default: return '';
   }
@@ -3871,6 +3895,33 @@ function renderShape(attr) {
     case 'sgp-transit-ticks':
       return `<path d="M8,16 H21 M29,16 H45 M53,16 H62 M71,16 H92 M8,35 H17 M26,35 H42 M50,35 H66 M75,35 H92 M8,54 H24 M33,54 H43 M51,54 H70 M79,54 H92 M8,73 H19 M28,73 H47 M56,73 H68 M77,73 H92 M8,90 H25 M34,90 H52 M61,90 H74 M83,90 H92" fill="none" stroke="${c}" stroke-width="2.8" opacity="${o*0.78}"/>`;
 
+    // ── Singapore Stickers ──
+    case 'sgp-merlion':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M34,70 Q30,54 39,45 Q34,34 43,28 Q54,22 62,32 L58,41 Q68,45 70,56 Q70,68 61,73 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M34,70 Q30,54 39,45 Q34,34 43,28 Q54,22 62,32 L58,41 Q68,45 70,56 Q70,68 61,73 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M45,34 H55 M42,50 Q51,44 61,50 M43,60 Q52,54 62,60" fill="none" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'sgp-supertree':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+             `<path d="M45,73 L48,45 Q32,38 31,28 Q43,35 50,23 Q57,35 69,28 Q68,38 52,45 L55,73 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M45,73 L48,45 Q32,38 31,28 Q43,35 50,23 Q57,35 69,28 Q68,38 52,45 L55,73 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M50,31 V68 M39,36 L49,46 M61,36 L51,46" stroke="#172033" stroke-width="3"/>` +
+             `</g>`;
+    case 'sgp-marina-hotel':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<path d="M29,34 H39 V66 H29 Z M45,29 H55 V66 H45 Z M61,34 H71 V66 H61 Z M24,25 Q50,18 76,25 L70,32 H30 Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+             `<path d="M29,34 H39 V66 H29 Z M45,29 H55 V66 H45 Z M61,34 H71 V66 H61 Z M24,25 Q50,18 76,25 L70,32 H30 Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+             `<path d="M34,40 V59 M50,35 V59 M66,40 V59" stroke="#172033" stroke-width="2.5"/>` +
+             `</g>`;
+    case 'sgp-orchid':
+      return `<g opacity="${o}" stroke-linejoin="round">` +
+             `<g transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6">` +
+             `<ellipse cx="50" cy="34" rx="8" ry="15"/><ellipse cx="35" cy="48" rx="15" ry="8"/><ellipse cx="65" cy="48" rx="15" ry="8"/><ellipse cx="41" cy="64" rx="9" ry="14" transform="rotate(35 41 64)"/><ellipse cx="59" cy="64" rx="9" ry="14" transform="rotate(-35 59 64)"/>` +
+             `</g><g fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke">` +
+             `<ellipse cx="50" cy="34" rx="8" ry="15"/><ellipse cx="35" cy="48" rx="15" ry="8"/><ellipse cx="65" cy="48" rx="15" ry="8"/><ellipse cx="41" cy="64" rx="9" ry="14" transform="rotate(35 41 64)"/><ellipse cx="59" cy="64" rx="9" ry="14" transform="rotate(-35 59 64)"/>` +
+             `</g><circle cx="50" cy="51" r="7" fill="#172033"/></g>`;
+
     // ── Rio Stickers ──
     case 'rio-sugarloaf':
       return `<g opacity="${o}" stroke-linejoin="round">` +
@@ -3943,6 +3994,21 @@ function renderShape(attr) {
       for (const [x,y,dx,dy] of marks) s += `<line x1="${x}" y1="${y}" x2="${x+dx}" y2="${y+dy}" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.78}"/>`;
       return s;
     }
+
+    // ── Mexico City ──
+    case 'mxc-angel':
+      return `<path d="M47,70 H53 V44 L65,32 L60,28 L50,38 L40,28 L35,32 L47,44 Z" fill="${c}" opacity="${o}"/>` +
+             `<circle cx="50" cy="24" r="7" fill="${c}" opacity="${o}"/>` +
+             `<path d="M39,72 H61 M34,78 H66" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+    case 'mxc-trajinera':
+      return `<path d="M26,55 H74 L67,70 H33 Z" fill="${c}" opacity="${o}"/>` +
+             `<path d="M32,55 V34 Q50,22 68,34 V55 M37,39 H63 M39,46 H61" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>` +
+             `<path d="M37,62 H63" stroke="white" stroke-width="3" opacity="0.62"/>`;
+    case 'mxc-cactus':
+      return `<path d="M44,74 V34 Q44,26 50,26 Q56,26 56,34 V47 H64 V39 Q64,33 69,33 Q74,33 74,39 V54 Q74,59 69,59 H56 V74 Z M44,56 H35 Q28,56 28,49 V40 Q28,34 33,34 Q38,34 38,40 V47 H44 Z" fill="${c}" opacity="${o}"/>`;
+    case 'mxc-pyramid':
+      return `<polygon points="50,25 76,71 24,71" fill="${c}" opacity="${o}"/>` +
+             `<path d="M31,59 H69 M37,48 H63 M43,37 H57 M50,25 V71" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>`;
 
     default: return '';
   }
@@ -4874,6 +4940,26 @@ function renderAccent(attr) {
                `<ellipse cx="${cx}" cy="${cy}" rx="6" ry="7" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>` +
                `<path d="M${cx},${cy-5} V${cy+5} M${cx-6},${cy} H${cx+6}" stroke="#172033" stroke-width="1.5" opacity="0.84"/>`; break;
 
+      // ── Singapore Stickers ──
+      case 'sgp-rain-badges':
+        out += `<path d="M${cx+2.5},${cy-7+3} Q${cx+8+2.5},${cy+3} ${cx+2.5},${cy+7+3} Q${cx-8+2.5},${cy+3} ${cx+2.5},${cy-7+3} Z" fill="#172033" opacity="0.9"/>` +
+               `<path d="M${cx},${cy-7} Q${cx+8},${cy} ${cx},${cy+7} Q${cx-8},${cy} ${cx},${cy-7} Z" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>`; break;
+      case 'sgp-orchid-badges':
+        out += `<g transform="translate(2.5 3)" fill="#172033">` +
+               `<ellipse cx="${cx}" cy="${cy-4}" rx="3.5" ry="6"/><ellipse cx="${cx-4}" cy="${cy+1}" rx="6" ry="3.5"/><ellipse cx="${cx+4}" cy="${cy+1}" rx="6" ry="3.5"/>` +
+               `</g><g fill="${c}" stroke="#fff4d6" stroke-width="2.5" paint-order="stroke">` +
+               `<ellipse cx="${cx}" cy="${cy-4}" rx="3.5" ry="6"/><ellipse cx="${cx-4}" cy="${cy+1}" rx="6" ry="3.5"/><ellipse cx="${cx+4}" cy="${cy+1}" rx="6" ry="3.5"/>` +
+               `</g>`; break;
+      case 'sgp-ship-badges':
+        out += `<path d="M${cx-7+2.5},${cy+1+3} H${cx+7+2.5} L${cx+4+2.5},${cy+6+3} H${cx-4+2.5} Z M${cx+2.5},${cy-6+3} V${cy+1+3}" fill="#172033" stroke="#172033" stroke-width="3" opacity="0.9"/>` +
+               `<path d="M${cx-7},${cy+1} H${cx+7} L${cx+4},${cy+6} H${cx-4} Z M${cx},${cy-6} V${cy+1}" fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke" opacity="0.94"/>`; break;
+      case 'sgp-transit-chevrons': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<path d="M${cx-5*dx+2.5},${cy-5+3} L${cx+5*dx+2.5},${cy+3} L${cx-5*dx+2.5},${cy+5+3}" fill="none" stroke="#172033" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="#fff4d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>` +
+               `<path d="M${cx-5*dx},${cy-5} L${cx+5*dx},${cy} L${cx-5*dx},${cy+5}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>`; break;
+      }
+
       // ── Rio Stickers ──
       case 'rio-drums':
         out += `<ellipse cx="${cx+2.5}" cy="${cy-4+3}" rx="6" ry="3" fill="#172033" opacity="0.9"/>` +
@@ -4906,6 +4992,23 @@ function renderAccent(attr) {
                `<path d="M${cx-5},${cy+1} L${cx-8},${cy-4} L${cx-2},${cy-2} Z" fill="${c}" opacity="0.72"/>`; break;
       case 'cpt-stars':
         out += `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" opacity="0.74"/>`; break;
+
+      // ── Mexico City ──
+      case 'mxc-marigolds':
+        out += `<g fill="${c}" opacity="0.76">` +
+               `<circle cx="${cx}" cy="${cy-4}" r="3.5"/><circle cx="${cx+4}" cy="${cy}" r="3.5"/><circle cx="${cx}" cy="${cy+4}" r="3.5"/><circle cx="${cx-4}" cy="${cy}" r="3.5"/>` +
+               `</g><circle cx="${cx}" cy="${cy}" r="2.5" fill="white" opacity="0.62"/>`; break;
+      case 'mxc-metro-gems':
+        out += `<polygon points="${cx},${cy-7} ${cx+7},${cy} ${cx},${cy+7} ${cx-7},${cy}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.76"/>` +
+               `<polygon points="${cx},${cy-3} ${cx+3},${cy} ${cx},${cy+3} ${cx-3},${cy}" fill="${c}" opacity="0.72"/>`; break;
+      case 'mxc-market-flags': {
+        const dx = cx < 50 ? 1 : -1;
+        out += `<line x1="${cx-5*dx}" y1="${cy-6}" x2="${cx-5*dx}" y2="${cy+6}" stroke="${c}" stroke-width="2" opacity="0.74"/>` +
+               `<polygon points="${cx-5*dx},${cy-6} ${cx+6*dx},${cy-2} ${cx-5*dx},${cy+2}" fill="${c}" opacity="0.76"/>`; break;
+      }
+      case 'mxc-sun-dots':
+        out += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.76"/>` +
+               `<path d="M${cx},${cy-7} V${cy-5} M${cx},${cy+5} V${cy+7} M${cx-7},${cy} H${cx-5} M${cx+5},${cy} H${cx+7}" stroke="${c}" stroke-width="2" opacity="0.72"/>`; break;
 
     }
   }

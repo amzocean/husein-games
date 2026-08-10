@@ -42,7 +42,7 @@ const THEMES = [
   },
   {
     name: 'Singapore', emoji: '🌳',
-    style: 'graphic-composition',
+    style: 'bold-sticker',
     palette: {
       bg:     ['#13a86b', '#e24a68', '#5167d9'],
       ring:   ['#164e63', '#7c2d12', '#365314', '#581c87'],
@@ -50,10 +50,10 @@ const THEMES = [
       accent: ['#6b21a8', '#b91c1c', '#0f766e'],
     },
     bgPatterns:   ['sgp-rain-wash', 'sgp-glass-seams', 'sgp-garden-fibers', 'sgp-transit-scan', 'sgp-harbor-haze'],
-    ringStyles:   ['sgp-skyline-bands', 'sgp-garden-arcs', 'sgp-harbor-blocks'],
-    shapeNames:   ['sgp-window-matrix', 'sgp-canopy-weave', 'sgp-rain-rhythm', 'sgp-transit-ticks'],
-    accentShapes: ['sgp-supertree-clusters', 'sgp-merlion-jets', 'sgp-orchid-trails', 'sgp-ship-lanes'],
-    boardBg:      { pattern: 'sgp-rain-wash', color: '#13a86b' },
+    ringStyles:   ['sgp-skyline-patch', 'sgp-garden-badge', 'sgp-harbor-ticket'],
+    shapeNames:   ['sgp-merlion', 'sgp-supertree', 'sgp-marina-hotel', 'sgp-orchid'],
+    accentShapes: ['sgp-rain-badges', 'sgp-orchid-badges', 'sgp-ship-badges', 'sgp-transit-chevrons'],
+    boardBg:      { pattern: 'solid', color: '#13a86b' },
   },
   {
     name: 'Rio de Janeiro', emoji: '🚠',
@@ -86,7 +86,6 @@ const THEMES = [
   },
   {
     name: 'Mexico City', emoji: '🌵',
-    style: 'graphic-composition',
     palette: {
       bg:     ['#c2415d', '#2f855a', '#b7791f'],
       ring:   ['#1e3a5f', '#7f1d1d', '#14532d', '#581c87'],
@@ -94,10 +93,10 @@ const THEMES = [
       accent: ['#6b21a8', '#b45309', '#0f766e'],
     },
     bgPatterns:   ['mxc-plaza-grain', 'mxc-avenida-lines', 'mxc-market-fibers', 'mxc-tile-wash', 'mxc-highland-haze'],
-    ringStyles:   ['mxc-plaza-axis', 'mxc-avenida-lanes', 'mxc-market-blocks'],
-    shapeNames:   ['mxc-papel-cutouts', 'mxc-tile-grid', 'mxc-woven-stripes', 'mxc-confetti-field'],
-    accentShapes: ['mxc-metro-diamonds', 'mxc-trajinera-flags', 'mxc-cactus-clusters', 'mxc-sunbursts'],
-    boardBg:      { pattern: 'mxc-plaza-grain', color: '#c2415d' },
+    ringStyles:   ['mxc-plaza-frame', 'mxc-avenida-border', 'mxc-papel-border'],
+    shapeNames:   ['mxc-angel', 'mxc-trajinera', 'mxc-cactus', 'mxc-pyramid'],
+    accentShapes: ['mxc-marigolds', 'mxc-metro-gems', 'mxc-market-flags', 'mxc-sun-dots'],
+    boardBg:      { pattern: 'solid', color: '#c2415d' },
   },
 ];
 
