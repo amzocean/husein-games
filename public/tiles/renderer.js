@@ -11,6 +11,141 @@ function mulberry32(a) {
   };
 }
 
+function renderRomanticBg(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+  if (variant === 0) {
+    for (let y = 14; y <= 86; y += 12) {
+      const bend = (family % 3) * 3 + 2;
+      s += `<path d="M8,${y} C30,${y-bend} 67,${y+bend} 92,${y}" fill="none" stroke="${c}" stroke-width="${0.65 + family*0.05}" opacity="${o*0.28}"/>`;
+    }
+  } else if (variant === 1) {
+    for (let x = 10; x <= 90; x += 13) {
+      const slant = 4 + family * 2;
+      s += `<path d="M${x},8 C${x-slant},30 ${x+slant},66 ${x-2},92" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.25}"/>`;
+    }
+  } else if (variant === 2) {
+    const step = 14 + family;
+    for (let y = 12; y <= 88; y += step) {
+      s += `<path d="M8,${y+7} L${28+family*2},${y-4} L${52-family},${y+5} L92,${y-6}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
+    }
+  } else if (variant === 3) {
+    for (let y = 12; y <= 88; y += 10) {
+      const inset = (y + family * 7) % 20;
+      s += `<line x1="${8+inset}" y1="${y}" x2="${92-inset/2}" y2="${y+family%2}" stroke="${c}" stroke-width="0.65" stroke-dasharray="${5+family} ${3+(family%3)}" opacity="${o*0.24}"/>`;
+    }
+  } else {
+    for (let y = 18; y <= 82; y += 16) {
+      s += `<path d="M8,${y} C25,${y-9-family} 48,${y+8} 92,${y-3}" fill="none" stroke="${c}" stroke-width="${4+family*0.5}" stroke-linecap="round" opacity="${o*0.09}"/>`;
+    }
+  }
+  return s;
+}
+
+function renderRomanticRing(family, variant, c) {
+  const inset = 8 + family % 3;
+  if (variant === 0) {
+    return `<rect x="${inset}" y="${inset}" width="${100-inset*2}" height="${100-inset*2}" rx="${12+family}" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+           `<path d="M50,${inset-1} C45,${inset-7} 36,${inset-1} 50,${inset+9} C64,${inset-1} 55,${inset-7} 50,${inset-1}Z" fill="${c}" opacity="0.8"/>`;
+  }
+  if (variant === 1) {
+    return `<rect x="${inset}" y="${inset}" width="${100-inset*2}" height="${100-inset*2}" rx="${5+family}" fill="none" stroke="${c}" stroke-width="3.2" stroke-dasharray="${7+family} 4" opacity="0.78"/>` +
+           `<rect x="${inset+5}" y="${inset+5}" width="${90-inset*2}" height="${90-inset*2}" rx="4" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.5"/>`;
+  }
+  return `<path d="M12,22 Q50,${5+family} 88,22 V78 Q50,${95-family} 12,78 Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+         `<path d="M20,18 Q50,${11+family} 80,18 M20,82 Q50,${89-family} 80,82" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.52"/>`;
+}
+
+function renderRomanticStickerRing(family, variant, c) {
+  return `<g transform="translate(2.5 3)">${renderRomanticRing(family, variant, '#172033')}</g>` +
+         `<g transform="translate(-2.5 -2.5) scale(1.05)">${renderRomanticRing(family, variant, '#fff4d6')}</g>` +
+         renderRomanticRing(family, variant, c);
+}
+
+function renderRomanticCompositionRing(family, variant, c) {
+  if (variant === 0) {
+    return `<path d="M6,24 H94 M6,76 H94" stroke="${c}" stroke-width="${8+family}" opacity="0.82"/>` +
+           `<path d="M18,6 V94 M82,6 V94" stroke="${c}" stroke-width="3" opacity="0.58"/>`;
+  }
+  if (variant === 1) {
+    return `<path d="M5,17 L83,5 L95,33 L17,45 Z M5,67 L83,55 L95,83 L17,95 Z" fill="${c}" opacity="0.78"/>`;
+  }
+  return `<path d="M8,8 L92,8 L72,50 L92,92 L8,92 L28,50 Z" fill="none" stroke="${c}" stroke-width="7" opacity="0.82"/>` +
+         `<path d="M18,18 L82,18 M18,82 L82,82" stroke="${c}" stroke-width="2.5" opacity="0.55"/>`;
+}
+
+function renderRomanticShape(icon, c, o) {
+  if (icon === 0) return `<rect x="28" y="35" width="44" height="31" rx="3" fill="${c}" opacity="${o}"/><path d="M28,38 L50,55 L72,38 M28,66 L43,51 M72,66 L57,51" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>`;
+  if (icon === 1) return `<path d="M31,69 L65,29 L72,36 L38,76 L27,79 Z" fill="${c}" opacity="${o}"/><path d="M65,29 L72,24 L77,29 L72,36" fill="${c}" opacity="${o*0.78}"/><path d="M31,69 L38,76" stroke="white" stroke-width="2" opacity="0.55"/>`;
+  if (icon === 2) return `<circle cx="50" cy="50" r="22" fill="${c}" opacity="${o}"/><path d="M50,62 C31,50 38,35 50,44 C62,35 69,50 50,62Z" fill="white" opacity="0.58"/>`;
+  if (icon === 3) return `<path d="M31,28 H69 V72 H31 Z" fill="${c}" opacity="${o}"/><path d="M31,28 L45,42 H69 M36,51 H63 M36,59 H58" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>`;
+  if (icon === 4) return `<path d="M63,27 A25,25 0 1,0 69,68 A20,20 0 1,1 63,27Z" fill="${c}" opacity="${o}"/>`;
+  if (icon === 5) return `<path d="M36,37 H64 L69,70 H31 Z" fill="${c}" opacity="${o}"/><path d="M41,37 Q41,25 50,25 Q59,25 59,37 M38,54 H62" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><circle cx="50" cy="54" r="8" fill="white" opacity="0.42"/>`;
+  if (icon === 6) return `<path d="M30,39 L61,27 L67,40 L36,52 Z" fill="${c}" opacity="${o}"/><path d="M48,48 L40,75 M55,45 L65,75 M44,62 H61" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><circle cx="65" cy="33" r="9" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+  if (icon === 7) return `<circle cx="43" cy="51" r="17" fill="none" stroke="${c}" stroke-width="6" opacity="${o}"/><circle cx="58" cy="51" r="17" fill="none" stroke="${c}" stroke-width="6" opacity="${o*0.82}"/>`;
+  if (icon === 8) return `<g fill="${c}" opacity="${o}"><circle cx="50" cy="39" r="10"/><circle cx="39" cy="49" r="10"/><circle cx="61" cy="49" r="10"/><circle cx="44" cy="61" r="10"/><circle cx="56" cy="61" r="10"/></g><circle cx="50" cy="51" r="7" fill="white" opacity="0.5"/>`;
+  if (icon === 9) return `<g fill="${c}" opacity="${o}"><circle cx="40" cy="40" r="9"/><circle cx="53" cy="36" r="10"/><circle cx="62" cy="48" r="9"/><circle cx="45" cy="52" r="10"/></g><path d="M43,55 L36,75 M54,54 L55,76 M61,54 L70,74" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+  if (icon === 10) return `<path d="M31,43 H62 L67,70 H28 Z" fill="${c}" opacity="${o}"/><path d="M61,47 Q77,45 76,59 Q73,65 67,64 M35,43 Q36,29 51,31 Q60,32 61,43" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M75,47 L84,42" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+  if (icon === 11) return `<path d="M28,46 H72 V60 H28 Z M31,60 H36 V75 H31 Z M64,60 H69 V75 H64 Z M32,32 H68 V43 H32 Z" fill="${c}" opacity="${o}"/><path d="M36,43 V32 M50,43 V32 M64,43 V32" stroke="white" stroke-width="2" opacity="0.5"/>`;
+  if (icon === 12) return `<path d="M24,49 L50,27 L76,49 V75 H24 Z" fill="${c}" opacity="${o}"/><rect x="43" y="55" width="14" height="20" fill="white" opacity="0.5"/><rect x="29" y="53" width="10" height="10" fill="white" opacity="0.5"/><rect x="61" y="53" width="10" height="10" fill="white" opacity="0.5"/>`;
+  if (icon === 13) return `<path d="M27,43 H47 V59 Q47,68 37,68 Q27,68 27,59 Z M53,43 H73 V59 Q73,68 63,68 Q53,68 53,59 Z" fill="${c}" opacity="${o}"/><path d="M47,48 Q56,48 51,57 M73,48 Q82,48 77,57" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M43,33 C48,27 42,24 47,19 M61,33 C66,27 60,24 65,19" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.7}"/>`;
+  if (icon === 14) return `<path d="M37,31 H63 L69,51 H31 Z" fill="${c}" opacity="${o}"/><rect x="47" y="51" width="6" height="22" fill="${c}" opacity="${o}"/><path d="M37,75 H63" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="${o}"/>`;
+  if (icon === 15) return `<circle cx="41" cy="43" r="13" fill="none" stroke="${c}" stroke-width="6" opacity="${o}"/><path d="M51,52 L74,75 M63,64 L69,58 M69,70 L75,64" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="${o}"/>`;
+  if (icon === 16) return `<circle cx="50" cy="50" r="25" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><polygon points="50,27 58,47 73,50 56,56 50,74 44,56 27,50 42,44" fill="${c}" opacity="${o}"/><circle cx="50" cy="50" r="4" fill="white" opacity="0.6"/>`;
+  if (icon === 17) return `<rect x="29" y="36" width="42" height="37" rx="5" fill="${c}" opacity="${o}"/><path d="M41,36 V29 H59 V36 M37,36 V73 M63,36 V73" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><rect x="45" y="47" width="10" height="12" rx="2" fill="white" opacity="0.5"/>`;
+  if (icon === 18) return `<path d="M50,25 L57,46 L76,54 L57,56 L59,75 L50,65 L41,75 L43,56 L24,54 L43,46 Z" fill="${c}" opacity="${o}"/>`;
+  if (icon === 19) return `<rect x="25" y="37" width="50" height="36" rx="6" fill="${c}" opacity="${o}"/><path d="M36,37 L41,29 H57 L63,37" fill="${c}" opacity="${o}"/><circle cx="50" cy="55" r="12" fill="white" opacity="0.5"/><circle cx="50" cy="55" r="7" fill="${c}" opacity="${o}"/>`;
+  if (icon === 20) return `<path d="M38,27 H68 V37 H49 V47 H64 V57 H49 V74 H38 Z" fill="${c}" opacity="${o}"/>`;
+  if (icon === 21) return `<path d="M50,67 C28,54 31,35 44,38 C49,39 50,44 50,44 C50,44 51,39 56,38 C69,35 72,54 50,67Z" fill="none" stroke="${c}" stroke-width="6" opacity="${o}"/><path d="M31,52 C36,38 46,38 50,52 C54,66 64,66 69,52" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.8}"/>`;
+  if (icon === 22) return `<circle cx="42" cy="51" r="17" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><circle cx="59" cy="51" r="17" fill="none" stroke="${c}" stroke-width="5" opacity="${o*0.78}"/><polygon points="59,29 64,36 59,41 54,36" fill="${c}" opacity="${o}"/>`;
+  return `<path d="M28,43 L38,58 L50,37 L62,58 L72,43 L67,72 H33 Z" fill="${c}" opacity="${o}"/><circle cx="28" cy="41" r="4" fill="${c}" opacity="${o}"/><circle cx="50" cy="34" r="4" fill="${c}" opacity="${o}"/><circle cx="72" cy="41" r="4" fill="${c}" opacity="${o}"/>`;
+}
+
+function renderRomanticStickerShape(icon, c, o) {
+  return `<g transform="translate(3 4)">${renderRomanticShape(icon, '#172033', 0.92)}</g>` +
+         `<g transform="translate(-4 -4) scale(1.08)">${renderRomanticShape(icon, '#fff4d6', 0.98)}</g>` +
+         renderRomanticShape(icon, c, o);
+}
+
+function renderRomanticCompositionShape(icon, c, o) {
+  const positions = [[24,24,0.42],[72,20,0.34],[48,50,0.5],[20,76,0.32],[76,75,0.4]];
+  return positions.map(([x,y,scale], index) =>
+    `<g transform="translate(${x} ${y}) rotate(${index%2 ? 12 : -10}) scale(${scale}) translate(-50 -50)" opacity="${0.72 + index*0.04}">${renderRomanticShape(icon, c, o)}</g>`
+  ).join('');
+}
+
+function renderRomanticAccent(family, variant, c, cx, cy) {
+  if (family === 0 && variant === 0 || family === 3 && variant === 2 || family === 5 && variant === 1) return `<path d="M${cx},${cy+6} C${cx-12},${cy-1} ${cx-6},${cy-10} ${cx},${cy-4} C${cx+6},${cy-10} ${cx+12},${cy-1} ${cx},${cy+6}Z" fill="${c}" opacity="0.78"/>`;
+  if (family === 0 && variant === 1 || family === 3 && variant === 0) return `<rect x="${cx-6}" y="${cy-6}" width="12" height="12" rx="2" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.78"/><path d="M${cx-4},${cy} H${cx+4} M${cx},${cy-4} V${cy+4}" stroke="${c}" stroke-width="1.5" opacity="0.7"/>`;
+  if (family === 0 && variant === 2) return `<path d="M${cx},${cy-7} C${cx-7},${cy+1} ${cx-6},${cy+7} ${cx},${cy+8} C${cx+6},${cy+7} ${cx+7},${cy+1} ${cx},${cy-7}Z" fill="${c}" opacity="0.76"/>`;
+  if (family === 0 || family === 4 && variant === 2) return `<path d="M${cx-5},${cy-5} L${cx+5},${cy+5} M${cx+5},${cy-5} L${cx-5},${cy+5}" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="0.76"/>`;
+  if (family === 1 && variant === 1) return `<path d="M${cx+3},${cy-7} A8,8 0 1,0 ${cx+5},${cy+6} A6,6 0 1,1 ${cx+3},${cy-7}Z" fill="${c}" opacity="0.78"/>`;
+  if (family === 1 && variant === 2) return `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}" opacity="0.82"/><path d="M${cx-7},${cy} H${cx+7} M${cx},${cy-7} V${cy+7}" stroke="${c}" stroke-width="1.5" opacity="0.55"/>`;
+  if (family === 2 && variant === 0) return `<ellipse cx="${cx-3}" cy="${cy}" rx="4" ry="7" transform="rotate(-35 ${cx-3} ${cy})" fill="${c}" opacity="0.72"/><ellipse cx="${cx+3}" cy="${cy}" rx="4" ry="7" transform="rotate(35 ${cx+3} ${cy})" fill="${c}" opacity="0.72"/>`;
+  if (family === 2 && variant === 1) return `<path d="M${cx-7},${cy+5} Q${cx-2},${cy-8} ${cx+7},${cy-4} Q${cx+6},${cy+6} ${cx-7},${cy+5}Z" fill="${c}" opacity="0.75"/><path d="M${cx-5},${cy+3} L${cx+5},${cy-3}" stroke="white" stroke-width="1" opacity="0.45"/>`;
+  if (family === 2 && variant === 2) return `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" opacity="0.75"/><path d="M${cx},${cy+4} V${cy+9}" stroke="${c}" stroke-width="2"/>`;
+  if (family === 2 && variant === 3) return `<path d="M${cx},${cy} Q${cx-10},${cy-9} ${cx-8},${cy+2} Q${cx-5},${cy+7} ${cx},${cy+2} Q${cx+5},${cy+7} ${cx+8},${cy+2} Q${cx+10},${cy-9} ${cx},${cy}Z" fill="${c}" opacity="0.72"/>`;
+  if (family === 3 && variant === 1) return `<rect x="${cx-7}" y="${cy-5}" width="14" height="10" rx="4" fill="${c}" opacity="0.75"/><path d="M${cx-5},${cy-3} L${cx+5},${cy+3}" stroke="white" stroke-width="1.5" opacity="0.45"/>`;
+  if (family === 4 && variant === 0) return `<path d="M${cx},${cy+8} C${cx-9},${cy} ${cx-7},${cy-8} ${cx},${cy-8} C${cx+7},${cy-8} ${cx+9},${cy} ${cx},${cy+8}Z" fill="${c}" opacity="0.76"/><circle cx="${cx}" cy="${cy-2}" r="2.5" fill="white" opacity="0.55"/>`;
+  if (family === 4 && variant === 1) return `<rect x="${cx-7}" y="${cy-5}" width="14" height="10" rx="1.5" fill="${c}" opacity="0.76"/><path d="M${cx-3},${cy-5} V${cy+5} M${cx+3},${cy-5} V${cy+5}" stroke="white" stroke-width="1" opacity="0.5"/>`;
+  if (family === 4 && variant === 3) { const dx = cx < 50 ? 1 : -1; return `<path d="M${cx-6*dx},${cy-5} L${cx+6*dx},${cy} L${cx-6*dx},${cy+5}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>`; }
+  if (family === 5 && variant === 0) return `<path d="M${cx-5},${cy-7} H${cx+6} V${cy-3} H${cx} V${cy} H${cx+5} V${cy+4} H${cx} V${cy+8} H${cx-5} Z" fill="${c}" opacity="0.78"/>`;
+  if (family === 5 && variant === 2) return `<polygon points="${cx},${cy-8} ${cx+7},${cy} ${cx},${cy+8} ${cx-7},${cy}" fill="${c}" opacity="0.78"/>`;
+  return `<path d="M${cx},${cy-8} L${cx+2},${cy-2} L${cx+8},${cy} L${cx+2},${cy+2} L${cx},${cy+8} L${cx-2},${cy+2} L${cx-8},${cy} L${cx-2},${cy-2}Z" fill="${c}" opacity="0.78"/>`;
+}
+
+function renderRomanticStickerAccent(family, variant, c, cx, cy) {
+  return `<g transform="translate(2 3)">${renderRomanticAccent(family, variant, '#172033', cx, cy)}</g>` +
+         `<g transform="translate(${cx} ${cy}) scale(1.2) translate(${-cx} ${-cy})">${renderRomanticAccent(family, variant, '#fff4d6', cx, cy)}</g>` +
+         renderRomanticAccent(family, variant, c, cx, cy);
+}
+
+function renderRomanticCompositionAccent(family, variant, c) {
+  if (variant === 0) return `<path d="M8,18 C20,7 31,8 40,20 C49,32 61,30 72,17 C80,8 89,9 94,15 M6,57 C20,43 35,45 48,59 C60,72 76,70 94,52" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" opacity="0.84"/>`;
+  if (variant === 1) return `<g fill="${c}" opacity="0.84"><rect x="8" y="12" width="24" height="16" rx="3"/><rect x="58" y="8" width="31" height="18" rx="3"/><rect x="34" y="40" width="30" height="19" rx="3"/><rect x="9" y="70" width="30" height="17" rx="3"/><rect x="61" y="68" width="30" height="20" rx="3"/></g>`;
+  if (variant === 2) return `<g fill="${c}" opacity="0.84"><polygon points="16,8 27,20 16,32 5,20"/><polygon points="55,10 68,23 55,36 42,23"/><polygon points="84,34 95,45 84,56 73,45"/><polygon points="25,55 38,68 25,81 12,68"/><polygon points="62,64 76,78 62,92 48,78"/></g>`;
+  return `<path d="M8,18 L30,8 L42,24 L21,35 Z M59,9 L90,19 L83,39 L53,29 Z M17,51 L46,42 L54,63 L25,72 Z M60,59 L91,50 L96,74 L66,84 Z M30,78 L55,70 L63,91 L38,96 Z" fill="${c}" opacity="0.82"/>`;
+}
+
 // ── Background Zone (full tile, 4-96 inset) ──
 
 function renderBg(attr) {
@@ -1868,6 +2003,38 @@ function renderBg(attr) {
       return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.16}"/>` +
              `<path d="M8,27 C26,18 52,35 92,22 M8,58 C35,68 64,49 92,61 M8,84 C29,76 60,90 92,80" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="${o*0.05}"/>`;
 
+    // ── Romantic collection ──
+    case 'love-paper-lines': return renderRomanticBg(0, 0, c, o);
+    case 'love-handwriting-flow': return renderRomanticBg(0, 1, c, o);
+    case 'love-envelope-folds': return renderRomanticBg(0, 2, c, o);
+    case 'love-postmark-trails': return renderRomanticBg(0, 3, c, o);
+    case 'love-ink-wash': return renderRomanticBg(0, 4, c, o);
+    case 'moon-night-waves': return renderRomanticBg(1, 0, c, o);
+    case 'moon-star-trails': return renderRomanticBg(1, 1, c, o);
+    case 'moon-constellation-lines': return renderRomanticBg(1, 2, c, o);
+    case 'moon-dusk-bands': return renderRomanticBg(1, 3, c, o);
+    case 'moon-lantern-glow': return renderRomanticBg(1, 4, c, o);
+    case 'rose-vine-lines': return renderRomanticBg(2, 0, c, o);
+    case 'rose-trellis': return renderRomanticBg(2, 1, c, o);
+    case 'rose-petal-drift': return renderRomanticBg(2, 2, c, o);
+    case 'rose-leaf-veins': return renderRomanticBg(2, 3, c, o);
+    case 'rose-summer-rain': return renderRomanticBg(2, 4, c, o);
+    case 'home-quilt-stitches': return renderRomanticBg(3, 0, c, o);
+    case 'home-window-light': return renderRomanticBg(3, 1, c, o);
+    case 'home-wood-grain': return renderRomanticBg(3, 2, c, o);
+    case 'home-cozy-lines': return renderRomanticBg(3, 3, c, o);
+    case 'home-roof-hatch': return renderRomanticBg(3, 4, c, o);
+    case 'journey-route-lines': return renderRomanticBg(4, 0, c, o);
+    case 'journey-map-folds': return renderRomanticBg(4, 1, c, o);
+    case 'journey-horizon-bands': return renderRomanticBg(4, 2, c, o);
+    case 'journey-rail-tracks': return renderRomanticBg(4, 3, c, o);
+    case 'journey-passport-marks': return renderRomanticBg(4, 4, c, o);
+    case 'fatema-signature-lines': return renderRomanticBg(5, 0, c, o);
+    case 'fatema-jewel-shimmer': return renderRomanticBg(5, 1, c, o);
+    case 'fatema-infinity-weave': return renderRomanticBg(5, 2, c, o);
+    case 'fatema-celebration-ribbons': return renderRomanticBg(5, 3, c, o);
+    case 'fatema-golden-glow': return renderRomanticBg(5, 4, c, o);
+
     default: return '';
   }
 }
@@ -2686,6 +2853,26 @@ function renderRing(attr) {
              `<rect x="13" y="13" width="74" height="74" rx="8" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="13 6" opacity="0.64"/>`;
     case 'mxc-papel-border':
       return `<path d="M6,18 L14,7 L22,18 L30,7 L38,18 L46,7 L54,18 L62,7 L70,18 L78,7 L86,18 L94,7 V93 L86,82 L78,93 L70,82 L62,93 L54,82 L46,93 L38,82 L30,93 L22,82 L14,93 L6,82 Z" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round" opacity="0.72"/>`;
+
+    // ── Romantic collection ──
+    case 'love-envelope-frame': return renderRomanticCompositionRing(0, 0, c);
+    case 'love-stamp-edge': return renderRomanticCompositionRing(0, 1, c);
+    case 'love-ribbon-border': return renderRomanticCompositionRing(0, 2, c);
+    case 'moon-crescent-frame': return renderRomanticRing(1, 0, c);
+    case 'moon-star-chain': return renderRomanticRing(1, 1, c);
+    case 'moon-orbit-border': return renderRomanticRing(1, 2, c);
+    case 'rose-thorn-vine': return renderRomanticRing(2, 0, c);
+    case 'rose-garland': return renderRomanticRing(2, 1, c);
+    case 'rose-garden-arch': return renderRomanticRing(2, 2, c);
+    case 'home-picture-frame': return renderRomanticStickerRing(3, 0, c);
+    case 'home-doorway-border': return renderRomanticStickerRing(3, 1, c);
+    case 'home-stitched-edge': return renderRomanticStickerRing(3, 2, c);
+    case 'journey-ticket-frame': return renderRomanticStickerRing(4, 0, c);
+    case 'journey-compass-border': return renderRomanticStickerRing(4, 1, c);
+    case 'journey-luggage-strap': return renderRomanticStickerRing(4, 2, c);
+    case 'fatema-monogram-frame': return renderRomanticCompositionRing(5, 0, c);
+    case 'fatema-promise-bands': return renderRomanticCompositionRing(5, 1, c);
+    case 'fatema-forever-loop': return renderRomanticCompositionRing(5, 2, c);
 
     default: return '';
   }
@@ -4010,6 +4197,32 @@ function renderShape(attr) {
       return `<polygon points="50,25 76,71 24,71" fill="${c}" opacity="${o}"/>` +
              `<path d="M31,59 H69 M37,48 H63 M43,37 H57 M50,25 V71" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>`;
 
+    // ── Romantic collection ──
+    case 'love-envelope': return renderRomanticCompositionShape(0, c, o);
+    case 'love-fountain-pen': return renderRomanticCompositionShape(1, c, o);
+    case 'love-wax-seal': return renderRomanticCompositionShape(2, c, o);
+    case 'love-folded-note': return renderRomanticCompositionShape(3, c, o);
+    case 'moon-crescent': return renderRomanticShape(4, c, o);
+    case 'moon-lantern': return renderRomanticShape(5, c, o);
+    case 'moon-telescope': return renderRomanticShape(6, c, o);
+    case 'moon-promise-rings': return renderRomanticShape(7, c, o);
+    case 'rose-bloom': return renderRomanticShape(8, c, o);
+    case 'rose-bouquet': return renderRomanticShape(9, c, o);
+    case 'rose-watering-can': return renderRomanticShape(10, c, o);
+    case 'rose-garden-bench': return renderRomanticShape(11, c, o);
+    case 'home-house': return renderRomanticStickerShape(12, c, o);
+    case 'home-teacups': return renderRomanticStickerShape(13, c, o);
+    case 'home-lamp': return renderRomanticStickerShape(14, c, o);
+    case 'home-key': return renderRomanticStickerShape(15, c, o);
+    case 'journey-compass': return renderRomanticStickerShape(16, c, o);
+    case 'journey-suitcase': return renderRomanticStickerShape(17, c, o);
+    case 'journey-airplane': return renderRomanticStickerShape(18, c, o);
+    case 'journey-camera': return renderRomanticStickerShape(19, c, o);
+    case 'fatema-letter-f': return renderRomanticCompositionShape(20, c, o);
+    case 'fatema-infinity-heart': return renderRomanticCompositionShape(21, c, o);
+    case 'fatema-two-rings': return renderRomanticCompositionShape(22, c, o);
+    case 'fatema-crown': return renderRomanticCompositionShape(23, c, o);
+
     default: return '';
   }
 }
@@ -4156,6 +4369,17 @@ function renderAccent(attr) {
              `<path d="M9,78 H27 M18,69 V87 M12,72 L24,84 M24,72 L12,84"/><circle cx="18" cy="78" r="4"/>` +
              `<path d="M47,81 H67 M57,71 V91 M50,74 L64,88 M64,74 L50,88"/><circle cx="57" cy="81" r="4"/>` +
              `</g>`;
+
+    // ── Romantic graphic compositions ──
+    case 'love-hearts': return renderRomanticCompositionAccent(0, 0, c);
+    case 'love-stamps': return renderRomanticCompositionAccent(0, 1, c);
+    case 'love-ink-drops': return renderRomanticCompositionAccent(0, 2, c);
+    case 'love-kisses': return renderRomanticCompositionAccent(0, 3, c);
+    case 'fatema-initials': return renderRomanticCompositionAccent(5, 0, c);
+    case 'fatema-hearts': return renderRomanticCompositionAccent(5, 1, c);
+    case 'fatema-diamonds': return renderRomanticCompositionAccent(5, 2, c);
+    case 'fatema-stars': return renderRomanticCompositionAccent(5, 3, c);
+
     default:
       break;
   }
@@ -5009,6 +5233,24 @@ function renderAccent(attr) {
       case 'mxc-sun-dots':
         out += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${c}" opacity="0.76"/>` +
                `<path d="M${cx},${cy-7} V${cy-5} M${cx},${cy+5} V${cy+7} M${cx-7},${cy} H${cx-5} M${cx+5},${cy} H${cx+7}" stroke="${c}" stroke-width="2" opacity="0.72"/>`; break;
+
+      // ── Romantic collection ──
+      case 'moon-stars': out += renderRomanticAccent(1, 0, c, cx, cy); break;
+      case 'moon-crescents': out += renderRomanticAccent(1, 1, c, cx, cy); break;
+      case 'moon-fireflies': out += renderRomanticAccent(1, 2, c, cx, cy); break;
+      case 'moon-sparkles': out += renderRomanticAccent(1, 3, c, cx, cy); break;
+      case 'rose-petals': out += renderRomanticAccent(2, 0, c, cx, cy); break;
+      case 'rose-leaves': out += renderRomanticAccent(2, 1, c, cx, cy); break;
+      case 'rose-buds': out += renderRomanticAccent(2, 2, c, cx, cy); break;
+      case 'rose-butterflies': out += renderRomanticAccent(2, 3, c, cx, cy); break;
+      case 'home-windows': out += renderRomanticStickerAccent(3, 0, c, cx, cy); break;
+      case 'home-cushions': out += renderRomanticStickerAccent(3, 1, c, cx, cy); break;
+      case 'home-hearts': out += renderRomanticStickerAccent(3, 2, c, cx, cy); break;
+      case 'home-stars': out += renderRomanticStickerAccent(3, 3, c, cx, cy); break;
+      case 'journey-map-pins': out += renderRomanticStickerAccent(4, 0, c, cx, cy); break;
+      case 'journey-tickets': out += renderRomanticStickerAccent(4, 1, c, cx, cy); break;
+      case 'journey-footprints': out += renderRomanticStickerAccent(4, 2, c, cx, cy); break;
+      case 'journey-arrows': out += renderRomanticStickerAccent(4, 3, c, cx, cy); break;
 
     }
   }

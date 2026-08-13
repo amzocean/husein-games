@@ -12,6 +12,99 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 
 const THEMES = [
   {
+    name: 'Love Letters', emoji: '💌',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#e6a5a1', '#d0ad7f', '#73a6a1'],
+      ring:   ['#7f1d3f', '#5b3a29', '#245c59', '#5b3473'],
+      shape:  ['#8a244b', '#684126', '#27665f'],
+      accent: ['#9b2c54', '#2f6b62', '#6b3c78'],
+    },
+    bgPatterns:   ['love-paper-lines', 'love-handwriting-flow', 'love-envelope-folds', 'love-postmark-trails', 'love-ink-wash'],
+    ringStyles:   ['love-envelope-frame', 'love-stamp-edge', 'love-ribbon-border'],
+    shapeNames:   ['love-envelope', 'love-fountain-pen', 'love-wax-seal', 'love-folded-note'],
+    accentShapes: ['love-hearts', 'love-stamps', 'love-ink-drops', 'love-kisses'],
+    boardBg:      { pattern: 'love-paper-lines', color: '#e6a5a1' },
+  },
+  {
+    name: 'Moonlit Promise', emoji: '🌙',
+    palette: {
+      bg:     ['#263f73', '#76518f', '#b5684f'],
+      ring:   ['#172b55', '#512d6d', '#7a352c', '#315b62'],
+      shape:  ['#1f3766', '#5c3478', '#843d31'],
+      accent: ['#6c2f67', '#1f5a64', '#8a3f35'],
+    },
+    bgPatterns:   ['moon-night-waves', 'moon-star-trails', 'moon-constellation-lines', 'moon-dusk-bands', 'moon-lantern-glow'],
+    ringStyles:   ['moon-crescent-frame', 'moon-star-chain', 'moon-orbit-border'],
+    shapeNames:   ['moon-crescent', 'moon-lantern', 'moon-telescope', 'moon-promise-rings'],
+    accentShapes: ['moon-stars', 'moon-crescents', 'moon-fireflies', 'moon-sparkles'],
+    boardBg:      { pattern: 'moon-night-waves', color: '#263f73' },
+  },
+  {
+    name: 'Rose Garden', emoji: '🌹',
+    palette: {
+      bg:     ['#b95672', '#63804d', '#c09436'],
+      ring:   ['#7f1d3d', '#36572c', '#735416', '#533568'],
+      shape:  ['#8f294b', '#3d6634', '#7d5a18'],
+      accent: ['#9a3050', '#2f6a4b', '#634078'],
+    },
+    bgPatterns:   ['rose-vine-lines', 'rose-trellis', 'rose-petal-drift', 'rose-leaf-veins', 'rose-summer-rain'],
+    ringStyles:   ['rose-thorn-vine', 'rose-garland', 'rose-garden-arch'],
+    shapeNames:   ['rose-bloom', 'rose-bouquet', 'rose-watering-can', 'rose-garden-bench'],
+    accentShapes: ['rose-petals', 'rose-leaves', 'rose-buds', 'rose-butterflies'],
+    boardBg:      { pattern: 'rose-vine-lines', color: '#b95672' },
+  },
+  {
+    name: 'Home With You', emoji: '🏡',
+    style: 'bold-sticker',
+    palette: {
+      bg:     ['#c4774f', '#6f927f', '#687b9d'],
+      ring:   ['#6f3425', '#315b4b', '#344b72', '#653b58'],
+      shape:  ['#7d3e2b', '#376754', '#3c527c'],
+      accent: ['#7b2f49', '#2f6657', '#4d4275'],
+    },
+    bgPatterns:   ['home-quilt-stitches', 'home-window-light', 'home-wood-grain', 'home-cozy-lines', 'home-roof-hatch'],
+    ringStyles:   ['home-picture-frame', 'home-doorway-border', 'home-stitched-edge'],
+    shapeNames:   ['home-house', 'home-teacups', 'home-lamp', 'home-key'],
+    accentShapes: ['home-windows', 'home-cushions', 'home-hearts', 'home-stars'],
+    boardBg:      { pattern: 'home-quilt-stitches', color: '#c4774f' },
+  },
+  {
+    name: 'Shared Journeys', emoji: '🧭',
+    style: 'bold-sticker',
+    palette: {
+      bg:     ['#2f7476', '#b36a3f', '#79588f'],
+      ring:   ['#174f53', '#743923', '#4e3269', '#5d5522'],
+      shape:  ['#1d5b5e', '#824429', '#563971'],
+      accent: ['#6d2e45', '#245f55', '#644079'],
+    },
+    bgPatterns:   ['journey-route-lines', 'journey-map-folds', 'journey-horizon-bands', 'journey-rail-tracks', 'journey-passport-marks'],
+    ringStyles:   ['journey-ticket-frame', 'journey-compass-border', 'journey-luggage-strap'],
+    shapeNames:   ['journey-compass', 'journey-suitcase', 'journey-airplane', 'journey-camera'],
+    accentShapes: ['journey-map-pins', 'journey-tickets', 'journey-footprints', 'journey-arrows'],
+    boardBg:      { pattern: 'journey-route-lines', color: '#2f7476' },
+  },
+  {
+    name: 'Forever Fatema', emoji: '💖',
+    style: 'graphic-composition',
+    palette: {
+      bg:     ['#7f234c', '#ad872c', '#326573'],
+      ring:   ['#5e1738', '#735611', '#174b58', '#59306d'],
+      shape:  ['#6d1c42', '#7e6018', '#1d5562'],
+      accent: ['#8b2850', '#285f58', '#623878'],
+    },
+    bgPatterns:   ['fatema-signature-lines', 'fatema-jewel-shimmer', 'fatema-infinity-weave', 'fatema-celebration-ribbons', 'fatema-golden-glow'],
+    ringStyles:   ['fatema-monogram-frame', 'fatema-promise-bands', 'fatema-forever-loop'],
+    shapeNames:   ['fatema-letter-f', 'fatema-infinity-heart', 'fatema-two-rings', 'fatema-crown'],
+    accentShapes: ['fatema-initials', 'fatema-hearts', 'fatema-diamonds', 'fatema-stars'],
+    boardBg:      { pattern: 'fatema-signature-lines', color: '#7f234c' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived August 2026 (romantic collection rotation)
+  {
     name: 'Istanbul', emoji: '🌉',
     palette: {
       bg:     ['#0f6b78', '#c65d35', '#6e5aa8'],
@@ -98,10 +191,6 @@ const THEMES = [
     accentShapes: ['mxc-marigolds', 'mxc-metro-gems', 'mxc-market-flags', 'mxc-sun-dots'],
     boardBg:      { pattern: 'solid', color: '#c2415d' },
   },
-];
-
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived August 2026 (city collection rotation)
   {
     name: 'Airport', emoji: '✈️',
