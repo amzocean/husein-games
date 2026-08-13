@@ -13,7 +13,6 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
   {
     name: 'Love Letters', emoji: '💌',
-    style: 'graphic-composition',
     palette: {
       bg:     ['#ff6b8a', '#ffd166', '#35c7b4'],
       ring:   ['#9f124f', '#8a4b08', '#006f68', '#6d28a8'],
@@ -86,7 +85,6 @@ const THEMES = [
   },
   {
     name: 'Forever Fatema', emoji: '💖',
-    style: 'graphic-composition',
     palette: {
       bg:     ['#c0266d', '#d9a514', '#008c95'],
       ring:   ['#7f1245', '#8a6200', '#005e66', '#652285'],
