@@ -58,26 +58,39 @@ try {
   process.exit(1);
 }
 
-// ── Extract THEMES array from engine.js ──
+// ── Extract THEMES + BIRTHDAY_THEMES arrays from engine.js ──
+//
+// BIRTHDAY_THEMES holds date-scheduled themes (Fatema's birthday countdown) that never
+// enter the random THEMES rotation, but they still ship real palettes/patterns/renderer
+// cases and must pass every structural/visual check that ordinary active themes do.
+// We validate THEMES and BIRTHDAY_THEMES together (ALL_THEMES) so scheduled themes get
+// the same coverage. ARCHIVED_THEMES is intentionally NOT included — archived themes
+// remain reference-only and nonselectable, matching the existing behavior.
 
 function extractThemes(src) {
   // Strip export keywords so we can eval
   let code = src.replace(/\bexport\b\s*\{[^}]*\}/g, '')
                .replace(/\bexport\s+(default\s+)?/g, '');
 
-  // Wrap in a function that returns THEMES
-  const fn = new Function(code + '\nreturn THEMES;');
+  // Wrap in a function that returns both arrays (BIRTHDAY_THEMES may not exist in older files)
+  const fn = new Function(code + '\nreturn { THEMES, BIRTHDAY_THEMES: (typeof BIRTHDAY_THEMES !== "undefined" ? BIRTHDAY_THEMES : []) };');
   return fn();
 }
 
-let THEMES;
+let THEMES, BIRTHDAY_THEME_COUNT = 0;
 try {
-  THEMES = extractThemes(engineSrc);
+  const extracted = extractThemes(engineSrc);
+  BIRTHDAY_THEME_COUNT = extracted.BIRTHDAY_THEMES.length;
+  // Combine for validation: scheduled birthday themes receive identical checks to active themes.
+  THEMES = [...extracted.THEMES, ...extracted.BIRTHDAY_THEMES];
 } catch (e) {
   fail(`Cannot parse engine.js THEMES array: ${e.message}`);
   failures++;
   // Still try other checks
   THEMES = null;
+}
+if (THEMES) {
+  console.log(`  ${YELLOW}ℹ${RESET}  Validating ${THEMES.length} themes (${THEMES.length - BIRTHDAY_THEME_COUNT} active + ${BIRTHDAY_THEME_COUNT} scheduled birthday) — archived themes are excluded by design.`);
 }
 
 // ── Extract case labels per renderer function ──

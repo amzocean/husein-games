@@ -131,6 +131,7 @@ Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 act
 | 2 | [Implement New Themes](#workflow-2-implement-new-themes) | User picks themes to build | `engine.js`, `renderer.js` |
 | 2B | [Implement Bold Sticker Themes](#workflow-2b-implement-bold-sticker-themes) | User requests the Bold Sticker look | `engine.js`, `renderer.js` |
 | 3 | [Archive / Reactivate Themes](#workflow-3-archive--reactivate-themes) | User wants to rotate themes | `engine.js` only |
+| 4 | [Scheduled Birthday Themes](#workflow-4-scheduled-birthday-themes) | Date-locked special-occasion themes | `engine.js`, `renderer.js`, `app.js` |
 
 ### Architecture Quick Reference
 
@@ -170,7 +171,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 | Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
 | Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
 
-`style` is descriptive metadata for Bold Sticker themes. The engine does not branch on it, and the existing validator rules remain unchanged. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks.
+`style` is descriptive metadata for Bold Sticker themes. The engine does not branch on it for rendering, and the existing validator rules remain unchanged. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks. (Board *selection* can branch on other metadata — see Workflow 4 for date-scheduled themes — but that only affects which theme object is chosen, never how its 16 cases are drawn.)
 
 ---
 
@@ -807,6 +808,49 @@ The first approved reference implementation is `Stadium Stickers` in `engine.js`
 5. Run `node validate-themes.js` — must pass.
 
 6. Commit and push.
+
+---
+
+### Workflow 4: Scheduled Birthday Themes
+
+**Trigger**: A theme must appear only on specific real-world dates (e.g. a birthday countdown), never in the normal random rotation.
+
+#### How it works
+
+- `engine.js` exports a separate **`BIRTHDAY_THEMES`** array, structurally identical to a `THEMES` entry plus two extra fields:
+  - `activeDate`: an exact `YYYY-MM-DD` string (UTC).
+  - `countdownMessage`: short toast text shown alongside the theme name (optional).
+- `BIRTHDAY_THEMES` themes are **never added to `THEMES`** and never participate in the random `Math.floor(Math.random() * THEMES.length)` pick. The six existing active themes remain the only members of the normal rotation.
+- `getScheduledBirthdayTheme()` compares today's date against each `BIRTHDAY_THEMES[i].activeDate` using the **same UTC convention as the daily photo**: `new Date().toISOString().slice(0, 10)`. No timezone library, no local-time or Asia/Kolkata conversion — this keeps board theme and daily photo rotation on identical, predictable UTC-day boundaries.
+- `generateBoard()` checks the scheduled theme first: if today matches an `activeDate`, that theme is used for **every** board generated that day (including every "New Board" click) — it is deterministic, not random. Outside the 5 scheduled dates, `generateBoard()` falls back to the normal 6-theme random pick, unchanged.
+- Because they are date-gated rather than curated for permanent rotation, scheduled themes live in their own array instead of `THEMES` — this keeps the "existing six active themes" random pool exactly as-is before/after the scheduled window, and keeps `ARCHIVED_THEMES` (nonselectable, reference-only) conceptually separate from `BIRTHDAY_THEMES` (selectable, but only on their date).
+
+#### Current schedule (2026 — Fatema's Birthday Countdown)
+
+| UTC Date | Theme | Style | Toast countdown message |
+|---|---|---|---|
+| 2026-09-02 | September Sparkle ✨ | Standard | "4 days until Fatema's birthday" |
+| 2026-09-03 | Wrapped With Love 🎁 | Standard | "3 days until Fatema's birthday" |
+| 2026-09-04 | Balloons & Kisses 🎈 | Bold Sticker | "2 days until Fatema's birthday" |
+| 2026-09-05 | Birthday Eve Wishes 🕯️ | Standard | "Tomorrow is Fatema's birthday" |
+| 2026-09-06 | Fatema's Birthday 🎂 | Bold Sticker | "Happy Birthday, Fatema! 💖" |
+
+Before 2026-09-02 and after 2026-09-06, the board goes back to picking randomly among exactly the six normal `THEMES` entries.
+
+#### Toast behavior (app.js)
+
+`startNewGame()` shows `emoji + name` for every theme, same as always. When the selected theme has a `countdownMessage`, the toast appends it on a second line via `textContent` (a literal `\n`, never `innerHTML`) so no markup injection is possible, and stays visible slightly longer (3200ms vs. the normal 2000ms) so the extra line is readable. `#theme-toast` uses `white-space: pre-line` to render that line break; ordinary theme text has no `\n` so it still renders as a single line, unchanged.
+
+#### Validation
+
+`validate-themes.js` validates `THEMES` **and** `BIRTHDAY_THEMES` together — every scheduled theme must pass the exact same 10 checks (pool math, duplicate names, renderer coverage, orphan cases, duplicate case labels, color distinctness, bg hue diversity, etc.) as an ordinary active theme. `ARCHIVED_THEMES` remains excluded from validation, matching its existing nonselectable/reference-only status.
+
+#### Adding another scheduled theme
+
+1. Follow Workflow 2 (or 2B for Bold Sticker) to design the palette and write the 16 renderer cases, using a distinct identifier prefix as usual.
+2. Add the theme object to `BIRTHDAY_THEMES` (not `THEMES`) in `engine.js`, with an `activeDate` and optional `countdownMessage`.
+3. Run `node validate-themes.js` — it validates scheduled themes the same as active ones.
+4. Manually sanity-check the date logic (e.g. temporarily log `getScheduledBirthdayTheme()`), then revert any temporary logging.
 
 ---
 

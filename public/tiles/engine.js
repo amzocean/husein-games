@@ -99,6 +99,96 @@ const THEMES = [
   },
 ];
 
+// ── Birthday Countdown Themes ──
+// Scheduled, date-locked themes for Fatema's birthday countdown (Sept 2–6, 2026).
+// NOT part of THEMES — never enter the random rotation. generateBoard() checks
+// BIRTHDAY_THEMES first (by UTC calendar date) before falling back to THEMES.
+// Each entry carries activeDate (YYYY-MM-DD, UTC) and countdownMessage shown in the toast.
+const BIRTHDAY_THEMES = [
+  {
+    name: 'September Sparkle', emoji: '✨',
+    activeDate: '2026-09-02',
+    countdownMessage: '4 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#ff4f9c', '#ffce3d', '#22c1c9'],
+      ring:   ['#9c1257', '#8a6a00', '#0b7b81', '#5b21b6'],
+      shape:  ['#a81261', '#8f5f00', '#0e6b70'],
+      accent: ['#c2185b', '#00838f', '#6a1fb5'],
+    },
+    bgPatterns:   ['septspark-confetti-shower', 'septspark-glitter-drift', 'septspark-firework-trails', 'septspark-ribbon-swirls', 'septspark-star-scatter'],
+    ringStyles:   ['septspark-sequin-frame', 'septspark-sparkle-dash', 'septspark-starlight-arch'],
+    shapeNames:   ['septspark-cupcake', 'septspark-sparkler', 'septspark-gift-star', 'septspark-party-hat'],
+    accentShapes: ['septspark-stars', 'septspark-confetti', 'septspark-sparkle-bursts', 'septspark-ribbons'],
+    boardBg:      { pattern: 'septspark-confetti-shower', color: '#ff4f9c' },
+  },
+  {
+    name: 'Wrapped With Love', emoji: '🎁',
+    activeDate: '2026-09-03',
+    countdownMessage: '3 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#e8385f', '#f2a541', '#7d5fff'],
+      ring:   ['#9c1030', '#8a5a06', '#4a35b0', '#7a1150'],
+      shape:  ['#a3123a', '#8f5c08', '#4433ad'],
+      accent: ['#b5123f', '#a5660a', '#4f35b3'],
+    },
+    bgPatterns:   ['wraplove-gift-tags', 'wraplove-ribbon-weave', 'wraplove-paper-folds', 'wraplove-bow-trails', 'wraplove-heart-wrap'],
+    ringStyles:   ['wraplove-ribbon-frame', 'wraplove-bow-corners', 'wraplove-tag-string-border'],
+    shapeNames:   ['wraplove-gift-box', 'wraplove-bow', 'wraplove-heart-tag', 'wraplove-wrapped-heart'],
+    accentShapes: ['wraplove-bows', 'wraplove-tags', 'wraplove-hearts', 'wraplove-ribbon-curls'],
+    boardBg:      { pattern: 'wraplove-gift-tags', color: '#e8385f' },
+  },
+  {
+    name: 'Balloons & Kisses', emoji: '🎈',
+    style: 'bold-sticker',
+    activeDate: '2026-09-04',
+    countdownMessage: '2 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#ff2e7e', '#ffb100', '#2f6fed'],
+      ring:   ['#8a0f42', '#8a5a00', '#123f8a', '#146356'],
+      shape:  ['#9c1049', '#8a5c05', '#163f8a'],
+      accent: ['#a3124f', '#956008', '#1c4a95'],
+    },
+    bgPatterns:   ['balloonkiss-confetti-pop', 'balloonkiss-balloon-strings', 'balloonkiss-lipstick-marks', 'balloonkiss-streamer-waves', 'balloonkiss-polka-scatter'],
+    ringStyles:   ['balloonkiss-patch-frame', 'balloonkiss-varsity-double', 'balloonkiss-ticket-patch'],
+    shapeNames:   ['balloonkiss-balloon-bunch', 'balloonkiss-kiss-lips', 'balloonkiss-party-popper', 'balloonkiss-cupcake-sticker'],
+    accentShapes: ['balloonkiss-kiss-marks', 'balloonkiss-balloon-dots', 'balloonkiss-confetti-badges', 'balloonkiss-star-badges'],
+    boardBg:      { pattern: 'balloonkiss-confetti-pop', color: '#ff2e7e' },
+  },
+  {
+    name: 'Birthday Eve Wishes', emoji: '🕯️',
+    activeDate: '2026-09-05',
+    countdownMessage: 'Tomorrow is Fatema’s birthday',
+    palette: {
+      bg:     ['#6c3ce8', '#ff8a3d', '#ff6f91'],
+      ring:   ['#4a1fae', '#a4470a', '#8a1246', '#6d2e8f'],
+      shape:  ['#551fb8', '#a84e0d', '#93144c'],
+      accent: ['#5f2ac2', '#b9560f', '#9c1552'],
+    },
+    bgPatterns:   ['candleeve-candle-glow', 'candleeve-starlit-sky', 'candleeve-wish-ribbons', 'candleeve-melting-wax', 'candleeve-nightfall-bands'],
+    ringStyles:   ['candleeve-flame-frame', 'candleeve-wish-dash', 'candleeve-glow-arch'],
+    shapeNames:   ['candleeve-lit-candle', 'candleeve-wish-star', 'candleeve-crescent-moon', 'candleeve-cake-silhouette'],
+    accentShapes: ['candleeve-flames', 'candleeve-stars', 'candleeve-wish-sparkles', 'candleeve-moons'],
+    boardBg:      { pattern: 'candleeve-nightfall-bands', color: '#6c3ce8' },
+  },
+  {
+    name: 'Fatema\'s Birthday', emoji: '🎂',
+    style: 'bold-sticker',
+    activeDate: '2026-09-06',
+    countdownMessage: 'Happy Birthday, Fatema! 💖',
+    palette: {
+      bg:     ['#ff1f7a', '#ffd400', '#00c853'],
+      ring:   ['#8a0f45', '#8a6a00', '#0b7a3a', '#4a1470'],
+      shape:  ['#9c1049', '#8f6d02', '#0e8241'],
+      accent: ['#a3124f', '#a6790a', '#127a45'],
+    },
+    bgPatterns:   ['fbday-cake-confetti', 'fbday-candle-flicker', 'fbday-balloon-parade', 'fbday-cake-frosting-swirls', 'fbday-celebration-burst'],
+    ringStyles:   ['fbday-patch-frame', 'fbday-varsity-double', 'fbday-ticket-patch'],
+    shapeNames:   ['fbday-birthday-cake', 'fbday-crown-sticker', 'fbday-gift-sticker', 'fbday-number-candle'],
+    accentShapes: ['fbday-confetti-badges', 'fbday-star-badges', 'fbday-heart-badges', 'fbday-candle-badges'],
+    boardBg:      { pattern: 'fbday-cake-confetti', color: '#ff1f7a' },
+  },
+];
+
 // Archived themes — preserved for reference, not selectable in-game
 const ARCHIVED_THEMES = [
   // Archived August 2026 (romantic collection rotation)
@@ -955,9 +1045,19 @@ function shuffle(arr) {
   return arr;
 }
 
+// Returns today's scheduled birthday theme, or null outside the countdown window.
+// Uses the same simple browser UTC date convention as the daily photo picker:
+// new Date().toISOString().slice(0, 10) — no timezone library or conversion.
+function getScheduledBirthdayTheme() {
+  const today = new Date().toISOString().slice(0, 10);
+  return BIRTHDAY_THEMES.find(theme => theme.activeDate === today) || null;
+}
+
 // Generate board: per-type pair-and-shuffle guarantees solvability by construction
 function generateBoard() {
-  const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
+  // Sept 2–6, 2026 (UTC): always the scheduled countdown theme, every New Board press.
+  // Outside that window: random selection among exactly the six active THEMES.
+  const theme = getScheduledBirthdayTheme() || THEMES[Math.floor(Math.random() * THEMES.length)];
   const pools = buildPools(theme);
 
   const bgColors = theme.palette.bg;
@@ -1126,4 +1226,4 @@ class GameState {
 
 }
 
-export { GameState, ROWS, COLS, TILE_COUNT, ACTIVE_TILES, CENTER_INDEX, THEMES };
+export { GameState, ROWS, COLS, TILE_COUNT, ACTIVE_TILES, CENTER_INDEX, THEMES, BIRTHDAY_THEMES };

@@ -47,11 +47,15 @@ async function startNewGame() {
   const board = game.newGame();
   renderBoard(board, boardEl);
 
-  // Show theme name briefly
+  // Show theme name briefly (scheduled birthday themes also show a countdown line)
   if (board.theme) {
-    themeToast.textContent = `${board.theme.emoji} ${board.theme.name}`;
+    const themeLine = `${board.theme.emoji} ${board.theme.name}`;
+    themeToast.textContent = board.theme.countdownMessage
+      ? `${themeLine}\n${board.theme.countdownMessage}`
+      : themeLine;
     themeToast.classList.add('visible');
-    setTimeout(() => themeToast.classList.remove('visible'), 2000);
+    const toastDuration = board.theme.countdownMessage ? 3200 : 2000;
+    setTimeout(() => themeToast.classList.remove('visible'), toastDuration);
   }
 
   // Update score display

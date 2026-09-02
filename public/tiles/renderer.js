@@ -2009,6 +2009,222 @@ function renderBg(attr) {
     case 'fatema-celebration-ribbons': return renderRomanticBg(5, 3, c, o);
     case 'fatema-golden-glow': return renderRomanticBg(5, 4, c, o);
 
+    // ── September Sparkle (birthday countdown) ──
+    case 'septspark-confetti-shower': {
+      const rng = mulberry32(c.charCodeAt(1) * 7 + 1);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let i = 0; i < 14; i++) {
+        const x = 8 + rng() * 84, y = 8 + rng() * 84, rot = rng() * 360;
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="4" height="2" rx="0.6" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${c}" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'septspark-glitter-drift': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 12; y <= 88; y += 11) {
+        s += `<path d="M8,${y} Q30,${y-6} 50,${y} T92,${y}" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'septspark-firework-trails': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      const origins = [[30,30],[70,26],[50,72]];
+      for (const [ox,oy] of origins) {
+        for (let a = 0; a < 6; a++) {
+          const ang = (a/6) * Math.PI * 2;
+          const x2 = ox + Math.cos(ang)*11, y2 = oy + Math.sin(ang)*11;
+          s += `<line x1="${ox}" y1="${oy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="0.8" opacity="${o*0.32}"/>`;
+        }
+      }
+      return s;
+    }
+    case 'septspark-ribbon-swirls': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let x = 12; x <= 88; x += 15) {
+        s += `<path d="M${x},8 C${x+10},30 ${x-10},66 ${x+4},92" fill="none" stroke="${c}" stroke-width="0.75" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'septspark-star-scatter': {
+      const rng = mulberry32(c.charCodeAt(1) * 3 + 5);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      for (let i = 0; i < 10; i++) {
+        const x = 14 + rng()*72, y = 14 + rng()*72;
+        s += `<path d="M${x.toFixed(1)},${(y-3).toFixed(1)} V${(y+3).toFixed(1)} M${(x-3).toFixed(1)},${y.toFixed(1)} H${(x+3).toFixed(1)}" stroke="${c}" stroke-width="0.8" opacity="${o*0.4}"/>`;
+      }
+      return s;
+    }
+
+    // ── Wrapped With Love (birthday countdown) ──
+    case 'wraplove-gift-tags': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 12) {
+        s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="0.6" stroke-dasharray="3 4" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'wraplove-ribbon-weave': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let i = -2; i <= 10; i++) {
+        s += `<line x1="${i*10}" y1="4" x2="${i*10+30}" y2="96" stroke="${c}" stroke-width="0.55" opacity="${o*0.22}"/>`;
+        s += `<line x1="${i*10+30}" y1="4" x2="${i*10}" y2="96" stroke="${c}" stroke-width="0.55" opacity="${o*0.22}"/>`;
+      }
+      return s;
+    }
+    case 'wraplove-paper-folds': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 16; y <= 84; y += 13) {
+        s += `<path d="M8,${y} Q50,${y+5} 92,${y}" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.26}"/>`;
+      }
+      return s;
+    }
+    case 'wraplove-bow-trails': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let y = 14; y <= 86; y += 13) {
+        s += `<path d="M8,${y} C24,${y-8} 40,${y+8} 50,${y} C60,${y-8} 76,${y+8} 92,${y}" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'wraplove-heart-wrap': {
+      const rng = mulberry32(c.charCodeAt(1) * 9 + 2);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      for (let i = 0; i < 9; i++) {
+        const x = 14 + rng()*70, y = 14 + rng()*70;
+        s += `<path d="M${x.toFixed(1)},${(y+2).toFixed(1)} C${(x-4).toFixed(1)},${(y-2).toFixed(1)} ${(x-2).toFixed(1)},${(y-5).toFixed(1)} ${x.toFixed(1)},${(y-2.5).toFixed(1)} C${(x+2).toFixed(1)},${(y-5).toFixed(1)} ${(x+4).toFixed(1)},${(y-2).toFixed(1)} ${x.toFixed(1)},${(y+2).toFixed(1)}Z" fill="${c}" opacity="${o*0.35}"/>`;
+      }
+      return s;
+    }
+
+    // ── Balloons & Kisses (birthday countdown) ──
+    case 'balloonkiss-confetti-pop': {
+      const rng = mulberry32(c.charCodeAt(1) * 11 + 3);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.26}"/>`;
+      for (let i = 0; i < 13; i++) {
+        const x = 10 + rng()*80, y = 10 + rng()*80, rot = rng()*360;
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="4.5" height="2.2" rx="0.6" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${c}" opacity="${o*0.6}"/>`;
+      }
+      return s;
+    }
+    case 'balloonkiss-balloon-strings': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let x = 12; x <= 88; x += 12) {
+        s += `<path d="M${x},10 Q${x+4},50 ${x-3},90" fill="none" stroke="${c}" stroke-width="0.6" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'balloonkiss-lipstick-marks': {
+      const rng = mulberry32(c.charCodeAt(1) * 13 + 4);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      for (let i = 0; i < 6; i++) {
+        const x = 16 + rng()*68, y = 16 + rng()*68, rot = rng()*40-20;
+        s += `<path d="M${(x-5).toFixed(1)},${y.toFixed(1)} Q${(x-2).toFixed(1)},${(y-4).toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)} Q${(x+2).toFixed(1)},${(y-4).toFixed(1)} ${(x+5).toFixed(1)},${y.toFixed(1)} Q${(x+2).toFixed(1)},${(y+3).toFixed(1)} ${x.toFixed(1)},${(y+1).toFixed(1)} Q${(x-2).toFixed(1)},${(y+3).toFixed(1)} ${(x-5).toFixed(1)},${y.toFixed(1)}Z" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${c}" opacity="${o*0.32}"/>`;
+      }
+      return s;
+    }
+    case 'balloonkiss-streamer-waves': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let y = 14; y <= 86; y += 12) {
+        s += `<path d="M8,${y} Q22,${y+7} 36,${y} T64,${y} T92,${y}" fill="none" stroke="${c}" stroke-width="0.75" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'balloonkiss-polka-scatter': {
+      const rng = mulberry32(c.charCodeAt(1) * 17 + 6);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      for (let i = 0; i < 16; i++) {
+        const x = 10 + rng()*80, y = 10 + rng()*80;
+        s += `<path d="M${x.toFixed(1)},${(y-2).toFixed(1)} L${(x+2).toFixed(1)},${y.toFixed(1)} L${x.toFixed(1)},${(y+2).toFixed(1)} L${(x-2).toFixed(1)},${y.toFixed(1)}Z" fill="${c}" opacity="${o*0.4}"/>`;
+      }
+      return s;
+    }
+
+    // ── Birthday Eve Wishes (birthday countdown) ──
+    case 'candleeve-candle-glow': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.28}"/>`;
+      for (let x = 14; x <= 86; x += 12) {
+        s += `<path d="M${x},92 C${x-2},70 ${x+2},50 ${x},30" fill="none" stroke="${c}" stroke-width="0.6" opacity="${o*0.26}"/>`;
+      }
+      return s;
+    }
+    case 'candleeve-starlit-sky': {
+      const rng = mulberry32(c.charCodeAt(1) * 19 + 8);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.3}"/>`;
+      for (let i = 0; i < 11; i++) {
+        const x = 12 + rng()*76, y = 10 + rng()*50;
+        s += `<path d="M${x.toFixed(1)},${(y-2.5).toFixed(1)} V${(y+2.5).toFixed(1)} M${(x-2.5).toFixed(1)},${y.toFixed(1)} H${(x+2.5).toFixed(1)}" stroke="${c}" stroke-width="0.7" opacity="${o*0.42}"/>`;
+      }
+      return s;
+    }
+    case 'candleeve-wish-ribbons': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let y = 16; y <= 84; y += 14) {
+        s += `<path d="M8,${y} C30,${y-10} 67,${y+10} 92,${y}" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.26}"/>`;
+      }
+      return s;
+    }
+    case 'candleeve-melting-wax': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let x = 16; x <= 84; x += 13) {
+        s += `<path d="M${x},10 Q${x+3},40 ${x},70 Q${x-3},80 ${x+1},90" fill="none" stroke="${c}" stroke-width="0.65" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'candleeve-nightfall-bands': {
+      let s = '';
+      const bands = 6;
+      for (let i = 0; i < bands; i++) {
+        const y = 4 + i * (92/bands);
+        s += `<rect x="4" y="${y.toFixed(1)}" width="92" height="${(92/bands).toFixed(1)}" fill="${c}" opacity="${(o*(0.14+i*0.02)).toFixed(3)}"/>`;
+      }
+      return s;
+    }
+
+    // ── Fatema's Birthday (birthday countdown) ──
+    case 'fbday-cake-confetti': {
+      const rng = mulberry32(c.charCodeAt(1) * 23 + 9);
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.26}"/>`;
+      for (let i = 0; i < 15; i++) {
+        const x = 10 + rng()*80, y = 10 + rng()*80, rot = rng()*360;
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="4.5" height="2.4" rx="0.7" transform="rotate(${rot.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${c}" opacity="${o*0.62}"/>`;
+      }
+      return s;
+    }
+    case 'fbday-candle-flicker': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.26}"/>`;
+      for (let x = 12; x <= 88; x += 11) {
+        s += `<path d="M${x},92 C${x+3},72 ${x-3},58 ${x},44 C${x+2},34 ${x-2},26 ${x},14" fill="none" stroke="${c}" stroke-width="0.6" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'fbday-balloon-parade': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>`;
+      for (let i = 0; i < 6; i++) {
+        const x = 12 + i*13;
+        const yTop = 10 + (i%2)*8;
+        s += `<path d="M${x},${yTop} Q${x+4},${yTop+40} ${x-2},92" fill="none" stroke="${c}" stroke-width="0.6" opacity="${o*0.3}"/>`;
+      }
+      return s;
+    }
+    case 'fbday-cake-frosting-swirls': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`;
+      for (let y = 14; y <= 86; y += 11) {
+        s += `<path d="M8,${y} Q18,${y-6} 28,${y} Q38,${y+6} 48,${y} Q58,${y-6} 68,${y} Q78,${y+6} 92,${y}" fill="none" stroke="${c}" stroke-width="0.65" opacity="${o*0.28}"/>`;
+      }
+      return s;
+    }
+    case 'fbday-celebration-burst': {
+      let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>`;
+      const origins = [[30,30],[70,26],[50,72]];
+      for (const [ox,oy] of origins) {
+        for (let a = 0; a < 7; a++) {
+          const ang = (a/7) * Math.PI * 2;
+          const x2 = ox + Math.cos(ang)*10, y2 = oy + Math.sin(ang)*10;
+          s += `<line x1="${ox}" y1="${oy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="0.75" opacity="${o*0.3}"/>`;
+        }
+      }
+      return s;
+    }
+
     default: return '';
   }
 }
@@ -2847,6 +3063,69 @@ function renderRing(attr) {
     case 'fatema-monogram-frame': return renderRomanticRing(5, 0, c);
     case 'fatema-promise-bands': return renderRomanticRing(5, 1, c);
     case 'fatema-forever-loop': return renderRomanticRing(5, 2, c);
+
+    // ── September Sparkle (birthday countdown) ──
+    case 'septspark-sequin-frame':
+      return `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="${c}" stroke-width="3.4" opacity="0.78"/>` +
+        `<circle cx="4" cy="4" r="2.6" fill="${c}" opacity="0.7"/><circle cx="96" cy="4" r="2.6" fill="${c}" opacity="0.7"/>` +
+        `<circle cx="4" cy="96" r="2.6" fill="${c}" opacity="0.7"/><circle cx="96" cy="96" r="2.6" fill="${c}" opacity="0.7"/>`;
+    case 'septspark-sparkle-dash':
+      return `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="${c}" stroke-width="3.4" stroke-dasharray="6 4" opacity="0.78"/>`;
+    case 'septspark-starlight-arch':
+      return `<path d="M10,24 Q50,6 90,24 V78 Q50,94 10,78 Z" fill="none" stroke="${c}" stroke-width="3.4" opacity="0.78"/>` +
+        `<path d="M18,20 Q50,10 82,20" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.55"/>`;
+
+    // ── Wrapped With Love (birthday countdown) ──
+    case 'wraplove-ribbon-frame':
+      return `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="${c}" stroke-width="3.4" opacity="0.78"/>` +
+        `<path d="M44,4 L50,12 L56,4" fill="none" stroke="${c}" stroke-width="2.6" opacity="0.7"/>` +
+        `<path d="M44,96 L50,88 L56,96" fill="none" stroke="${c}" stroke-width="2.6" opacity="0.7"/>`;
+    case 'wraplove-bow-corners':
+      return `<rect x="4" y="4" width="92" height="92" rx="8" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="9 3" opacity="0.76"/>` +
+        `<path d="M50,10 C45,4 40,8 45,12 C40,16 45,20 50,14 C55,20 60,16 55,12 C60,8 55,4 50,10Z" fill="${c}" opacity="0.72"/>`;
+    case 'wraplove-tag-string-border':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="none" stroke="${c}" stroke-width="3.2" stroke-dasharray="2 5" opacity="0.78"/>` +
+        `<path d="M50,4 Q56,10 50,16 Q44,10 50,4Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.6"/>`;
+
+    // ── Balloons & Kisses (birthday countdown, bold sticker) ──
+    case 'balloonkiss-patch-frame':
+      return `<rect x="8" y="8" width="88" height="88" rx="12" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="12" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="12" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>`;
+    case 'balloonkiss-varsity-double':
+      return `<rect x="9" y="9" width="86" height="86" rx="8" fill="none" stroke="#172033" stroke-width="6.5" opacity="0.9"/>` +
+        `<rect x="5" y="5" width="90" height="90" rx="8" fill="none" stroke="#fff4d6" stroke-width="7.5" opacity="0.96"/>` +
+        `<rect x="5" y="5" width="90" height="90" rx="8" fill="none" stroke="${c}" stroke-width="4" opacity="0.96"/>` +
+        `<rect x="13" y="13" width="74" height="74" rx="5" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.7"/>`;
+    case 'balloonkiss-ticket-patch':
+      return `<rect x="8" y="8" width="88" height="88" rx="10" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="10" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="6 4" opacity="0.96"/>`;
+
+    // ── Birthday Eve Wishes (birthday countdown) ──
+    case 'candleeve-flame-frame':
+      return `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="${c}" stroke-width="3.4" opacity="0.78"/>` +
+        `<path d="M50,1 C53,5 53,9 50,11 C47,9 47,5 50,1Z" fill="${c}" opacity="0.72"/>`;
+    case 'candleeve-wish-dash':
+      return `<rect x="4" y="4" width="92" height="92" rx="7" fill="none" stroke="${c}" stroke-width="3.2" stroke-dasharray="10 5" opacity="0.76"/>`;
+    case 'candleeve-glow-arch':
+      return `<path d="M10,26 Q50,8 90,26 V76 Q50,92 10,76 Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+        `<path d="M18,22 Q50,12 82,22 M18,78 Q50,88 82,78" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
+
+    // ── Fatema's Birthday (birthday countdown, bold sticker) ──
+    case 'fbday-patch-frame':
+      return `<rect x="8" y="8" width="88" height="88" rx="14" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="14" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="14" fill="none" stroke="${c}" stroke-width="4.5" opacity="0.96"/>`;
+    case 'fbday-varsity-double':
+      return `<rect x="9" y="9" width="86" height="86" rx="6" fill="none" stroke="#172033" stroke-width="6.5" opacity="0.9"/>` +
+        `<rect x="5" y="5" width="90" height="90" rx="6" fill="none" stroke="#fff4d6" stroke-width="7.5" opacity="0.96"/>` +
+        `<rect x="5" y="5" width="90" height="90" rx="6" fill="none" stroke="${c}" stroke-width="4" opacity="0.96"/>` +
+        `<rect x="15" y="15" width="70" height="70" rx="3" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.7"/>`;
+    case 'fbday-ticket-patch':
+      return `<rect x="8" y="8" width="88" height="88" rx="9" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
+        `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="9 5" opacity="0.96"/>`;
 
     default: return '';
   }
@@ -4197,6 +4476,108 @@ function renderShape(attr) {
     case 'fatema-two-rings': return renderRomanticShape(22, c, o);
     case 'fatema-crown': return renderRomanticShape(23, c, o);
 
+    // ── September Sparkle (birthday countdown) ──
+    case 'septspark-cupcake':
+      return `<path d="M34,58 H66 L61,74 H39 Z" fill="${c}" opacity="${o}"/>` +
+        `<path d="M32,58 Q50,30 68,58 Q50,50 32,58Z" fill="${c}" opacity="${o}"/>` +
+        `<path d="M39,63 H61 M41,68 H59" stroke="white" stroke-width="1.6" opacity="0.4"/>` +
+        `<path d="M50,28 L52,32 L50,36 L48,32Z" fill="white" opacity="0.55"/>`;
+    case 'septspark-sparkler':
+      return `<line x1="50" y1="40" x2="50" y2="74" stroke="${c}" stroke-width="3.5" opacity="${o}"/>` +
+        `<path d="M50,40 L50,24 M50,40 L38,30 M50,40 L62,30 M50,40 L42,42 M50,40 L58,42" stroke="${c}" stroke-width="2.2" stroke-linecap="round" opacity="${o}"/>`;
+    case 'septspark-gift-star':
+      return `<rect x="33" y="46" width="34" height="26" rx="2" fill="${c}" opacity="${o}"/>` +
+        `<path d="M33,46 H67 M50,46 V72" stroke="white" stroke-width="2" opacity="0.5"/>` +
+        `<polygon points="50,24 53,32 61,32 54,37 57,45 50,40 43,45 46,37 39,32 47,32" fill="${c}" opacity="${o}"/>`;
+    case 'septspark-party-hat':
+      return `<path d="M50,26 L68,72 H32 Z" fill="${c}" opacity="${o}"/>` +
+        `<path d="M38,54 H62 M41,62 H59" stroke="white" stroke-width="2" opacity="0.45"/>` +
+        `<circle cx="50" cy="24" r="4.5" fill="${c}" opacity="${o}"/>`;
+
+    // ── Wrapped With Love (birthday countdown) ──
+    case 'wraplove-gift-box':
+      return `<rect x="30" y="42" width="40" height="30" rx="2" fill="${c}" opacity="${o}"/>` +
+        `<rect x="46" y="42" width="8" height="30" fill="white" opacity="0.42"/>` +
+        `<rect x="30" y="53" width="40" height="7" fill="white" opacity="0.42"/>` +
+        `<path d="M50,42 C42,30 34,34 42,42 C34,34 42,26 50,42 C58,26 66,34 58,42 C66,34 58,30 50,42Z" fill="${c}" opacity="${o}"/>`;
+    case 'wraplove-bow':
+      return `<path d="M50,50 C40,36 24,40 32,52 C24,64 40,68 50,54 C60,68 76,64 68,52 C76,40 60,36 50,50Z" fill="${c}" opacity="${o}"/>` +
+        `<circle cx="50" cy="51" r="5" fill="white" opacity="0.45"/>`;
+    case 'wraplove-heart-tag':
+      return `<path d="M50,72 C28,55 32,32 50,40 C68,32 72,55 50,72Z" fill="${c}" opacity="${o}"/>` +
+        `<circle cx="50" cy="38" r="3.2" fill="none" stroke="white" stroke-width="1.8" opacity="0.6"/>`;
+    case 'wraplove-wrapped-heart':
+      return `<path d="M50,72 C28,55 32,32 50,40 C68,32 72,55 50,72Z" fill="${c}" opacity="${o}"/>` +
+        `<path d="M50,38 V72 M32,52 H68" stroke="white" stroke-width="2.2" opacity="0.45"/>`;
+
+    // ── Balloons & Kisses (birthday countdown, bold sticker) ──
+    case 'balloonkiss-balloon-bunch':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<g transform="translate(3 4)" fill="#172033"><ellipse cx="40" cy="42" rx="9" ry="12"/><ellipse cx="60" cy="42" rx="9" ry="12"/><ellipse cx="50" cy="34" rx="10" ry="13"/></g>` +
+        `<g fill="${c}" stroke="#fff4d6" stroke-width="3" paint-order="stroke"><ellipse cx="40" cy="38" rx="9" ry="12"/><ellipse cx="60" cy="38" rx="9" ry="12"/><ellipse cx="50" cy="30" rx="10" ry="13"/></g>` +
+        `<path d="M40,50 L37,70 M60,50 L63,70 M50,43 L50,70" fill="none" stroke="#172033" stroke-width="2.2"/>` +
+        `</g>`;
+    case 'balloonkiss-kiss-lips':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M26,52 C30,42 40,40 50,46 C60,40 70,42 74,52 C70,58 62,62 50,58 C38,62 30,58 26,52Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M26,52 C30,42 40,40 50,46 C60,40 70,42 74,52 C70,58 62,62 50,58 C38,62 30,58 26,52Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M50,46 V58 M38,50 Q50,54 62,50" fill="none" stroke="#172033" stroke-width="2.6"/>` +
+        `</g>`;
+    case 'balloonkiss-party-popper':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M30,60 L46,44 L60,50 L48,64Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M30,60 L46,44 L60,50 L48,64Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M60,50 L68,42 M64,54 L74,50 M58,58 L64,68" fill="none" stroke="#172033" stroke-width="2.6"/>` +
+        `</g>`;
+    case 'balloonkiss-cupcake-sticker':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M34,58 H66 L61,74 H39 Z M32,58 Q50,32 68,58Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M34,58 H66 L61,74 H39 Z M32,58 Q50,32 68,58Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M39,64 H61 M41,69 H59" fill="none" stroke="#172033" stroke-width="2.4"/>` +
+        `</g>`;
+
+    // ── Birthday Eve Wishes (birthday countdown) ──
+    case 'candleeve-lit-candle':
+      return `<rect x="45" y="42" width="10" height="30" rx="2" fill="${c}" opacity="${o}"/>` +
+        `<path d="M45,48 H55 M45,56 H55 M45,64 H55" stroke="white" stroke-width="1.4" opacity="0.4"/>` +
+        `<path d="M50,26 C46,32 46,38 50,42 C54,38 54,32 50,26Z" fill="${c}" opacity="${o}"/>`;
+    case 'candleeve-wish-star':
+      return `<polygon points="58,34 61,42 69,42 62,47 65,55 58,50 51,55 54,47 47,42 55,42" fill="${c}" opacity="${o}"/>` +
+        `<path d="M50,58 L34,68" stroke="${c}" stroke-width="2.4" stroke-linecap="round" opacity="${o*0.8}"/>` +
+        `<circle cx="32" cy="70" r="1.8" fill="${c}" opacity="${o*0.7}"/>`;
+    case 'candleeve-crescent-moon':
+      return `<path d="M60,26 A24,24 0 1,0 66,72 A19,19 0 1,1 60,26Z" fill="${c}" opacity="${o}"/>`;
+    case 'candleeve-cake-silhouette':
+      return `<path d="M32,72 H68 V58 H32 Z M38,58 H62 V46 H38 Z" fill="${c}" opacity="${o}"/>` +
+        `<line x1="50" y1="46" x2="50" y2="36" stroke="${c}" stroke-width="2.6" opacity="${o}"/>` +
+        `<path d="M50,30 C47,34 47,38 50,40 C53,38 53,34 50,30Z" fill="${c}" opacity="${o}"/>`;
+
+    // ── Fatema's Birthday (birthday countdown, bold sticker) ──
+    case 'fbday-birthday-cake':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M30,72 H70 V58 H30Z M36,58 H64 V46 H36Z M45,46 V37 C42,41 42,45 45,47 C48,45 48,41 45,37Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M30,72 H70 V58 H30Z M36,58 H64 V46 H36Z M45,46 V37 C42,41 42,45 45,47 C48,45 48,41 45,37Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M35,65 H65 M40,52 H60" fill="none" stroke="#172033" stroke-width="2.4"/>` +
+        `</g>`;
+    case 'fbday-crown-sticker':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M28,64 L34,40 L44,54 L50,36 L56,54 L66,40 L72,64Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M28,64 L34,40 L44,54 L50,36 L56,54 L66,40 L72,64Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M30,64 H70 M50,36 L50,42" fill="none" stroke="#172033" stroke-width="2.4"/>` +
+        `</g>`;
+    case 'fbday-gift-sticker':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M28,46 H72 V72 H28Z M50,46 C44,36 34,40 42,46 C34,40 44,32 50,46 C56,32 66,40 58,46 C66,40 56,36 50,46Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M28,46 H72 V72 H28Z M50,46 C44,36 34,40 42,46 C34,40 44,32 50,46 C56,32 66,40 58,46 C66,40 56,36 50,46Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M28,54 H72 M50,46 V72" fill="none" stroke="#172033" stroke-width="2.4"/>` +
+        `</g>`;
+    case 'fbday-number-candle':
+      return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+        `<path d="M43,72 H57 V38 H43Z M50,38 V28 C46,32 46,36 50,38 C54,36 54,32 50,28Z" transform="translate(3 4)" fill="#172033" stroke="#172033" stroke-width="6"/>` +
+        `<path d="M43,72 H57 V38 H43Z M50,38 V28 C46,32 46,36 50,38 C54,36 54,32 50,28Z" fill="${c}" stroke="#fff4d6" stroke-width="6" paint-order="stroke"/>` +
+        `<path d="M43,50 H57 M43,62 H57" fill="none" stroke="#172033" stroke-width="2.4"/>` +
+        `</g>`;
+
     default: return '';
   }
 }
@@ -5223,6 +5604,65 @@ function renderAccent(attr) {
       case 'fatema-hearts': out += renderRomanticAccent(5, 1, c, cx, cy); break;
       case 'fatema-diamonds': out += renderRomanticAccent(5, 2, c, cx, cy); break;
       case 'fatema-stars': out += renderRomanticAccent(5, 3, c, cx, cy); break;
+
+      // ── September Sparkle (birthday countdown) ──
+      case 'septspark-stars':
+        out += `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" opacity="0.78"/>`; break;
+      case 'septspark-confetti':
+        out += `<rect x="${cx-4}" y="${cy-2}" width="8" height="4" rx="1" transform="rotate(25 ${cx} ${cy})" fill="${c}" opacity="0.76"/>`; break;
+      case 'septspark-sparkle-bursts':
+        out += `<path d="M${cx},${cy-7} V${cy+7} M${cx-7},${cy} H${cx+7} M${cx-5},${cy-5} L${cx+5},${cy+5} M${cx-5},${cy+5} L${cx+5},${cy-5}" stroke="${c}" stroke-width="1.6" opacity="0.72"/>`; break;
+      case 'septspark-ribbons':
+        out += `<path d="M${cx-6},${cy+5} Q${cx-1},${cy-6} ${cx+6},${cy-3} Q${cx+5},${cy+6} ${cx-6},${cy+5}Z" fill="${c}" opacity="0.75"/>`; break;
+
+      // ── Wrapped With Love (birthday countdown) ──
+      case 'wraplove-bows':
+        out += `<path d="M${cx-6},${cy} C${cx-2},${cy-6} ${cx+2},${cy-6} ${cx+6},${cy} C${cx+2},${cy+6} ${cx-2},${cy+6} ${cx-6},${cy}Z" fill="${c}" opacity="0.76"/><circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.8"/>`; break;
+      case 'wraplove-tags':
+        out += `<path d="M${cx-6},${cy-4} H${cx+3} L${cx+7},${cy} L${cx+3},${cy+4} H${cx-6}Z" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.74"/><circle cx="${cx-3}" cy="${cy}" r="2.6" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.7"/>`; break;
+      case 'wraplove-hearts':
+        out += `<path d="M${cx},${cy+6} C${cx-9},${cy-2} ${cx-4},${cy-9} ${cx},${cy-4} C${cx+4},${cy-9} ${cx+9},${cy-2} ${cx},${cy+6}Z" fill="${c}" opacity="0.78"/>`; break;
+      case 'wraplove-ribbon-curls':
+        out += `<path d="M${cx-6},${cy-4} Q${cx},${cy-10} ${cx+6},${cy-4} Q${cx},${cy+2} ${cx-6},${cy-4}Z M${cx-6},${cy+4} Q${cx},${cy+10} ${cx+6},${cy+4} Q${cx},${cy-2} ${cx-6},${cy+4}Z" fill="${c}" opacity="0.72"/>`; break;
+
+      // ── Balloons & Kisses (birthday countdown, bold sticker) ──
+      case 'balloonkiss-kiss-marks':
+        out += `<path d="M${cx-5+2.5},${cy+3} Q${cx-2+2.5},${cy-4+3} ${cx+2.5},${cy+3} Q${cx+2+2.5},${cy-4+3} ${cx+5+2.5},${cy+3} Q${cx+2+2.5},${cy+2+3} ${cx+2.5},${cy+1+3} Q${cx-2+2.5},${cy+2+3} ${cx-5+2.5},${cy+3}Z" fill="#172033" opacity="0.9"/>` +
+               `<path d="M${cx-5},${cy} Q${cx-2},${cy-4} ${cx},${cy} Q${cx+2},${cy-4} ${cx+5},${cy} Q${cx+2},${cy+2} ${cx},${cy+1} Q${cx-2},${cy+2} ${cx-5},${cy}Z" fill="${c}" stroke="#fff4d6" stroke-width="2.4" paint-order="stroke" opacity="0.92"/>`; break;
+      case 'balloonkiss-balloon-dots':
+        out += `<ellipse cx="${cx+2.5}" cy="${cy+3}" rx="5" ry="6.5" fill="#172033" opacity="0.9"/>` +
+               `<ellipse cx="${cx}" cy="${cy}" rx="5" ry="6.5" fill="${c}" stroke="#fff4d6" stroke-width="2" paint-order="stroke" opacity="0.92"/>` +
+               `<path d="M${cx},${cy+6.5} L${cx},${cy+11}" stroke="#172033" stroke-width="1.6"/>`; break;
+      case 'balloonkiss-confetti-badges':
+        out += `<rect x="${cx-4+2.5}" y="${cy-2+3}" width="8" height="4" rx="1" transform="rotate(20 ${cx+2.5} ${cy+3})" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-4}" y="${cy-2}" width="8" height="4" rx="1" transform="rotate(20 ${cx} ${cy})" fill="${c}" stroke="#fff4d6" stroke-width="1.6" paint-order="stroke" opacity="0.92"/>`; break;
+      case 'balloonkiss-star-badges':
+        out += `<polygon points="${cx+2.5},${cy-6+3} ${cx+2+2.5},${cy-2+3} ${cx+6+2.5},${cy-2+3} ${cx+3+2.5},${cy+1+3} ${cx+4+2.5},${cy+6+3} ${cx+2.5},${cy+3+3} ${cx-4+2.5},${cy+6+3} ${cx-3+2.5},${cy+1+3} ${cx-6+2.5},${cy-2+3} ${cx-2+2.5},${cy-2+3}" fill="#172033" opacity="0.9"/>` +
+               `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" stroke="#fff4d6" stroke-width="2" paint-order="stroke" opacity="0.92"/>`; break;
+
+      // ── Birthday Eve Wishes (birthday countdown) ──
+      case 'candleeve-flames':
+        out += `<path d="M${cx},${cy-6} C${cx-3},${cy-2} ${cx-3},${cy+2} ${cx},${cy+6} C${cx+3},${cy+2} ${cx+3},${cy-2} ${cx},${cy-6}Z" fill="${c}" opacity="0.78"/>`; break;
+      case 'candleeve-stars':
+        out += `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" opacity="0.76"/>`; break;
+      case 'candleeve-wish-sparkles':
+        out += `<path d="M${cx},${cy-7} V${cy+7} M${cx-7},${cy} H${cx+7}" stroke="${c}" stroke-width="1.8" opacity="0.72"/><circle cx="${cx}" cy="${cy}" r="2.6" fill="${c}" opacity="0.7"/>`; break;
+      case 'candleeve-moons':
+        out += `<path d="M${cx+3},${cy-7} A7,7 0 1,0 ${cx+5},${cy+6} A5.5,5.5 0 1,1 ${cx+3},${cy-7}Z" fill="${c}" opacity="0.78"/>`; break;
+
+      // ── Fatema's Birthday (birthday countdown, bold sticker) ──
+      case 'fbday-confetti-badges':
+        out += `<rect x="${cx-4+2.5}" y="${cy-2+3}" width="8" height="4.4" rx="1" transform="rotate(-18 ${cx+2.5} ${cy+3})" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-4}" y="${cy-2}" width="8" height="4.4" rx="1" transform="rotate(-18 ${cx} ${cy})" fill="${c}" stroke="#fff4d6" stroke-width="1.6" paint-order="stroke" opacity="0.92"/>`; break;
+      case 'fbday-star-badges':
+        out += `<polygon points="${cx+2.5},${cy-6+3} ${cx+2+2.5},${cy-2+3} ${cx+6+2.5},${cy-2+3} ${cx+3+2.5},${cy+1+3} ${cx+4+2.5},${cy+6+3} ${cx+2.5},${cy+3+3} ${cx-4+2.5},${cy+6+3} ${cx-3+2.5},${cy+1+3} ${cx-6+2.5},${cy-2+3} ${cx-2+2.5},${cy-2+3}" fill="#172033" opacity="0.9"/>` +
+               `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" stroke="#fff4d6" stroke-width="2" paint-order="stroke" opacity="0.92"/>`; break;
+      case 'fbday-heart-badges':
+        out += `<path d="M${cx+2.5},${cy+6+3} C${cx-6+2.5},${cy+3} ${cx-4+2.5},${cy-4+3} ${cx+2.5},${cy+3} C${cx+4+2.5},${cy-4+3} ${cx+6+2.5},${cy+3} ${cx+2.5},${cy+6+3}Z" fill="#172033" opacity="0.9"/>` +
+               `<path d="M${cx},${cy+6} C${cx-6},${cy} ${cx-4},${cy-4} ${cx},${cy} C${cx+4},${cy-4} ${cx+6},${cy} ${cx},${cy+6}Z" fill="${c}" stroke="#fff4d6" stroke-width="2" paint-order="stroke" opacity="0.92"/>`; break;
+      case 'fbday-candle-badges':
+        out += `<rect x="${cx-2+2.5}" y="${cy-5+3}" width="4" height="10" rx="1" fill="#172033" opacity="0.9"/><path d="M${cx+2.5},${cy-5+3} C${cx-1+2.5},${cy-8+3} ${cx-1+2.5},${cy-11+3} ${cx+2.5},${cy-13+3} C${cx+1+2.5},${cy-11+3} ${cx+1+2.5},${cy-8+3} ${cx+2.5},${cy-5+3}Z" fill="#172033" opacity="0.9"/>` +
+               `<rect x="${cx-2}" y="${cy-5}" width="4" height="10" rx="1" fill="${c}" stroke="#fff4d6" stroke-width="1.6" paint-order="stroke" opacity="0.92"/><path d="M${cx},${cy-5} C${cx-1},${cy-8} ${cx-1},${cy-11} ${cx},${cy-13} C${cx+1},${cy-11} ${cx+1},${cy-8} ${cx},${cy-5}Z" fill="${c}" stroke="#fff4d6" stroke-width="1.4" paint-order="stroke" opacity="0.9"/>`; break;
 
     }
   }
