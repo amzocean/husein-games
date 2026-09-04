@@ -4,7 +4,11 @@
   "description": "Husein's Game Room - collection of mini games",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "birthday-studio": "node tools/birthday-studio/server.js",
+    "birthday-studio:selftest": "node tools/birthday-studio/selftest.js",
+    "rida-studio:local": "pwsh -NoProfile -File tools/start-rida-local.ps1",
+    "rida-studio:selftest": "node lib/ridaStudio/selftest.js"
   },
   "dependencies": {
     "express": "^4.18.2",

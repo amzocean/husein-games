@@ -1,0 +1,229 @@
+# Fatema's Rida Studio — `public/rida-studio/`
+
+A permanent, PIN-protected game where Fatema designs a culturally accurate
+Dawoodi Bohra rida and a cheerful scene, then generates **exactly two** live
+AI keepsake images per request via OpenAI's `gpt-image-2` (`images/edits`).
+This is a permanent, always-available game on the root Game Room landing
+page — **not** date-gated like the September 6 birthday gala.
+
+## Flow
+
+1. **Welcome / PIN** — Fatema enters her private PIN (`RIDA_STUDIO_PIN`).
+2. **Choose base cloth** — upload a shop photo, describe the cloth, or select
+   a color and pattern. The result is shared by pardi and ghagra.
+3. **Choose shared design** — upload an example, describe the complete design,
+   or select a panel and lace (including explicit None choices) and describe
+   embroidery on/above the panel. The design is adapted to both pieces.
+4. **Choose photograph** — photography treatment and location only.
+6. **Review look** — a summary of every selection, plus remaining daily
+   allowance.
+7. **Generate + play** — while the server creates two candidates, the loading
+   card offers a replayable 20-second **Petal Pop** flower-catching game. The
+   game is entirely local and never interrupts or duplicates the API request.
+   An elapsed-status line explains the current phase. OpenAI requests have a
+   four-minute server timeout, after which the UI returns to Review with a
+   retry message and does not consume the daily allowance.
+8. **Results** — two candidate cards, each downloadable, plus a "make
+   another look" button to go back and try again.
+
+Descriptions are sanitized and capped at 300 characters. Input precedence is
+upload first, description second, curated options third.
+
+## Files
+
+```
+public/rida-studio/
+  index.html          Multi-screen single-page UI (welcome → rida → scene → review → loading → results)
+  style.css           Mobile-first, vibrant/cheerful styling
+  app-v6.js           Screen state machine + fetch calls to /rida-studio/api/*
+  DOCUMENTATION.md    This file
+
+lib/ridaStudio/        Server-side logic, mounted by the root server.js
+  options.js            Curated color, motif, panel, lace, photography, and location catalog
+  promptBuilder.js       Locked prompt template + bounded description handling
+  identity.js             Reference-photo resolution (RIDA_REFERENCE_PHOTOS env, or local .birthday-studio/rida-identity.json fallback)
+  session.js               PIN login, failed-attempt lockout + opaque in-memory session tokens
+  rateLimit.js               Shared 10/UTC-day limiter + concurrency guard
+  router.js                  Express router: /login, /logout, /session, /options, /generate
+  selftest.js                 Self-test suite (see below) — never calls OpenAI
+
+lib/shared/             Code shared with the owner-only local tool (tools/birthday-studio)
+  tilesPhotos.js          Tiles-photo allowlist/path-traversal validation
+  openaiImagesClient.js    OpenAI images/edits caller (no SDK dependency)
+```
+
+Production `server.js` mounts the API with:
+
+```js
+const ridaStudioRouter = require('./lib/ridaStudio/router');
+app.use('/rida-studio/api', ridaStudioRouter.createRouter());
+```
+
+The static UI in this folder is served automatically by the existing
+`express.static(path.join(__dirname, 'public'))` middleware — no special
+route is needed for `index.html`/`style.css`/`app-v6.js`.
+
+## Required environment variables (production / Render)
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `OPENAI_API_KEY` | Yes (to generate) | OpenAI API key. Never exposed to the browser, never logged. |
+| `RIDA_STUDIO_PIN` | Yes | Fatema's private PIN. Compared with a constant-time check; never logged or returned. |
+| `RIDA_REFERENCE_PHOTOS` | Yes (to generate) | Comma-separated list of exactly 10 filenames from `public/tiles/photos/manifest.json`. Chosen once by the owner via the local Birthday Image Studio's "Rida identity pack" section — **never** chosen or learned by the public browser. |
+| `OPENAI_IMAGE_MODEL` | No | Overrides the default `gpt-image-2` model. |
+| `RIDA_SESSION_SECRET` | No | Reserved for future use. Sessions are already unguessable random tokens kept in memory, so this is optional and not required for setup to work. |
+
+If `RIDA_REFERENCE_PHOTOS` isn't set, the server falls back to reading
+`.birthday-studio/rida-identity.json` (gitignored, local-only) — this is
+only useful for local development/testing, since that file never exists in
+a fresh Render deploy.
+
+## Security & privacy design
+
+1. **No secrets ever reach the browser.** `OPENAI_API_KEY` and
+   `RIDA_STUDIO_PIN` are read only from `process.env` inside
+   `lib/ridaStudio/`, never logged, never included in any JSON response.
+2. **PIN throttling and opaque, in-memory sessions.** Five consecutive
+   incorrect PIN attempts lock login for 15 minutes; a successful login
+   resets the failure counter. `POST /rida-studio/api/login` compares the
+   submitted PIN against `RIDA_STUDIO_PIN` with `crypto.timingSafeEqual`
+   and, on success, issues a 32-byte random token stored in memory with a
+   10-hour expiry. The cookie (`rida_session`) is `HttpOnly`, `SameSite=Strict`,
+   scoped to `Path=/rida-studio`, and marked `Secure` whenever the request is
+   HTTPS (checked via `req.secure` or `X-Forwarded-Proto`, so it works behind
+   Render's proxy without needing `trust proxy`). Sessions reset if the
+   Render process restarts — an accepted tradeoff for the free tier.
+3. **All generation routes require authentication.** `/options` and
+   `/generate` both run through `requireAuth`, which validates the session
+   cookie against the in-memory map. `/generate` additionally accepts
+   **JSON only**, rejects unexpected fields and unknown option values. Base
+   cloth, full design, and embroidery descriptions are sanitized and capped
+   at 300 characters.
+4. **Rate limiting: 10 requests/UTC day for the PIN-protected user**, enforced
+   in `lib/ridaStudio/rateLimit.js` *before* calling OpenAI. The allowance is
+   shared across sessions, so logging out and back in cannot reset it. Only successful
+   generations consume allowance — validation failures and OpenAI API
+   errors do not. A `generating` flag is set synchronously (before any
+   `await`), so two near-simultaneous requests for the same session can
+   never both proceed; the second gets an explicit `409`.
+5. **Identity references never reach the browser.** `RIDA_REFERENCE_PHOTOS`
+   (or the local fallback file) is resolved only on the server, inside the
+   `/generate` handler, and every filename is re-validated against
+   `public/tiles/photos/manifest.json` via the same allowlist/path-traversal
+   guard used by the local tool (`lib/shared/tilesPhotos.js`). No API
+   response ever includes these filenames.
+6. **Reference uploads are ephemeral.** The browser downsizes base-cloth and
+   design-example photos to at most 1600px and sends them only with Generate. The server
+   validates its MIME type, signature, base64 encoding, and 5MB decoded-size
+   cap, then appends it after the ten identity references. It is never
+   written to disk or returned in a response.
+7. **No server-side storage of generated images.** The two images are
+   returned to the browser as base64 in the JSON response and rendered/
+   downloaded client-side; nothing is written to disk, and nothing is
+   logged.
+8. **Explicit `no-store` headers** (`Cache-Control: no-store`, `Pragma:
+   no-cache`) are set on every response from this router, including
+   login/session/generate.
+9. **Automated response-shape checks** in `lib/shared/openaiImagesClient.js`
+   verify the OpenAI response contains exactly the requested number of
+   images, each with valid `b64_json` data, before anything is returned to
+   the browser. There is no additional (paid) vision-review call in this
+   version — see the Cultural/UX section below for why the UI never
+   promises a guaranteed likeness.
+
+## Locked prompt design (`lib/ridaStudio/promptBuilder.js`)
+
+The browser only ever sends short option **keys** (e.g. `color: "rosePearl"`).
+The server resolves those keys against the fixed catalog in `options.js` and
+assembles the final prompt from an **immutable** template that always
+includes:
+
+- An explicit definition of an authentic Dawoodi Bohra rida: a stitched,
+  coordinated two-piece **pardi** with full-length sleeves and an integrated
+  headpiece covering hair, neck, shoulders, arms, and torso; its face flap is
+  folded aside so the whole face stays visible. The matching **ghagra** is an
+  ankle-length, mostly straight skirt with modest ease and a gentle A-line.
+- Silhouette guidance grounded in the selected real photos: the pardi uses a
+  shallow gathered yoke and controlled trapezoidal drape; the ghagra is
+  mostly straight/column-like with only a gentle A-line. Standing hems remain
+  modestly wider than the hips, while seated fabric follows the knees and
+  shins without fanning, pooling, trains, or ball-gown volume.
+- An explicit forbidden-alternatives clause: no sari, lehenga/cropped choli,
+  abaya, burqa, niqab, generic hijab, western gown/dress, face covering,
+  exposed hair/neck/arms/midriff, fitted bodice, cinched waist, single robe,
+  or unstitched drape.
+- An identity-preservation clause referencing the attached photos (facial
+  structure, natural complexion, approximate age, kind expression). The first
+  image is the primary face reference and the other nine provide supporting
+  views of the same identity.
+- Every selectable visual treatment is photographic. The prompt explicitly
+  rejects illustrations, paintings, cartoons, anime, chibi, 3D renders, dolls,
+  generic-model beautification, enlarged eyes, and stylized facial features.
+- When a cloth photo is supplied, it is explicitly separated from the first
+  ten identity references and used only for its colors, print, motif scale,
+  spacing, weave, sheen, and texture. It overrides catalog color/pattern
+  choices and is applied across both pardi and ghagra.
+- The design route applies one coordinated panel/lace/embroidery language to
+  both pardi and ghagra. Lace is placed immediately below the panel when
+  present; embroidery is placed on the panel or just above it.
+- Full-body composition, natural hands/anatomy, and a flattering, joyful,
+  tastefully romantic/cute mood appropriate for a birthday keepsake.
+- An explicit safety clause: no text/logos/watermarks, no sadness/darkness/
+  horror, no sexualization, no embarrassing expressions or exaggerated body
+  features.
+- The selected or described base cloth, shared design, photographic treatment,
+  and location.
+
+The UI is intentionally phrased around **generating and choosing a
+favorite** — it never claims the output is a guaranteed likeness.
+
+## Local setup & running
+
+For normal Windows testing, use the local launcher:
+
+```powershell
+npm run rida-studio:local
+```
+
+On first use it securely prompts for the OpenAI key and PIN, then stores them
+under `.birthday-studio/secrets/` encrypted with Windows DPAPI. The encrypted
+values are readable only by the same Windows user on the same computer, and
+the entire `.birthday-studio/` directory is gitignored. Later launches reuse
+them without putting plaintext secrets in source, Git, command history, or a
+permanent environment variable. Use
+`powershell -File tools/start-rida-local.ps1 -ReplaceCredentials` to replace
+either credential.
+
+The equivalent temporary environment-variable setup is:
+
+```powershell
+cd C:\Users\huseinm\Downloads\husein-games
+$env:OPENAI_API_KEY = 'sk-...'          # only for this PowerShell process
+$env:RIDA_STUDIO_PIN = 'choose-a-pin'
+$env:RIDA_REFERENCE_PHOTOS = 'photo-01.jpg,...exactly-10-filenames...'  # or omit to use the local fallback file
+node server.js
+# → http://localhost:3000/rida-studio/
+```
+
+To choose the identity reference photos locally without setting the env var
+by hand every time, use the new "Rida identity pack" section in the
+owner-only Birthday Image Studio (`npm run birthday-studio`) — see
+[tools/BIRTHDAY-IMAGE-STUDIO.md](../../tools/BIRTHDAY-IMAGE-STUDIO.md). It
+writes `.birthday-studio/rida-identity.json` locally and shows the exact
+comma-separated value to paste into `RIDA_REFERENCE_PHOTOS` on Render.
+
+## Self-tests
+
+```powershell
+npm run rida-studio:selftest
+```
+
+Covers: option/selection validation, locked prompt content (required +
+forbidden clauses), identity resolution from both the env var and the local
+fallback file (including traversal rejection, and restoring any pre-existing
+local file exactly), PIN login success/failure and lockout, cookie-based auth,
+logout, unauthenticated rejection, shared daily rate-limit enforcement, concurrency
+rejection, the two-image response shape, and `no-store` headers — all with
+a fetch guard that fails loudly if anything ever tries to reach
+`api.openai.com`, and without ever reading real photo bytes (a synthetic
+1×1 PNG stands in for reference photos in the HTTP-level tests).

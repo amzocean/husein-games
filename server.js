@@ -8,9 +8,10 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Force revalidation for HTML files so new deploys are picked up immediately
+// Force revalidation for HTML and Rida Studio assets so its UI and API
+// contract never get split across stale browser-cached versions.
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path.endsWith('/')) {
+  if (req.path.endsWith('.html') || req.path.endsWith('/') || req.path.startsWith('/rida-studio/')) {
     res.setHeader('Cache-Control', 'no-cache');
   }
   next();
@@ -18,6 +19,15 @@ app.use((req, res, next) => {
 
 // Serve static files (landing page, tiles, valentines, ludo)
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ============================================================
+// FATEMA'S RIDA STUDIO — permanent, PIN-protected AI rida generator.
+// Static UI lives at public/rida-studio/ (served above). API lives here,
+// fully independent of the owner-only local tool under tools/birthday-studio.
+// See public/rida-studio/DOCUMENTATION.md for the full design.
+// ============================================================
+const ridaStudioRouter = require('./lib/ridaStudio/router');
+app.use('/rida-studio/api', ridaStudioRouter.createRouter());
 
 // ============================================================
 // LUDO GAME SERVER (Socket.IO namespace: /ludo)

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fatema's Rida Studio 🌸</title>
+<meta name="description" content="Fatema's private rida &amp; scene studio — design a look, generate two keepsake images, and pick a favorite." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260903-6" />
+</head>
+<body>
+
+<div class="rida-app" id="ridaApp">
+
+  <header class="rida-header">
+    <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
+    <h1>🌸 Fatema's Rida Studio</h1>
+    <span class="build-badge">Build 7</span>
+    <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
+  </header>
+
+  <main class="rida-main">
+
+    <!-- SCREEN: welcome / PIN -->
+    <section class="screen active" data-screen="welcome">
+      <div class="hero-card">
+        <div class="hero-emoji">🥻✨</div>
+        <h2>Welcome, Fatema!</h2>
+        <p>Design a beautiful rida &amp; a cheerful scene, then generate two magical keepsake images of you.</p>
+        <form id="pinForm" class="pin-form" autocomplete="off">
+          <label for="pinInput">Enter your private PIN</label>
+          <input type="password" inputmode="numeric" id="pinInput" name="pin" placeholder="••••" required />
+          <button type="submit" class="btn btn-primary">Unlock the Studio ✨</button>
+        </form>
+        <p class="error-text" id="loginError" role="alert"></p>
+      </div>
+    </section>
+
+    <!-- SCREEN: choose base cloth -->
+    <section class="screen" data-screen="rida">
+      <div class="screen-head">
+        <span class="step-pill">Step 1 of 5</span>
+        <h2>Choose the base cloth 🧵</h2>
+        <p class="subtle">Upload a shop photo, describe the cloth, or use the color and pattern choices.</p>
+      </div>
+
+      <div class="option-block fabric-upload-block">
+        <h3>📸 Upload cloth from the shop</h3>
+        <p class="option-help">Take a close, well-lit photo filling the frame with the cloth. It is sent only when you press Generate and is never stored by the server.</p>
+        <label class="fabric-upload-btn" for="baseClothPhotoInput">Choose cloth photo</label>
+        <input id="baseClothPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
+        <div class="fabric-preview-wrap" id="baseClothPreviewWrap" hidden>
+          <img id="baseClothPreview" alt="Selected base cloth preview" />
+          <button class="btn btn-ghost fabric-remove" id="removeBaseClothBtn" type="button">Remove photo</button>
+        </div>
+        <p class="upload-status" id="baseClothStatus"></p>
+      </div>
+
+      <div class="option-block" id="baseDescriptionBlock">
+        <h3>✍️ Or describe the base cloth</h3>
+        <textarea class="design-note" id="baseDescription" maxlength="300" rows="3" placeholder="Example: soft teal cotton with tiny cream flowers and a light matte texture"></textarea>
+      </div>
+
+      <div id="catalogBaseOptions">
+        <div class="option-block">
+          <h3>🎨 Or select a color</h3>
+          <div class="option-grid" id="colorGrid"></div>
+        </div>
+        <div class="option-block">
+          <h3>🌿 Base-cloth pattern</h3>
+          <div class="option-grid" id="motifGrid"></div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="welcome" type="button">Back</button>
+        <button class="btn btn-primary" id="toDesignBtn" type="button">Design the rida →</button>
+      </div>
+    </section>
+
+    <!-- SCREEN: shared design -->
+    <section class="screen" data-screen="design">
+      <div class="screen-head">
+        <span class="step-pill">Step 2 of 5</span>
+        <h2>Design both pieces 🪡</h2>
+        <p class="subtle">The same panel, lace, and embroidery design will be adapted to both the pardi and ghagra.</p>
+      </div>
+
+      <div class="option-block">
+        <h3>📸 Upload a design example</h3>
+        <p class="option-help">Upload a rida or tailoring example whose panel, lace, and embroidery arrangement you like.</p>
+        <label class="fabric-upload-btn" for="designPhotoInput">Choose design photo</label>
+        <input id="designPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
+        <div class="fabric-preview-wrap" id="designPreviewWrap" hidden>
+          <img id="designPreview" alt="Selected design example preview" />
+          <button class="btn btn-ghost fabric-remove" id="removeDesignBtn" type="button">Remove photo</button>
+        </div>
+        <p class="upload-status" id="designStatus"></p>
+      </div>
+
+      <div class="option-block" id="designDescriptionBlock">
+        <h3>✍️ Or describe the full design</h3>
+        <textarea class="design-note" id="designDescription" maxlength="300" rows="3" placeholder="Example: a slim floral panel with ivory lace directly below it, repeated neatly on both pieces"></textarea>
+      </div>
+
+      <div id="curatedDesignOptions">
+        <div class="option-block">
+          <h3>▰ Or select a panel</h3>
+          <div class="option-grid" id="panelGrid"></div>
+        </div>
+        <div class="option-block">
+          <h3>📿 Select lace / nehl</h3>
+          <p class="option-help">When selected, the lace usually sits immediately below the panel.</p>
+          <div class="option-grid" id="borderGrid"></div>
+        </div>
+        <div class="option-block">
+          <h3>🪡 Describe embroidery</h3>
+          <textarea class="design-note" id="embroideryDescription" maxlength="300" rows="3" placeholder="Example: tiny pink flower embroidery on the panel, with a few blossoms just above it"></textarea>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="rida" type="button">Back</button>
+        <button class="btn btn-primary" id="toSceneBtn" type="button">Choose style & location →</button>
+      </div>
+    </section>
+
+    <!-- SCREEN: style and location -->
+    <section class="screen" data-screen="scene">
+      <div class="screen-head">
+        <span class="step-pill">Step 3 of 5</span>
+        <h2>Style the photograph 📷</h2>
+        <p class="subtle">Choose the photography treatment and location.</p>
+      </div>
+
+      <div class="option-block">
+        <h3>📷 Photography style</h3>
+        <div class="option-grid" id="styleGrid"></div>
+      </div>
+      <div class="option-block">
+        <h3>📍 Location</h3>
+        <div class="option-grid" id="locationGrid"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="design" type="button">Back</button>
+        <button class="btn btn-primary" id="toReviewBtn" type="button">Review my look →</button>
+      </div>
+    </section>
+
+    <!-- SCREEN: review -->
+    <section class="screen" data-screen="review">
+      <div class="screen-head">
+        <span class="step-pill">Step 4 of 5</span>
+        <h2>Review your look 💖</h2>
+        <p class="subtle">Here's your selection summary before we generate anything.</p>
+      </div>
+
+      <div class="summary-card" id="summaryCard"></div>
+
+      <p class="allowance-note" id="allowanceNote"></p>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="scene" type="button">Back</button>
+        <button class="btn btn-primary btn-generate" id="generateBtn" type="button">✨ Generate my two looks</button>
+      </div>
+      <p class="error-text" id="generateError" role="alert"></p>
+    </section>
+
+    <!-- SCREEN: loading -->
+    <section class="screen" data-screen="loading">
+      <div class="loading-card">
+        <div class="loading-spinner" aria-hidden="true">🌸</div>
+        <h2>Creating your keepsake looks…</h2>
+        <p>This can take a little while — the studio is carefully creating two realistic full-body candidates for you. Please keep this tab open.</p>
+        <p class="generation-progress" id="generationProgress" aria-live="polite">Uploading your references…</p>
+
+        <div class="waiting-game">
+          <div class="waiting-game-head">
+            <div>
+              <strong>Petal Pop 🌸</strong>
+              <span>Catch as many as you can in 20 seconds!</span>
+            </div>
+            <div class="waiting-score" aria-live="polite">
+              <span>Score <b id="petalScore">0</b></span>
+              <span>Time <b id="petalTime">20</b>s</span>
+            </div>
+          </div>
+          <div class="petal-field" id="petalField" aria-label="Petal Pop game area"></div>
+          <button class="btn btn-ghost petal-start" id="petalStartBtn" type="button">Play Petal Pop</button>
+          <p class="petal-message" id="petalMessage" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN: results -->
+    <section class="screen" data-screen="results">
+      <div class="screen-head">
+        <span class="step-pill">Step 5 of 5</span>
+        <h2>Choose your favorite 💫</h2>
+        <p class="subtle">Two candidates were generated. Download the one you love — or try another look.</p>
+      </div>
+
+      <div class="results-grid" id="resultsGrid"></div>
+
+      <p class="allowance-note" id="resultsAllowanceNote"></p>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="newLookBtn" type="button">🪄 Make another look</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 7</footer>
+</div>
+
+<script>
+  const ridaScript = document.createElement('script');
+  ridaScript.src = `/rida-studio/app-v6.js?build=7&t=${Date.now()}`;
+  document.body.appendChild(ridaScript);
+</script>
+</body>
+</html>

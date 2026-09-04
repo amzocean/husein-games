@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Birthday Image Studio (Owner Only)</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🎂 Birthday Image Studio</h1>
+    <div class="status-pill" id="statusPill">Checking API status…</div>
+  </header>
+
+  <p class="notice">
+    Owner-only local tool. Nothing here is live on the site or reachable by Fatema.
+    Selected photos are sent to OpenAI <strong>only</strong> when you press Generate.
+  </p>
+
+  <main>
+    <section class="panel">
+      <h2>1. Select reference photos <span class="hint">(1–4)</span></h2>
+      <div class="gallery" id="photoGallery">Loading photos…</div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Subject balance</h2>
+      <div class="options" id="subjectModeOptions"></div>
+
+      <h2>3. Style <span class="hint">(pick one — each generation uses one coherent style)</span></h2>
+      <div class="options" id="styleOptions"></div>
+
+      <h2>4. Scenario</h2>
+      <div class="options" id="scenarioOptions"></div>
+
+      <h2>5. Optional uplifting details</h2>
+      <div class="options" id="detailOptions"></div>
+
+      <h2>6. Optional note <span class="hint">(short, positive, max 200 chars)</span></h2>
+      <input type="text" id="noteInput" maxlength="200" placeholder="e.g. she loves sunflowers" />
+
+      <h2>7. Candidate count</h2>
+      <div class="options" id="countOptions"></div>
+
+      <div class="generate-row">
+        <button id="generateBtn">✨ Generate candidates</button>
+        <div class="cost-note">
+          Cost note: each Generate call sends your selected photos to OpenAI using your own API key
+          and creates up to 4 candidate images. Nothing is generated until you press this button.
+        </div>
+      </div>
+      <div id="generateStatus" class="generate-status"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Review candidates</h2>
+      <button id="refreshBtn">🔄 Refresh</button>
+      <div id="jobsList" class="jobs-list"></div>
+    </section>
+
+    <section class="panel">
+      <h2>🌸 Rida Studio identity pack <span class="hint">(exactly 10 photos)</span></h2>
+      <p class="notice">
+        Choose 10 clear and varied photos the permanent Rida Studio game will send to OpenAI as identity
+        references. This never touches the live site directly — copy the render value below into
+        the <code>RIDA_REFERENCE_PHOTOS</code> environment variable on Render.
+      </p>
+      <div class="gallery" id="ridaGallery">Loading photos…</div>
+      <div class="generate-row">
+        <button id="ridaSaveBtn">💾 Save identity pack</button>
+        <div class="cost-note" id="ridaStatus"></div>
+      </div>
+      <div class="rida-render-row" id="ridaRenderRow" hidden>
+        <label for="ridaRenderValue">RIDA_REFERENCE_PHOTOS value</label>
+        <input type="text" id="ridaRenderValue" readonly />
+        <button id="ridaCopyBtn" type="button">📋 Copy</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

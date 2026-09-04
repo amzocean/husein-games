@@ -2,14 +2,16 @@
 
 ## 1. Introduction & Project Context
 
-This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 5 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
+This is a personal game portal built for Husein and Fatema — a romantic-themed website at **huseinlovesyou.com** that hosts 7 browser games. It's a single Node.js process (Express + Socket.IO) deployed on Render.com's free tier.
 
-**The 5 games:**
+**The 7 games:**
 - **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels) → [Valentines docs](public/valentines/DOCUMENTATION.md)
 - **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering → [Ludo docs](public/ludo/DOCUMENTATION.md)
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
+- **📖 Hidaayaat Lookup** — A static single-player search page (`public/quote-search/`) over 142 quotes across 2 volumes of Raudat Hidayaat.
+- **🌸 Fatema's Rida Studio** — A permanent, PIN-protected single-player game where Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene and generates 2 live AI keepsake images per request (`gpt-image-2`, rate-limited) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -37,6 +39,7 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 | H♥F Deal | `public/cards/DOCUMENTATION.md` | Card game rules, pending action state machine, rent payment flow, bug fixes |
 | Valentines | `public/valentines/DOCUMENTATION.md` | Level config, customization |
 | Hidaayat Ciphers | `public/hidaayat-ciphers/DOCUMENTATION.md` | Cipher engine, hook+reveal, quote data format, page image mapping |
+| Rida Studio | `public/rida-studio/DOCUMENTATION.md` | Permanent PIN-protected AI rida/scene generator: auth, rate limiting, locked prompt, identity references |
 
 ## 3. Quick Resume Checklist
 
@@ -60,11 +63,25 @@ Single Node.js process serving everything:
 husein-games/
 ├── server.js              # Express + Socket.IO server (~1750 lines)
 ├── package.json           # express ^4.18.2, socket.io ^4.7.4
-├── .gitignore             # node_modules, package-lock.json
+├── .gitignore             # node_modules, package-lock.json, .birthday-studio/
 ├── DOCUMENTATION.md       # This file — project-wide docs
 ├── validate-themes.js     # Pre-commit validator for tiles themes
+├── lib/
+│   ├── shared/             # Code shared between the local owner tool and production
+│   │   ├── tilesPhotos.js    # Tiles photo path allowlist (manifest-backed)
+│   │   └── openaiImagesClient.js  # OpenAI images/edits HTTP client + response-shape checks
+│   └── ridaStudio/          # Production Rida Studio game backend (mounted at /rida-studio/api)
+│       ├── options.js         # Curated allowlisted rida/scene option catalog
+│       ├── promptBuilder.js    # Locked/immutable prompt construction
+│       ├── identity.js          # Reference-photo resolution (env var + local fallback)
+│       ├── session.js            # PIN auth, failed-attempt lockout + opaque sessions
+│       ├── rateLimit.js           # Shared daily rate limit + concurrency guard
+│       ├── router.js               # Express router: login/logout/session/options/generate
+│       └── selftest.js              # Self-test suite (zero external calls)
+├── tools/
+│   └── birthday-studio/    # Owner-only local tool (127.0.0.1 only) — see section 9
 └── public/
-    ├── index.html          # Landing page with 5 game cards
+    ├── index.html          # Landing page with game cards
     ├── valentines/         # Valentine puzzle game (static, single-player)
     │   ├── DOCUMENTATION.md
     │   ├── index.html
@@ -87,13 +104,20 @@ husein-games/
     ├── cards/              # H♥F Deal card game (2-player multiplayer)
     │   ├── DOCUMENTATION.md
     │   └── index.html
-    └── hidaayat-ciphers/   # Cipher puzzle game (static, single-player)
+    ├── hidaayat-ciphers/   # Cipher puzzle game (static, single-player)
+    │   ├── DOCUMENTATION.md
+    │   ├── index.html
+    │   ├── cipher.js
+    │   ├── style.css
+    │   ├── quotes.json     # 78 wisdom quotes
+    │   └── pages/          # 243 book page JPGs (~68MB)
+    ├── quote-search/       # Hidaayaat Lookup — static quote search (single-player)
+    │   └── index.html
+    └── rida-studio/        # Fatema's Rida Studio — permanent PIN-protected AI game
         ├── DOCUMENTATION.md
         ├── index.html
-        ├── cipher.js
         ├── style.css
-        ├── quotes.json     # 78 wisdom quotes
-        └── pages/          # 243 book page JPGs (~68MB)
+        └── app-v6.js
 ```
 
 ### Key Technical Decisions
@@ -133,13 +157,31 @@ husein-games/
 - **Colors**: Rose `#c44569` headings, gold `#b8860b` subtitle, warm pastel tag backgrounds
 - **Cards**: White with rose-tinted borders and soft shadows, hover scale effect
 - Responsive grid: 1 column on mobile, 2 columns on 700px+
-- Five game cards:
+- Game cards:
   1. **💌 Valentines** → `/valentines/` (tag: Story)
   2. **🧩 Photo Tiles** → `/tiles/` (tag: Solo)
   3. **🎲 Ludo** → `/ludo/` (tag: Multiplayer)
   4. **🃏 H♥F Deal** → `/cards/` (tag: Multiplayer)
   5. **🔐 Hidaayat Ciphers** → `/hidaayat-ciphers/` (tag: Solo)
+  6. **📖 Hidaayaat Lookup** → `/quote-search/` (tag: Solo)
+  7. **🌸 Fatema's Rida Studio** → `/rida-studio/` (tag: Private · PIN) — permanent, not date-gated; see section 10
 - Footer: "Made with ♥ by Husein"
+
+### September 6 Birthday Gala
+
+On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebration for Fatema:
+
+- Animated curtains open onto a birthday stage
+- A cake with six glowing candles has one "Make a Wish" interaction
+- Blowing out the candles launches confetti and fireworks
+- An optional birthday letter and music control are available
+- The normal game cards remain accessible as decorated party booths
+- Photo Tiles is highlighted as "Today's Birthday Game"
+
+Outside that exact date, the existing landing page is unchanged. For local development, append
+`?birthday=preview` to the root URL (for example, `http://localhost:3000/?birthday=preview`) to
+activate the gala without changing the device date. The music currently reuses
+`public/valentines/music.mp3`; playback begins only after the user presses the music button.
 
 ---
 
@@ -212,6 +254,62 @@ These are project-wide bugs not specific to any single game:
 > - [Ludo bug fixes](public/ludo/DOCUMENTATION.md#key-bug-fixes-history)
 > - [H♥F Deal bug fixes](public/cards/DOCUMENTATION.md#key-bug-fixes-history)
 > - [Hidaayat Ciphers](public/hidaayat-ciphers/DOCUMENTATION.md)
+
+---
+
+## 9. Birthday Image Studio (owner-only, local tool)
+
+A local-only, owner-only web tool under `tools/birthday-studio/` lets Husein
+browse/select existing Tiles photos, pick a wholesome birthday scene/style,
+and generate AI-stylized candidate images via his own `OPENAI_API_KEY` for
+later curation into a future birthday surprise. It binds only to
+`127.0.0.1`, is never started by `server.js`/Render, and Fatema never
+interacts with it. Run with `npm run birthday-studio`. Full details,
+security design, and self-test instructions:
+[tools/BIRTHDAY-IMAGE-STUDIO.md](tools/BIRTHDAY-IMAGE-STUDIO.md).
+
+This tool also has an "🌸 Rida Studio identity pack" section used to choose
+which Tiles photos the permanent Rida Studio game (below) uses as identity
+references — see that same doc for details.
+
+---
+
+## 10. Fatema's Rida Studio (permanent production game)
+
+`public/rida-studio/` + `lib/ridaStudio/` implement a **permanent**, PIN-
+protected game (not date-gated — it's independent of the Sept 6 birthday
+gala and available year-round from the root landing page). Fatema logs in
+with a private PIN, then uploads, describes, or selects a shared base cloth.
+She can upload a design example, describe the full design, or select the
+panel and lace (including None) and describe embroidery. The coordinated
+design applies to both pardi and ghagra. Descriptions are sanitized and
+capped at 300 characters. She then chooses a photorealistic photography
+treatment and location. The game generates exactly 2 live AI images per
+request via OpenAI `gpt-image-2`
+(`POST /v1/images/edits`, multipart `image[]` identity references).
+
+Full flow, security/privacy design, locked-prompt design, env vars, local
+setup instructions, and self-test coverage:
+[public/rida-studio/DOCUMENTATION.md](public/rida-studio/DOCUMENTATION.md).
+
+**Key architecture points relevant project-wide:**
+- Backend lives at `lib/ridaStudio/` and is mounted in root `server.js` at
+  `/rida-studio/api`. It depends only on `lib/shared/` (tiles-photo allowlist
+  + OpenAI client) — never on `tools/birthday-studio/`, so the production
+  server never depends on the owner-only local tool.
+- `lib/shared/tilesPhotos.js` and `lib/shared/openaiImagesClient.js` were
+  extracted from `tools/birthday-studio/paths.js` and `openaiClient.js` so
+  both the local tool and the production game validate reference photos and
+  call OpenAI identically. `tools/birthday-studio/` now delegates to these
+  shared modules (verified via its self-tests — no regression).
+- New env vars: `RIDA_STUDIO_PIN` (required, never logged/returned to the
+  browser), `RIDA_REFERENCE_PHOTOS` (comma-separated list of exactly 10 filenames,
+  each validated against `public/tiles/photos/manifest.json`), optional
+  `RIDA_SESSION_SECRET` (reserved for future use — in-memory random sessions
+  work fine without it) and `OPENAI_IMAGE_MODEL` (already used by the
+  birthday tool; overrides the default `gpt-image-2`).
+- Self-tests: `npm run rida-studio:selftest` (zero external/OpenAI calls,
+  fetch guard enforced).
 
 ---
 
