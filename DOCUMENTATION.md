@@ -67,7 +67,7 @@ husein-games/
 ├── DOCUMENTATION.md       # This file — project-wide docs
 ├── validate-themes.js     # Pre-commit validator for tiles themes
 ├── lib/
-│   ├── shared/             # Code shared between the local owner tool and production
+│   ├── shared/             # Shared production helpers
 │   │   ├── tilesPhotos.js    # Tiles photo path allowlist (manifest-backed)
 │   │   └── openaiImagesClient.js  # OpenAI images/edits HTTP client + response-shape checks
 │   └── ridaStudio/          # Production Rida Studio game backend (mounted at /rida-studio/api)
@@ -79,7 +79,7 @@ husein-games/
 │       ├── router.js               # Express router: login/logout/session/options/generate
 │       └── selftest.js              # Self-test suite (zero external calls)
 ├── tools/
-│   └── birthday-studio/    # Owner-only local tool (127.0.0.1 only) — see section 9
+│   └── start-rida-local.ps1 # DPAPI-backed local Rida Studio launcher
 └── public/
     ├── index.html          # Landing page with game cards
     ├── valentines/         # Valentine puzzle game (static, single-player)
@@ -257,24 +257,7 @@ These are project-wide bugs not specific to any single game:
 
 ---
 
-## 9. Birthday Image Studio (owner-only, local tool)
-
-A local-only, owner-only web tool under `tools/birthday-studio/` lets Husein
-browse/select existing Tiles photos, pick a wholesome birthday scene/style,
-and generate AI-stylized candidate images via his own `OPENAI_API_KEY` for
-later curation into a future birthday surprise. It binds only to
-`127.0.0.1`, is never started by `server.js`/Render, and Fatema never
-interacts with it. Run with `npm run birthday-studio`. Full details,
-security design, and self-test instructions:
-[tools/BIRTHDAY-IMAGE-STUDIO.md](tools/BIRTHDAY-IMAGE-STUDIO.md).
-
-This tool also has an "🌸 Rida Studio identity pack" section used to choose
-which Tiles photos the permanent Rida Studio game (below) uses as identity
-references — see that same doc for details.
-
----
-
-## 10. Fatema's Rida Studio (permanent production game)
+## 9. Fatema's Rida Studio (permanent production game)
 
 `public/rida-studio/` + `lib/ridaStudio/` implement a **permanent**, PIN-
 protected game (not date-gated — it's independent of the Sept 6 birthday
@@ -295,19 +278,13 @@ setup instructions, and self-test coverage:
 **Key architecture points relevant project-wide:**
 - Backend lives at `lib/ridaStudio/` and is mounted in root `server.js` at
   `/rida-studio/api`. It depends only on `lib/shared/` (tiles-photo allowlist
-  + OpenAI client) — never on `tools/birthday-studio/`, so the production
-  server never depends on the owner-only local tool.
-- `lib/shared/tilesPhotos.js` and `lib/shared/openaiImagesClient.js` were
-  extracted from `tools/birthday-studio/paths.js` and `openaiClient.js` so
-  both the local tool and the production game validate reference photos and
-  call OpenAI identically. `tools/birthday-studio/` now delegates to these
-  shared modules (verified via its self-tests — no regression).
+  + OpenAI client).
 - New env vars: `RIDA_STUDIO_PIN` (required, never logged/returned to the
   browser), `RIDA_REFERENCE_PHOTOS` (comma-separated list of exactly 10 filenames,
   each validated against `public/tiles/photos/manifest.json`), optional
   `RIDA_SESSION_SECRET` (reserved for future use — in-memory random sessions
-  work fine without it) and `OPENAI_IMAGE_MODEL` (already used by the
-  birthday tool; overrides the default `gpt-image-2`).
+  work fine without it) and `OPENAI_IMAGE_MODEL` (overrides the default
+  `gpt-image-2`).
 - Self-tests: `npm run rida-studio:selftest` (zero external/OpenAI calls,
   fetch guard enforced).
 

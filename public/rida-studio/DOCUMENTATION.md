@@ -47,7 +47,7 @@ lib/ridaStudio/        Server-side logic, mounted by the root server.js
   router.js                  Express router: /login, /logout, /session, /options, /generate
   selftest.js                 Self-test suite (see below) — never calls OpenAI
 
-lib/shared/             Code shared with the owner-only local tool (tools/birthday-studio)
+lib/shared/             Production photo-validation and OpenAI helpers
   tilesPhotos.js          Tiles-photo allowlist/path-traversal validation
   openaiImagesClient.js    OpenAI images/edits caller (no SDK dependency)
 ```
@@ -69,7 +69,7 @@ route is needed for `index.html`/`style.css`/`app-v6.js`.
 |---|---|---|
 | `OPENAI_API_KEY` | Yes (to generate) | OpenAI API key. Never exposed to the browser, never logged. |
 | `RIDA_STUDIO_PIN` | Yes | Fatema's private PIN. Compared with a constant-time check; never logged or returned. |
-| `RIDA_REFERENCE_PHOTOS` | Yes (to generate) | Comma-separated list of exactly 10 filenames from `public/tiles/photos/manifest.json`. Chosen once by the owner via the local Birthday Image Studio's "Rida identity pack" section — **never** chosen or learned by the public browser. |
+| `RIDA_REFERENCE_PHOTOS` | Yes (to generate) | Comma-separated list of exactly 10 filenames from `public/tiles/photos/manifest.json`. **Never** returned to or chosen by the public browser. |
 | `OPENAI_IMAGE_MODEL` | No | Overrides the default `gpt-image-2` model. |
 | `RIDA_SESSION_SECRET` | No | Reserved for future use. Sessions are already unguessable random tokens kept in memory, so this is optional and not required for setup to work. |
 
@@ -205,12 +205,9 @@ node server.js
 # → http://localhost:3000/rida-studio/
 ```
 
-To choose the identity reference photos locally without setting the env var
-by hand every time, use the new "Rida identity pack" section in the
-owner-only Birthday Image Studio (`npm run birthday-studio`) — see
-[tools/BIRTHDAY-IMAGE-STUDIO.md](../../tools/BIRTHDAY-IMAGE-STUDIO.md). It
-writes `.birthday-studio/rida-identity.json` locally and shows the exact
-comma-separated value to paste into `RIDA_REFERENCE_PHOTOS` on Render.
+For the configured identity pack, set `RIDA_REFERENCE_PHOTOS` directly. Local
+development may instead use `.birthday-studio/rida-identity.json` containing
+`{"photos":["photo-96.jpg", "... exactly 10 filenames ..."]}`.
 
 ## Self-tests
 

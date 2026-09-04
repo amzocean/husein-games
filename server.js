@@ -22,8 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ============================================================
 // FATEMA'S RIDA STUDIO — permanent, PIN-protected AI rida generator.
-// Static UI lives at public/rida-studio/ (served above). API lives here,
-// fully independent of the owner-only local tool under tools/birthday-studio.
+// Static UI lives at public/rida-studio/ (served above). API lives here.
 // See public/rida-studio/DOCUMENTATION.md for the full design.
 // ============================================================
 const ridaStudioRouter = require('./lib/ridaStudio/router');
