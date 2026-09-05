@@ -19,17 +19,16 @@ birthday gala, and stays visible afterward.
    embroidery on/above the panel. The design is adapted to both pieces.
 4. **Choose photograph** — photography treatment and location only.
 5. **Review look** — a summary of every selection before generation.
-6. **Generate + play** — while the server creates the first candidate, the loading
-   card offers **Pattern Atelier**, an untimed sequence-memory game. Six
-   jewel-like tiles display an increasingly long pattern for Fatema to repeat.
-   Correct rounds increase score and combo, mistakes consume one of three
-   lives and replay the same pattern, and the game can be restarted without
-   limit. It is entirely local and never interrupts or duplicates the API
-   request. An elapsed-status line explains the generation phase. OpenAI
-   requests have a four-minute server timeout, after which the UI returns to
-   Review with a retry message.
+6. **Generate + watch** — while the server creates the candidate, the loading
+   card offers a passive **Celebration Showcase**. Animated flowers and
+   sparkles accompany rotating encouragement, selected cloth/design details,
+   and scene information. It requires no interaction, concentration, score,
+   timer, lives, or failure state. An elapsed-status line explains the
+   generation phase. OpenAI requests have a four-minute server timeout, after
+   which the UI returns to Review with a retry message.
 7. **Results** — the candidate is immediately downloadable. Fatema can
    repeatedly replace it with a fresh candidate using the same requirements,
+   returning through the Celebration Showcase while each replacement renders,
    or use "make another look" to return to the design flow.
 
 Descriptions are sanitized and capped at 300 characters. Input precedence is
@@ -143,7 +142,7 @@ a fresh Render deploy.
    validates its MIME type, signature, base64 encoding, and 5MB decoded-size
    cap, then appends it after the ten identity references. It is never
    written to disk or returned in a response.
-7. **No server-side storage of generated images.** The two images are
+7. **No server-side storage of generated images.** Each image is
    returned to the browser as base64 in the JSON response and rendered/
    downloaded client-side; nothing is written to disk, and nothing is
    logged.
@@ -246,7 +245,7 @@ forbidden clauses), identity resolution from both the env var and the local
 fallback file (including traversal rejection, and restoring any pre-existing
 local file exactly), PIN login success/failure and lockout, cookie-based auth,
 logout, unauthenticated rejection, unlimited sequential generation, concurrency
-rejection, the two-image response shape, and `no-store` headers — all with
+rejection, the one-image response shape, and `no-store` headers — all with
 a fetch guard that fails loudly if anything ever tries to reach
 `api.openai.com`, and without ever reading real photo bytes (a synthetic
 1×1 PNG stands in for reference photos in the HTTP-level tests).

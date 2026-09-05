@@ -4,11 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Fatema's Rida Studio 🌸</title>
-<meta name="description" content="Fatema's private rida &amp; scene studio — design a look, generate two keepsake images, and pick a favorite." />
+<meta name="description" content="Fatema's private rida &amp; scene studio — design a look and generate a personalized keepsake image." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-10" />
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-11" />
 </head>
 <body>
 
@@ -17,7 +17,7 @@
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 12</span>
+    <span class="build-badge">Build 14</span>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
 
@@ -26,9 +26,9 @@
     <!-- SCREEN: welcome / PIN -->
     <section class="screen active" data-screen="welcome">
       <div class="hero-card">
-        <div class="hero-emoji">🥻✨</div>
+        <div class="hero-emoji">🌸🧵✨</div>
         <h2>Welcome, Fatema!</h2>
-        <p>Design a beautiful rida &amp; a cheerful scene, then generate two magical keepsake images of you.</p>
+        <p>Design a beautiful rida &amp; a cheerful scene, then generate a magical keepsake image of you.</p>
         <form id="pinForm" class="pin-form" autocomplete="off">
           <label for="pinInput">Enter your private PIN</label>
           <input type="password" inputmode="numeric" id="pinInput" name="pin" placeholder="••••" required />
@@ -162,7 +162,7 @@
 
       <div class="nav-row">
         <button class="btn btn-ghost" data-go="scene" type="button">Back</button>
-        <button class="btn btn-primary btn-generate" id="generateBtn" type="button">✨ Generate my two looks</button>
+        <button class="btn btn-primary btn-generate" id="generateBtn" type="button">✨ Generate my look</button>
       </div>
       <p class="error-text" id="generateError" role="alert"></p>
     </section>
@@ -172,35 +172,29 @@
       <div class="loading-card">
         <div class="loading-spinner" aria-hidden="true">🌸</div>
         <h2>Creating your keepsake looks…</h2>
-        <p>This can take a little while — the studio is carefully creating two realistic full-body candidates for you. Please keep this tab open.</p>
+        <p>This usually takes roughly one minute while the studio creates a realistic full-body candidate. Please keep this tab open.</p>
         <p class="generation-progress" id="generationProgress" aria-live="polite">Uploading your references…</p>
 
-        <div class="waiting-game">
-          <div class="waiting-game-head">
-            <div>
-              <strong>Pattern Atelier ✨</strong>
-              <span>Watch the sequence, then recreate it. Every round grows.</span>
-            </div>
-            <div class="waiting-score" aria-live="polite">
-              <span>Round <b id="patternRound">1</b></span>
-              <span>Score <b id="patternScore">0</b></span>
-            </div>
+        <div class="celebration-showcase" id="showcaseCard">
+          <div class="showcase-visual" aria-hidden="true">
+            <span class="showcase-spark spark-one">✦</span>
+            <span class="showcase-spark spark-two">✧</span>
+            <span class="showcase-spark spark-three">✦</span>
+            <div class="showcase-icon" id="showcaseIcon">🌸</div>
+            <span class="showcase-petal petal-one">❀</span>
+            <span class="showcase-petal petal-two">✿</span>
+            <span class="showcase-petal petal-three">❀</span>
           </div>
-          <div class="pattern-status-row">
-            <span id="patternLives" aria-label="Three lives">♥ ♥ ♥</span>
-            <span>Combo <b id="patternCombo">×0</b></span>
-            <span>Best <b id="patternBest">0</b></span>
+          <p class="showcase-kicker">A little celebration while you wait</p>
+          <h3 id="showcaseTitle">Something beautiful is blooming</h3>
+          <p class="showcase-detail" id="showcaseDetail">Your keepsake portrait is beginning to take shape.</p>
+          <div class="showcase-dots" aria-hidden="true">
+            <span class="active" data-showcase-dot></span>
+            <span data-showcase-dot></span>
+            <span data-showcase-dot></span>
+            <span data-showcase-dot></span>
+            <span data-showcase-dot></span>
           </div>
-          <div class="pattern-board" id="patternBoard" aria-label="Pattern matching game">
-            <button class="pattern-tile rose" type="button" data-pattern-tile="0" aria-label="Rose">✦</button>
-            <button class="pattern-tile gold" type="button" data-pattern-tile="1" aria-label="Gold">◆</button>
-            <button class="pattern-tile mint" type="button" data-pattern-tile="2" aria-label="Mint">❋</button>
-            <button class="pattern-tile lilac" type="button" data-pattern-tile="3" aria-label="Lilac">●</button>
-            <button class="pattern-tile coral" type="button" data-pattern-tile="4" aria-label="Coral">♥</button>
-            <button class="pattern-tile sky" type="button" data-pattern-tile="5" aria-label="Sky">✧</button>
-          </div>
-          <p class="pattern-message" id="patternMessage" aria-live="polite">The first pattern will begin automatically.</p>
-          <button class="btn btn-ghost pattern-restart" id="patternRestartBtn" type="button">Restart Pattern</button>
         </div>
       </div>
     </section>
@@ -215,7 +209,6 @@
 
       <div class="results-grid" id="resultsGrid"></div>
 
-      <p class="subtle" id="regenerationStatus" aria-live="polite"></p>
       <p class="error-text" id="resultsError" role="alert"></p>
       <div class="nav-row">
         <button class="btn btn-primary" id="regenerateBtn" type="button">✨ Regenerate with the same requirements</button>
@@ -225,9 +218,9 @@
 
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 12</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 14</footer>
 </div>
 
-<script src="/rida-studio/app-v6.js?build=12"></script>
+<script src="/rida-studio/app-v6.js?build=14"></script>
 </body>
 </html>

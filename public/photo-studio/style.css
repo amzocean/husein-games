@@ -321,6 +321,13 @@ main { min-height: 70vh; }
   text-align: center;
 }
 
+.generation-estimate {
+  margin: 12px auto 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
 .loading-card {
   max-width: 600px;
   margin: 48px auto 0;
@@ -428,13 +435,6 @@ main { min-height: 70vh; }
   display: grid;
   gap: 12px;
   margin-top: 18px;
-}
-
-#regenerationStatus {
-  min-height: 1.3em;
-  margin: 18px 0 0;
-  color: var(--muted);
-  text-align: center;
 }
 
 .download-link {

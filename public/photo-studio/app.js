@@ -204,28 +204,29 @@
       grid.appendChild(card);
     });
     el('resultPrompt').textContent = `“${state.lastRequest}”`;
-    el('regenerationStatus').textContent = '';
   }
 
   el('regenerateBtn').addEventListener('click', async () => {
     const button = el('regenerateBtn');
     button.disabled = true;
     el('resultsError').textContent = '';
-    el('regenerationStatus').textContent =
-      'Creating a fresh portrait with the same description…';
+    showScreen('loading');
+    startGenerationClock();
     try {
       const data = await requestPortrait(state.lastRequest);
       renderResults(data.images);
+      showScreen('results');
     } catch (err) {
       if (err.status === 401) {
         el('logoutBtn').hidden = true;
         el('loginError').textContent = 'Your session expired. Please enter the PIN again.';
         showScreen('welcome');
       } else {
+        showScreen('results');
         el('resultsError').textContent = generationErrorMessage(err);
-        el('regenerationStatus').textContent = '';
       }
     } finally {
+      stopGenerationClock();
       button.disabled = false;
     }
   });

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/photo-studio/style.css?v=2" />
+<link rel="stylesheet" href="/photo-studio/style.css?v=3" />
 </head>
 <body>
 
@@ -74,6 +74,7 @@
         <p><strong>Your protected look:</strong> always Fatema, always an authentic rida, and never other people in the image.</p>
       </div>
       <button class="btn btn-primary generate-btn" id="generateBtn" type="button">Create My Photo ✨</button>
+      <p class="generation-estimate">Generation usually takes roughly one minute. Please keep this tab open.</p>
       <p class="error-text" id="generateError" role="alert"></p>
     </section>
 
@@ -86,7 +87,7 @@
         <h2>Bringing your idea to life…</h2>
         <p id="generationProgress" aria-live="polite">Studying your reference photos…</p>
         <div class="progress-track"><span></span></div>
-        <p class="loading-note">This can take a few minutes. Please keep this tab open.</p>
+        <p class="loading-note">This usually takes roughly one minute. Complex scenes can take a little longer.</p>
       </div>
     </section>
 
@@ -97,7 +98,6 @@
         <p id="resultPrompt"></p>
       </div>
       <div class="results-grid" id="resultsGrid"></div>
-      <p id="regenerationStatus" aria-live="polite"></p>
       <p class="error-text" id="resultsError" role="alert"></p>
       <div class="results-controls">
         <button class="btn btn-primary another-btn" id="regenerateBtn" type="button">Regenerate with the Same Description</button>
@@ -109,6 +109,6 @@
   <footer>Made with ♥ for Fatema</footer>
 </div>
 
-<script src="/photo-studio/app.js?v=3"></script>
+<script src="/photo-studio/app.js?v=4"></script>
 </body>
 </html>

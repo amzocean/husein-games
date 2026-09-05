@@ -12,6 +12,11 @@ until September 6, 2026 UTC and stays visible afterward.
 4. Download it, regenerate repeatedly with the same description, or revise
    the description and try another scene.
 
+The interface tells Fatema that generation usually takes roughly one minute
+and asks her to keep the tab open. Complex scenes may take longer.
+Regeneration returns to the same loading/progress screen before replacing the
+displayed portrait.
+
 The browser sends only the scene description. Ten fixed server-side identity
 photos are attached to every generation and are never exposed to the browser.
 

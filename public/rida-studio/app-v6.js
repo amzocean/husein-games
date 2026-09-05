@@ -24,30 +24,8 @@
   };
 
   const el = (id) => document.getElementById(id);
-  const PATTERN_TILE_COUNT = 6;
-  const PATTERN_START_LENGTH = 3;
-  const PATTERN_BEST_KEY = 'fatemaRidaPatternBestV1';
-  function readPatternBest() {
-    try {
-      const saved = Number(localStorage.getItem(PATTERN_BEST_KEY));
-      return Number.isFinite(saved) && saved > 0 ? saved : 0;
-    } catch {
-      return 0;
-    }
-  }
-
-  const patternGame = {
-    active: false,
-    acceptingInput: false,
-    round: 1,
-    score: 0,
-    combo: 0,
-    lives: 3,
-    best: readPatternBest(),
-    sequence: [],
-    inputIndex: 0,
-    timers: [],
-  };
+  let showcaseIndex = 0;
+  let showcaseTimer = null;
   let generationClockTimer = null;
 
   function showScreen(name) {
@@ -154,160 +132,76 @@
       .join('');
   }
 
-  function clearPatternTimers() {
-    patternGame.timers.forEach((timer) => clearTimeout(timer));
-    patternGame.timers = [];
-    document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
-      tile.classList.remove('lit', 'wrong');
+  function celebrationSlides() {
+    const baseSource = state.baseClothPhoto
+      ? 'Your uploaded base image is guiding the colors and fabric pattern.'
+      : el('baseDescription').value.trim()
+        ? 'Your cloth description is becoming a coordinated pardi and ghagra.'
+        : `${labelFor('colors', state.selections.color)} and ${labelFor('motifs', state.selections.motif)} are being woven together.`;
+    const designSource = state.designPhoto
+      ? 'Your design example is shaping the panel, border, lace, and embroidery.'
+      : el('designDescription').value.trim()
+        ? 'Your tailoring description is being adapted across both pieces.'
+        : `${labelFor('panels', state.selections.panel)} and ${labelFor('borders', state.selections.border)} are being balanced.`;
+
+    return [
+      {
+        icon: '🌸',
+        title: 'Something beautiful is blooming',
+        detail: 'Your keepsake portrait is beginning to take shape.',
+      },
+      {
+        icon: '🧵',
+        title: 'The cloth is coming together',
+        detail: baseSource,
+      },
+      {
+        icon: '✨',
+        title: 'Every detail is being refined',
+        detail: designSource,
+      },
+      {
+        icon: '📷',
+        title: 'The scene is being composed',
+        detail: `${labelFor('styles', state.selections.style)} in ${labelFor('locations', state.selections.location)}.`,
+      },
+      {
+        icon: '💖',
+        title: 'Made especially for you',
+        detail: 'Just a little longer while the final portrait develops.',
+      },
+    ];
+  }
+
+  function renderCelebrationSlide() {
+    const slides = celebrationSlides();
+    const slide = slides[showcaseIndex % slides.length];
+    const card = el('showcaseCard');
+    card.classList.remove('changing');
+    void card.offsetWidth;
+    el('showcaseIcon').textContent = slide.icon;
+    el('showcaseTitle').textContent = slide.title;
+    el('showcaseDetail').textContent = slide.detail;
+    document.querySelectorAll('[data-showcase-dot]').forEach((dot, index) => {
+      dot.classList.toggle('active', index === showcaseIndex % slides.length);
     });
+    card.classList.add('changing');
   }
 
-  function savePatternBest() {
-    try {
-      localStorage.setItem(PATTERN_BEST_KEY, String(patternGame.best));
-    } catch {
-      // The game remains fully playable when browser storage is unavailable.
-    }
+  function startCelebrationShowcase() {
+    clearInterval(showcaseTimer);
+    showcaseIndex = 0;
+    renderCelebrationSlide();
+    showcaseTimer = setInterval(() => {
+      showcaseIndex += 1;
+      renderCelebrationSlide();
+    }, 4200);
   }
 
-  function schedulePattern(callback, delay) {
-    const timer = setTimeout(callback, delay);
-    patternGame.timers.push(timer);
-    return timer;
+  function stopCelebrationShowcase() {
+    clearInterval(showcaseTimer);
+    showcaseTimer = null;
   }
-
-  function renderPatternStats() {
-    el('patternRound').textContent = String(patternGame.round);
-    el('patternScore').textContent = String(patternGame.score);
-    el('patternCombo').textContent = `×${patternGame.combo}`;
-    el('patternBest').textContent = String(patternGame.best);
-    el('patternLives').textContent = Array.from(
-      { length: 3 },
-      (_, index) => index < patternGame.lives ? '♥' : '♡',
-    ).join(' ');
-  }
-
-  function setPatternTilesEnabled(enabled) {
-    document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
-      tile.disabled = !enabled;
-    });
-  }
-
-  function flashPatternTile(index, className = 'lit') {
-    const tile = document.querySelector(`[data-pattern-tile="${index}"]`);
-    if (!tile) return;
-    tile.classList.remove(className);
-    void tile.offsetWidth;
-    tile.classList.add(className);
-    schedulePattern(() => tile.classList.remove(className), 280);
-  }
-
-  function playPatternSequence() {
-    if (!patternGame.active) return;
-    clearPatternTimers();
-    patternGame.acceptingInput = false;
-    patternGame.inputIndex = 0;
-    setPatternTilesEnabled(false);
-    el('patternMessage').textContent = `Watch carefully — ${patternGame.sequence.length} symbols.`;
-    const beat = Math.max(390, 720 - patternGame.round * 24);
-    patternGame.sequence.forEach((tileIndex, index) => {
-      schedulePattern(() => flashPatternTile(tileIndex), 500 + index * beat);
-    });
-    schedulePattern(() => {
-      if (!patternGame.active) return;
-      patternGame.acceptingInput = true;
-      setPatternTilesEnabled(true);
-      el('patternMessage').textContent = 'Your turn — recreate the pattern.';
-    }, 650 + patternGame.sequence.length * beat);
-  }
-
-  function endPatternGame() {
-    patternGame.active = false;
-    patternGame.acceptingInput = false;
-    clearPatternTimers();
-    setPatternTilesEnabled(false);
-    el('patternMessage').textContent =
-      `Atelier complete — ${patternGame.score} points across ${patternGame.round} rounds. Restart anytime.`;
-    el('patternRestartBtn').textContent = 'Play Again';
-  }
-
-  function startPatternGame() {
-    clearPatternTimers();
-    patternGame.active = true;
-    patternGame.acceptingInput = false;
-    patternGame.round = 1;
-    patternGame.score = 0;
-    patternGame.combo = 0;
-    patternGame.lives = 3;
-    patternGame.inputIndex = 0;
-    patternGame.sequence = Array.from(
-      { length: PATTERN_START_LENGTH },
-      () => Math.floor(Math.random() * PATTERN_TILE_COUNT),
-    );
-    el('patternRestartBtn').textContent = 'Restart Pattern';
-    renderPatternStats();
-    playPatternSequence();
-  }
-
-  function stopPatternGame() {
-    patternGame.active = false;
-    patternGame.acceptingInput = false;
-    clearPatternTimers();
-    setPatternTilesEnabled(false);
-  }
-
-  function handlePatternTile(tileIndex) {
-    if (!patternGame.active || !patternGame.acceptingInput) return;
-    flashPatternTile(tileIndex);
-    const expected = patternGame.sequence[patternGame.inputIndex];
-    if (tileIndex !== expected) {
-      patternGame.acceptingInput = false;
-      patternGame.lives -= 1;
-      patternGame.combo = 0;
-      renderPatternStats();
-      flashPatternTile(tileIndex, 'wrong');
-      if (patternGame.lives <= 0) {
-        schedulePattern(endPatternGame, 550);
-        return;
-      }
-      setPatternTilesEnabled(false);
-      el('patternMessage').textContent = 'Not quite — the atelier will show that pattern again.';
-      schedulePattern(playPatternSequence, 900);
-      return;
-    }
-
-    patternGame.inputIndex += 1;
-    if (patternGame.inputIndex < patternGame.sequence.length) {
-      el('patternMessage').textContent =
-        `${patternGame.inputIndex} of ${patternGame.sequence.length} correct…`;
-      return;
-    }
-
-    patternGame.acceptingInput = false;
-    setPatternTilesEnabled(false);
-    patternGame.combo += 1;
-    patternGame.score += patternGame.round * 100 + patternGame.combo * 25;
-    patternGame.best = Math.max(patternGame.best, patternGame.score);
-    savePatternBest();
-    renderPatternStats();
-    el('patternMessage').textContent =
-      patternGame.combo >= 3
-        ? `Perfect ×${patternGame.combo}! The next pattern is longer.`
-        : 'Beautifully matched! Adding one more symbol…';
-    patternGame.round += 1;
-    patternGame.sequence.push(Math.floor(Math.random() * PATTERN_TILE_COUNT));
-    schedulePattern(() => {
-      renderPatternStats();
-      playPatternSequence();
-    }, 950);
-  }
-
-  document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
-    tile.addEventListener('click', () => handlePatternTile(Number(tile.dataset.patternTile)));
-  });
-  el('patternRestartBtn').addEventListener('click', startPatternGame);
-  renderPatternStats();
-  setPatternTilesEnabled(false);
 
   function startGenerationClock() {
     clearInterval(generationClockTimer);
@@ -317,7 +211,7 @@
       let message = `Working… ${seconds}s elapsed.`;
       if (seconds < 20) message = `Uploading and studying the reference photos… ${seconds}s`;
       else if (seconds < 75) message = `Designing the rida and scene… ${seconds}s`;
-      else if (seconds < 150) message = `Rendering two detailed photographs… ${seconds}s`;
+      else if (seconds < 150) message = `Rendering your detailed photograph… ${seconds}s`;
       else message = `Still rendering — the server will stop and return an error at 4 minutes rather than wait forever. ${seconds}s`;
       el('generationProgress').textContent = message;
     };
@@ -552,17 +446,17 @@
     btn.disabled = true;
     el('generateError').textContent = '';
     showScreen('loading');
-    startPatternGame();
+    startCelebrationShowcase();
     startGenerationClock();
     try {
       const data = await requestCandidate();
       state.lastResults = data.images;
       renderResults(data.images);
-      stopPatternGame();
+      stopCelebrationShowcase();
       stopGenerationClock();
       showScreen('results');
     } catch (err) {
-      stopPatternGame();
+      stopCelebrationShowcase();
       stopGenerationClock();
       showScreen('review');
       if (err.status === 504) {
@@ -599,28 +493,31 @@
     el('resultsSubtitle').textContent =
       'Download this candidate, or regenerate a fresh one using the same requirements.';
     el('regenerateBtn').hidden = false;
-    el('regenerationStatus').textContent = '';
   }
 
   el('regenerateBtn').addEventListener('click', async () => {
     const btn = el('regenerateBtn');
     btn.disabled = true;
     el('resultsError').textContent = '';
-    el('regenerationStatus').textContent =
-      'Creating a fresh candidate with the same requirements…';
+    showScreen('loading');
+    startCelebrationShowcase();
+    startGenerationClock();
     try {
       const data = await requestCandidate();
       state.lastResults = data.images;
       renderResults(state.lastResults);
+      showScreen('results');
     } catch (err) {
       if (err.status === 401) {
         el('logoutBtn').hidden = true;
         showScreen('welcome');
       } else {
+        showScreen('results');
         el('resultsError').textContent = generationErrorMessage(err);
-        el('regenerationStatus').textContent = '';
       }
     } finally {
+      stopCelebrationShowcase();
+      stopGenerationClock();
       btn.disabled = false;
     }
   });
