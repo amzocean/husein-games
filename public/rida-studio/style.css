@@ -427,13 +427,10 @@ h1, h2, h3 {
   height: 6px;
   border-radius: 50%;
   background: #e8cbd9;
-  transition: width 0.3s ease, background 0.3s ease;
+  animation: showcaseDot 1.5s ease-in-out infinite;
 }
-.showcase-dots span.active {
-  width: 20px;
-  border-radius: 999px;
-  background: var(--pink);
-}
+.showcase-dots span:nth-child(2) { animation-delay: 0.2s; }
+.showcase-dots span:nth-child(3) { animation-delay: 0.4s; }
 .celebration-showcase.changing h3,
 .celebration-showcase.changing .showcase-detail {
   animation: showcaseReveal 0.55s ease;
@@ -449,6 +446,10 @@ h1, h2, h3 {
 @keyframes showcaseReveal {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes showcaseDot {
+  0%, 100% { transform: scale(0.8); background: #e8cbd9; }
+  50% { transform: scale(1.25); background: var(--pink); }
 }
 
 .results-grid {
@@ -502,7 +503,8 @@ h1, h2, h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .screen, .loading-spinner, .showcase-icon, .showcase-spark, .showcase-petal,
-  .celebration-showcase.changing h3, .celebration-showcase.changing .showcase-detail {
+  .showcase-dots span, .celebration-showcase.changing h3,
+  .celebration-showcase.changing .showcase-detail {
     animation: none !important;
   }
 }

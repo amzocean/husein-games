@@ -24,7 +24,8 @@
   };
 
   const el = (id) => document.getElementById(id);
-  let showcaseIndex = 0;
+  let showcaseQueue = [];
+  let lastShowcaseTitle = '';
   let showcaseTimer = null;
   let generationClockTimer = null;
 
@@ -145,57 +146,54 @@
         : `${labelFor('panels', state.selections.panel)} and ${labelFor('borders', state.selections.border)} are being balanced.`;
 
     return [
-      {
-        icon: '🌸',
-        title: 'Something beautiful is blooming',
-        detail: 'Your keepsake portrait is beginning to take shape.',
-      },
-      {
-        icon: '🧵',
-        title: 'The cloth is coming together',
-        detail: baseSource,
-      },
-      {
-        icon: '✨',
-        title: 'Every detail is being refined',
-        detail: designSource,
-      },
-      {
-        icon: '📷',
-        title: 'The scene is being composed',
-        detail: `${labelFor('styles', state.selections.style)} in ${labelFor('locations', state.selections.location)}.`,
-      },
-      {
-        icon: '💖',
-        title: 'Made especially for you',
-        detail: 'Just a little longer while the final portrait develops.',
-      },
+      { icon: '🌸', title: 'Something beautiful is blooming', detail: 'Your keepsake portrait is beginning to take shape.' },
+      { icon: '🧵', title: 'The cloth is coming together', detail: baseSource },
+      { icon: '✨', title: 'Every detail is being refined', detail: designSource },
+      { icon: '📷', title: 'The scene is being composed', detail: `${labelFor('styles', state.selections.style)} in ${labelFor('locations', state.selections.location)}.` },
+      { icon: '💖', title: 'Made especially for you', detail: 'Every choice is being brought together into one portrait.' },
+      { icon: '🌷', title: 'A little color, a little magic', detail: 'The palette is being balanced so the whole look feels joyful and complete.' },
+      { icon: '🪡', title: 'The finishing touches matter', detail: 'Borders, panels, and fabric details are being placed with care.' },
+      { icon: '🌺', title: 'Your idea is taking shape', detail: 'The pardi and ghagra are being coordinated into one graceful look.' },
+      { icon: '💫', title: 'The light is settling beautifully', detail: 'The studio is refining depth, warmth, and atmosphere around the portrait.' },
+      { icon: '🦋', title: 'A graceful moment is developing', detail: 'The pose and composition are being softened into a natural keepsake.' },
+      { icon: '🌼', title: 'Every flower adds a little joy', detail: 'Tiny visual details are appearing as the final image develops.' },
+      { icon: '🎨', title: 'The colors are finding their harmony', detail: 'The cloth, decoration, and setting are being balanced together.' },
+      { icon: '💎', title: 'Polishing the final details', detail: 'Texture, fabric movement, and photographic realism are being refined.' },
+      { icon: '🌹', title: 'A portrait worth waiting for', detail: 'The studio is keeping Fatema at the heart of every design choice.' },
+      { icon: '⭐', title: 'Almost ready to shine', detail: 'Just a little longer while the final portrait develops.' },
     ];
   }
 
-  function renderCelebrationSlide() {
+  function shuffledSlides() {
     const slides = celebrationSlides();
-    const slide = slides[showcaseIndex % slides.length];
+    for (let index = slides.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [slides[index], slides[swapIndex]] = [slides[swapIndex], slides[index]];
+    }
+    if (slides.length > 1 && slides[0].title === lastShowcaseTitle) {
+      [slides[0], slides[1]] = [slides[1], slides[0]];
+    }
+    return slides;
+  }
+
+  function renderCelebrationSlide() {
+    if (!showcaseQueue.length) showcaseQueue = shuffledSlides();
+    const slide = showcaseQueue.shift();
+    lastShowcaseTitle = slide.title;
     const card = el('showcaseCard');
     card.classList.remove('changing');
     void card.offsetWidth;
     el('showcaseIcon').textContent = slide.icon;
     el('showcaseTitle').textContent = slide.title;
     el('showcaseDetail').textContent = slide.detail;
-    document.querySelectorAll('[data-showcase-dot]').forEach((dot, index) => {
-      dot.classList.toggle('active', index === showcaseIndex % slides.length);
-    });
     card.classList.add('changing');
   }
 
   function startCelebrationShowcase() {
     clearInterval(showcaseTimer);
-    showcaseIndex = 0;
+    showcaseQueue = [];
     renderCelebrationSlide();
-    showcaseTimer = setInterval(() => {
-      showcaseIndex += 1;
-      renderCelebrationSlide();
-    }, 4200);
+    showcaseTimer = setInterval(renderCelebrationSlide, 4200);
   }
 
   function stopCelebrationShowcase() {

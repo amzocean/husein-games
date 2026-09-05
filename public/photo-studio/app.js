@@ -7,6 +7,9 @@
     lastRequest: '',
   };
   let generationClockTimer = null;
+  let showcaseTimer = null;
+  let showcaseQueue = [];
+  let lastShowcaseTitle = '';
 
   const el = (id) => document.getElementById(id);
 
@@ -51,6 +54,63 @@
 
   function updateCharacterCount() {
     el('characterCount').textContent = `${el('photoRequest').value.length} / ${MAX_REQUEST_LENGTH}`;
+  }
+
+  function showcaseSlides() {
+    return [
+      { icon: '📷', title: 'Your scene is taking shape', detail: 'The studio is translating your description into a complete portrait.' },
+      { icon: '🌸', title: 'A fresh rida is blooming', detail: 'A new palette and design are being created for this image.' },
+      { icon: '✨', title: 'The atmosphere is coming alive', detail: 'Light, color, and mood are being balanced around your idea.' },
+      { icon: '🎨', title: 'Every color has a purpose', detail: 'The scene and rida are being brought into one harmonious composition.' },
+      { icon: '💖', title: 'Made especially for Fatema', detail: 'Your identity remains at the heart of the portrait.' },
+      { icon: '🌷', title: 'A beautiful moment is developing', detail: 'The pose, expression, and surroundings are settling into place.' },
+      { icon: '🦋', title: 'Adding a touch of wonder', detail: 'Small details are giving the scene personality and warmth.' },
+      { icon: '💫', title: 'The lighting is being refined', detail: 'Highlights, shadows, and depth are shaping the final mood.' },
+      { icon: '🌺', title: 'Your imagination is becoming visible', detail: 'The studio is staying faithful to the feeling you described.' },
+      { icon: '🪄', title: 'A little creativity is unfolding', detail: 'The portrait is becoming distinct from every previous result.' },
+      { icon: '🌼', title: 'The composition is finding its balance', detail: 'Background, wardrobe, and expression are being aligned naturally.' },
+      { icon: '💎', title: 'Polishing the portrait', detail: 'Fine details and photographic texture are being carefully refined.' },
+      { icon: '🌹', title: 'Keeping it unmistakably you', detail: 'Fatema’s face, proportions, and personality remain the focus.' },
+      { icon: '⭐', title: 'The final image is getting closer', detail: 'Just a little longer while the last details develop.' },
+      { icon: '🎀', title: 'A keepsake is almost ready', detail: 'Your idea is receiving its final color and finishing touches.' },
+    ];
+  }
+
+  function shuffledShowcaseSlides() {
+    const slides = showcaseSlides();
+    for (let index = slides.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [slides[index], slides[swapIndex]] = [slides[swapIndex], slides[index]];
+    }
+    if (slides.length > 1 && slides[0].title === lastShowcaseTitle) {
+      [slides[0], slides[1]] = [slides[1], slides[0]];
+    }
+    return slides;
+  }
+
+  function renderShowcaseSlide() {
+    if (!showcaseQueue.length) showcaseQueue = shuffledShowcaseSlides();
+    const slide = showcaseQueue.shift();
+    lastShowcaseTitle = slide.title;
+    const card = el('showcaseCard');
+    card.classList.remove('changing');
+    void card.offsetWidth;
+    el('showcaseIcon').textContent = slide.icon;
+    el('showcaseTitle').textContent = slide.title;
+    el('showcaseDetail').textContent = slide.detail;
+    card.classList.add('changing');
+  }
+
+  function startShowcase() {
+    clearInterval(showcaseTimer);
+    showcaseQueue = [];
+    renderShowcaseSlide();
+    showcaseTimer = setInterval(renderShowcaseSlide, 4200);
+  }
+
+  function stopShowcase() {
+    clearInterval(showcaseTimer);
+    showcaseTimer = null;
   }
 
   function startGenerationClock() {
@@ -158,6 +218,7 @@
     button.disabled = true;
     state.lastRequest = request;
     showScreen('loading');
+    startShowcase();
     startGenerationClock();
     try {
       const data = await requestPortrait(request);
@@ -177,6 +238,7 @@
         el('generateError').textContent = generationErrorMessage(err);
       }
     } finally {
+      stopShowcase();
       stopGenerationClock();
       button.disabled = false;
     }
@@ -211,6 +273,7 @@
     button.disabled = true;
     el('resultsError').textContent = '';
     showScreen('loading');
+    startShowcase();
     startGenerationClock();
     try {
       const data = await requestPortrait(state.lastRequest);
@@ -226,6 +289,7 @@
         el('resultsError').textContent = generationErrorMessage(err);
       }
     } finally {
+      stopShowcase();
       stopGenerationClock();
       button.disabled = false;
     }

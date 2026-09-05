@@ -17,6 +17,10 @@ and asks her to keep the tab open. Complex scenes may take longer.
 Regeneration returns to the same loading/progress screen before replacing the
 displayed portrait.
 
+The loading screen includes the same passive Celebration Showcase used by Rida
+Studio. It shuffles fifteen encouraging design and portrait messages for each
+generation and prevents an immediate repeat when the deck reshuffles.
+
 The browser sends only the scene description. Ten fixed server-side identity
 photos are attached to every generation and are never exposed to the browser.
 

@@ -20,12 +20,13 @@ birthday gala, and stays visible afterward.
 4. **Choose photograph** — photography treatment and location only.
 5. **Review look** — a summary of every selection before generation.
 6. **Generate + watch** — while the server creates the candidate, the loading
-   card offers a passive **Celebration Showcase**. Animated flowers and
-   sparkles accompany rotating encouragement, selected cloth/design details,
-   and scene information. It requires no interaction, concentration, score,
-   timer, lives, or failure state. An elapsed-status line explains the
-   generation phase. OpenAI requests have a four-minute server timeout, after
-   which the UI returns to Review with a retry message.
+   card offers a passive **Celebration Showcase**. Fifteen messages are
+   shuffled for every generation, with no immediate repeat across reshuffles.
+   Animated flowers and sparkles accompany encouragement, selected
+   cloth/design details, and scene information. It requires no interaction,
+   concentration, score, timer, lives, or failure state. An elapsed-status
+   line explains the generation phase. OpenAI requests have a four-minute
+   server timeout, after which the UI returns to Review with a retry message.
 7. **Results** — the candidate is immediately downloadable. Fatema can
    repeatedly replace it with a fresh candidate using the same requirements,
    returning through the Celebration Showcase while each replacement renders,

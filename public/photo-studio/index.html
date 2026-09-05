@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/photo-studio/style.css?v=3" />
+<link rel="stylesheet" href="/photo-studio/style.css?v=4" />
 </head>
 <body>
 
@@ -88,6 +88,19 @@
         <p id="generationProgress" aria-live="polite">Studying your reference photos…</p>
         <div class="progress-track"><span></span></div>
         <p class="loading-note">This usually takes roughly one minute. Complex scenes can take a little longer.</p>
+        <div class="celebration-showcase" id="showcaseCard">
+          <div class="showcase-visual" aria-hidden="true">
+            <span class="showcase-spark spark-one">✦</span>
+            <span class="showcase-spark spark-two">✧</span>
+            <div class="showcase-icon" id="showcaseIcon">📷</div>
+            <span class="showcase-petal petal-one">❀</span>
+            <span class="showcase-petal petal-two">✿</span>
+          </div>
+          <p class="showcase-kicker">A little celebration while you wait</p>
+          <h3 id="showcaseTitle">Your scene is taking shape</h3>
+          <p class="showcase-detail" id="showcaseDetail">The studio is translating your description into a complete portrait.</p>
+          <div class="showcase-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>
       </div>
     </section>
 
@@ -109,6 +122,6 @@
   <footer>Made with ♥ for Fatema</footer>
 </div>
 
-<script src="/photo-studio/app.js?v=4"></script>
+<script src="/photo-studio/app.js?v=5"></script>
 </body>
 </html>
