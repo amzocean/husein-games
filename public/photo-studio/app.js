@@ -60,7 +60,7 @@
       const seconds = Math.floor((Date.now() - startedAt) / 1000);
       let message = `Studying your reference photos… ${seconds}s`;
       if (seconds >= 20) message = `Composing your scene and rida look… ${seconds}s`;
-      if (seconds >= 75) message = `Rendering two detailed portraits… ${seconds}s`;
+      if (seconds >= 75) message = `Rendering your detailed portrait… ${seconds}s`;
       if (seconds >= 150) message = `Still carefully rendering—this request will stop at four minutes if needed. ${seconds}s`;
       el('generationProgress').textContent = message;
     };
@@ -126,6 +126,25 @@
     });
   });
 
+  async function requestPortrait(request) {
+    return api(`${API}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      timeoutMs: 4 * 60 * 1000 + 15 * 1000,
+      body: JSON.stringify({ request }),
+    });
+  }
+
+  function generationErrorMessage(err) {
+    if (err.status === 409) {
+      return 'A generation is already running in one of the studios. Please wait for it to finish.';
+    }
+    if (err.status === 504) {
+      return 'That request took longer than four minutes and was stopped.';
+    }
+    return `The studio could not create this scene: ${err.message}`;
+  }
+
   el('generateBtn').addEventListener('click', async () => {
     const request = el('photoRequest').value.trim();
     el('generateError').textContent = '';
@@ -141,12 +160,7 @@
     showScreen('loading');
     startGenerationClock();
     try {
-      const data = await api(`${API}/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        timeoutMs: 4 * 60 * 1000 + 15 * 1000,
-        body: JSON.stringify({ request }),
-      });
+      const data = await requestPortrait(request);
       renderResults(data.images);
       showScreen('results');
     } catch (err) {
@@ -156,11 +170,11 @@
         el('loginError').textContent = 'Your session expired. Please enter the PIN again.';
         showScreen('welcome');
       } else if (err.status === 409) {
-        el('generateError').textContent = 'A generation is already running in one of the studios. Please wait for it to finish.';
+        el('generateError').textContent = generationErrorMessage(err);
       } else if (err.status === 504) {
-        el('generateError').textContent = 'That request took longer than four minutes and was stopped. It did not consume a generation.';
+        el('generateError').textContent = generationErrorMessage(err);
       } else {
-        el('generateError').textContent = `The studio could not create this scene: ${err.message}`;
+        el('generateError').textContent = generationErrorMessage(err);
       }
     } finally {
       stopGenerationClock();
@@ -190,7 +204,31 @@
       grid.appendChild(card);
     });
     el('resultPrompt').textContent = `“${state.lastRequest}”`;
+    el('regenerationStatus').textContent = '';
   }
+
+  el('regenerateBtn').addEventListener('click', async () => {
+    const button = el('regenerateBtn');
+    button.disabled = true;
+    el('resultsError').textContent = '';
+    el('regenerationStatus').textContent =
+      'Creating a fresh portrait with the same description…';
+    try {
+      const data = await requestPortrait(state.lastRequest);
+      renderResults(data.images);
+    } catch (err) {
+      if (err.status === 401) {
+        el('logoutBtn').hidden = true;
+        el('loginError').textContent = 'Your session expired. Please enter the PIN again.';
+        showScreen('welcome');
+      } else {
+        el('resultsError').textContent = generationErrorMessage(err);
+        el('regenerationStatus').textContent = '';
+      }
+    } finally {
+      button.disabled = false;
+    }
+  });
 
   el('newPhotoBtn').addEventListener('click', () => {
     showScreen('compose');

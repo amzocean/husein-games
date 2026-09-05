@@ -8,8 +8,9 @@ until September 6, 2026 UTC and stays visible afterward.
 
 1. Enter the same private PIN used by Rida Studio.
 2. Describe a desired photograph in one text box, or start from a suggestion.
-3. Generate exactly two portrait candidates.
-4. Download either image or revise the description and try another scene.
+3. Generate one medium-quality portrait.
+4. Download it, regenerate repeatedly with the same description, or revise
+   the description and try another scene.
 
 The browser sends only the scene description. Ten fixed server-side identity
 photos are attached to every generation and are never exposed to the browser.
@@ -31,7 +32,7 @@ Every result must:
   reference;
 - create a fresh rida color palette and design on every generation unless
   Fatema explicitly requests a particular reference outfit;
-- give the two candidates visibly different rida colors and design details;
+- create a fresh rida color palette and design distinct from the references;
 - remain wholesome, modest, and recognizably Fatema in the chosen medium;
 - exclude text, watermarks, collages, other people, and replacement identities.
 
@@ -51,7 +52,9 @@ exact signature style.
 - Environment: `OPENAI_API_KEY`, `RIDA_STUDIO_PIN`, and
   `RIDA_REFERENCE_PHOTOS`.
 - Model: `gpt-image-2` unless `OPENAI_IMAGE_MODEL` overrides it.
-- Output: exactly two `1024x1536` PNG images.
+- Output: one medium-quality `1024x1536` PNG image per request.
+- Regeneration: unlimited sequential requests with the same description; each
+  new result replaces the currently displayed portrait.
 - Daily allowance: unlimited.
 - Concurrency: only one generation may run across either studio at a time.
 - PIN protection uses the same five-attempt lockout and ten-hour session

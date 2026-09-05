@@ -12,7 +12,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
 - **📖 Hidaayaat Lookup** — A static single-player search page (`public/quote-search/`) over 142 quotes across 2 volumes of Raudat Hidayaat.
 - **🌸 Fatema's Rida Studio** — A directly accessible, PIN-protected single-player game. Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene, generates one live AI keepsake image per request, and can repeatedly regenerate it with the same requirements (`gpt-image-2`) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
-- **📷 Fatema's Photo Studio** — A directly accessible, PIN-protected freeform studio. Fatema describes a scene and generates 2 guarded AI pictures that preserve her identity and authentic rida (`gpt-image-2`) → [Photo Studio docs](public/photo-studio/DOCUMENTATION.md)
+- **📷 Fatema's Photo Studio** — A directly accessible, PIN-protected freeform studio. Fatema describes a scene, generates one guarded medium-quality AI picture, and can repeatedly regenerate it with the same description (`gpt-image-2`) → [Photo Studio docs](public/photo-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -338,7 +338,8 @@ description can direct the setting, mood, pose, lighting, camera style, props,
 and artistic medium, but cannot override identity, modesty, single-person
 composition, or safety.
 
-Each successful request produces exactly two `1024x1536` PNG candidates.
+Each successful request produces one medium-quality `1024x1536` PNG candidate.
+The results screen can repeatedly regenerate it with the same description.
 There is no daily generation limit. A shared concurrency lock allows only one
 generation to run across the two studios at a time.
 

@@ -4,11 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Fatema's Photo Studio ✨</title>
-<meta name="description" content="Fatema's private AI picture studio — imagine any scene or artistic look and create two personalized rida images." />
+<meta name="description" content="Fatema's private AI picture studio — imagine any scene or artistic look and create a personalized rida image." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/photo-studio/style.css?v=1" />
+<link rel="stylesheet" href="/photo-studio/style.css?v=2" />
 </head>
 <body>
 
@@ -28,7 +28,7 @@
         <div class="hero-mark">📷✨</div>
         <p class="eyebrow">Your private portrait studio</p>
         <h2>Welcome, Fatema</h2>
-        <p>Imagine any scene or artistic look—from a classy photograph to a dreamy illustration or cute cartoon. The studio will create two pictures of you, always in a rida.</p>
+        <p>Imagine any scene or artistic look—from a classy photograph to a dreamy illustration or cute cartoon. The studio will create a picture of you, always in a rida.</p>
         <form id="pinForm" class="pin-form" autocomplete="off">
           <label for="pinInput">Enter your private PIN</label>
           <input id="pinInput" name="pin" type="password" inputmode="numeric" placeholder="••••" required />
@@ -73,7 +73,7 @@
         <span>🔒</span>
         <p><strong>Your protected look:</strong> always Fatema, always an authentic rida, and never other people in the image.</p>
       </div>
-      <button class="btn btn-primary generate-btn" id="generateBtn" type="button">Create My Two Photos ✨</button>
+      <button class="btn btn-primary generate-btn" id="generateBtn" type="button">Create My Photo ✨</button>
       <p class="error-text" id="generateError" role="alert"></p>
     </section>
 
@@ -82,7 +82,7 @@
         <div class="developing-photo" aria-hidden="true">
           <span>F</span>
         </div>
-        <p class="eyebrow">Creating your portraits</p>
+        <p class="eyebrow">Creating your portrait</p>
         <h2>Bringing your idea to life…</h2>
         <p id="generationProgress" aria-live="polite">Studying your reference photos…</p>
         <div class="progress-track"><span></span></div>
@@ -93,17 +93,22 @@
     <section class="screen" data-screen="results">
       <div class="intro results-head">
         <p class="eyebrow">Made especially for you</p>
-        <h2>Your portraits are ready</h2>
+        <h2>Your portrait is ready</h2>
         <p id="resultPrompt"></p>
       </div>
       <div class="results-grid" id="resultsGrid"></div>
-      <button class="btn btn-primary another-btn" id="newPhotoBtn" type="button">Create Another Scene</button>
+      <p id="regenerationStatus" aria-live="polite"></p>
+      <p class="error-text" id="resultsError" role="alert"></p>
+      <div class="results-controls">
+        <button class="btn btn-primary another-btn" id="regenerateBtn" type="button">Regenerate with the Same Description</button>
+        <button class="btn another-btn" id="newPhotoBtn" type="button">Create Another Scene</button>
+      </div>
     </section>
   </main>
 
   <footer>Made with ♥ for Fatema</footer>
 </div>
 
-<script src="/photo-studio/app.js?v=2"></script>
+<script src="/photo-studio/app.js?v=3"></script>
 </body>
 </html>

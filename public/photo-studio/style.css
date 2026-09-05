@@ -398,7 +398,8 @@ main { min-height: 70vh; }
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, min(100%, 620px));
+  justify-content: center;
   gap: 18px;
 }
 
@@ -420,6 +421,19 @@ main { min-height: 70vh; }
 
 .result-actions {
   padding: 12px;
+  text-align: center;
+}
+
+.results-controls {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+#regenerationStatus {
+  min-height: 1.3em;
+  margin: 18px 0 0;
+  color: var(--muted);
   text-align: center;
 }
 
