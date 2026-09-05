@@ -523,25 +523,29 @@
     place-items: center;
     isolation: isolate;
     overflow: hidden;
+    background: #160912;
+  }
+  .cinematic-wish-backdrop {
+    position: absolute;
+    inset: -32px;
+    z-index: 0;
+    background-position: center;
+    background-size: cover;
+    filter: blur(24px) brightness(0.3) saturate(1.12);
+    transform: scale(1.08);
   }
   .cinematic-wish-image {
     position: absolute;
     inset: 0;
+    z-index: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center 28%;
-    filter: brightness(0.48) saturate(1.08);
-    transform: scale(1.035);
+    object-fit: contain;
+    object-position: center;
+    filter: brightness(0.5) saturate(1.06);
   }
   .cinematic-wish.active .cinematic-wish-image {
-    animation: cinematicDrift 10s ease-out forwards;
-  }
-  .cinematic-wish:nth-of-type(2) .cinematic-wish-image {
-    object-position: center 34%;
-  }
-  .cinematic-wish:nth-of-type(3) .cinematic-wish-image {
-    object-position: center 24%;
+    animation: cinematicFocus 10s ease-out forwards;
   }
   .cinematic-wish::after {
     content: '';
@@ -594,8 +598,9 @@
     background: linear-gradient(135deg, #fffdf7, #f6d891);
     box-shadow: 0 12px 32px rgba(0,0,0,0.32);
   }
-  @keyframes cinematicDrift {
-    to { transform: scale(1.105) translateY(-0.8%); }
+  @keyframes cinematicFocus {
+    from { filter: brightness(0.46) saturate(1.02); }
+    to { filter: brightness(0.54) saturate(1.1); }
   }
   .gala-controls {
     display: flex;
@@ -878,8 +883,9 @@
     .cinematic-wish-text {
       font-size: clamp(2rem, 10vw, 3.3rem);
     }
-    .cinematic-wish-image {
-      object-position: center 25%;
+    .cinematic-wish-backdrop {
+      inset: -20px;
+      filter: blur(18px) brightness(0.28) saturate(1.1);
     }
     .gala-controls {
       align-items: stretch;
@@ -939,7 +945,8 @@
     </div>
 
     <section class="gala-step cinematic-wish active" data-gala-step="1">
-      <img class="cinematic-wish-image" src="/tiles/photos/photo-96.jpg" alt="Fatema smiling" />
+      <div class="cinematic-wish-backdrop" style="background-image: url('/birthday-wishes/wish1.jpg')" aria-hidden="true"></div>
+      <img class="cinematic-wish-image" src="/birthday-wishes/wish1.jpg" alt="Fatema and Husein together in London" />
       <div class="cinematic-wish-content">
         <div class="cinematic-wish-number">Birthday wish · one</div>
         <h2 class="cinematic-wish-text">May your smile keep turning ordinary moments into something beautiful.</h2>
@@ -949,7 +956,8 @@
     </section>
 
     <section class="gala-step cinematic-wish" data-gala-step="2">
-      <img class="cinematic-wish-image" src="/tiles/photos/photo-49.jpg" alt="A happy moment with Fatema" />
+      <div class="cinematic-wish-backdrop" style="background-image: url('/birthday-wishes/wish2.jpg')" aria-hidden="true"></div>
+      <img class="cinematic-wish-image" src="/birthday-wishes/wish2.jpg" alt="A happy moment with Fatema and Husein" />
       <div class="cinematic-wish-content">
         <div class="cinematic-wish-number">Birthday wish · two</div>
         <h2 class="cinematic-wish-text">May this year bring you peaceful mornings, endless laughter, and dreams that bloom.</h2>
@@ -959,7 +967,8 @@
     </section>
 
     <section class="gala-step cinematic-wish" data-gala-step="3">
-      <img class="cinematic-wish-image" src="/tiles/photos/photo-46.jpg" alt="A cherished portrait of Fatema" />
+      <div class="cinematic-wish-backdrop" style="background-image: url('/birthday-wishes/wish3.jpg')" aria-hidden="true"></div>
+      <img class="cinematic-wish-image" src="/birthday-wishes/wish3.jpg" alt="A close portrait of Fatema and Husein together" />
       <div class="cinematic-wish-content">
         <div class="cinematic-wish-number">Birthday wish · three</div>
         <h2 class="cinematic-wish-text">May you always feel as deeply loved as you make me feel—today, and every day.</h2>

@@ -179,6 +179,9 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
 - Animated curtains open onto a birthday stage
 - Three full-screen portraits are darkened and overlaid with large,
   romantic birthday wishes
+- The three dedicated `/birthday-wishes/` portraits use full-image containment
+  over blurred edge-to-edge backdrops, preserving the complete user-prepared
+  crop on narrow mobile screens
 - Scene changes use overlapping crossfades so no blank or flashing frame
   appears between portraits
 - The fourth scene is a dedicated grand finale with layered fireworks,
