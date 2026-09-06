@@ -183,6 +183,12 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
   a freeform floral-composition atelier, six restrained wish cards, a bespoke
   cake-design atelier, a candle countdown, and the personal-letter finale
 - Opening the birthday letter launches its own pink-and-gold fireworks
+- The Gala is staged as a royal romantic garden: blush velvet curtains with
+  gold trim, chandelier light, floral architecture, moving light trails,
+  continuous falling petals, and gold-framed content
+- Opening the curtains starts the music (when browser playback allows it) and
+  launches a two-wave firework and petal fanfare; the candle and letter finales
+  each add their own layered firework sequences
 - Progress is stored in `sessionStorage` for the current browser session, with
   Back and Skip-to-cake controls
 - The normal game cards remain accessible as decorated party booths
@@ -191,7 +197,10 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
 Outside that exact date, the existing landing page is unchanged. For local development, append
 `?birthday=preview` to the root URL (for example, `http://localhost:3000/?birthday=preview`) to
 activate the gala without changing the device date. The music currently reuses
-`public/valentines/music.mp3`; playback begins only after the user presses the music button.
+`public/valentines/music.mp3`; playback is requested when the user opens the
+curtains and can also be controlled from the candle moment.
+For visual review of a specific opened moment, add `&open=1&step=1` through
+`&open=1&step=6`.
 
 ---
 

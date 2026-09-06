@@ -208,15 +208,159 @@
     place-items: center;
     overflow: hidden;
     background:
-      radial-gradient(circle at 50% 35%, rgba(255,255,255,0.98), rgba(255,242,230,0.96) 45%, rgba(255,221,235,0.95));
+      radial-gradient(circle at 50% 20%, rgba(255,250,225,0.98), transparent 24%),
+      radial-gradient(circle at 14% 36%, rgba(255,173,201,0.45), transparent 30%),
+      radial-gradient(circle at 86% 38%, rgba(222,157,193,0.42), transparent 30%),
+      linear-gradient(155deg, #66153f 0%, #a52d62 24%, #f4c3d1 58%, #f8e9da 100%);
     overscroll-behavior: contain;
   }
   .gala.active { display: grid; }
+  .gala-ambience {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .gala-ambience::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.7;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,232,171,0.5) 0 2px, transparent 3px),
+      radial-gradient(circle at 78% 24%, rgba(255,242,199,0.42) 0 2px, transparent 3px),
+      radial-gradient(circle at 35% 72%, rgba(255,255,255,0.34) 0 1px, transparent 2px);
+    background-size: 72px 72px, 94px 94px, 58px 58px;
+  }
+  .light-beam {
+    position: absolute;
+    top: -15%;
+    width: 24vw;
+    height: 130%;
+    opacity: 0.23;
+    filter: blur(5px);
+    background: linear-gradient(180deg, rgba(255,247,207,0.9), transparent 68%);
+    transform-origin: top center;
+    animation: beamSweep 9s ease-in-out infinite alternate;
+  }
+  .light-beam.left { left: 15%; transform: rotate(16deg); }
+  .light-beam.right { right: 15%; transform: rotate(-16deg); animation-delay: -4s; }
+  @keyframes beamSweep {
+    to { transform: rotate(-5deg) translateX(8vw); opacity: 0.34; }
+  }
+  .chandelier {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 270px;
+    height: 150px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 8px 14px rgba(89,45,12,0.3));
+    animation: chandelierGlow 3s ease-in-out infinite alternate;
+  }
+  .chandelier::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 54px;
+    background: #d7aa4d;
+  }
+  .chandelier-crown {
+    position: absolute;
+    left: 50%;
+    top: 43px;
+    width: 180px;
+    height: 45px;
+    border: 4px solid #e8c66f;
+    border-top: 0;
+    border-radius: 0 0 90px 90px;
+    transform: translateX(-50%);
+  }
+  .chandelier-crown::before,
+  .chandelier-crown::after {
+    content: '';
+    position: absolute;
+    top: 9px;
+    width: 82px;
+    height: 32px;
+    border-bottom: 3px solid #e8c66f;
+    border-radius: 50%;
+  }
+  .chandelier-crown::before { left: -55px; transform: rotate(12deg); }
+  .chandelier-crown::after { right: -55px; transform: rotate(-12deg); }
+  .chandelier-crystals {
+    position: absolute;
+    left: 50%;
+    top: 78px;
+    width: 210px;
+    height: 55px;
+    transform: translateX(-50%);
+    background:
+      radial-gradient(ellipse, #fff5b8 0 3px, #d8ad42 4px, transparent 5px) 0 0 / 26px 28px repeat-x;
+  }
+  @keyframes chandelierGlow {
+    to { filter: drop-shadow(0 8px 24px rgba(255,226,126,0.72)); }
+  }
+  .garden-vine {
+    position: absolute;
+    top: 18%;
+    bottom: -8%;
+    width: 190px;
+    z-index: 4;
+    opacity: 0.86;
+    border: 3px solid rgba(91,117,71,0.75);
+    border-bottom: 0;
+  }
+  .garden-vine.left {
+    left: -55px;
+    border-right: 0;
+    border-radius: 90% 0 0;
+    transform: rotate(4deg);
+  }
+  .garden-vine.right {
+    right: -55px;
+    border-left: 0;
+    border-radius: 0 90% 0 0;
+    transform: rotate(-4deg);
+  }
+  .garden-bloom {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, #9e3e64 0 15%, transparent 17%),
+      repeating-conic-gradient(from 8deg, rgba(225,141,169,0.9) 0 14deg, transparent 14deg 42deg);
+    filter: drop-shadow(0 3px 7px rgba(91,35,65,0.18));
+  }
+  .garden-bloom:nth-child(1) { top: 3%; left: 50%; }
+  .garden-bloom:nth-child(2) { top: 30%; left: 20%; transform: scale(0.8); }
+  .garden-bloom:nth-child(3) { top: 57%; left: 48%; transform: scale(1.08); }
+  .garden-bloom:nth-child(4) { top: 78%; left: 10%; transform: scale(0.72); }
+  .gold-trail {
+    position: absolute;
+    width: 42vw;
+    height: 24vh;
+    border: 2px solid rgba(255,224,145,0.45);
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 8px rgba(255,226,148,0.48));
+    animation: trailFloat 7s ease-in-out infinite alternate;
+  }
+  .gold-trail.one { left: 4%; bottom: 6%; transform: rotate(-14deg); }
+  .gold-trail.two { right: 2%; top: 20%; transform: rotate(168deg); animation-delay: -3s; }
+  @keyframes trailFloat {
+    to { translate: 12px -10px; opacity: 0.55; }
+  }
   .gala-stage {
     position: relative;
     z-index: 3;
     grid-area: 1 / 1;
     width: min(680px, 92vw);
+    min-width: 0;
     max-height: 92vh;
     max-height: 92dvh;
     overflow-y: auto;
@@ -224,10 +368,14 @@
     -webkit-overflow-scrolling: touch;
     padding: 34px 24px 26px;
     text-align: center;
-    border: 2px solid rgba(255,255,255,0.8);
+    border: 1px solid rgba(239,203,119,0.9);
     border-radius: 30px;
-    background: rgba(255,255,255,0.82);
-    box-shadow: 0 26px 90px rgba(112, 25, 86, 0.25);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.91), rgba(255,242,237,0.86));
+    box-shadow:
+      0 0 0 7px rgba(255,255,255,0.18),
+      0 0 0 9px rgba(218,174,77,0.28),
+      0 30px 100px rgba(63, 8, 39, 0.45);
     opacity: 0;
     transform: scale(0.88) translateY(20px);
     transition: opacity 0.8s ease 0.35s, transform 0.8s cubic-bezier(.2,.9,.2,1.15) 0.35s;
@@ -235,6 +383,55 @@
   .gala.opened .gala-stage {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+  .gala-stage::before,
+  .gala-stage::after {
+    content: '◆';
+    position: absolute;
+    top: 15px;
+    color: #c79b3f;
+    font-size: 0.72rem;
+  }
+  .gala-stage::before { left: 18px; }
+  .gala-stage::after { right: 18px; }
+  .gala.finale-mode .gala-stage {
+    box-shadow:
+      0 0 0 7px rgba(255,255,255,0.22),
+      0 0 0 10px rgba(239,196,89,0.42),
+      0 0 70px rgba(255,222,118,0.48),
+      0 34px 110px rgba(63,8,39,0.5);
+  }
+  .gala-event-mark {
+    margin: -12px auto 12px;
+    text-align: center;
+  }
+  .gala-monogram {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 7px;
+    border: 1px solid #d2a74c;
+    border-radius: 50%;
+    color: #9a315d;
+    background: #fffaf0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.7rem;
+    box-shadow: 0 5px 18px rgba(120,57,79,0.15);
+  }
+  .gala-event-name {
+    color: #86592b;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+  .gala-flourish {
+    width: 135px;
+    height: 1px;
+    margin: 8px auto 0;
+    background: linear-gradient(90deg, transparent, #cba34f, transparent);
   }
   .gala-kicker {
     color: #8a5f00;
@@ -273,6 +470,10 @@
     font-weight: 800;
     cursor: pointer;
   }
+  .gala-nav-btn[hidden] {
+    display: block;
+    visibility: hidden;
+  }
   .gala-progress {
     display: flex;
     justify-content: center;
@@ -299,10 +500,12 @@
     font-family: 'Playfair Display', Georgia, serif;
     color: #b20f5a;
     font-size: clamp(1.8rem, 7vw, 3rem);
+    line-height: 1.08;
+    overflow-wrap: anywhere;
   }
   .memory-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
     margin: 20px 0;
   }
@@ -533,6 +736,23 @@
     width: 260px;
     height: 220px;
     margin: 0 auto 18px;
+    border: 1px solid rgba(205,170,100,0.2);
+    border-radius: 22px;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(255,238,186,0.42), transparent 40%),
+      linear-gradient(180deg, #fffdf8, #f8eee7);
+  }
+  .cake-atelier-preview::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 13px;
+    width: 220px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #d8b66f, #fff1bd, #c99c43);
+    box-shadow: 0 7px 13px rgba(92,59,22,0.14);
+    transform: translateX(-50%);
   }
   .atelier-cake {
     --cake-main: #fff8e8;
@@ -545,9 +765,14 @@
   .atelier-tier {
     position: absolute;
     left: 50%;
-    border: 4px solid white;
-    background: var(--cake-main);
-    box-shadow: 0 9px 18px rgba(96, 49, 69, 0.12);
+    z-index: 2;
+    border: 3px solid rgba(255,255,255,0.94);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.26), rgba(100,60,30,0.06)),
+      var(--cake-main);
+    box-shadow:
+      inset 0 -10px 16px rgba(105,70,38,0.06),
+      0 9px 18px rgba(96,49,69,0.13);
     transform: translateX(-50%);
   }
   .atelier-tier.bottom {
@@ -667,9 +892,12 @@
     z-index: 8;
     width: 51%;
     background:
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 7%, transparent 7% 14%),
-      linear-gradient(90deg, #8d0746, #d30f67 58%, #99054b);
-    box-shadow: inset 0 0 45px rgba(70,0,32,0.45);
+      linear-gradient(90deg, transparent 0 94%, rgba(226,181,77,0.9) 94% 96%, transparent 96%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 7%, transparent 7% 14%),
+      linear-gradient(90deg, #681139, #b93268 55%, #7e1646);
+    box-shadow:
+      inset 0 0 55px rgba(55,0,26,0.52),
+      0 0 35px rgba(71,7,39,0.32);
     transition: transform 1.15s cubic-bezier(.7,0,.2,1);
   }
   .curtain.left { left: 0; transform-origin: left; }
@@ -683,7 +911,7 @@
     width: min(520px, 84vw);
     padding: 28px;
     text-align: center;
-    color: white;
+    color: #fff9ec;
     transition: opacity 0.35s ease;
   }
   .gala.opened .curtain-welcome {
@@ -694,6 +922,7 @@
     margin-bottom: 10px;
     font-family: 'Playfair Display', Georgia, serif;
     font-size: clamp(2rem, 8vw, 3.8rem);
+    text-shadow: 0 5px 28px rgba(49,0,24,0.45);
   }
   .curtain-welcome p {
     margin-bottom: 22px;
@@ -701,8 +930,25 @@
     line-height: 1.5;
   }
   .curtain-welcome .gala-btn {
-    color: #9b084d;
-    background: white;
+    color: #7e1646;
+    background: linear-gradient(135deg, #fffdf7, #f7dfaa);
+    box-shadow: 0 12px 35px rgba(46,0,22,0.38);
+  }
+  .ambient-petal {
+    position: fixed;
+    z-index: 2;
+    width: 12px;
+    height: 19px;
+    border-radius: 90% 10% 85% 15%;
+    pointer-events: none;
+    background: var(--petal-color);
+    box-shadow: 0 2px 7px rgba(86,28,54,0.18);
+    animation: ambientPetalFall var(--petal-duration) linear forwards;
+  }
+  @keyframes ambientPetalFall {
+    from { opacity: 0; transform: translate3d(0,-8vh,0) rotate(0); }
+    12% { opacity: 0.9; }
+    to { opacity: 0; transform: translate3d(var(--petal-drift),108vh,0) rotate(var(--petal-spin)); }
   }
 
   .cake {
@@ -909,7 +1155,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .curtain, .gala-stage, .flame, .party-particle, .firework {
+    .curtain, .gala-stage, .flame, .party-particle, .firework,
+    .ambient-petal, .chandelier, .light-beam, .gold-trail {
       animation: none !important;
       transition-duration: 0.01ms !important;
     }
@@ -919,17 +1166,32 @@
       place-items: stretch;
     }
     .gala-stage {
-      width: 100%;
-      max-height: 100vh;
-      max-height: 100dvh;
-      min-height: 100vh;
-      min-height: 100dvh;
+      position: absolute;
+      inset: 9px;
+      width: auto;
+      height: auto;
+      max-height: none;
+      min-height: 0;
       padding:
         max(18px, env(safe-area-inset-top))
         14px
         max(24px, env(safe-area-inset-bottom));
-      border: 0;
-      border-radius: 0;
+      border: 1px solid rgba(239,203,119,0.8);
+      border-radius: 24px;
+    }
+    .chandelier {
+      width: 210px;
+      transform: translateX(-50%) scale(0.78);
+      transform-origin: top center;
+    }
+    .garden-vine {
+      width: 105px;
+      opacity: 0.58;
+    }
+    .garden-vine.left { left: -62px; }
+    .garden-vine.right { right: -62px; }
+    .gala-event-mark {
+      margin-top: 2px;
     }
     .gala-topbar {
       grid-template-columns: 70px 1fr 70px;
@@ -937,6 +1199,10 @@
     }
     .memory-grid {
       gap: 7px;
+    }
+    .moment-title {
+      max-width: 100%;
+      font-size: clamp(1.6rem, 7vw, 1.9rem);
     }
     .memory-card {
       border-width: 3px;
@@ -963,16 +1229,40 @@
 <body>
 
 <div class="gala" id="birthdayGala" aria-hidden="true">
+  <div class="gala-ambience" aria-hidden="true">
+    <div class="light-beam left"></div>
+    <div class="light-beam right"></div>
+    <div class="chandelier">
+      <div class="chandelier-crown"></div>
+      <div class="chandelier-crystals"></div>
+    </div>
+    <div class="garden-vine left">
+      <span class="garden-bloom"></span><span class="garden-bloom"></span>
+      <span class="garden-bloom"></span><span class="garden-bloom"></span>
+    </div>
+    <div class="garden-vine right">
+      <span class="garden-bloom"></span><span class="garden-bloom"></span>
+      <span class="garden-bloom"></span><span class="garden-bloom"></span>
+    </div>
+    <div class="gold-trail one"></div>
+    <div class="gold-trail two"></div>
+  </div>
   <div class="curtain left" aria-hidden="true"></div>
   <div class="curtain right" aria-hidden="true"></div>
 
   <div class="curtain-welcome">
-    <h2>A celebration is waiting…</h2>
-    <p>Today, the whole game room belongs to one very special person.</p>
+    <div class="gala-kicker">September 6 · For Fatema</div>
+    <h2>Your birthday gala is waiting</h2>
+    <p>Tonight, every flower, light, and little surprise is here to celebrate you.</p>
     <button class="gala-btn" id="openPartyBtn" type="button">Open the Birthday Party</button>
   </div>
 
   <section class="gala-stage" aria-label="Fatema's birthday celebration">
+    <div class="gala-event-mark">
+      <div class="gala-monogram">F</div>
+      <div class="gala-event-name">Fatema's Birthday Gala</div>
+      <div class="gala-flourish"></div>
+    </div>
     <div class="gala-topbar">
       <button class="gala-nav-btn" id="galaBackBtn" type="button" hidden>← Back</button>
       <div class="gala-progress" aria-label="Birthday journey progress">
@@ -989,7 +1279,7 @@
     <section class="gala-step active" data-gala-step="1">
       <div class="gala-kicker">Moment 1 · Favorite glimpses</div>
       <h2 class="moment-title">A few memories of you</h2>
-      <p class="gala-subtitle">Tap each little gift to uncover a favorite glimpse.</p>
+      <p class="gala-subtitle">Tap each portrait to uncover a favorite glimpse.</p>
       <div class="memory-grid">
         <button class="memory-card" type="button">
           <img src="/tiles/photos/photo-96.jpg" alt="A favorite memory of Fatema" />
@@ -1128,7 +1418,7 @@
       <div class="gala-kicker">Moment 6 · With all my love</div>
       <h2 class="gala-title">Happy Birthday,<br>Fatema!</h2>
       <div class="finale" id="birthdayFinale">
-        <h3>May every wish come true! 💖</h3>
+        <h3>May every wish come true.</h3>
         <p>Happy birthday to the person who makes ordinary days feel like celebrations.</p>
         <div class="gala-controls">
           <button class="gala-btn secondary" id="letterBtn" type="button">Open Your Letter</button>
@@ -1250,8 +1540,12 @@ Happy Birthday, my love. The world is brighter with you in it.
     decoration: new Set(['roses', 'jasmine', 'pearls']),
     topper: new Set(['FH', 'Fatema', 'With love']),
   };
+  const arrangementPositions = [50, 36, 64, 25, 75, 43, 58];
+  const arrangementHeights = [168, 142, 148, 122, 128, 112, 116];
+  const arrangementTilts = [0, -13, 12, -19, 18, -7, 7];
   let currentStep = savedStep;
   let wishInProgress = false;
+  let ambientPetalTimer = null;
   let arrangedFlowers = Array.isArray(savedAtelierState.arrangement)
     ? savedAtelierState.arrangement.filter((entry) => (
       entry && validFlowers.has(entry.type) && Number.isInteger(entry.slot) && entry.slot >= 0 && entry.slot < 7
@@ -1289,6 +1583,7 @@ Happy Birthday, my love. The world is brighter with you in it.
     });
     backBtn.hidden = currentStep === 1;
     skipToCakeBtn.hidden = currentStep >= 5;
+    gala.classList.toggle('finale-mode', currentStep === 6);
     galaStage.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1300,6 +1595,9 @@ Happy Birthday, my love. The world is brighter with you in it.
   document.getElementById('openPartyBtn').addEventListener('click', () => {
     gala.classList.add('opened');
     setStep(savedStep);
+    startAmbientCelebration();
+    launchGrandOpening();
+    startMusic();
   });
 
   document.querySelectorAll('[data-next-step]').forEach((button) => {
@@ -1329,9 +1627,6 @@ Happy Birthday, my love. The world is brighter with you in it.
 
   function renderArrangement() {
     const names = { rose: 'garden rose', peony: 'blush peony', jasmine: 'jasmine', tulip: 'rose tulip' };
-    const positions = [50, 36, 64, 25, 75, 43, 58];
-    const heights = [168, 142, 148, 122, 128, 112, 116];
-    const tilts = [0, -13, 12, -19, 18, -7, 7];
     const stems = document.getElementById('arrangementStems');
     stems.innerHTML = '';
     arrangedFlowers.forEach((entry, index) => {
@@ -1340,9 +1635,9 @@ Happy Birthday, my love. The world is brighter with you in it.
       const stem = document.createElement('button');
       stem.type = 'button';
       stem.className = `arranged-stem ${flower}`;
-      stem.style.setProperty('--x', `${positions[slot]}%`);
-      stem.style.setProperty('--height', `${heights[slot]}px`);
-      stem.style.setProperty('--tilt', `${tilts[slot]}deg`);
+      stem.style.setProperty('--x', `${arrangementPositions[slot]}%`);
+      stem.style.setProperty('--height', `${arrangementHeights[slot]}px`);
+      stem.style.setProperty('--tilt', `${arrangementTilts[slot]}deg`);
       stem.setAttribute('aria-label', `Remove ${names[flower]}`);
       stem.addEventListener('click', () => {
         arrangedFlowers.splice(index, 1);
@@ -1367,7 +1662,7 @@ Happy Birthday, my love. The world is brighter with you in it.
     button.addEventListener('click', () => {
       if (arrangedFlowers.length >= 7) return;
       const usedSlots = new Set(arrangedFlowers.map((entry) => entry.slot));
-      const slot = positions.findIndex((unused, index) => !usedSlots.has(index));
+      const slot = arrangementPositions.findIndex((unused, index) => !usedSlots.has(index));
       arrangedFlowers.push({ type: button.dataset.flower, slot });
       renderArrangement();
     });
@@ -1472,14 +1767,16 @@ Happy Birthday, my love. The world is brighter with you in it.
 
   document.getElementById('replayWishBtn').addEventListener('click', () => {
     resetCandleWish();
-    setStep(3);
+    setStep(5);
   });
 
   document.getElementById('letterBtn').addEventListener('click', () => {
     const open = letter.classList.toggle('open');
     document.getElementById('letterBtn').textContent = open ? 'Close Letter' : 'Open Your Letter';
     if (open) {
-      launchFireworks(9, ['#ff1f7a', '#ffd400', '#ff8dbd', '#7b2cbf'], 120);
+      const letterColors = ['#ff1f7a', '#ffd77d', '#ff8dbd', '#f7e5a5', '#7b2cbf'];
+      launchFireworks(10, letterColors, 110);
+      setTimeout(() => launchFireworks(7, letterColors, 135), 950);
       requestAnimationFrame(() => {
         letter.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
@@ -1491,6 +1788,7 @@ Happy Birthday, my love. The world is brighter with you in it.
     gala.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     reopenGalaBtn.hidden = false;
+    stopAmbientCelebration();
     document.querySelector('.birthday-featured').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
@@ -1500,21 +1798,29 @@ Happy Birthday, my love. The world is brighter with you in it.
     gala.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     setStep(currentStep);
+    startAmbientCelebration();
+    launchFireworks(7, ['#ffb5cd', '#f7d779', '#fff1c5', '#d66c9a'], 130);
   });
 
-  musicBtn.addEventListener('click', () => {
+  async function startMusic() {
+    if (!music.paused) return;
+    music.volume = 0.45;
+    musicBtn.disabled = true;
+    musicBtn.textContent = 'Starting Music…';
+    try {
+      await music.play();
+      musicBtn.textContent = 'Pause Music';
+      musicBtn.setAttribute('aria-pressed', 'true');
+    } catch (err) {
+      musicBtn.textContent = 'Music Unavailable';
+    } finally {
+      musicBtn.disabled = false;
+    }
+  }
+
+  musicBtn.addEventListener('click', async () => {
     if (music.paused) {
-      music.volume = 0.45;
-      musicBtn.disabled = true;
-      musicBtn.textContent = 'Starting Music…';
-      music.play().then(() => {
-        musicBtn.textContent = 'Pause Music';
-        musicBtn.setAttribute('aria-pressed', 'true');
-      }).catch(() => {
-        musicBtn.textContent = 'Music Unavailable';
-      }).finally(() => {
-        musicBtn.disabled = false;
-      });
+      await startMusic();
     } else {
       music.pause();
       musicBtn.textContent = 'Play Music';
@@ -1533,8 +1839,54 @@ Happy Birthday, my love. The world is brighter with you in it.
       gala.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       reopenGalaBtn.hidden = false;
+      stopAmbientCelebration();
     }
   });
+
+  if (isPreview && params.get('open') === '1') {
+    const previewStep = Math.min(6, Math.max(1, Number(params.get('step')) || 1));
+    gala.classList.add('opened');
+    setStep(previewStep);
+    startAmbientCelebration();
+  }
+
+  function createAmbientPetal() {
+    if (!gala.classList.contains('active')) return;
+    const petal = document.createElement('span');
+    const colors = ['#f8b7c9', '#ffdce5', '#e797b3', '#fff0d4', '#c85b84'];
+    petal.className = 'ambient-petal';
+    petal.style.left = `${Math.random() * 100}vw`;
+    petal.style.top = '-24px';
+    petal.style.setProperty('--petal-color', colors[Math.floor(Math.random() * colors.length)]);
+    petal.style.setProperty('--petal-duration', `${6 + Math.random() * 4}s`);
+    petal.style.setProperty('--petal-drift', `${-120 + Math.random() * 240}px`);
+    petal.style.setProperty('--petal-spin', `${360 + Math.random() * 720}deg`);
+    gala.appendChild(petal);
+    setTimeout(() => petal.remove(), 10500);
+  }
+
+  function startAmbientCelebration() {
+    if (ambientPetalTimer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (let i = 0; i < 12; i++) {
+      setTimeout(createAmbientPetal, i * 120);
+    }
+    ambientPetalTimer = setInterval(createAmbientPetal, 620);
+  }
+
+  function stopAmbientCelebration() {
+    clearInterval(ambientPetalTimer);
+    ambientPetalTimer = null;
+    gala.querySelectorAll('.ambient-petal').forEach((petal) => petal.remove());
+  }
+
+  function launchGrandOpening() {
+    const openingColors = ['#f7d779', '#fff0b8', '#ff8dbd', '#d75888', '#f8c7d5'];
+    for (let i = 0; i < 28; i++) {
+      setTimeout(createAmbientPetal, i * 55);
+    }
+    launchFireworks(9, openingColors, 115);
+    setTimeout(() => launchFireworks(7, openingColors, 140), 1050);
+  }
 
   function launchFinale() {
     const colors = ['#ff1f7a', '#ffd400', '#00c853', '#7b2cbf', '#2f6fed', '#ff7b00'];
@@ -1555,7 +1907,8 @@ Happy Birthday, my love. The world is brighter with you in it.
       setTimeout(() => particle.remove(), 5000);
     }
 
-    launchFireworks(7, colors, 170);
+    launchFireworks(9, colors, 130);
+    setTimeout(() => launchFireworks(8, ['#ffd77d', '#fff0b8', '#ff8dbd', '#d75888'], 145), 950);
   }
 
   function launchFireworks(count, colors, delay) {
