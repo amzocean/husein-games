@@ -179,8 +179,10 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
   the Game Room
 - Music reports playback failures instead of failing silently
 - The overlay uses mobile viewport/safe-area sizing and locks background scroll
-- The curtain now leads through four resumable moments: three photo memories,
-  six flower wishes, a candle countdown, and the personal-letter finale
+- The curtain now leads through six resumable moments: three photo memories,
+  a flower-sequence Birthday Bouquet game, six flower wishes, a four-piece
+  Cake Decorator game, a candle countdown, and the personal-letter finale
+- Opening the birthday letter launches its own pink-and-gold fireworks
 - Progress is stored in `sessionStorage` for the current browser session, with
   Back and Skip-to-cake controls
 - The normal game cards remain accessible as decorated party booths

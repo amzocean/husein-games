@@ -381,6 +381,128 @@
     font-weight: 700;
     line-height: 1.5;
   }
+  .mini-game-card {
+    margin: 18px auto;
+    padding: 18px;
+    max-width: 520px;
+    border: 1px solid rgba(178,15,90,0.14);
+    border-radius: 22px;
+    background: rgba(255,255,255,0.82);
+    box-shadow: 0 10px 28px rgba(112, 25, 86, 0.10);
+  }
+  .game-instruction {
+    margin: 0 0 12px;
+    color: #74425f;
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+  .bouquet-target,
+  .bouquet-built {
+    min-height: 48px;
+    padding: 8px;
+    font-size: 1.8rem;
+    letter-spacing: 0.12em;
+  }
+  .bouquet-target {
+    border-radius: 14px;
+    background: #fff0f7;
+  }
+  .bouquet-built {
+    margin: 8px 0;
+    font-size: 2.15rem;
+  }
+  .flower-palette,
+  .decorating-tray {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .flower-choice,
+  .decoration-choice {
+    border: 1px solid rgba(178,15,90,0.16);
+    border-radius: 15px;
+    min-width: 58px;
+    padding: 10px;
+    color: #8b195c;
+    background: white;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .flower-choice { font-size: 1.55rem; }
+  .flower-choice:active,
+  .decoration-choice:active { transform: scale(0.95); }
+  .decoration-choice.placed {
+    color: #196b43;
+    background: #e8fff2;
+    border-color: #8edbb3;
+  }
+  .mini-game-status {
+    min-height: 1.5em;
+    margin: 10px 0 0;
+    color: #8b195c;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+  .mini-game-card.wrong {
+    animation: gameShake 0.3s ease;
+  }
+  @keyframes gameShake {
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .decorate-cake {
+    position: relative;
+    width: 230px;
+    height: 175px;
+    margin: 0 auto 12px;
+  }
+  .decorate-cake-base {
+    position: absolute;
+    left: 25px;
+    right: 25px;
+    bottom: 18px;
+    height: 82px;
+    border: 5px solid white;
+    border-radius: 16px 16px 25px 25px;
+    background: #ffc0d9;
+    box-shadow: 0 8px 0 #c81f6c, 0 14px 20px rgba(125,20,83,0.16);
+  }
+  .cake-decoration {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+  .cake-decoration.placed {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .decor-icing {
+    bottom: 88px;
+    height: 30px;
+    margin: 0 25px;
+    border: 4px solid white;
+    border-radius: 50%;
+    background: #fff4cd;
+  }
+  .decor-flowers {
+    bottom: 55px;
+    font-size: 1.5rem;
+    letter-spacing: 0.5em;
+  }
+  .decor-candles {
+    bottom: 103px;
+    font-size: 1.7rem;
+  }
+  .decor-topper {
+    bottom: 132px;
+    font-size: 1.8rem;
+  }
   .gala-controls {
     display: flex;
     justify-content: center;
@@ -406,6 +528,11 @@
     box-shadow: none;
   }
   .gala-btn:active { transform: translateY(1px); }
+  .gala-btn:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
   .music-status {
     min-height: 1.3em;
     margin: 8px 0 0;
@@ -707,8 +834,10 @@
         <span data-progress-step="2"></span>
         <span data-progress-step="3"></span>
         <span data-progress-step="4"></span>
+        <span data-progress-step="5"></span>
+        <span data-progress-step="6"></span>
       </div>
-      <button class="gala-nav-btn" id="skipToCakeBtn" type="button">Cake →</button>
+      <button class="gala-nav-btn" id="skipToCakeBtn" type="button">Candles →</button>
     </div>
 
     <section class="gala-step active" data-gala-step="1">
@@ -733,12 +862,34 @@
         </button>
       </div>
       <div class="gala-controls">
-        <button class="gala-btn" data-next-step="2" type="button">Continue to Your Wishes ✨</button>
+        <button class="gala-btn" data-next-step="2" type="button">Play a Flower Game 🌷</button>
       </div>
     </section>
 
     <section class="gala-step" data-gala-step="2">
-      <div class="gala-kicker">Moment 2 · A garden of wishes</div>
+      <div class="gala-kicker">Moment 2 · Birthday Bouquet</div>
+      <h2 class="moment-title">Build the birthday bouquet</h2>
+      <p class="gala-subtitle">Copy the flower order to arrange a bouquet especially for you.</p>
+      <div class="mini-game-card" id="bouquetGame">
+        <p class="game-instruction">Tap these flowers in the same order:</p>
+        <div class="bouquet-target" id="bouquetTarget" aria-label="Target flower sequence"></div>
+        <div class="bouquet-built" id="bouquetBuilt" aria-live="polite">💐</div>
+        <div class="flower-palette">
+          <button class="flower-choice" type="button" data-flower="🌷" aria-label="Tulip">🌷</button>
+          <button class="flower-choice" type="button" data-flower="🌸" aria-label="Cherry blossom">🌸</button>
+          <button class="flower-choice" type="button" data-flower="🌼" aria-label="Yellow flower">🌼</button>
+          <button class="flower-choice" type="button" data-flower="🌺" aria-label="Hibiscus">🌺</button>
+        </div>
+        <p class="mini-game-status" id="bouquetStatus">Your bouquet is waiting…</p>
+      </div>
+      <div class="gala-controls">
+        <button class="gala-btn secondary" id="resetBouquetBtn" type="button">New Bouquet</button>
+        <button class="gala-btn" id="bouquetContinueBtn" data-next-step="3" type="button" disabled>Continue ✨</button>
+      </div>
+    </section>
+
+    <section class="gala-step" data-gala-step="3">
+      <div class="gala-kicker">Moment 3 · A garden of wishes</div>
       <h2 class="moment-title">Six wishes for your year</h2>
       <p class="gala-subtitle">Pick a flower and let every birthday wish bloom.</p>
       <div class="wish-garden">
@@ -751,12 +902,38 @@
       </div>
       <p class="wish-message" id="wishMessage">Six flowers, each carrying something beautiful for you.</p>
       <div class="gala-controls">
-        <button class="gala-btn" data-next-step="3" type="button">Continue to the Cake 🎂</button>
+        <button class="gala-btn" data-next-step="4" type="button">Decorate Your Cake 🎂</button>
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="3">
-      <div class="gala-kicker">Moment 3 · The birthday wish</div>
+    <section class="gala-step" data-gala-step="4">
+      <div class="gala-kicker">Moment 4 · Cake Decorator</div>
+      <h2 class="moment-title">Make the cake celebration-ready</h2>
+      <p class="gala-subtitle">Add all four finishing touches before the candles are lit.</p>
+      <div class="mini-game-card" id="cakeDecoratorGame">
+        <div class="decorate-cake" aria-label="Cake being decorated">
+          <div class="decorate-cake-base"></div>
+          <div class="cake-decoration decor-icing" data-decoration-layer="icing"></div>
+          <div class="cake-decoration decor-flowers" data-decoration-layer="flowers">🌸 🌼 🌸</div>
+          <div class="cake-decoration decor-candles" data-decoration-layer="candles">🕯️ 🕯️ 🕯️</div>
+          <div class="cake-decoration decor-topper" data-decoration-layer="topper">💖</div>
+        </div>
+        <div class="decorating-tray">
+          <button class="decoration-choice" type="button" data-decoration="icing">Icing</button>
+          <button class="decoration-choice" type="button" data-decoration="flowers">Flowers</button>
+          <button class="decoration-choice" type="button" data-decoration="candles">Candles</button>
+          <button class="decoration-choice" type="button" data-decoration="topper">Topper</button>
+        </div>
+        <p class="mini-game-status" id="cakeDecoratorStatus">Four finishing touches to go.</p>
+      </div>
+      <div class="gala-controls">
+        <button class="gala-btn secondary" id="resetCakeBtn" type="button">Start Again</button>
+        <button class="gala-btn" id="cakeContinueBtn" data-next-step="5" type="button" disabled>Light the Candles 🕯️</button>
+      </div>
+    </section>
+
+    <section class="gala-step" data-gala-step="5">
+      <div class="gala-kicker">Moment 5 · The birthday wish</div>
       <h2 class="moment-title">Your candles are waiting</h2>
       <p class="gala-subtitle">Close your eyes, think of one wonderful wish, and let the candles glow.</p>
       <div class="cake" aria-label="Birthday cake with six candles">
@@ -779,8 +956,8 @@
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="4">
-      <div class="gala-kicker">Moment 4 · With all my love</div>
+    <section class="gala-step" data-gala-step="6">
+      <div class="gala-kicker">Moment 6 · With all my love</div>
       <h2 class="gala-title">Happy Birthday,<br>Fatema!</h2>
       <div class="finale" id="birthdayFinale">
         <h3>May every wish come true! 💖</h3>
@@ -890,10 +1067,13 @@ Happy Birthday, my love. The world is brighter with you in it.
   const galaStage = document.querySelector('.gala-stage');
   const backBtn = document.getElementById('galaBackBtn');
   const skipToCakeBtn = document.getElementById('skipToCakeBtn');
-  const progressKey = 'fatema-birthday-gala-step';
-  const savedStep = Math.min(4, Math.max(1, Number(sessionStorage.getItem(progressKey)) || 1));
+  const progressKey = 'fatema-birthday-gala-step-v2';
+  const savedStep = Math.min(6, Math.max(1, Number(sessionStorage.getItem(progressKey)) || 1));
   let currentStep = savedStep;
   let wishInProgress = false;
+  let bouquetTarget = [];
+  let bouquetProgress = [];
+  const cakeDecorations = new Set();
 
   body.classList.add('birthday-mode');
   gala.classList.add('active');
@@ -904,7 +1084,7 @@ Happy Birthday, my love. The world is brighter with you in it.
   document.querySelector('header p').textContent = 'every game is dressed up for your special day ✨';
 
   function setStep(step) {
-    currentStep = Math.min(4, Math.max(1, step));
+    currentStep = Math.min(6, Math.max(1, step));
     sessionStorage.setItem(progressKey, String(currentStep));
     document.querySelectorAll('[data-gala-step]').forEach((panel) => {
       panel.classList.toggle('active', Number(panel.dataset.galaStep) === currentStep);
@@ -913,7 +1093,7 @@ Happy Birthday, my love. The world is brighter with you in it.
       dot.classList.toggle('active', Number(dot.dataset.progressStep) <= currentStep);
     });
     backBtn.hidden = currentStep === 1;
-    skipToCakeBtn.hidden = currentStep >= 3;
+    skipToCakeBtn.hidden = currentStep >= 5;
     galaStage.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -932,11 +1112,11 @@ Happy Birthday, my love. The world is brighter with you in it.
   });
 
   backBtn.addEventListener('click', () => {
-    if (currentStep === 4) resetCandleWish();
+    if (currentStep === 6) resetCandleWish();
     if (currentStep > 1) setStep(currentStep - 1);
   });
 
-  skipToCakeBtn.addEventListener('click', () => setStep(3));
+  skipToCakeBtn.addEventListener('click', () => setStep(5));
 
   document.querySelectorAll('.memory-card').forEach((card) => {
     card.addEventListener('click', () => {
@@ -951,6 +1131,70 @@ Happy Birthday, my love. The world is brighter with you in it.
       document.getElementById('wishMessage').textContent = flower.dataset.wish;
     });
   });
+
+  function startBouquetGame() {
+    const flowerChoices = ['🌷', '🌸', '🌼', '🌺'];
+    bouquetTarget = Array.from({ length: 5 }, () => (
+      flowerChoices[Math.floor(Math.random() * flowerChoices.length)]
+    ));
+    bouquetProgress = [];
+    document.getElementById('bouquetTarget').textContent = bouquetTarget.join(' ');
+    document.getElementById('bouquetBuilt').textContent = '💐';
+    document.getElementById('bouquetStatus').textContent = 'Your bouquet is waiting…';
+    document.getElementById('bouquetContinueBtn').disabled = true;
+  }
+
+  document.querySelectorAll('.flower-choice').forEach((button) => {
+    button.addEventListener('click', () => {
+      const flower = button.dataset.flower;
+      const game = document.getElementById('bouquetGame');
+      if (flower !== bouquetTarget[bouquetProgress.length]) {
+        game.classList.remove('wrong');
+        requestAnimationFrame(() => game.classList.add('wrong'));
+        document.getElementById('bouquetStatus').textContent = 'Almost—follow the order from the beginning.';
+        bouquetProgress = [];
+        document.getElementById('bouquetBuilt').textContent = '💐';
+        return;
+      }
+      bouquetProgress.push(flower);
+      document.getElementById('bouquetBuilt').textContent = `💐 ${bouquetProgress.join(' ')}`;
+      if (bouquetProgress.length === bouquetTarget.length) {
+        document.getElementById('bouquetStatus').textContent = 'A perfect birthday bouquet! ✨';
+        document.getElementById('bouquetContinueBtn').disabled = false;
+      } else {
+        document.getElementById('bouquetStatus').textContent =
+          `${bouquetTarget.length - bouquetProgress.length} flower${bouquetTarget.length - bouquetProgress.length === 1 ? '' : 's'} to go.`;
+      }
+    });
+  });
+  document.getElementById('resetBouquetBtn').addEventListener('click', startBouquetGame);
+
+  function resetCakeDecorator() {
+    cakeDecorations.clear();
+    document.querySelectorAll('[data-decoration-layer], [data-decoration]').forEach((item) => {
+      item.classList.remove('placed');
+    });
+    document.getElementById('cakeDecoratorStatus').textContent = 'Four finishing touches to go.';
+    document.getElementById('cakeContinueBtn').disabled = true;
+  }
+
+  document.querySelectorAll('.decoration-choice').forEach((button) => {
+    button.addEventListener('click', () => {
+      const decoration = button.dataset.decoration;
+      cakeDecorations.add(decoration);
+      button.classList.add('placed');
+      document.querySelector(`[data-decoration-layer="${decoration}"]`).classList.add('placed');
+      const remaining = 4 - cakeDecorations.size;
+      document.getElementById('cakeDecoratorStatus').textContent = remaining
+        ? `${remaining} finishing touch${remaining === 1 ? '' : 'es'} to go.`
+        : 'The cake is ready for its candles! 🎂';
+      document.getElementById('cakeContinueBtn').disabled = remaining !== 0;
+    });
+  });
+  document.getElementById('resetCakeBtn').addEventListener('click', resetCakeDecorator);
+
+  startBouquetGame();
+  resetCakeDecorator();
 
   document.getElementById('wishBtn').addEventListener('click', () => {
     if (wishInProgress || gala.classList.contains('wished')) return;
@@ -973,7 +1217,7 @@ Happy Birthday, my love. The world is brighter with you in it.
         launchFinale();
         setTimeout(() => {
           wishInProgress = false;
-          setStep(4);
+          setStep(6);
         }, 1400);
       }, 700);
     };
@@ -1000,6 +1244,7 @@ Happy Birthday, my love. The world is brighter with you in it.
     const open = letter.classList.toggle('open');
     document.getElementById('letterBtn').textContent = open ? 'Close Letter 💌' : 'Open Your Letter 💌';
     if (open) {
+      launchFireworks(9, ['#ff1f7a', '#ffd400', '#ff8dbd', '#7b2cbf'], 120);
       requestAnimationFrame(() => {
         letter.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
@@ -1075,7 +1320,11 @@ Happy Birthday, my love. The world is brighter with you in it.
       setTimeout(() => particle.remove(), 5000);
     }
 
-    for (let i = 0; i < 7; i++) {
+    launchFireworks(7, colors, 170);
+  }
+
+  function launchFireworks(count, colors, delay) {
+    for (let i = 0; i < count; i++) {
       setTimeout(() => {
         const burst = document.createElement('span');
         burst.className = 'firework';
@@ -1084,7 +1333,7 @@ Happy Birthday, my love. The world is brighter with you in it.
         burst.style.color = colors[Math.floor(Math.random() * colors.length)];
         document.body.appendChild(burst);
         setTimeout(() => burst.remove(), 1300);
-      }, i * 170);
+      }, i * delay);
     }
   }
 })();
