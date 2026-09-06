@@ -175,6 +175,10 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
 - A cake with six glowing candles has one "Make a Wish" interaction
 - Blowing out the candles launches confetti and fireworks
 - An optional birthday letter and music control are available
+- The celebration can be replayed, and the Gala can be reopened after entering
+  the Game Room
+- Music reports playback failures instead of failing silently
+- The overlay uses mobile viewport/safe-area sizing and locks background scroll
 - The normal game cards remain accessible as decorated party booths
 - Photo Tiles is highlighted as "Today's Birthday Game"
 

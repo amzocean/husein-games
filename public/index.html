@@ -209,6 +209,7 @@
     overflow: hidden;
     background:
       radial-gradient(circle at 50% 35%, rgba(255,255,255,0.98), rgba(255,242,230,0.96) 45%, rgba(255,221,235,0.95));
+    overscroll-behavior: contain;
   }
   .gala.active { display: grid; }
   .gala-stage {
@@ -217,7 +218,10 @@
     grid-area: 1 / 1;
     width: min(680px, 92vw);
     max-height: 92vh;
+    max-height: 92dvh;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: 34px 24px 26px;
     text-align: center;
     border: 2px solid rgba(255,255,255,0.8);
@@ -277,6 +281,28 @@
     box-shadow: none;
   }
   .gala-btn:active { transform: translateY(1px); }
+  .music-status {
+    min-height: 1.3em;
+    margin: 8px 0 0;
+    color: #74425f;
+    font-size: 0.78rem;
+  }
+  .birthday-reopen {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 900;
+    border: 0;
+    border-radius: 999px;
+    padding: 11px 16px;
+    color: white;
+    background: linear-gradient(135deg, #ff1f7a, #7b2cbf);
+    box-shadow: 0 10px 28px rgba(123, 44, 191, 0.28);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .birthday-reopen[hidden] { display: none; }
 
   .curtain {
     position: absolute;
@@ -491,6 +517,35 @@
       animation: none !important;
       transition-duration: 0.01ms !important;
     }
+    @media (max-width: 520px) {
+      .gala {
+        place-items: stretch;
+      }
+      .gala-stage {
+        width: 100%;
+        max-height: 100vh;
+        max-height: 100dvh;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding:
+          max(24px, env(safe-area-inset-top))
+          16px
+          max(28px, env(safe-area-inset-bottom));
+        border: 0;
+        border-radius: 0;
+      }
+      .cake {
+        transform: scale(0.88);
+        margin-top: -8px;
+        margin-bottom: -12px;
+      }
+      .gala-controls {
+        align-items: stretch;
+      }
+      .gala-controls .gala-btn {
+        flex: 1 1 180px;
+      }
+    }
   }
 </style>
 </head>
@@ -536,6 +591,7 @@
       <p>Happy birthday to the person who makes ordinary days feel like celebrations.</p>
       <div class="gala-controls">
         <button class="gala-btn secondary" id="letterBtn" type="button">Open Your Letter 💌</button>
+        <button class="gala-btn secondary" id="replayWishBtn" type="button">Celebrate Again 🎉</button>
         <button class="gala-btn" id="enterGamesBtn" type="button">Enter Your Game Room 🎮</button>
       </div>
       <div class="birthday-letter" id="birthdayLetter">Fatema,
@@ -552,6 +608,7 @@ Happy Birthday, my love. The world is brighter with you in it.
 </div>
 
 <audio id="birthdayMusic" src="/valentines/music.mp3" loop preload="none"></audio>
+<button class="birthday-only birthday-reopen" id="reopenGalaBtn" type="button" hidden>Birthday Gala 🎂</button>
 
 <header>
   <h1>Husein & Fatema's Game Room</h1>
@@ -632,10 +689,12 @@ Happy Birthday, my love. The world is brighter with you in it.
   const music = document.getElementById('birthdayMusic');
   const musicBtn = document.getElementById('musicBtn');
   const letter = document.getElementById('birthdayLetter');
+  const reopenGalaBtn = document.getElementById('reopenGalaBtn');
 
   body.classList.add('birthday-mode');
   gala.classList.add('active');
   gala.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
 
   document.querySelector('header h1').textContent = "Fatema's Birthday Game Room";
   document.querySelector('header p').textContent = 'every game is dressed up for your special day ✨';
@@ -648,6 +707,16 @@ Happy Birthday, my love. The world is brighter with you in it.
     if (gala.classList.contains('wished')) return;
     gala.classList.add('wished');
     launchFinale();
+  });
+
+  document.getElementById('replayWishBtn').addEventListener('click', () => {
+    gala.classList.remove('wished');
+    letter.classList.remove('open');
+    document.getElementById('letterBtn').textContent = 'Open Your Letter 💌';
+    setTimeout(() => {
+      gala.classList.add('wished');
+      launchFinale();
+    }, 550);
   });
 
   document.getElementById('letterBtn').addEventListener('click', () => {
@@ -663,18 +732,49 @@ Happy Birthday, my love. The world is brighter with you in it.
   document.getElementById('enterGamesBtn').addEventListener('click', () => {
     gala.classList.remove('active');
     gala.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    reopenGalaBtn.hidden = false;
     document.querySelector('.birthday-featured').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  reopenGalaBtn.addEventListener('click', () => {
+    reopenGalaBtn.hidden = true;
+    gala.classList.add('active', 'opened');
+    gala.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   });
 
   musicBtn.addEventListener('click', () => {
     if (music.paused) {
       music.volume = 0.45;
+      musicBtn.disabled = true;
+      musicBtn.textContent = 'Starting Music…';
       music.play().then(() => {
         musicBtn.textContent = 'Pause Music 🎵';
-      }).catch(() => {});
+        musicBtn.setAttribute('aria-pressed', 'true');
+      }).catch(() => {
+        musicBtn.textContent = 'Music Unavailable';
+      }).finally(() => {
+        musicBtn.disabled = false;
+      });
     } else {
       music.pause();
       musicBtn.textContent = 'Play Music 🎵';
+      musicBtn.setAttribute('aria-pressed', 'false');
+    }
+  });
+
+  music.addEventListener('error', () => {
+    musicBtn.disabled = true;
+    musicBtn.textContent = 'Music Unavailable';
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && gala.classList.contains('active') && gala.classList.contains('opened')) {
+      gala.classList.remove('active');
+      gala.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      reopenGalaBtn.hidden = false;
     }
   });
 
