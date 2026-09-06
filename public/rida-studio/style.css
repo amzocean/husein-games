@@ -12,6 +12,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html, body {
   margin: 0;
@@ -28,6 +29,21 @@ body {
     radial-gradient(circle at 50% 95%, rgba(47, 215, 196, 0.18), transparent 45%),
     linear-gradient(180deg, var(--bg-1), var(--bg-2));
   min-height: 100vh;
+}
+
+.release-gate {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+}
+.release-gate .hero-card {
+  width: min(100%, 680px);
+}
+.release-gate .btn {
+  display: inline-flex;
+  margin-top: 12px;
+  text-decoration: none;
 }
 
 h1, h2, h3 {

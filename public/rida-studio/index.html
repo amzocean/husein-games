@@ -8,16 +8,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/rida-studio/style.css?v=20260903-6" />
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-8" />
 </head>
 <body>
 
-<div class="rida-app" id="ridaApp">
+<section class="release-gate" id="releaseGate">
+  <div class="hero-card">
+    <div class="hero-emoji">🎁🌸</div>
+    <h2>A birthday surprise is waiting</h2>
+    <p>Fatema's Rida Studio opens on September 6.</p>
+    <a class="btn btn-primary" href="/">Back to the Game Room</a>
+  </div>
+</section>
+
+<div class="rida-app" id="ridaApp" hidden>
 
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 7</span>
+    <span class="build-badge">Build 8</span>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
 
@@ -214,13 +223,19 @@
 
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 7</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 8</footer>
 </div>
 
 <script>
-  const ridaScript = document.createElement('script');
-  ridaScript.src = `/rida-studio/app-v6.js?build=7&t=${Date.now()}`;
-  document.body.appendChild(ridaScript);
+  const releaseDate = '2026-09-06';
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  if (todayUtc >= releaseDate) {
+    document.getElementById('releaseGate').hidden = true;
+    document.getElementById('ridaApp').hidden = false;
+    const ridaScript = document.createElement('script');
+    ridaScript.src = `/rida-studio/app-v6.js?build=8&t=${Date.now()}`;
+    document.body.appendChild(ridaScript);
+  }
 </script>
 </body>
 </html>

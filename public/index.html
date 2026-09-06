@@ -89,6 +89,7 @@
     cursor: pointer;
     box-shadow: 0 2px 12px rgba(196,69,105,0.06);
   }
+  .game-card[hidden] { display: none; }
   .game-card:hover, .game-card:active {
     transform: translateY(-5px);
     border-color: rgba(196,69,105,0.25);
@@ -602,7 +603,7 @@ Happy Birthday, my love. The world is brighter with you in it.
     <span class="tag tag-solo">Solo</span>
   </a>
 
-  <a class="game-card" href="/rida-studio/">
+  <a class="game-card" id="ridaStudioCard" href="/rida-studio/" hidden>
     <div class="game-icon">🌸</div>
     <h2>Fatema's Rida Studio</h2>
     <p>Design a rida &amp; a cheerful scene, then generate two AI keepsake looks — just for you</p>
@@ -620,7 +621,9 @@ Happy Birthday, my love. The world is brighter with you in it.
   const BIRTHDAY_DATE = '2026-09-06';
   const params = new URLSearchParams(window.location.search);
   const isPreview = params.get('birthday') === 'preview';
-  const isBirthday = new Date().toISOString().slice(0, 10) === BIRTHDAY_DATE;
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  const isBirthday = todayUtc === BIRTHDAY_DATE;
+  document.getElementById('ridaStudioCard').hidden = todayUtc < BIRTHDAY_DATE;
 
   if (!isBirthday && !isPreview) return;
 

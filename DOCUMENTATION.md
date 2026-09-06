@@ -11,7 +11,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
 - **📖 Hidaayaat Lookup** — A static single-player search page (`public/quote-search/`) over 142 quotes across 2 volumes of Raudat Hidayaat.
-- **🌸 Fatema's Rida Studio** — A permanent, PIN-protected single-player game where Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene and generates 2 live AI keepsake images per request (`gpt-image-2`, rate-limited) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
+- **🌸 Fatema's Rida Studio** — A PIN-protected single-player game that unlocks September 6, 2026 UTC, then remains permanent. Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene and generates 2 live AI keepsake images per request (`gpt-image-2`, rate-limited) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -164,7 +164,7 @@ husein-games/
   4. **🃏 H♥F Deal** → `/cards/` (tag: Multiplayer)
   5. **🔐 Hidaayat Ciphers** → `/hidaayat-ciphers/` (tag: Solo)
   6. **📖 Hidaayaat Lookup** → `/quote-search/` (tag: Solo)
-  7. **🌸 Fatema's Rida Studio** → `/rida-studio/` (tag: Private · PIN) — permanent, not date-gated; see section 10
+  7. **🌸 Fatema's Rida Studio** → `/rida-studio/` (tag: Private · PIN) — hidden until September 6, 2026 UTC, then permanent; see section 9
 - Footer: "Made with ♥ by Husein"
 
 ### September 6 Birthday Gala
@@ -259,9 +259,10 @@ These are project-wide bugs not specific to any single game:
 
 ## 9. Fatema's Rida Studio (permanent production game)
 
-`public/rida-studio/` + `lib/ridaStudio/` implement a **permanent**, PIN-
-protected game (not date-gated — it's independent of the Sept 6 birthday
-gala and available year-round from the root landing page). Fatema logs in
+`public/rida-studio/` + `lib/ridaStudio/` implement a PIN-protected game that
+unlocks on September 6, 2026 UTC and remains permanently available afterward.
+Before release, the homepage card is hidden, the direct page shows a birthday
+surprise message, and the API returns `403`. After release, Fatema logs in
 with a private PIN, then uploads, describes, or selects a shared base cloth.
 She can upload a design example, describe the full design, or select the
 panel and lace (including None) and describe embroidery. The coordinated
