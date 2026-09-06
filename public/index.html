@@ -590,248 +590,6 @@
     font-weight: 700;
     line-height: 1.5;
   }
-  .atelier-card {
-    margin: 18px auto;
-    padding: 18px;
-    max-width: 520px;
-    border: 1px solid rgba(178,15,90,0.14);
-    border-radius: 22px;
-    background: rgba(255,255,255,0.82);
-    box-shadow: 0 10px 28px rgba(112, 25, 86, 0.10);
-  }
-  .floral-composition {
-    position: relative;
-    height: 255px;
-    margin-bottom: 16px;
-    overflow: hidden;
-    border-radius: 18px;
-    background:
-      radial-gradient(circle at 50% 105%, rgba(178,15,90,0.1), transparent 45%),
-      linear-gradient(180deg, #fffdfb, #fff4f7);
-  }
-  .arrangement-stems {
-    position: absolute;
-    inset: 0 12% 38px;
-  }
-  .arranged-stem {
-    position: absolute;
-    left: var(--x);
-    bottom: 20px;
-    width: 42px;
-    height: var(--height);
-    padding: 0;
-    border: 0;
-    background: transparent;
-    transform: translateX(-50%) rotate(var(--tilt));
-    transform-origin: bottom center;
-    cursor: pointer;
-    animation: stemRise 0.45s cubic-bezier(.2,.9,.2,1.15);
-  }
-  .arranged-stem::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 2px;
-    height: calc(100% - 28px);
-    border-radius: 2px;
-    background: linear-gradient(#789a70, #446b48);
-  }
-  .arranged-stem::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 12px rgba(91, 35, 65, 0.16);
-  }
-  .arranged-stem.rose::after {
-    background: radial-gradient(circle, #8e174d 0 16%, #c63d70 18% 38%, #e989aa 40% 62%, #f5c1d2 64%);
-  }
-  .arranged-stem.peony::after {
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, #e8a6b8 0 18%, #f4c5d1 20% 43%, #fff0f2 45% 66%, #d98ca5 68%);
-  }
-  .arranged-stem.jasmine::after {
-    background: radial-gradient(circle, #e5bd58 0 12%, #fffdf1 14% 55%, #e4ddc9 57% 62%, transparent 64%);
-    box-shadow:
-      -12px 7px 0 -5px #fffdf1,
-      12px 7px 0 -5px #fffdf1,
-      0 4px 12px rgba(91, 35, 65, 0.12);
-  }
-  .arranged-stem.tulip::after {
-    height: 39px;
-    border-radius: 48% 48% 44% 44%;
-    background: linear-gradient(90deg, #d84568, #f38ca1 48%, #c92f58);
-  }
-  .arrangement-vase {
-    position: absolute;
-    left: 50%;
-    bottom: 12px;
-    z-index: 2;
-    width: 106px;
-    height: 92px;
-    border: 1px solid rgba(131, 83, 97, 0.22);
-    border-radius: 18px 18px 42px 42px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(230,205,212,0.74));
-    box-shadow: 0 14px 22px rgba(93, 45, 70, 0.14);
-    transform: translateX(-50%);
-  }
-  @keyframes stemRise {
-    from { opacity: 0; transform: translateX(-50%) translateY(35px) rotate(var(--tilt)); }
-  }
-  .atelier-palette,
-  .atelier-choice-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 9px;
-  }
-  .floral-choice,
-  .cake-style-choice {
-    border: 1px solid rgba(178,15,90,0.16);
-    border-radius: 999px;
-    padding: 9px 13px;
-    color: #69384f;
-    background: white;
-    font: inherit;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .floral-choice:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-  .floral-swatch {
-    display: inline-block;
-    width: 11px;
-    height: 11px;
-    margin-right: 6px;
-    border-radius: 50%;
-    vertical-align: -1px;
-  }
-  .floral-swatch.rose { background: #c63d70; }
-  .floral-swatch.peony { background: #efbdca; }
-  .floral-swatch.jasmine { background: #f7efcc; border: 1px solid #d5c99f; }
-  .floral-swatch.tulip { background: #df5d78; }
-  .cake-style-choice.selected {
-    color: white;
-    border-color: #9d245d;
-    background: #9d245d;
-  }
-  .atelier-status {
-    min-height: 1.5em;
-    margin: 10px 0 0;
-    color: #74425f;
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-  .cake-atelier-preview {
-    position: relative;
-    width: 260px;
-    height: 220px;
-    margin: 0 auto 18px;
-    border: 1px solid rgba(205,170,100,0.2);
-    border-radius: 22px;
-    background:
-      radial-gradient(circle at 50% 42%, rgba(255,238,186,0.42), transparent 40%),
-      linear-gradient(180deg, #fffdf8, #f8eee7);
-  }
-  .cake-atelier-preview::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 13px;
-    width: 220px;
-    height: 18px;
-    border-radius: 50%;
-    background: linear-gradient(90deg, #d8b66f, #fff1bd, #c99c43);
-    box-shadow: 0 7px 13px rgba(92,59,22,0.14);
-    transform: translateX(-50%);
-  }
-  .atelier-cake {
-    --cake-main: #fff8e8;
-    --cake-accent: #caa86b;
-    position: absolute;
-    inset: 0;
-  }
-  .atelier-cake[data-palette="blush"] { --cake-main: #f7d6dc; --cake-accent: #b77a82; }
-  .atelier-cake[data-palette="pistachio"] { --cake-main: #dce8cf; --cake-accent: #809169; }
-  .atelier-tier {
-    position: absolute;
-    left: 50%;
-    z-index: 2;
-    border: 3px solid rgba(255,255,255,0.94);
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.26), rgba(100,60,30,0.06)),
-      var(--cake-main);
-    box-shadow:
-      inset 0 -10px 16px rgba(105,70,38,0.06),
-      0 9px 18px rgba(96,49,69,0.13);
-    transform: translateX(-50%);
-  }
-  .atelier-tier.bottom {
-    bottom: 18px;
-    width: 210px;
-    height: 82px;
-    border-radius: 12px 12px 24px 24px;
-  }
-  .atelier-tier.top {
-    bottom: 95px;
-    width: 145px;
-    height: 65px;
-    border-radius: 12px 12px 18px 18px;
-  }
-  .atelier-cake-detail {
-    position: absolute;
-    left: 50%;
-    bottom: 62px;
-    z-index: 2;
-    width: 188px;
-    height: 13px;
-    transform: translateX(-50%);
-  }
-  .atelier-cake[data-decoration="roses"] .atelier-cake-detail {
-    background: radial-gradient(circle, #c85d7e 0 4px, transparent 5px) 0 0 / 30px 13px repeat-x;
-  }
-  .atelier-cake[data-decoration="jasmine"] .atelier-cake-detail {
-    background:
-      radial-gradient(circle, #fffdf1 0 3px, transparent 4px) 0 0 / 22px 11px repeat-x,
-      linear-gradient(transparent 5px, #81906e 6px 7px, transparent 8px);
-  }
-  .atelier-cake[data-decoration="pearls"] .atelier-cake-detail {
-    background: radial-gradient(circle, white 0 3px, #d7c9b2 4px, transparent 5px) 0 0 / 15px 12px repeat-x;
-  }
-  .atelier-topper {
-    position: absolute;
-    left: 50%;
-    bottom: 165px;
-    z-index: 3;
-    min-width: 90px;
-    color: var(--cake-accent);
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    transform: translateX(-50%);
-  }
-  .atelier-option-group {
-    margin-top: 13px;
-    text-align: left;
-  }
-  .atelier-option-group > span {
-    display: block;
-    margin: 0 0 7px 4px;
-    color: #74425f;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
   .gala-controls {
     display: flex;
     justify-content: center;
@@ -983,48 +741,6 @@
       linear-gradient(180deg, #ff8dbd, #ff4f9c);
     border: 5px solid white;
     box-shadow: 0 8px 0 #c81f6c, 0 15px 22px rgba(125, 20, 83, 0.18);
-  }
-  .cake[data-palette="ivory"] .cake-layer {
-    background: linear-gradient(180deg, #fff9e9, #ead8b1);
-    box-shadow: 0 8px 0 #b89555, 0 15px 22px rgba(92, 67, 25, 0.15);
-  }
-  .cake[data-palette="blush"] .cake-layer {
-    background: linear-gradient(180deg, #f7d6dc, #dfa7b1);
-    box-shadow: 0 8px 0 #b77a82, 0 15px 22px rgba(105, 48, 61, 0.15);
-  }
-  .cake[data-palette="pistachio"] .cake-layer {
-    background: linear-gradient(180deg, #e4edd9, #bdcba9);
-    box-shadow: 0 8px 0 #809169, 0 15px 22px rgba(61, 78, 44, 0.15);
-  }
-  .candle-cake-detail {
-    position: absolute;
-    left: 55px;
-    bottom: 48px;
-    z-index: 4;
-    width: 160px;
-    height: 13px;
-  }
-  .cake[data-decoration="roses"] .candle-cake-detail {
-    background: radial-gradient(circle, #c85d7e 0 4px, transparent 5px) 0 0 / 27px 13px repeat-x;
-  }
-  .cake[data-decoration="jasmine"] .candle-cake-detail {
-    background:
-      radial-gradient(circle, #fffdf1 0 3px, transparent 4px) 0 0 / 20px 11px repeat-x,
-      linear-gradient(transparent 5px, #81906e 6px 7px, transparent 8px);
-  }
-  .cake[data-decoration="pearls"] .candle-cake-detail {
-    background: radial-gradient(circle, white 0 3px, #d7c9b2 4px, transparent 5px) 0 0 / 14px 12px repeat-x;
-  }
-  .candle-cake-topper {
-    position: absolute;
-    left: 50%;
-    bottom: 67px;
-    z-index: 5;
-    color: #8b4d69;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    transform: translateX(-50%);
   }
   .cake-icing {
     position: absolute;
@@ -1270,10 +986,8 @@
         <span data-progress-step="2"></span>
         <span data-progress-step="3"></span>
         <span data-progress-step="4"></span>
-        <span data-progress-step="5"></span>
-        <span data-progress-step="6"></span>
       </div>
-      <button class="gala-nav-btn" id="skipToCakeBtn" type="button">Candles →</button>
+      <button class="gala-nav-btn" id="skipToCandlesBtn" type="button">Candles →</button>
     </div>
 
     <section class="gala-step active" data-gala-step="1">
@@ -1298,35 +1012,12 @@
         </button>
       </div>
       <div class="gala-controls">
-        <button class="gala-btn" data-next-step="2" type="button">Create a Birthday Bouquet</button>
+        <button class="gala-btn" data-next-step="2" type="button">Continue to Your Birthday Wishes</button>
       </div>
     </section>
 
     <section class="gala-step" data-gala-step="2">
-      <div class="gala-kicker">Moment 2 · The floral atelier</div>
-      <h2 class="moment-title">Compose her birthday flowers</h2>
-      <p class="gala-subtitle">Choose a few stems and arrange something soft, romantic, and entirely your own.</p>
-      <div class="atelier-card">
-        <div class="floral-composition" aria-label="Your floral arrangement">
-          <div class="arrangement-stems" id="arrangementStems"></div>
-          <div class="arrangement-vase"></div>
-        </div>
-        <div class="atelier-palette">
-          <button class="floral-choice" type="button" data-flower="rose"><span class="floral-swatch rose"></span>Garden rose</button>
-          <button class="floral-choice" type="button" data-flower="peony"><span class="floral-swatch peony"></span>Blush peony</button>
-          <button class="floral-choice" type="button" data-flower="jasmine"><span class="floral-swatch jasmine"></span>Jasmine</button>
-          <button class="floral-choice" type="button" data-flower="tulip"><span class="floral-swatch tulip"></span>Rose tulip</button>
-        </div>
-        <p class="atelier-status" id="bouquetStatus">Choose at least three stems. Tap a stem in the arrangement to remove it.</p>
-      </div>
-      <div class="gala-controls">
-        <button class="gala-btn secondary" id="clearArrangementBtn" type="button">Clear</button>
-        <button class="gala-btn" id="bouquetContinueBtn" data-next-step="3" type="button" disabled>Finish the Arrangement</button>
-      </div>
-    </section>
-
-    <section class="gala-step" data-gala-step="3">
-      <div class="gala-kicker">Moment 3 · Six wishes</div>
+      <div class="gala-kicker">Moment 2 · Six wishes</div>
       <h2 class="moment-title">A year of beautiful things</h2>
       <p class="gala-subtitle">Choose each word to reveal what I hope this year brings you.</p>
       <div class="wish-garden">
@@ -1339,65 +1030,18 @@
       </div>
       <p class="wish-message" id="wishMessage">Six wishes, each carrying something beautiful for you.</p>
       <div class="gala-controls">
-        <button class="gala-btn" data-next-step="4" type="button">Design Your Birthday Cake</button>
+        <button class="gala-btn" data-next-step="3" type="button">Continue to Your Birthday Candles</button>
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="4">
-      <div class="gala-kicker">Moment 4 · The cake atelier</div>
-      <h2 class="moment-title">Design her birthday cake</h2>
-      <p class="gala-subtitle">Choose a palette, a delicate finish, and the final topper.</p>
-      <div class="atelier-card">
-        <div class="cake-atelier-preview" aria-label="Your bespoke birthday cake">
-          <div class="atelier-cake" id="atelierCake">
-            <div class="atelier-topper" id="atelierTopper"></div>
-            <div class="atelier-tier top"></div>
-            <div class="atelier-tier bottom"></div>
-            <div class="atelier-cake-detail"></div>
-          </div>
-        </div>
-        <div class="atelier-option-group">
-          <span>Palette</span>
-          <div class="atelier-choice-row">
-            <button class="cake-style-choice" type="button" data-cake-group="palette" data-cake-value="ivory">Ivory &amp; gold</button>
-            <button class="cake-style-choice" type="button" data-cake-group="palette" data-cake-value="blush">Blush &amp; champagne</button>
-            <button class="cake-style-choice" type="button" data-cake-group="palette" data-cake-value="pistachio">Pistachio &amp; pearl</button>
-          </div>
-        </div>
-        <div class="atelier-option-group">
-          <span>Decoration</span>
-          <div class="atelier-choice-row">
-            <button class="cake-style-choice" type="button" data-cake-group="decoration" data-cake-value="roses">Garden roses</button>
-            <button class="cake-style-choice" type="button" data-cake-group="decoration" data-cake-value="jasmine">Jasmine vine</button>
-            <button class="cake-style-choice" type="button" data-cake-group="decoration" data-cake-value="pearls">Minimal pearls</button>
-          </div>
-        </div>
-        <div class="atelier-option-group">
-          <span>Topper</span>
-          <div class="atelier-choice-row">
-            <button class="cake-style-choice" type="button" data-cake-group="topper" data-cake-value="FH">F &amp; H</button>
-            <button class="cake-style-choice" type="button" data-cake-group="topper" data-cake-value="Fatema">Fatema</button>
-            <button class="cake-style-choice" type="button" data-cake-group="topper" data-cake-value="With love">With love</button>
-          </div>
-        </div>
-        <p class="atelier-status" id="cakeDecoratorStatus">Make one selection from each row.</p>
-      </div>
-      <div class="gala-controls">
-        <button class="gala-btn secondary" id="resetCakeBtn" type="button">Reset Design</button>
-        <button class="gala-btn" id="cakeContinueBtn" data-next-step="5" type="button" disabled>Light the Candles</button>
-      </div>
-    </section>
-
-    <section class="gala-step" data-gala-step="5">
-      <div class="gala-kicker">Moment 5 · The birthday wish</div>
+    <section class="gala-step" data-gala-step="3">
+      <div class="gala-kicker">Moment 3 · The birthday wish</div>
       <h2 class="moment-title">Your candles are waiting</h2>
       <p class="gala-subtitle">Close your eyes, think of one wonderful wish, and let the candles glow.</p>
-      <div class="cake" id="candleCake" aria-label="Birthday cake with six candles">
+      <div class="cake" aria-label="Birthday cake with six candles">
         <div class="cake-plate"></div>
         <div class="cake-layer"></div>
         <div class="cake-icing"></div>
-        <div class="candle-cake-detail"></div>
-        <div class="candle-cake-topper" id="candleCakeTopper"></div>
         <div class="candles">
           <span class="candle"><span class="flame"></span></span>
           <span class="candle"><span class="flame"></span></span>
@@ -1414,8 +1058,8 @@
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="6">
-      <div class="gala-kicker">Moment 6 · With all my love</div>
+    <section class="gala-step" data-gala-step="4">
+      <div class="gala-kicker">Moment 4 · With all my love</div>
       <h2 class="gala-title">Happy Birthday,<br>Fatema!</h2>
       <div class="finale" id="birthdayFinale">
         <h3>May every wish come true.</h3>
@@ -1524,38 +1168,12 @@ Happy Birthday, my love. The world is brighter with you in it.
   const reopenGalaBtn = document.getElementById('reopenGalaBtn');
   const galaStage = document.querySelector('.gala-stage');
   const backBtn = document.getElementById('galaBackBtn');
-  const skipToCakeBtn = document.getElementById('skipToCakeBtn');
-  const progressKey = 'fatema-birthday-gala-step-v2';
-  const atelierStateKey = 'fatema-birthday-gala-ateliers-v1';
-  const savedStep = Math.min(6, Math.max(1, Number(sessionStorage.getItem(progressKey)) || 1));
-  let savedAtelierState = {};
-  try {
-    savedAtelierState = JSON.parse(sessionStorage.getItem(atelierStateKey) || '{}');
-  } catch (err) {
-    sessionStorage.removeItem(atelierStateKey);
-  }
-  const validFlowers = new Set(['rose', 'peony', 'jasmine', 'tulip']);
-  const validCakeValues = {
-    palette: new Set(['ivory', 'blush', 'pistachio']),
-    decoration: new Set(['roses', 'jasmine', 'pearls']),
-    topper: new Set(['FH', 'Fatema', 'With love']),
-  };
-  const arrangementPositions = [50, 36, 64, 25, 75, 43, 58];
-  const arrangementHeights = [168, 142, 148, 122, 128, 112, 116];
-  const arrangementTilts = [0, -13, 12, -19, 18, -7, 7];
+  const skipToCandlesBtn = document.getElementById('skipToCandlesBtn');
+  const progressKey = 'fatema-birthday-gala-step-v3';
+  const savedStep = Math.min(4, Math.max(1, Number(sessionStorage.getItem(progressKey)) || 1));
   let currentStep = savedStep;
   let wishInProgress = false;
   let ambientPetalTimer = null;
-  let arrangedFlowers = Array.isArray(savedAtelierState.arrangement)
-    ? savedAtelierState.arrangement.filter((entry) => (
-      entry && validFlowers.has(entry.type) && Number.isInteger(entry.slot) && entry.slot >= 0 && entry.slot < 7
-    )).slice(0, 7)
-    : [];
-  const cakeDesign = {
-    palette: validCakeValues.palette.has(savedAtelierState.cake?.palette) ? savedAtelierState.cake.palette : null,
-    decoration: validCakeValues.decoration.has(savedAtelierState.cake?.decoration) ? savedAtelierState.cake.decoration : null,
-    topper: validCakeValues.topper.has(savedAtelierState.cake?.topper) ? savedAtelierState.cake.topper : null,
-  };
 
   body.classList.add('birthday-mode');
   gala.classList.add('active');
@@ -1565,15 +1183,8 @@ Happy Birthday, my love. The world is brighter with you in it.
   document.querySelector('header h1').textContent = "Fatema's Birthday Game Room";
   document.querySelector('header p').textContent = 'every game is dressed up for your special day ✨';
 
-  function saveAtelierState() {
-    sessionStorage.setItem(atelierStateKey, JSON.stringify({
-      arrangement: arrangedFlowers,
-      cake: cakeDesign,
-    }));
-  }
-
   function setStep(step) {
-    currentStep = Math.min(6, Math.max(1, step));
+    currentStep = Math.min(4, Math.max(1, step));
     sessionStorage.setItem(progressKey, String(currentStep));
     document.querySelectorAll('[data-gala-step]').forEach((panel) => {
       panel.classList.toggle('active', Number(panel.dataset.galaStep) === currentStep);
@@ -1582,8 +1193,8 @@ Happy Birthday, my love. The world is brighter with you in it.
       dot.classList.toggle('active', Number(dot.dataset.progressStep) <= currentStep);
     });
     backBtn.hidden = currentStep === 1;
-    skipToCakeBtn.hidden = currentStep >= 5;
-    gala.classList.toggle('finale-mode', currentStep === 6);
+    skipToCandlesBtn.hidden = currentStep >= 3;
+    gala.classList.toggle('finale-mode', currentStep === 4);
     galaStage.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1605,11 +1216,11 @@ Happy Birthday, my love. The world is brighter with you in it.
   });
 
   backBtn.addEventListener('click', () => {
-    if (currentStep === 6) resetCandleWish();
+    if (currentStep === 4) resetCandleWish();
     if (currentStep > 1) setStep(currentStep - 1);
   });
 
-  skipToCakeBtn.addEventListener('click', () => setStep(5));
+  skipToCandlesBtn.addEventListener('click', () => setStep(3));
 
   document.querySelectorAll('.memory-card').forEach((card) => {
     card.addEventListener('click', () => {
@@ -1624,107 +1235,6 @@ Happy Birthday, my love. The world is brighter with you in it.
       document.getElementById('wishMessage').textContent = flower.dataset.wish;
     });
   });
-
-  function renderArrangement() {
-    const names = { rose: 'garden rose', peony: 'blush peony', jasmine: 'jasmine', tulip: 'rose tulip' };
-    const stems = document.getElementById('arrangementStems');
-    stems.innerHTML = '';
-    arrangedFlowers.forEach((entry, index) => {
-      const flower = entry.type;
-      const slot = entry.slot;
-      const stem = document.createElement('button');
-      stem.type = 'button';
-      stem.className = `arranged-stem ${flower}`;
-      stem.style.setProperty('--x', `${arrangementPositions[slot]}%`);
-      stem.style.setProperty('--height', `${arrangementHeights[slot]}px`);
-      stem.style.setProperty('--tilt', `${arrangementTilts[slot]}deg`);
-      stem.setAttribute('aria-label', `Remove ${names[flower]}`);
-      stem.addEventListener('click', () => {
-        arrangedFlowers.splice(index, 1);
-        renderArrangement();
-      });
-      stems.appendChild(stem);
-    });
-    const count = arrangedFlowers.length;
-    document.getElementById('bouquetStatus').textContent = count < 3
-      ? `Choose ${3 - count} more stem${3 - count === 1 ? '' : 's'} to complete the arrangement.`
-      : count < 7
-        ? `${count} stems arranged. Add another or continue when it feels complete.`
-        : 'The arrangement is complete—soft, full, and ready for Fatema.';
-    document.getElementById('bouquetContinueBtn').disabled = count < 3;
-    document.querySelectorAll('.floral-choice').forEach((button) => {
-      button.disabled = count >= 7;
-    });
-    saveAtelierState();
-  }
-
-  document.querySelectorAll('.floral-choice').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (arrangedFlowers.length >= 7) return;
-      const usedSlots = new Set(arrangedFlowers.map((entry) => entry.slot));
-      const slot = arrangementPositions.findIndex((unused, index) => !usedSlots.has(index));
-      arrangedFlowers.push({ type: button.dataset.flower, slot });
-      renderArrangement();
-    });
-  });
-  document.getElementById('clearArrangementBtn').addEventListener('click', () => {
-    arrangedFlowers = [];
-    renderArrangement();
-  });
-
-  function renderCakeDesign() {
-    const cake = document.getElementById('atelierCake');
-    const candleCake = document.getElementById('candleCake');
-    if (cakeDesign.palette) {
-      cake.dataset.palette = cakeDesign.palette;
-      candleCake.dataset.palette = cakeDesign.palette;
-    } else {
-      delete cake.dataset.palette;
-      delete candleCake.dataset.palette;
-    }
-    if (cakeDesign.decoration) {
-      cake.dataset.decoration = cakeDesign.decoration;
-      candleCake.dataset.decoration = cakeDesign.decoration;
-    } else {
-      delete cake.dataset.decoration;
-      delete candleCake.dataset.decoration;
-    }
-    const topperLabels = { FH: 'F & H', Fatema: 'Fatema', 'With love': 'With love' };
-    const topper = cakeDesign.topper ? topperLabels[cakeDesign.topper] : '';
-    document.getElementById('atelierTopper').textContent = topper;
-    document.getElementById('candleCakeTopper').textContent = topper;
-    document.querySelectorAll('.cake-style-choice').forEach((button) => {
-      const selected = cakeDesign[button.dataset.cakeGroup] === button.dataset.cakeValue;
-      button.classList.toggle('selected', selected);
-      button.setAttribute('aria-pressed', String(selected));
-    });
-    const completed = Object.values(cakeDesign).filter(Boolean).length;
-    document.getElementById('cakeDecoratorStatus').textContent = completed === 3
-      ? 'The design is complete—elegant, personal, and ready for candles.'
-      : `${3 - completed} design choice${3 - completed === 1 ? '' : 's'} remaining.`;
-    document.getElementById('cakeContinueBtn').disabled = completed !== 3;
-    saveAtelierState();
-  }
-
-  function resetCakeDecorator() {
-    cakeDesign.palette = null;
-    cakeDesign.decoration = null;
-    cakeDesign.topper = null;
-    renderCakeDesign();
-  }
-
-  document.querySelectorAll('.cake-style-choice').forEach((button) => {
-    button.addEventListener('click', () => {
-      const group = button.dataset.cakeGroup;
-      const value = button.dataset.cakeValue;
-      cakeDesign[group] = value;
-      renderCakeDesign();
-    });
-  });
-  document.getElementById('resetCakeBtn').addEventListener('click', resetCakeDecorator);
-
-  renderArrangement();
-  renderCakeDesign();
 
   document.getElementById('wishBtn').addEventListener('click', () => {
     if (wishInProgress || gala.classList.contains('wished')) return;
@@ -1747,7 +1257,7 @@ Happy Birthday, my love. The world is brighter with you in it.
         launchFinale();
         setTimeout(() => {
           wishInProgress = false;
-          setStep(6);
+          setStep(4);
         }, 1400);
       }, 700);
     };
@@ -1767,7 +1277,7 @@ Happy Birthday, my love. The world is brighter with you in it.
 
   document.getElementById('replayWishBtn').addEventListener('click', () => {
     resetCandleWish();
-    setStep(5);
+    setStep(3);
   });
 
   document.getElementById('letterBtn').addEventListener('click', () => {
@@ -1844,7 +1354,7 @@ Happy Birthday, my love. The world is brighter with you in it.
   });
 
   if (isPreview && params.get('open') === '1') {
-    const previewStep = Math.min(6, Math.max(1, Number(params.get('step')) || 1));
+    const previewStep = Math.min(4, Math.max(1, Number(params.get('step')) || 1));
     gala.classList.add('opened');
     setStep(previewStep);
     startAmbientCelebration();

@@ -179,9 +179,8 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
   the Game Room
 - Music reports playback failures instead of failing silently
 - The overlay uses mobile viewport/safe-area sizing and locks background scroll
-- The curtain now leads through six resumable moments: three photo memories,
-  a freeform floral-composition atelier, six restrained wish cards, a bespoke
-  cake-design atelier, a candle countdown, and the personal-letter finale
+- The curtain leads through four resumable moments: three photo memories,
+  six birthday wishes, a candle countdown, and the personal-letter finale
 - Opening the birthday letter launches its own pink-and-gold fireworks
 - The Gala is staged as a royal romantic garden: blush velvet curtains with
   gold trim, chandelier light, floral architecture, moving light trails,
@@ -190,7 +189,7 @@ On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebratio
   launches a two-wave firework and petal fanfare; the candle and letter finales
   each add their own layered firework sequences
 - Progress is stored in `sessionStorage` for the current browser session, with
-  Back and Skip-to-cake controls
+  Back and Skip-to-candles controls
 - The normal game cards remain accessible as decorated party booths
 - Photo Tiles is highlighted as "Today's Birthday Game"
 
@@ -200,7 +199,7 @@ activate the gala without changing the device date. The music currently reuses
 `public/valentines/music.mp3`; playback is requested when the user opens the
 curtains and can also be controlled from the candle moment.
 For visual review of a specific opened moment, add `&open=1&step=1` through
-`&open=1&step=6`.
+`&open=1&step=4`.
 
 ---
 
