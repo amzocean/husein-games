@@ -39,6 +39,15 @@ Identity-reference clothing is explicitly excluded as a garment-design source,
 so the light-blue rida in the primary face reference cannot become the default.
 Explicit uploads, descriptions, and selected options still take precedence.
 
+An uploaded base image is the first and highest-priority visual reference.
+Literal fabric photos are matched as closely as generation permits. A
+non-fabric source such as artwork, packaging, or an advertisement has its
+colors, non-text shapes, and visual rhythm transformed into a repeatable
+textile pattern; words, logos, faces, and products are not copied. Upload-based
+requests use the primary identity photo plus three distributed supporting
+views instead of all ten identity photos, reducing competition from reference
+clothing while retaining Fatema's identity.
+
 When uploads are used, reference ordering is deliberately optimized for image
 fidelity: the primary identity image is first, the base cloth is second, the
 optional tailoring design is next, and the remaining identity views follow.

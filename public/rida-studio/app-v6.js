@@ -132,7 +132,7 @@
   function renderSummary() {
     const rows = [
       ['Base cloth', state.baseClothPhoto
-        ? 'Uploaded shop cloth'
+        ? 'Uploaded cloth or inspiration image'
         : el('baseDescription').value.trim() || 'Selected color and pattern'],
       ...(!state.baseClothPhoto && !el('baseDescription').value.trim() ? [
         ['Color palette', labelFor('colors', state.selections.color)],
@@ -385,14 +385,14 @@
 
     const sourceUrl = await readFileAsDataUrl(file);
     const image = await loadImage(sourceUrl);
-    const maxDimension = 1600;
+    const maxDimension = 2048;
     const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
     const canvas = document.createElement('canvas');
     canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
     canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
     const context = canvas.getContext('2d');
     context.drawImage(image, 0, 0, canvas.width, canvas.height);
-    const compressedUrl = canvas.toDataURL('image/jpeg', 0.88);
+    const compressedUrl = canvas.toDataURL('image/jpeg', 0.94);
     const base64 = compressedUrl.slice(compressedUrl.indexOf(',') + 1);
     if (base64.length > 7 * 1024 * 1024) {
       throw new Error('The compressed fabric photo is still too large. Crop closer to the cloth and try again.');
@@ -410,8 +410,8 @@
     setUploadStatus(
       'baseClothStatus',
       hasPhoto
-        ? 'This photo will define the base cloth on both pieces.'
-        : 'No photo selected. Describe the cloth or select color and pattern below.',
+        ? 'This image will define the base cloth on both pieces. Fabric is matched directly; other artwork is transformed into a textile pattern.'
+        : 'No image selected. Describe the cloth or select color and pattern below.',
       hasPhoto ? 'ok' : '',
     );
   }
