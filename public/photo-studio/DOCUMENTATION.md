@@ -24,8 +24,14 @@ as well as playful, goofy, mischievous, dramatic, or exaggerated expressions.
 Every result must:
 
 - depict Fatema as the only person;
-- preserve her identity from all ten reference photos;
+- preserve her face, identity, natural body build, and proportions from all ten
+  reference photos;
 - show her wearing an authentic Dawoodi Bohra rida;
+- treat clothing in the identity photos as incidental rather than a design
+  reference;
+- create a fresh rida color palette and design on every generation unless
+  Fatema explicitly requests a particular reference outfit;
+- give the two candidates visibly different rida colors and design details;
 - remain wholesome, modest, and recognizably Fatema in the chosen medium;
 - exclude text, watermarks, collages, other people, and replacement identities.
 
