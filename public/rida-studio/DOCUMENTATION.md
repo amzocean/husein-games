@@ -32,6 +32,13 @@ birthday gala, and stays visible afterward.
 Descriptions are sanitized and capped at 300 characters. Input precedence is
 upload first, description second, curated options third.
 
+Color, motif, panel, and border now default to **Surprise Me**. When Fatema
+leaves those defaults in place, the server asks for a fresh combination for
+each candidate rather than silently choosing the first catalog design.
+Identity-reference clothing is explicitly excluded as a garment-design source,
+so the light-blue rida in the primary face reference cannot become the default.
+Explicit uploads, descriptions, and selected options still take precedence.
+
 When uploads are used, reference ordering is deliberately optimized for image
 fidelity: the primary identity image is first, the base cloth is second, the
 optional tailoring design is next, and the remaining identity views follow.
