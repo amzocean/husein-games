@@ -71,7 +71,8 @@ h1, h2, h3 {
   background: rgba(255,255,255,0.7);
   box-shadow: 0 2px 8px rgba(214,0,110,0.12);
 }
-.rida-logout {
+.rida-logout,
+.rida-library-btn {
   border: none;
   background: rgba(255,255,255,0.75);
   color: var(--pink-deep);
@@ -91,6 +92,7 @@ h1, h2, h3 {
   font-weight: 700;
   white-space: nowrap;
 }
+.rida-library-btn { color: #744c75; }
 
 .rida-main { flex: 1; }
 
@@ -112,6 +114,46 @@ h1, h2, h3 {
 .hero-emoji { font-size: 3rem; margin-bottom: 6px; }
 .hero-card h2 { color: var(--pink-deep); font-size: 1.6rem; margin-bottom: 10px; }
 .hero-card p { color: #6b5570; line-height: 1.5; max-width: 440px; margin: 0 auto 22px; }
+
+.design-path-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+.design-path-card {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 24px 20px;
+  border: 1.5px solid #ffd2e5;
+  border-radius: 24px;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255,255,255,0.9), transparent 30%),
+    linear-gradient(145deg, #fff5fa, #fffcef);
+  box-shadow: 0 12px 28px rgba(117, 51, 92, 0.1);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.design-path-card:hover,
+.design-path-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--pink);
+  box-shadow: 0 16px 34px rgba(117, 51, 92, 0.16);
+}
+.design-path-card strong {
+  color: var(--pink-deep);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.12rem;
+}
+.design-path-card > span:last-child {
+  color: #6b5570;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+.design-path-icon { font-size: 2rem; }
 
 .pin-form { display: flex; flex-direction: column; gap: 10px; max-width: 260px; margin: 0 auto; }
 .pin-form label { font-weight: 600; font-size: 0.85rem; color: var(--pink-deep); }
@@ -493,6 +535,84 @@ h1, h2, h3 {
   cursor: pointer;
 }
 .result-card .download-link { background: #fff0f7; color: var(--pink-deep); border: 1.5px solid #ffd6e8; }
+.result-card .save-photo-btn {
+  background: #fff0f7;
+  color: var(--pink-deep);
+  border: 1.5px solid #ffd6e8;
+}
+.result-save-notice { min-height: 1.4em; margin-top: 12px; text-align: center; }
+
+.library-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 18px;
+}
+.library-load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+@media (min-width: 560px) {
+  .library-grid { grid-template-columns: 1fr 1fr; }
+}
+.library-empty {
+  grid-column: 1 / -1;
+  padding: 36px 20px;
+  border: 1.5px dashed #e8bfd3;
+  border-radius: 22px;
+  color: #806379;
+  text-align: center;
+}
+.library-card {
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--card);
+  box-shadow: 0 14px 32px rgba(58, 33, 64, 0.14);
+}
+.library-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: #fce8f1;
+}
+.library-card-body { padding: 12px; }
+.library-card-time {
+  margin: 0 0 5px;
+  color: #a9829e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.library-card-summary {
+  min-height: 2.7em;
+  margin: 0 0 10px;
+  color: #6b5570;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+.library-card-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.library-card-actions button {
+  border: 1.5px solid #ffd6e8;
+  border-radius: 999px;
+  padding: 9px 12px;
+  color: var(--pink-deep);
+  background: #fff0f7;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.library-card-actions .delete-creation-btn {
+  color: #9a3048;
+  background: #fff5f5;
+  border-color: #f2c8cf;
+}
+.btn.danger { color: #9a3048; border-color: #e8b9c2; }
 
 .rida-footer {
   text-align: center;
@@ -507,4 +627,18 @@ h1, h2, h3 {
   .celebration-showcase.changing .showcase-detail {
     animation: none !important;
   }
+}
+
+@media (max-width: 620px) {
+  .rida-header {
+    flex-wrap: wrap;
+  }
+  .rida-header h1 {
+    order: 1;
+    min-width: calc(100% - 52px);
+  }
+  .rida-home { order: 0; }
+  .build-badge { order: 2; }
+  .rida-library-btn { order: 3; margin-left: auto; }
+  .rida-logout { order: 4; }
 }

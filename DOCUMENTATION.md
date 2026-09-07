@@ -291,15 +291,22 @@ These are project-wide bugs not specific to any single game:
 `public/rida-studio/` + `lib/ridaStudio/` implement a PIN-protected game whose
 direct URL and API are always available. Its Game Room card remains hidden
 until September 6, 2026 UTC. Fatema logs in with a private PIN, then uploads,
-describes, or selects a shared base cloth.
-She can upload a design example, describe the full design, or select the
-panel and lace (including None) and describe embroidery. The coordinated
-design applies to both pardi and ghagra. Descriptions are sanitized and
-capped at 300 characters. She then chooses a photorealistic photography
-treatment and location. The game generates one medium-quality live AI image
-per request via OpenAI `gpt-image-2`; the results screen can repeatedly replace
-it with a new variation without repeating the selections
+then chooses **Complete Rida** or **Build Step by Step**. Complete mode accepts
+one whole-rida photo or description and skips split cloth/design configuration.
+Guided mode retains separate base cloth, panel, lace, border, and embroidery
+controls. The prompt fixes Fatema at her natural 5'10" height/body type and
+uses 6–8 inch standard or 8–10 inch broad panels at realistic garment scale.
+She then chooses a photorealistic treatment and location. The game generates
+one medium-quality live AI image per request via OpenAI `gpt-image-2`; the
+results screen can repeatedly replace it with a new variation
 (`POST /v1/images/edits`, multipart `image[]` identity references).
+
+Generated images are automatically retained in an uncapped same-browser
+IndexedDB library until the user deletes them or browser storage is cleared.
+The browser loads the library 12 creations at a time to avoid decoding the
+entire full-resolution history on mobile.
+Saving uses the native share sheet on iOS and an object-URL download fallback
+elsewhere.
 
 Full flow, security/privacy design, locked-prompt design, env vars, local
 setup instructions, and self-test coverage:

@@ -12,13 +12,13 @@ birthday gala, and stays visible afterward.
 ## Flow
 
 1. **Welcome / PIN** — Fatema enters her private PIN (`RIDA_STUDIO_PIN`).
-2. **Choose base cloth** — upload a shop photo, describe the cloth, or select
-   a color and pattern. The result is shared by pardi and ghagra.
-3. **Choose shared design** — upload an example, describe the complete design,
-   or select a panel and lace (including explicit None choices) and describe
-   embroidery on/above the panel. The design is adapted to both pieces.
-4. **Choose photograph** — photography treatment and location only.
-5. **Review look** — a summary of every selection before generation.
+2. **Choose a design path**:
+   - **Complete Rida** — upload one full-rida sample photo or describe the
+     entire garment. This skips the split base-cloth and tailoring steps.
+   - **Build Step by Step** — upload/describe/select the base cloth, then
+     upload/describe/select the panel, lace, border, and embroidery.
+3. **Choose photograph** — photography treatment and location only.
+4. **Review look** — a mode-aware summary before generation.
 6. **Generate + watch** — while the server creates the candidate, the loading
    card offers a passive **Celebration Showcase**. Fifteen messages are
    shuffled for every generation, with no immediate repeat across reshuffles.
@@ -31,9 +31,19 @@ birthday gala, and stays visible afterward.
    repeatedly replace it with a fresh candidate using the same requirements,
    returning through the Celebration Showcase while each replacement renders,
    or use "make another look" to return to the design flow.
+8. **Creations library** — every result is automatically stored in IndexedDB
+   on the same browser/device. The application imposes no item-count cap;
+   creations load 12 at a time to keep the mobile browser responsive. Fatema
+   can save any item to Photos/files, delete individual items, or delete the
+   whole library. Browser storage quotas and browser-data clearing still apply.
 
 Descriptions are sanitized and capped at 300 characters. Input precedence is
 upload first, description second, curated options third.
+
+The result **Save Photo** action uses the Web Share file flow when supported,
+which exposes Save to Photos on iOS. Older iOS versions fall back to opening
+the PNG in a new tab with touch-and-hold instructions. Other browsers use a
+normal object-URL download instead of the unsupported large data-URL download.
 
 Color, motif, panel, and border now default to **Surprise Me**. When Fatema
 leaves those defaults in place, the server asks for a fresh combination for
@@ -52,8 +62,9 @@ views instead of all ten identity photos, reducing competition from reference
 clothing while retaining Fatema's identity.
 
 When uploads are used, reference ordering is deliberately optimized for image
-fidelity: the base cloth is first, the optional tailoring design is next, and
-the reduced identity-reference set follows.
+fidelity. Complete mode puts the whole-rida photo first. Guided mode puts the
+base cloth first and the optional tailoring design next. A reduced
+identity-reference set follows either mode.
 The locked prompt treats the uploaded cloth as mandatory and requires its exact
 colors, print, motif scale, spacing, weave, sheen, and texture to remain clearly
 visible across both pardi and ghagra in both generated candidates.
@@ -126,8 +137,8 @@ a fresh Render deploy.
    `/generate` both run through `requireAuth`, which validates the session
    cookie against the in-memory map. `/generate` additionally accepts
    **JSON only**, rejects unexpected fields and unknown option values. Base
-   cloth, full design, and embroidery descriptions are sanitized and capped
-   at 300 characters.
+   cloth, full design, complete-rida, and embroidery descriptions are
+   sanitized and capped at 300 characters.
 4. **No daily generation limit.** A shared `generating` flag is set
    synchronously in `lib/ridaStudio/rateLimit.js` before calling OpenAI, so
    two near-simultaneous requests across Rida Studio and Photo Studio can
@@ -138,11 +149,13 @@ a fresh Render deploy.
    `public/tiles/photos/manifest.json` via the same allowlist/path-traversal
    guard used by the local tool (`lib/shared/tilesPhotos.js`). No API
    response ever includes these filenames.
-6. **Reference uploads are ephemeral.** The browser downsizes base-cloth and
-   design-example photos to at most 1600px and sends them only with Generate. The server
-   validates its MIME type, signature, base64 encoding, and 5MB decoded-size
-   cap, then appends it after the ten identity references. It is never
-   written to disk or returned in a response.
+6. **Reference uploads are ephemeral.** The browser downsizes base-cloth,
+   design-example, and complete-rida photos to at most 2048px, adaptively
+   recompresses them below the server's 5 MB decoded-image limit, and sends them
+   only with Generate. The server validates MIME type, signature, base64
+   encoding, and the 5MB decoded-size cap. Complete-rida or guided visual
+   references are ordered before a reduced identity set so garment fidelity
+   is not overwhelmed. Uploads are never written to disk.
 7. **No server-side storage of generated images.** Each image is
    returned to the browser as base64 in the JSON response and rendered/
    downloaded client-side; nothing is written to disk, and nothing is
@@ -179,9 +192,11 @@ includes:
   exposed hair/neck/arms/midriff, fitted bodice, cinched waist, single robe,
   or unstitched drape.
 - An identity-preservation clause referencing the attached photos (facial
-  structure, natural complexion, approximate age, kind expression). The first
-  image is the primary face reference and the other nine provide supporting
-  views of the same identity.
+  structure, natural complexion, approximate age, kind expression, natural
+  body build, and body proportions). Fatema is explicitly fixed at **5 feet
+  10 inches / 178 cm** and naturally tall; the prompt forbids making her
+  shorter, petite, thinner, narrower, heavier, taller, younger, or changing
+  torso, shoulder, arm, or leg proportions.
 - Every selectable visual treatment is photographic. The prompt explicitly
   rejects illustrations, paintings, cartoons, anime, chibi, 3D renders, dolls,
   generic-model beautification, enlarged eyes, and stylized facial features.
@@ -192,6 +207,14 @@ includes:
 - The design route applies one coordinated panel/lace/embroidery language to
   both pardi and ghagra. Lace is placed immediately below the panel when
   present; embroidery is placed on the panel or just above it.
+- Standard panels are constrained to **6–8 inches** of vertical height and
+  broad/wide panels to **8–10 inches**, scaled relative to Fatema's 5'10"
+  height. Panels must never expand into an oversized quarter-skirt section.
+- Complete-rida mode treats one uploaded sample as the whole-garment source:
+  cloth, print, panel, lace, border, embroidery, embellishments, and pardi/
+  ghagra coordination. The sample's person, face, body, pose, and background
+  are explicitly ignored. A complete written description supplies the same
+  whole-garment specification without an image.
 - Full-body composition, natural hands/anatomy, and a flattering, joyful,
   tastefully romantic/cute mood appropriate for a birthday keepsake.
 - An explicit safety clause: no text/logos/watermarks, no sadness/darkness/

@@ -10,6 +10,7 @@
 
   const state = {
     options: null,
+    designMode: 'guided',
     selections: {
       color: null,
       motif: null,
@@ -21,9 +22,19 @@
     lastResults: null,
     baseClothPhoto: null,
     designPhoto: null,
+    completeRidaPhoto: null,
+    libraryReturnScreen: 'design-path',
+    libraryCursor: null,
+    libraryRenderedCount: 0,
+    libraryTotal: 0,
   };
 
   const el = (id) => document.getElementById(id);
+  const LIBRARY_DB_NAME = 'fatemaRidaStudioLibrary';
+  const LIBRARY_DB_VERSION = 2;
+  const LIBRARY_STORE = 'creations';
+  const LIBRARY_PAGE_SIZE = 12;
+  const MAX_REFERENCE_BYTES = 5 * 1024 * 1024;
   let showcaseQueue = [];
   let lastShowcaseTitle = '';
   let showcaseTimer = null;
@@ -62,6 +73,186 @@
       throw err;
     }
     return body;
+  }
+
+  function openLibraryDatabase() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) {
+        reject(new Error('This browser does not support the local creation library.'));
+        return;
+      }
+      const request = indexedDB.open(LIBRARY_DB_NAME, LIBRARY_DB_VERSION);
+      request.onupgradeneeded = () => {
+        const database = request.result;
+        let store;
+        if (!database.objectStoreNames.contains(LIBRARY_STORE)) {
+          store = database.createObjectStore(LIBRARY_STORE, { keyPath: 'id' });
+        } else {
+          store = request.transaction.objectStore(LIBRARY_STORE);
+        }
+        if (!store.indexNames.contains('createdAt')) {
+          store.createIndex('createdAt', 'createdAt');
+        }
+        if (!store.indexNames.contains('createdAtAndId')) {
+          store.createIndex('createdAtAndId', ['createdAt', 'id']);
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('Could not open the creation library.'));
+    });
+  }
+
+  async function withLibraryStore(mode, operation) {
+    const database = await openLibraryDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction(LIBRARY_STORE, mode);
+      const store = transaction.objectStore(LIBRARY_STORE);
+      let request;
+      try {
+        request = operation(store);
+      } catch (err) {
+        database.close();
+        reject(err);
+        return;
+      }
+      transaction.oncomplete = () => {
+        database.close();
+        resolve(request && request.result);
+      };
+      transaction.onerror = () => {
+        database.close();
+        reject(transaction.error || new Error('The creation library could not be updated.'));
+      };
+      transaction.onabort = transaction.onerror;
+    });
+  }
+
+  function creationId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return window.crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function currentRequirementsSummary() {
+    if (state.designMode === 'complete') {
+      return state.completeRidaPhoto
+        ? 'Complete rida photo reference'
+        : el('completeRidaDescription').value.trim() || 'Complete rida description';
+    }
+    const base = state.baseClothPhoto
+      ? 'uploaded base image'
+      : el('baseDescription').value.trim() || labelFor('colors', state.selections.color);
+    const design = state.designPhoto
+      ? 'uploaded design image'
+      : el('designDescription').value.trim() || labelFor('panels', state.selections.panel);
+    return `${base} · ${design}`;
+  }
+
+  async function saveCreationToLibrary(imageBase64) {
+    const creation = {
+      id: creationId(),
+      createdAt: Date.now(),
+      imageBase64,
+      requirements: currentRequirementsSummary(),
+    };
+    await withLibraryStore('readwrite', (store) => store.put(creation));
+    return creation;
+  }
+
+  async function listLibraryCreations(beforeKey = null) {
+    const database = await openLibraryDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction(LIBRARY_STORE, 'readonly');
+      const store = transaction.objectStore(LIBRARY_STORE);
+      const index = store.index('createdAtAndId');
+      const range = beforeKey ? IDBKeyRange.upperBound(beforeKey, true) : null;
+      const request = index.openCursor(range, 'prev');
+      const records = [];
+      request.onsuccess = () => {
+        const cursor = request.result;
+        if (cursor && records.length <= LIBRARY_PAGE_SIZE) {
+          records.push(cursor.value);
+          cursor.continue();
+        }
+      };
+      transaction.oncomplete = () => {
+        database.close();
+        const creations = records.slice(0, LIBRARY_PAGE_SIZE);
+        const lastCreation = creations[creations.length - 1];
+        resolve({
+          creations,
+          nextCursor: records.length > LIBRARY_PAGE_SIZE && lastCreation
+            ? [lastCreation.createdAt, lastCreation.id]
+            : null,
+        });
+      };
+      transaction.onerror = () => {
+        database.close();
+        reject(transaction.error || new Error('The creation library could not be read.'));
+      };
+      transaction.onabort = transaction.onerror;
+    });
+  }
+
+  async function countLibraryCreations() {
+    return Number(await withLibraryStore('readonly', (store) => store.count())) || 0;
+  }
+
+  async function deleteLibraryCreation(id) {
+    await withLibraryStore('readwrite', (store) => store.delete(id));
+  }
+
+  async function clearLibraryCreations() {
+    await withLibraryStore('readwrite', (store) => store.clear());
+  }
+
+  function base64ToBlob(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    return new Blob([bytes], { type: 'image/png' });
+  }
+
+  async function savePhotoToDevice(base64, filename, statusElement) {
+    const blob = base64ToBlob(base64);
+    const file = typeof File === 'function'
+      ? new File([blob], filename, { type: 'image/png' })
+      : null;
+    if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: "Fatema's Rida Studio creation" });
+        if (statusElement) statusElement.textContent = 'Photo ready to save from the share sheet.';
+        return;
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+      }
+    }
+
+    const objectUrl = URL.createObjectURL(blob);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS) {
+      const opened = window.open(objectUrl, '_blank');
+      if (opened) opened.opener = null;
+      else window.location.href = objectUrl;
+      if (statusElement) {
+        statusElement.textContent = 'The photo opened in a new tab. Touch and hold it, then choose Save to Photos.';
+      }
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    if (statusElement) statusElement.textContent = 'Photo downloaded.';
   }
 
   const CATEGORY_TO_GRID = {
@@ -109,41 +300,71 @@
   }
 
   function renderSummary() {
+    const garmentRows = state.designMode === 'complete'
+      ? [
+        ['Design method', 'Complete rida'],
+        ['Complete rida', state.completeRidaPhoto
+          ? 'Uploaded complete rida photo'
+          : el('completeRidaDescription').value.trim()],
+      ]
+      : [
+        ['Design method', 'Build step by step'],
+        ['Base cloth', state.baseClothPhoto
+          ? 'Uploaded cloth or inspiration image'
+          : el('baseDescription').value.trim() || 'Selected color and pattern'],
+        ...(!state.baseClothPhoto && !el('baseDescription').value.trim() ? [
+          ['Color palette', labelFor('colors', state.selections.color)],
+          ['Pattern / motif', labelFor('motifs', state.selections.motif)],
+        ] : []),
+        ['Shared design', state.designPhoto
+          ? 'Uploaded design example'
+          : el('designDescription').value.trim() || 'Selected design options'],
+        ...(!state.designPhoto && !el('designDescription').value.trim() ? [
+          ['Panel', labelFor('panels', state.selections.panel)],
+          ['Lace / nehl', labelFor('borders', state.selections.border)],
+          ['Embroidery', el('embroideryDescription').value.trim() || 'None'],
+        ] : []),
+      ];
     const rows = [
-      ['Base cloth', state.baseClothPhoto
-        ? 'Uploaded cloth or inspiration image'
-        : el('baseDescription').value.trim() || 'Selected color and pattern'],
-      ...(!state.baseClothPhoto && !el('baseDescription').value.trim() ? [
-        ['Color palette', labelFor('colors', state.selections.color)],
-        ['Pattern / motif', labelFor('motifs', state.selections.motif)],
-      ] : []),
-      ['Shared design', state.designPhoto
-        ? 'Uploaded design example'
-        : el('designDescription').value.trim() || 'Selected design options'],
-      ...(!state.designPhoto && !el('designDescription').value.trim() ? [
-        ['Panel', labelFor('panels', state.selections.panel)],
-        ['Lace / nehl', labelFor('borders', state.selections.border)],
-        ['Embroidery', el('embroideryDescription').value.trim() || 'None'],
-      ] : []),
+      ...garmentRows,
       ['Photography style', labelFor('styles', state.selections.style)],
       ['Location', labelFor('locations', state.selections.location)],
     ];
-    el('summaryCard').innerHTML = rows
-      .map(([label, value]) => `<div class="summary-row"><div><span class="label">${label}</span><span class="value">${value}</span></div></div>`)
-      .join('');
+    const summary = el('summaryCard');
+    summary.innerHTML = '';
+    rows.forEach(([label, value]) => {
+      const row = document.createElement('div');
+      row.className = 'summary-row';
+      const content = document.createElement('div');
+      const labelElement = document.createElement('span');
+      labelElement.className = 'label';
+      labelElement.textContent = label;
+      const valueElement = document.createElement('span');
+      valueElement.className = 'value';
+      valueElement.textContent = value;
+      content.append(labelElement, valueElement);
+      row.appendChild(content);
+      summary.appendChild(row);
+    });
   }
 
   function celebrationSlides() {
-    const baseSource = state.baseClothPhoto
-      ? 'Your uploaded base image is guiding the colors and fabric pattern.'
-      : el('baseDescription').value.trim()
-        ? 'Your cloth description is becoming a coordinated pardi and ghagra.'
-        : `${labelFor('colors', state.selections.color)} and ${labelFor('motifs', state.selections.motif)} are being woven together.`;
-    const designSource = state.designPhoto
-      ? 'Your design example is shaping the panel, border, lace, and embroidery.'
-      : el('designDescription').value.trim()
-        ? 'Your tailoring description is being adapted across both pieces.'
-        : `${labelFor('panels', state.selections.panel)} and ${labelFor('borders', state.selections.border)} are being balanced.`;
+    const baseSource = state.designMode === 'complete'
+      ? state.completeRidaPhoto
+        ? 'Your complete-rida photo is guiding the full garment.'
+        : 'Your complete-rida description is becoming one coordinated garment.'
+      : state.baseClothPhoto
+        ? 'Your uploaded base image is guiding the colors and fabric pattern.'
+        : el('baseDescription').value.trim()
+          ? 'Your cloth description is becoming a coordinated pardi and ghagra.'
+          : `${labelFor('colors', state.selections.color)} and ${labelFor('motifs', state.selections.motif)} are being woven together.`;
+    const designSource = state.designMode === 'complete'
+      ? 'The cloth, print, panel, border, lace, embroidery, and embellishments are being interpreted together.'
+      : state.designPhoto
+        ? 'Your design example is shaping the panel, border, lace, and embroidery.'
+        : el('designDescription').value.trim()
+          ? 'Your tailoring description is being adapted across both pieces.'
+          : `${labelFor('panels', state.selections.panel)} and ${labelFor('borders', state.selections.border)} are being balanced.`;
 
     return [
       { icon: '🌸', title: 'Something beautiful is blooming', detail: 'Your keepsake portrait is beginning to take shape.' },
@@ -239,7 +460,8 @@
     state.options = data.options;
     renderAllGrids();
     el('logoutBtn').hidden = false;
-    showScreen('rida');
+    el('libraryBtn').hidden = false;
+    showScreen('design-path');
   }
 
   function setUploadStatus(statusId, message, kind) {
@@ -266,30 +488,46 @@
     });
   }
 
+  function dataUrlByteLength(dataUrl) {
+    const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+    const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
+    return Math.floor((base64.length * 3) / 4) - padding;
+  }
+
   async function prepareReferencePhoto(file) {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!file || !allowedTypes.includes(file.type)) {
-      throw new Error('Choose a JPEG, PNG, or WebP fabric photo.');
+      throw new Error('Choose a JPEG, PNG, or WebP reference photo.');
     }
     if (file.size > 20 * 1024 * 1024) {
-      throw new Error('The original fabric photo must be 20 MB or smaller.');
+      throw new Error('The original reference photo must be 20 MB or smaller.');
     }
 
     const sourceUrl = await readFileAsDataUrl(file);
     const image = await loadImage(sourceUrl);
-    const maxDimension = 2048;
-    const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-    const context = canvas.getContext('2d');
-    context.drawImage(image, 0, 0, canvas.width, canvas.height);
-    const compressedUrl = canvas.toDataURL('image/jpeg', 0.94);
-    const base64 = compressedUrl.slice(compressedUrl.indexOf(',') + 1);
-    if (base64.length > 7 * 1024 * 1024) {
-      throw new Error('The compressed fabric photo is still too large. Crop closer to the cloth and try again.');
+    const compressionAttempts = [
+      { maxDimension: 2048, quality: 0.94 },
+      { maxDimension: 2048, quality: 0.88 },
+      { maxDimension: 1792, quality: 0.86 },
+      { maxDimension: 1536, quality: 0.82 },
+    ];
+    for (const attempt of compressionAttempts) {
+      const scale = Math.min(1, attempt.maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const context = canvas.getContext('2d');
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const compressedUrl = canvas.toDataURL('image/jpeg', attempt.quality);
+      if (dataUrlByteLength(compressedUrl) <= MAX_REFERENCE_BYTES) {
+        return {
+          mimeType: 'image/jpeg',
+          base64: compressedUrl.slice(compressedUrl.indexOf(',') + 1),
+          previewUrl: compressedUrl,
+        };
+      }
     }
-    return { mimeType: 'image/jpeg', base64, previewUrl: compressedUrl };
+    throw new Error('The compressed reference photo is still over 5 MB. Crop closer and try again.');
   }
 
   function updateBaseMode() {
@@ -324,13 +562,31 @@
     );
   }
 
-  function wirePhotoInput({ inputId, stateKey, statusId, preview }) {
+  function updateCompleteRidaMode() {
+    const hasPhoto = Boolean(state.completeRidaPhoto);
+    const hasDescription = Boolean(el('completeRidaDescription').value.trim());
+    el('completeRidaPreviewWrap').hidden = !hasPhoto;
+    el('completeRidaPreview').src = hasPhoto ? state.completeRidaPhoto.previewUrl : '';
+    el('completeRidaDescriptionBlock').hidden = hasPhoto;
+    setUploadStatus(
+      'completeRidaStatus',
+      hasPhoto
+        ? 'This photo will define the entire rida. The person and background in the sample will be ignored.'
+        : hasDescription
+          ? 'This full description will define the entire rida.'
+          : 'Upload a complete rida photo or describe the entire garment below.',
+      hasPhoto || hasDescription ? 'ok' : '',
+    );
+  }
+
+  function wirePhotoInput({ inputId, stateKey, statusId, preview, clearTextId }) {
     el(inputId).addEventListener('change', async (event) => {
       const [file] = event.target.files;
       if (!file) return;
       setUploadStatus(statusId, 'Preparing photo…', '');
       try {
         state[stateKey] = await prepareReferencePhoto(file);
+        if (clearTextId) el(clearTextId).value = '';
         preview();
       } catch (err) {
         state[stateKey] = null;
@@ -346,12 +602,21 @@
     stateKey: 'baseClothPhoto',
     statusId: 'baseClothStatus',
     preview: updateBaseMode,
+    clearTextId: 'baseDescription',
   });
   wirePhotoInput({
     inputId: 'designPhotoInput',
     stateKey: 'designPhoto',
     statusId: 'designStatus',
     preview: updateDesignMode,
+    clearTextId: 'designDescription',
+  });
+  wirePhotoInput({
+    inputId: 'completeRidaPhotoInput',
+    stateKey: 'completeRidaPhoto',
+    statusId: 'completeRidaStatus',
+    preview: updateCompleteRidaMode,
+    clearTextId: 'completeRidaDescription',
   });
 
   el('removeBaseClothBtn').addEventListener('click', () => {
@@ -364,8 +629,101 @@
     el('designPhotoInput').value = '';
     updateDesignMode();
   });
+  el('removeCompleteRidaBtn').addEventListener('click', () => {
+    state.completeRidaPhoto = null;
+    el('completeRidaPhotoInput').value = '';
+    updateCompleteRidaMode();
+  });
   el('baseDescription').addEventListener('input', updateBaseMode);
   el('designDescription').addEventListener('input', updateDesignMode);
+  el('completeRidaDescription').addEventListener('input', updateCompleteRidaMode);
+
+  async function renderLibrary(append = false) {
+    const grid = el('libraryGrid');
+    const status = el('libraryStatus');
+    const loadMore = el('libraryLoadMoreBtn');
+    if (!append) {
+      grid.innerHTML = '';
+      state.libraryCursor = null;
+      state.libraryRenderedCount = 0;
+    }
+    loadMore.disabled = true;
+    status.textContent = append ? 'Loading more creations…' : 'Loading creations…';
+    try {
+      const [page, total] = await Promise.all([
+        listLibraryCreations(state.libraryCursor),
+        append ? Promise.resolve(state.libraryTotal) : countLibraryCreations(),
+      ]);
+      state.libraryTotal = total;
+      state.libraryCursor = page.nextCursor;
+      state.libraryRenderedCount += page.creations.length;
+      status.textContent = total
+        ? `Showing ${state.libraryRenderedCount} of ${total} creation${total === 1 ? '' : 's'} saved in this browser.`
+        : 'No creations have been saved in this browser yet.';
+      el('clearLibraryBtn').hidden = total === 0;
+      loadMore.hidden = !page.nextCursor;
+      loadMore.disabled = false;
+      if (!total) {
+        const empty = document.createElement('div');
+        empty.className = 'library-empty';
+        empty.textContent = 'Your generated rida portraits will appear here automatically.';
+        grid.appendChild(empty);
+        return;
+      }
+
+      page.creations.forEach((creation, index) => {
+        const card = document.createElement('article');
+        card.className = 'library-card';
+        const image = document.createElement('img');
+        image.src = `data:image/png;base64,${creation.imageBase64}`;
+        image.alt = `Saved Rida Studio creation ${state.libraryRenderedCount - page.creations.length + index + 1}`;
+        image.loading = 'lazy';
+        const body = document.createElement('div');
+        body.className = 'library-card-body';
+        const time = document.createElement('p');
+        time.className = 'library-card-time';
+        time.textContent = new Date(creation.createdAt).toLocaleString();
+        const summary = document.createElement('p');
+        summary.className = 'library-card-summary';
+        summary.textContent = creation.requirements || 'Rida Studio creation';
+        const actions = document.createElement('div');
+        actions.className = 'library-card-actions';
+        const save = document.createElement('button');
+        save.type = 'button';
+        save.textContent = 'Save Photo';
+        save.addEventListener('click', () => {
+          savePhotoToDevice(
+            creation.imageBase64,
+            `fatema-rida-${creation.createdAt}.png`,
+            status,
+          ).catch((err) => {
+            status.textContent = `Could not save this photo: ${err.message}`;
+          });
+        });
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'delete-creation-btn';
+        remove.textContent = 'Delete';
+        remove.addEventListener('click', async () => {
+          try {
+            await deleteLibraryCreation(creation.id);
+            await renderLibrary();
+          } catch (err) {
+            status.textContent = `Could not delete this creation: ${err.message}`;
+          }
+        });
+        actions.append(save, remove);
+        body.append(time, summary, actions);
+        card.append(image, body);
+        grid.appendChild(card);
+      });
+    } catch (err) {
+      status.textContent = err.message;
+      el('clearLibraryBtn').hidden = true;
+      loadMore.hidden = true;
+      loadMore.disabled = false;
+    }
+  }
 
   el('pinForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -391,6 +749,7 @@
       // ignore
     }
     el('logoutBtn').hidden = true;
+    el('libraryBtn').hidden = true;
     showScreen('welcome');
   });
 
@@ -398,16 +757,87 @@
     btn.addEventListener('click', () => showScreen(btn.dataset.go));
   });
 
+  el('completeRidaModeBtn').addEventListener('click', () => {
+    state.designMode = 'complete';
+    el('completeRidaError').textContent = '';
+    updateCompleteRidaMode();
+    showScreen('complete-rida');
+  });
+  el('guidedModeBtn').addEventListener('click', () => {
+    state.designMode = 'guided';
+    showScreen('rida');
+  });
+  el('completeToSceneBtn').addEventListener('click', () => {
+    const hasPhoto = Boolean(state.completeRidaPhoto);
+    const hasDescription = Boolean(el('completeRidaDescription').value.trim());
+    if (!hasPhoto && !hasDescription) {
+      el('completeRidaError').textContent =
+        'Upload a complete rida photo or describe the complete rida before continuing.';
+      return;
+    }
+    el('completeRidaError').textContent = '';
+    showScreen('scene');
+  });
   el('toDesignBtn').addEventListener('click', () => showScreen('design'));
   el('toSceneBtn').addEventListener('click', () => showScreen('scene'));
+  el('sceneBackBtn').addEventListener('click', () => {
+    showScreen(state.designMode === 'complete' ? 'complete-rida' : 'design');
+  });
   el('toReviewBtn').addEventListener('click', () => {
     renderSummary();
     showScreen('review');
   });
+  el('reviewBackBtn').addEventListener('click', () => showScreen('scene'));
+  el('libraryBtn').addEventListener('click', async () => {
+    if (!await refreshSessionInfo()) {
+      el('logoutBtn').hidden = true;
+      el('libraryBtn').hidden = true;
+      el('loginError').textContent = 'Your session expired — enter the PIN to view your creations.';
+      showScreen('welcome');
+      return;
+    }
+    const active = document.querySelector('.screen.active');
+    state.libraryReturnScreen = active && active.dataset.screen !== 'library'
+      ? active.dataset.screen
+      : 'design-path';
+    showScreen('library');
+    await renderLibrary();
+  });
+  el('libraryBackBtn').addEventListener('click', () => showScreen(state.libraryReturnScreen));
+  el('clearLibraryBtn').addEventListener('click', async () => {
+    if (!window.confirm('Delete every creation saved in this browser?')) return;
+    try {
+      await clearLibraryCreations();
+      await renderLibrary();
+    } catch (err) {
+      el('libraryStatus').textContent = `Could not clear the library: ${err.message}`;
+    }
+  });
+  el('libraryLoadMoreBtn').addEventListener('click', () => {
+    renderLibrary(true);
+  });
 
   function buildGenerationPayload() {
+    const common = {
+      designMode: state.designMode,
+      style: state.selections.style,
+      location: state.selections.location,
+    };
+    if (state.designMode === 'complete') {
+      return {
+        ...common,
+        completeRidaDescription: el('completeRidaDescription').value.trim(),
+        completeRidaPhoto: state.completeRidaPhoto
+          ? { mimeType: state.completeRidaPhoto.mimeType, base64: state.completeRidaPhoto.base64 }
+          : null,
+      };
+    }
     return {
-      ...state.selections,
+      ...common,
+      color: state.selections.color,
+      motif: state.selections.motif,
+      border: state.selections.border,
+      panel: state.selections.panel,
       baseDescription: el('baseDescription').value.trim(),
       designDescription: el('designDescription').value.trim(),
       embroideryDescription: el('embroideryDescription').value.trim(),
@@ -439,6 +869,16 @@
     return `Something went wrong: ${err.message}. You can try again.`;
   }
 
+  async function archiveGeneratedImage(base64) {
+    try {
+      await saveCreationToLibrary(base64);
+      el('resultsNotice').textContent = 'Saved automatically to Creations on this device.';
+    } catch (err) {
+      el('resultsNotice').textContent =
+        `This photo is ready, but the browser could not add it to Creations: ${err.message}`;
+    }
+  }
+
   el('generateBtn').addEventListener('click', async () => {
     const btn = el('generateBtn');
     btn.disabled = true;
@@ -453,6 +893,7 @@
       stopCelebrationShowcase();
       stopGenerationClock();
       showScreen('results');
+      archiveGeneratedImage(data.images[0]);
     } catch (err) {
       stopCelebrationShowcase();
       stopGenerationClock();
@@ -464,6 +905,7 @@
       } else if (err.status === 401) {
         el('generateError').textContent = 'Your session expired — please log in again.';
         el('logoutBtn').hidden = true;
+        el('libraryBtn').hidden = true;
         showScreen('welcome');
       } else {
         el('generateError').textContent = generationErrorMessage(err);
@@ -480,14 +922,29 @@
       const dataUrl = `data:image/png;base64,${b64}`;
       const card = document.createElement('div');
       card.className = 'result-card';
-      card.innerHTML = `
-        <img src="${dataUrl}" alt="Generated rida look candidate ${i + 1}" />
-        <div class="result-actions">
-          <a class="download-link" href="${dataUrl}" download="fatemas-rida-look-${i + 1}.png">⬇ Download</a>
-        </div>
-      `;
+      const image = document.createElement('img');
+      image.src = dataUrl;
+      image.alt = `Generated rida look candidate ${i + 1}`;
+      const actions = document.createElement('div');
+      actions.className = 'result-actions';
+      const save = document.createElement('button');
+      save.type = 'button';
+      save.className = 'save-photo-btn';
+      save.textContent = 'Save Photo';
+      save.addEventListener('click', () => {
+        savePhotoToDevice(
+          b64,
+          `fatema-rida-look-${Date.now()}.png`,
+          el('resultsNotice'),
+        ).catch((err) => {
+          el('resultsNotice').textContent = `Could not save this photo: ${err.message}`;
+        });
+      });
+      actions.appendChild(save);
+      card.append(image, actions);
       grid.appendChild(card);
     });
+    el('resultsNotice').textContent = '';
     el('resultsSubtitle').textContent =
       'Download this candidate, or regenerate a fresh one using the same requirements.';
     el('regenerateBtn').hidden = false;
@@ -505,9 +962,11 @@
       state.lastResults = data.images;
       renderResults(state.lastResults);
       showScreen('results');
+      archiveGeneratedImage(data.images[0]);
     } catch (err) {
       if (err.status === 401) {
         el('logoutBtn').hidden = true;
+        el('libraryBtn').hidden = true;
         showScreen('welcome');
       } else {
         showScreen('results');
@@ -521,13 +980,14 @@
   });
 
   el('newLookBtn').addEventListener('click', () => {
-    showScreen('rida');
+    showScreen('design-path');
   });
 
   // --- Boot ---
   (async () => {
     updateBaseMode();
     updateDesignMode();
+    updateCompleteRidaMode();
     const authed = await refreshSessionInfo();
     if (authed) {
       try {

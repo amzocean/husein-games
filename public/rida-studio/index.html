@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-12" />
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-14" />
 </head>
 <body>
 
@@ -17,7 +17,8 @@
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 15</span>
+    <span class="build-badge">Build 17</span>
+    <button class="rida-library-btn" id="libraryBtn" type="button" hidden>Creations</button>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
 
@@ -38,10 +39,68 @@
       </div>
     </section>
 
+    <!-- SCREEN: choose design path -->
+    <section class="screen" data-screen="design-path">
+      <div class="screen-head">
+        <span class="step-pill">Start here</span>
+        <h2>How would you like to design the rida?</h2>
+        <p class="subtle">Use a complete rida you already love, or build every part step by step.</p>
+      </div>
+
+      <div class="design-path-grid">
+        <button class="design-path-card" id="completeRidaModeBtn" type="button">
+          <span class="design-path-icon">💖</span>
+          <strong>Use a Complete Rida</strong>
+          <span>Upload one sample rida photo or describe the entire rida in your own words. The studio will use it as the complete garment specification.</span>
+        </button>
+        <button class="design-path-card" id="guidedModeBtn" type="button">
+          <span class="design-path-icon">🧵</span>
+          <strong>Build Step by Step</strong>
+          <span>Choose the base cloth, pattern, panel, border, lace, embroidery, and scene separately.</span>
+        </button>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="welcome" type="button">Back</button>
+      </div>
+    </section>
+
+    <!-- SCREEN: complete rida -->
+    <section class="screen" data-screen="complete-rida">
+      <div class="screen-head">
+        <span class="step-pill">Complete rida</span>
+        <h2>Show or describe the whole rida</h2>
+        <p class="subtle">The complete reference will control the cloth, colors, print, panel, border, lace, embroidery, and embellishments together.</p>
+      </div>
+
+      <div class="option-block fabric-upload-block">
+        <h3>📸 Upload a complete rida photo</h3>
+        <p class="option-help">Use a clear photo of the full rida. The studio copies the garment—not the person, body, pose, or background in the sample.</p>
+        <label class="fabric-upload-btn" for="completeRidaPhotoInput">Choose complete rida photo</label>
+        <input id="completeRidaPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
+        <div class="fabric-preview-wrap" id="completeRidaPreviewWrap" hidden>
+          <img id="completeRidaPreview" alt="Selected complete rida preview" />
+          <button class="btn btn-ghost fabric-remove" id="removeCompleteRidaBtn" type="button">Remove photo</button>
+        </div>
+        <p class="upload-status" id="completeRidaStatus"></p>
+      </div>
+
+      <div class="option-block" id="completeRidaDescriptionBlock">
+        <h3>✍️ Or describe the complete rida</h3>
+        <textarea class="design-note" id="completeRidaDescription" maxlength="300" rows="5" placeholder="Example: Deep emerald silk rida with small gold floral motifs, a standard 7-inch embroidered panel, pearl lace directly below it, matching pardi details, and fine gold accents throughout."></textarea>
+      </div>
+
+      <p class="error-text" id="completeRidaError" role="alert"></p>
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-go="design-path" type="button">Back</button>
+        <button class="btn btn-primary" id="completeToSceneBtn" type="button">Choose style & location →</button>
+      </div>
+    </section>
+
     <!-- SCREEN: choose base cloth -->
     <section class="screen" data-screen="rida">
       <div class="screen-head">
-        <span class="step-pill">Step 1 of 5</span>
+        <span class="step-pill">Base cloth</span>
         <h2>Choose the base cloth 🧵</h2>
         <p class="subtle">Upload cloth or another inspiration image, describe the cloth, or use the color and pattern choices.</p>
       </div>
@@ -75,7 +134,7 @@
       </div>
 
       <div class="nav-row">
-        <button class="btn btn-ghost" data-go="welcome" type="button">Back</button>
+        <button class="btn btn-ghost" data-go="design-path" type="button">Back</button>
         <button class="btn btn-primary" id="toDesignBtn" type="button">Design the rida →</button>
       </div>
     </section>
@@ -83,7 +142,7 @@
     <!-- SCREEN: shared design -->
     <section class="screen" data-screen="design">
       <div class="screen-head">
-        <span class="step-pill">Step 2 of 5</span>
+        <span class="step-pill">Rida details</span>
         <h2>Design both pieces 🪡</h2>
         <p class="subtle">The same panel, lace, and embroidery design will be adapted to both the pardi and ghagra.</p>
       </div>
@@ -130,7 +189,7 @@
     <!-- SCREEN: style and location -->
     <section class="screen" data-screen="scene">
       <div class="screen-head">
-        <span class="step-pill">Step 3 of 5</span>
+        <span class="step-pill">Photograph</span>
         <h2>Style the photograph 📷</h2>
         <p class="subtle">Choose the photography treatment and location.</p>
       </div>
@@ -145,7 +204,7 @@
       </div>
 
       <div class="nav-row">
-        <button class="btn btn-ghost" data-go="design" type="button">Back</button>
+        <button class="btn btn-ghost" id="sceneBackBtn" type="button">Back</button>
         <button class="btn btn-primary" id="toReviewBtn" type="button">Review my look →</button>
       </div>
     </section>
@@ -153,7 +212,7 @@
     <!-- SCREEN: review -->
     <section class="screen" data-screen="review">
       <div class="screen-head">
-        <span class="step-pill">Step 4 of 5</span>
+        <span class="step-pill">Review</span>
         <h2>Review your look 💖</h2>
         <p class="subtle">Here's your selection summary before we generate anything.</p>
       </div>
@@ -161,7 +220,7 @@
       <div class="summary-card" id="summaryCard"></div>
 
       <div class="nav-row">
-        <button class="btn btn-ghost" data-go="scene" type="button">Back</button>
+        <button class="btn btn-ghost" id="reviewBackBtn" type="button">Back</button>
         <button class="btn btn-primary btn-generate" id="generateBtn" type="button">✨ Generate my look</button>
       </div>
       <p class="error-text" id="generateError" role="alert"></p>
@@ -198,13 +257,14 @@
     <!-- SCREEN: results -->
     <section class="screen" data-screen="results">
       <div class="screen-head">
-        <span class="step-pill">Step 5 of 5</span>
+        <span class="step-pill">Ready</span>
         <h2>Choose your favorite 💫</h2>
         <p class="subtle" id="resultsSubtitle">Download this candidate, or regenerate a fresh one using the same requirements.</p>
       </div>
 
       <div class="results-grid" id="resultsGrid"></div>
 
+      <p class="subtle result-save-notice" id="resultsNotice" aria-live="polite"></p>
       <p class="error-text" id="resultsError" role="alert"></p>
       <div class="nav-row">
         <button class="btn btn-primary" id="regenerateBtn" type="button">✨ Regenerate with the same requirements</button>
@@ -212,11 +272,30 @@
       </div>
     </section>
 
+    <!-- SCREEN: creation library -->
+    <section class="screen" data-screen="library">
+      <div class="screen-head">
+        <span class="step-pill">Saved on this device</span>
+        <h2>Your Rida Creations</h2>
+        <p class="subtle">Every generated result is saved automatically in this browser until you delete it or browser storage is cleared.</p>
+      </div>
+
+      <p class="subtle" id="libraryStatus" aria-live="polite"></p>
+      <div class="library-grid" id="libraryGrid"></div>
+      <div class="library-load-more">
+        <button class="btn btn-ghost" id="libraryLoadMoreBtn" type="button" hidden>Load more creations</button>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="libraryBackBtn" type="button">Back to Studio</button>
+        <button class="btn btn-ghost danger" id="clearLibraryBtn" type="button">Delete All</button>
+      </div>
+    </section>
+
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 15</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 17</footer>
 </div>
 
-<script src="/rida-studio/app-v6.js?build=15"></script>
+<script src="/rida-studio/app-v6.js?build=17"></script>
 </body>
 </html>
