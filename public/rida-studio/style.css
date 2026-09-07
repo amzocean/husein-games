@@ -31,21 +31,6 @@ body {
   min-height: 100vh;
 }
 
-.release-gate {
-  min-height: 100vh;
-  padding: 24px;
-  display: grid;
-  place-items: center;
-}
-.release-gate .hero-card {
-  width: min(100%, 680px);
-}
-.release-gate .btn {
-  display: inline-flex;
-  margin-top: 12px;
-  text-decoration: none;
-}
-
 h1, h2, h3 {
   font-family: 'Quicksand', 'Inter', sans-serif;
   font-weight: 700;

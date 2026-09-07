@@ -3,10 +3,9 @@
 A permanent, PIN-protected game where Fatema designs a culturally accurate
 Dawoodi Bohra rida and a cheerful scene, then generates **exactly two** live
 AI keepsake images per request via OpenAI's `gpt-image-2` (`images/edits`).
-The game unlocks on **September 6, 2026 UTC**, alongside the birthday gala,
-then remains permanently available. Before release, its Game Room card is
-hidden, the direct page shows a birthday-surprise message, and the API rejects
-requests.
+The direct page and API are always available for testing and use. Its Game
+Room card remains hidden until **September 6, 2026 UTC**, alongside the
+birthday gala, and stays visible afterward.
 
 ## Flow
 

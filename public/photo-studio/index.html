@@ -12,16 +12,7 @@
 </head>
 <body>
 
-<section class="release-gate" id="releaseGate">
-  <div class="glass-card gate-card">
-    <div class="hero-mark">✨📷</div>
-    <h2>A birthday surprise is waiting</h2>
-    <p>Fatema's Photo Studio opens on September 6.</p>
-    <a class="btn btn-primary" href="/">Back to the Game Room</a>
-  </div>
-</section>
-
-<div class="studio-app" id="studioApp" hidden>
+<div class="studio-app" id="studioApp">
   <header class="studio-header">
     <a class="home-link" href="/" aria-label="Back to Game Room">←</a>
     <div>
@@ -113,16 +104,6 @@
   <footer>Made with ♥ for Fatema</footer>
 </div>
 
-<script>
-  const releaseDate = '2026-09-06';
-  const todayUtc = new Date().toISOString().slice(0, 10);
-  if (todayUtc >= releaseDate) {
-    document.getElementById('releaseGate').hidden = true;
-    document.getElementById('studioApp').hidden = false;
-    const appScript = document.createElement('script');
-    appScript.src = `/photo-studio/app.js?v=1&t=${Date.now()}`;
-    document.body.appendChild(appScript);
-  }
-</script>
+<script src="/photo-studio/app.js?v=2"></script>
 </body>
 </html>

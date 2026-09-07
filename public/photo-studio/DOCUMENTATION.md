@@ -1,7 +1,8 @@
 # Fatema's Photo Studio
 
 Fatema's Photo Studio is a private AI portrait generator at `/photo-studio/`.
-It unlocks on September 6, 2026 UTC and remains available permanently.
+The direct URL and API are always available. Its Game Room card remains hidden
+until September 6, 2026 UTC and stays visible afterward.
 
 ## Experience
 

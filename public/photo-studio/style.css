@@ -41,13 +41,6 @@ h1, h2 {
   font-family: 'Playfair Display', Georgia, serif;
 }
 
-.release-gate {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
 .studio-app {
   position: relative;
   width: min(880px, 100%);
@@ -126,8 +119,7 @@ main { min-height: 70vh; }
   backdrop-filter: blur(16px);
 }
 
-.welcome-card,
-.gate-card {
+.welcome-card {
   width: min(580px, 100%);
   margin: 44px auto 0;
   padding: 44px 30px;
@@ -150,7 +142,6 @@ main { min-height: 70vh; }
 }
 
 .welcome-card h2,
-.gate-card h2,
 .intro h2,
 .loading-card h2 {
   margin-bottom: 12px;
@@ -158,8 +149,7 @@ main { min-height: 70vh; }
   font-size: clamp(2rem, 7vw, 3rem);
 }
 
-.welcome-card > p:not(.eyebrow):not(.error-text),
-.gate-card p {
+.welcome-card > p:not(.eyebrow):not(.error-text) {
   max-width: 470px;
   margin-right: auto;
   margin-left: auto;
@@ -462,8 +452,7 @@ footer {
   }
   .studio-header p { display: none; }
   .logout-btn { padding: 7px 9px; font-size: 0.7rem; }
-  .welcome-card,
-  .gate-card { margin-top: 24px; padding: 34px 20px; }
+  .welcome-card { margin-top: 24px; padding: 34px 20px; }
   .intro { margin-top: 24px; }
   .prompt-card { padding: 16px; }
   #photoRequest { min-height: 210px; padding: 15px; }
