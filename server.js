@@ -8,10 +8,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Force revalidation for HTML and Rida Studio assets so its UI and API
-// contract never get split across stale browser-cached versions.
+// Force revalidation for HTML and AI studio assets so their UI and API
+// contracts never get split across stale browser-cached versions.
 app.use((req, res, next) => {
-  if (req.path.endsWith('.html') || req.path.endsWith('/') || req.path.startsWith('/rida-studio/')) {
+  if (req.path.endsWith('.html') || req.path.endsWith('/') ||
+      req.path.startsWith('/rida-studio/') || req.path.startsWith('/photo-studio/')) {
     res.setHeader('Cache-Control', 'no-cache');
   }
   next();
@@ -27,6 +28,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ============================================================
 const ridaStudioRouter = require('./lib/ridaStudio/router');
 app.use('/rida-studio/api', ridaStudioRouter.createRouter());
+
+// ============================================================
+// FATEMA'S PHOTO STUDIO — freeform, guarded AI portrait generator.
+// Shares Rida Studio auth configuration, references, and daily allowance.
+// ============================================================
+const photoStudioRouter = require('./lib/photoStudio/router');
+app.use('/photo-studio/api', photoStudioRouter.createRouter());
 
 // ============================================================
 // LUDO GAME SERVER (Socket.IO namespace: /ludo)

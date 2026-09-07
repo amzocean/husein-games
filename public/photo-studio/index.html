@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fatema's Photo Studio ✨</title>
+<meta name="description" content="Fatema's private AI picture studio — imagine any scene or artistic look and create two personalized rida images." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/photo-studio/style.css?v=1" />
+</head>
+<body>
+
+<section class="release-gate" id="releaseGate">
+  <div class="glass-card gate-card">
+    <div class="hero-mark">✨📷</div>
+    <h2>A birthday surprise is waiting</h2>
+    <p>Fatema's Photo Studio opens on September 6.</p>
+    <a class="btn btn-primary" href="/">Back to the Game Room</a>
+  </div>
+</section>
+
+<div class="studio-app" id="studioApp" hidden>
+  <header class="studio-header">
+    <a class="home-link" href="/" aria-label="Back to Game Room">←</a>
+    <div>
+      <h1>Fatema's Photo Studio</h1>
+      <p>Imagine any moment. Make it yours.</p>
+    </div>
+    <button class="logout-btn" id="logoutBtn" type="button" hidden>Log out</button>
+  </header>
+
+  <main>
+    <section class="screen active" data-screen="welcome">
+      <div class="glass-card welcome-card">
+        <div class="hero-mark">📷✨</div>
+        <p class="eyebrow">Your private portrait studio</p>
+        <h2>Welcome, Fatema</h2>
+        <p>Imagine any scene or artistic look—from a classy photograph to a dreamy illustration or cute cartoon. The studio will create two pictures of you, always in a rida.</p>
+        <form id="pinForm" class="pin-form" autocomplete="off">
+          <label for="pinInput">Enter your private PIN</label>
+          <input id="pinInput" name="pin" type="password" inputmode="numeric" placeholder="••••" required />
+          <button class="btn btn-primary" type="submit">Enter the Studio</button>
+        </form>
+        <p class="error-text" id="loginError" role="alert"></p>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="compose">
+      <div class="intro">
+        <p class="eyebrow">Create your next portrait</p>
+        <h2>What would you like to see?</h2>
+        <p>Describe the place, mood, colors, expression, pose, lighting, or art style. Realistic, dreamy, classy, cute, silly, illustrated, and cartoon looks are all welcome.</p>
+      </div>
+
+      <div class="prompt-card">
+        <label for="photoRequest">Describe your picture</label>
+        <textarea id="photoRequest" maxlength="700" rows="8" placeholder="Example: A dreamy hand-painted storybook scene in a flower-filled palace courtyard, wearing a deep emerald and gold rida, with warm lanterns, soft magical light, and a cute whimsical mood."></textarea>
+        <div class="prompt-meta">
+          <span>Be as imaginative or simple as you like.</span>
+          <span id="characterCount">0 / 700</span>
+        </div>
+      </div>
+
+      <div class="suggestions-section">
+        <h3>Need inspiration?</h3>
+        <div class="suggestions" id="suggestions">
+          <button type="button" data-suggestion="A dreamy portrait in a flower-filled royal palace courtyard at golden hour, wearing a rich rose-pink and antique-gold rida, with soft cinematic light and an elegant editorial photography look.">Royal garden</button>
+          <button type="button" data-suggestion="A joyful rainy-day portrait beneath a clear umbrella on a beautiful old Mumbai street, wearing a vibrant teal and coral floral rida, with glowing reflections and a romantic film-like look.">Monsoon magic</button>
+          <button type="button" data-suggestion="A graceful portrait beside a quiet Paris café covered in spring blossoms, wearing a pearl-white and blush rida with delicate floral details, photographed like a luxury travel magazine.">Paris blossoms</button>
+          <button type="button" data-suggestion="A glamorous birthday-night portrait on a candlelit terrace with pink and gold lights in the sky, wearing a jewel-toned rida with subtle sparkle, photographed with cinematic depth and warmth.">Birthday lights</button>
+          <button type="button" data-suggestion="A cozy portrait in a grand library beside a window on a peaceful afternoon, wearing a deep burgundy and cream rida, with soft natural light and a timeless fine-art photograph style.">Library afternoon</button>
+          <button type="button" data-suggestion="A bright seaside portrait on a quiet Mediterranean balcony, wearing a breezy sky-blue and white rida, with sunlight, bougainvillea, and a fresh luxury holiday photography look.">Seaside escape</button>
+          <button type="button" data-suggestion="A cute pastel cartoon portrait in a magical garden filled with oversized flowers, tiny glowing butterflies, and soft candy colors, wearing a cheerful lavender and pink rida with playful details.">Cute cartoon</button>
+          <button type="button" data-suggestion="A whimsical hand-painted animation scene in a peaceful green valley with a cozy cottage, drifting clouds, wildflowers, and warm golden light, wearing a soft blue floral rida with a gentle storybook feeling.">Whimsical animation</button>
+          <button type="button" data-suggestion="A colorful playful portrait making an adorably silly surprised face, with floating balloons and confetti, wearing a bright rainbow-accented rida, photographed with energetic wide-angle perspective.">Silly celebration</button>
+        </div>
+      </div>
+
+      <div class="safety-note">
+        <span>🔒</span>
+        <p><strong>Your protected look:</strong> always Fatema, always an authentic rida, and never other people in the image.</p>
+      </div>
+      <p class="allowance-note" id="allowanceNote"></p>
+      <button class="btn btn-primary generate-btn" id="generateBtn" type="button">Create My Two Photos ✨</button>
+      <p class="error-text" id="generateError" role="alert"></p>
+    </section>
+
+    <section class="screen" data-screen="loading">
+      <div class="glass-card loading-card">
+        <div class="developing-photo" aria-hidden="true">
+          <span>F</span>
+        </div>
+        <p class="eyebrow">Creating your portraits</p>
+        <h2>Bringing your idea to life…</h2>
+        <p id="generationProgress" aria-live="polite">Studying your reference photos…</p>
+        <div class="progress-track"><span></span></div>
+        <p class="loading-note">This can take a few minutes. Please keep this tab open.</p>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="results">
+      <div class="intro results-head">
+        <p class="eyebrow">Made especially for you</p>
+        <h2>Your portraits are ready</h2>
+        <p id="resultPrompt"></p>
+      </div>
+      <div class="results-grid" id="resultsGrid"></div>
+      <p class="allowance-note" id="resultsAllowanceNote"></p>
+      <button class="btn btn-primary another-btn" id="newPhotoBtn" type="button">Create Another Scene</button>
+    </section>
+  </main>
+
+  <footer>Made with ♥ for Fatema</footer>
+</div>
+
+<script>
+  const releaseDate = '2026-09-06';
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  if (todayUtc >= releaseDate) {
+    document.getElementById('releaseGate').hidden = true;
+    document.getElementById('studioApp').hidden = false;
+    const appScript = document.createElement('script');
+    appScript.src = `/photo-studio/app.js?v=1&t=${Date.now()}`;
+    document.body.appendChild(appScript);
+  }
+</script>
+</body>
+</html>

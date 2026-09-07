@@ -12,6 +12,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
 - **📖 Hidaayaat Lookup** — A static single-player search page (`public/quote-search/`) over 142 quotes across 2 volumes of Raudat Hidayaat.
 - **🌸 Fatema's Rida Studio** — A PIN-protected single-player game that unlocks September 6, 2026 UTC, then remains permanent. Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene and generates 2 live AI keepsake images per request (`gpt-image-2`, rate-limited) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
+- **📷 Fatema's Photo Studio** — A PIN-protected freeform portrait studio that unlocks September 6, 2026 UTC, then remains permanent. Fatema describes a scene and generates 2 guarded AI portraits that preserve her identity and authentic rida (`gpt-image-2`, shared rate limit) → [Photo Studio docs](public/photo-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
 - The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
@@ -40,6 +41,7 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 | Valentines | `public/valentines/DOCUMENTATION.md` | Level config, customization |
 | Hidaayat Ciphers | `public/hidaayat-ciphers/DOCUMENTATION.md` | Cipher engine, hook+reveal, quote data format, page image mapping |
 | Rida Studio | `public/rida-studio/DOCUMENTATION.md` | Permanent PIN-protected AI rida/scene generator: auth, rate limiting, locked prompt, identity references |
+| Photo Studio | `public/photo-studio/DOCUMENTATION.md` | Permanent PIN-protected freeform AI portrait generator with locked identity/rida guardrails |
 
 ## 3. Quick Resume Checklist
 
@@ -70,7 +72,8 @@ husein-games/
 │   ├── shared/             # Shared production helpers
 │   │   ├── tilesPhotos.js    # Tiles photo path allowlist (manifest-backed)
 │   │   └── openaiImagesClient.js  # OpenAI images/edits HTTP client + response-shape checks
-│   └── ridaStudio/          # Production Rida Studio game backend (mounted at /rida-studio/api)
+│   ├── ridaStudio/          # Production Rida Studio game backend (mounted at /rida-studio/api)
+│   └── photoStudio/         # Guarded Photo Studio backend (mounted at /photo-studio/api)
 │       ├── options.js         # Curated allowlisted rida/scene option catalog
 │       ├── promptBuilder.js    # Locked/immutable prompt construction
 │       ├── identity.js          # Reference-photo resolution (env var + local fallback)
@@ -113,7 +116,8 @@ husein-games/
     │   └── pages/          # 243 book page JPGs (~68MB)
     ├── quote-search/       # Hidaayaat Lookup — static quote search (single-player)
     │   └── index.html
-    └── rida-studio/        # Fatema's Rida Studio — permanent PIN-protected AI game
+    ├── rida-studio/        # Fatema's Rida Studio — permanent PIN-protected AI game
+    └── photo-studio/       # Fatema's Photo Studio — guarded freeform AI portraits
         ├── DOCUMENTATION.md
         ├── index.html
         ├── style.css
@@ -165,6 +169,7 @@ husein-games/
   5. **🔐 Hidaayat Ciphers** → `/hidaayat-ciphers/` (tag: Solo)
   6. **📖 Hidaayaat Lookup** → `/quote-search/` (tag: Solo)
   7. **🌸 Fatema's Rida Studio** → `/rida-studio/` (tag: Private · PIN) — hidden until September 6, 2026 UTC, then permanent; see section 9
+  8. **📷 Fatema's Photo Studio** → `/photo-studio/` (tag: Private · PIN) — same release gate, PIN, references, and shared daily generation allowance; see section 10
 - Footer: "Made with ♥ by Husein"
 
 ### September 6 Birthday Gala
@@ -309,6 +314,33 @@ setup instructions, and self-test coverage:
   `gpt-image-2`).
 - Self-tests: `npm run rida-studio:selftest` (zero external/OpenAI calls,
   fetch guard enforced).
+
+---
+
+## 10. Fatema's Photo Studio (permanent production app)
+
+`public/photo-studio/` + `lib/photoStudio/` implement a separate, streamlined
+AI portrait experience at `/photo-studio/`. It uses the same September 6 UTC
+release boundary, `RIDA_STUDIO_PIN`, ten identity references, OpenAI image
+client, and daily allowance as Rida Studio.
+
+The UI is centered on one freeform description box with curated suggestion
+chips spanning realistic photography, dreamy scenes, cute cartoons, and
+hand-painted animation-inspired looks, including funny and exaggerated
+expressions. The API accepts only that description and wraps it in a locked prompt:
+Fatema must remain the only person, her identity must come from the fixed
+references, and she must always wear an authentic Dawoodi Bohra rida. The
+description can direct the setting, mood, pose, lighting, camera style, props,
+and artistic medium, but cannot override identity, modesty, single-person
+composition, or safety.
+
+Each successful request produces exactly two `1024x1536` PNG candidates. The
+ten-success UTC allowance and concurrency lock are shared with Rida Studio,
+so using either app counts against the same daily total.
+
+Full behavior and production details:
+[public/photo-studio/DOCUMENTATION.md](public/photo-studio/DOCUMENTATION.md).
+Offline tests: `npm run photo-studio:selftest`.
 
 ---
 

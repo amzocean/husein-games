@@ -1042,6 +1042,13 @@
     <span class="tag tag-private">Private · PIN</span>
   </a>
 
+  <a class="game-card" id="photoStudioCard" href="/photo-studio/" hidden>
+    <div class="game-icon">📷</div>
+    <h2>Fatema's Photo Studio</h2>
+    <p>Imagine any scene or art style and create two personalized AI rida pictures</p>
+    <span class="tag tag-private">Private · PIN</span>
+  </a>
+
 </div>
 
 <footer>
@@ -1056,6 +1063,7 @@
   const todayUtc = new Date().toISOString().slice(0, 10);
   const isBirthday = todayUtc === BIRTHDAY_DATE;
   document.getElementById('ridaStudioCard').hidden = todayUtc < BIRTHDAY_DATE;
+  document.getElementById('photoStudioCard').hidden = todayUtc < BIRTHDAY_DATE;
 
   if (!isBirthday && !isPreview) return;
 
