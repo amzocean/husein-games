@@ -359,19 +359,16 @@
     position: relative;
     z-index: 3;
     grid-area: 1 / 1;
-    width: min(680px, 92vw);
+    width: min(960px, 94vw);
+    height: min(780px, 90vh);
+    height: min(780px, 90dvh);
     min-width: 0;
-    max-height: 92vh;
-    max-height: 92dvh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    padding: 34px 24px 26px;
+    overflow: hidden;
+    padding: 0;
     text-align: center;
     border: 1px solid rgba(239,203,119,0.9);
     border-radius: 30px;
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.91), rgba(255,242,237,0.86));
+    background: #1c0915;
     box-shadow:
       0 0 0 7px rgba(255,255,255,0.18),
       0 0 0 9px rgba(218,174,77,0.28),
@@ -402,8 +399,13 @@
       0 34px 110px rgba(63,8,39,0.5);
   }
   .gala-event-mark {
-    margin: -12px auto 12px;
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    z-index: 7;
+    margin: 0;
     text-align: center;
+    transform: translateX(-50%);
   }
   .gala-monogram {
     display: grid;
@@ -413,14 +415,15 @@
     margin: 0 auto 7px;
     border: 1px solid #d2a74c;
     border-radius: 50%;
-    color: #9a315d;
-    background: #fffaf0;
+    color: #fff4cf;
+    background: rgba(72, 10, 44, 0.42);
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.7rem;
-    box-shadow: 0 5px 18px rgba(120,57,79,0.15);
+    box-shadow: 0 5px 18px rgba(0,0,0,0.22);
+    backdrop-filter: blur(8px);
   }
   .gala-event-name {
-    color: #86592b;
+    color: #fff1c3;
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 0.86rem;
     font-weight: 700;
@@ -454,21 +457,26 @@
     line-height: 1.55;
   }
   .gala-topbar {
+    position: absolute;
+    top: 24px;
+    left: 22px;
+    right: 22px;
+    z-index: 8;
     display: grid;
-    grid-template-columns: 84px 1fr 84px;
+    grid-template-columns: 100px 1fr 100px;
     align-items: center;
     gap: 8px;
-    margin-bottom: 18px;
   }
   .gala-nav-btn {
     border: 0;
     padding: 7px 4px;
-    color: #8b195c;
+    color: #fff6dc;
     background: transparent;
     font: inherit;
     font-size: 0.75rem;
     font-weight: 800;
     cursor: pointer;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.72);
   }
   .gala-nav-btn[hidden] {
     display: block;
@@ -483,112 +491,101 @@
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #f0cddd;
+    background: rgba(255,255,255,0.42);
     transition: transform 0.25s ease, background 0.25s ease;
   }
   .gala-progress span.active {
-    background: #d30f67;
+    background: #ffe39a;
+    box-shadow: 0 0 12px rgba(255,225,139,0.72);
     transform: scale(1.3);
   }
-  .gala-step { display: none; }
+  .gala-step {
+    display: none;
+    position: absolute;
+    inset: 0;
+  }
   .gala-step.active {
-    display: block;
-    animation: finaleRise 0.5s ease;
-  }
-  .moment-title {
-    margin: 6px 0 8px;
-    font-family: 'Playfair Display', Georgia, serif;
-    color: #b20f5a;
-    font-size: clamp(1.8rem, 7vw, 3rem);
-    line-height: 1.08;
-    overflow-wrap: anywhere;
-  }
-  .memory-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin: 20px 0;
+    animation: cinematicReveal 0.85s ease;
   }
-  .memory-card {
-    position: relative;
-    min-width: 0;
-    padding: 0;
+  .cinematic-wish {
+    place-items: center;
+    isolation: isolate;
     overflow: hidden;
-    aspect-ratio: 3 / 4;
-    border: 4px solid white;
-    border-radius: 18px;
-    background: #f8d7e6;
-    box-shadow: 0 8px 22px rgba(112, 25, 86, 0.16);
-    cursor: pointer;
   }
-  .memory-card img {
+  .cinematic-wish-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(9px) brightness(0.72);
-    transform: scale(1.08);
-    transition: filter 0.55s ease, transform 0.55s ease;
+    object-position: center 28%;
+    filter: brightness(0.48) saturate(1.08);
+    transform: scale(1.035);
+    animation: cinematicDrift 10s ease-out forwards;
   }
-  .memory-card.revealed img {
-    filter: none;
-    transform: scale(1);
+  .cinematic-wish:nth-of-type(2) .cinematic-wish-image {
+    object-position: center 34%;
   }
-  .memory-cover,
-  .memory-caption {
+  .cinematic-wish:nth-of-type(3) .cinematic-wish-image {
+    object-position: center 24%;
+  }
+  .cinematic-wish::after {
+    content: '';
     position: absolute;
     inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(23,4,16,0.42), transparent 28%, transparent 62%, rgba(23,4,16,0.74)),
+      radial-gradient(circle at center, transparent 12%, rgba(37,4,24,0.34) 82%);
+  }
+  .cinematic-wish-content {
+    position: relative;
+    z-index: 2;
     display: grid;
-    place-items: center;
-    padding: 12px;
+    justify-items: center;
+    width: min(760px, 84%);
+    padding: 112px 28px 38px;
     color: white;
-    font-size: 0.78rem;
+  }
+  .cinematic-wish-number {
+    color: #ffe8a8;
+    font-size: 0.72rem;
     font-weight: 800;
-    text-shadow: 0 1px 5px rgba(80, 0, 45, 0.85);
-    transition: opacity 0.35s ease;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.62);
   }
-  .memory-cover {
+  .cinematic-wish-text {
+    margin: 18px 0 14px;
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.35rem;
-    letter-spacing: 0.14em;
+    font-size: clamp(2.15rem, 5.4vw, 4.5rem);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.14;
+    text-wrap: balance;
+    text-shadow:
+      0 3px 22px rgba(0,0,0,0.9),
+      0 0 42px rgba(86, 4, 48, 0.48);
   }
-  .memory-caption {
-    align-content: end;
-    opacity: 0;
-    background: linear-gradient(transparent 40%, rgba(81, 4, 48, 0.82));
-  }
-  .memory-card.revealed .memory-cover { opacity: 0; }
-  .memory-card.revealed .memory-caption { opacity: 1; }
-  .wish-garden {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 20px 0 14px;
-  }
-  .wish-flower {
-    min-height: 72px;
-    border: 1px solid rgba(178,15,90,0.14);
-    border-radius: 18px;
-    color: #8b195c;
-    background: #fff7fb;
-    font: inherit;
+  .cinematic-wish-signature {
+    margin-bottom: 18px;
+    color: #fff1cb;
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 0.92rem;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    font-size: 1rem;
+    letter-spacing: 0.09em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.72);
   }
-  .wish-flower:hover,
-  .wish-flower.opened {
-    transform: translateY(-3px) scale(1.03);
-    background: #ffe4f0;
+  .cinematic-wish .gala-btn {
+    color: #6f1644;
+    background: linear-gradient(135deg, #fffdf7, #f6d891);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.32);
   }
-  .wish-message {
-    min-height: 3.4em;
-    margin: 8px auto;
-    max-width: 480px;
-    color: #74425f;
-    font-weight: 700;
-    line-height: 1.5;
+  @keyframes cinematicDrift {
+    to { transform: scale(1.105) translateY(-0.8%); }
+  }
+  @keyframes cinematicReveal {
+    from { opacity: 0; transform: scale(1.018); }
   }
   .gala-controls {
     display: flex;
@@ -709,136 +706,75 @@
     to { opacity: 0; transform: translate3d(var(--petal-drift),108vh,0) rotate(var(--petal-spin)); }
   }
 
-  .cake {
-    position: relative;
-    width: 270px;
-    height: 215px;
-    margin: 6px auto 0;
-  }
-  .cake-plate {
-    position: absolute;
-    left: 15px;
-    bottom: 4px;
-    width: 240px;
-    height: 20px;
-    border-radius: 50%;
-    background: #e6c8ff;
-    box-shadow: 0 8px 16px rgba(79, 35, 113, 0.15);
-  }
-  .cake-layer {
-    position: absolute;
-    left: 35px;
-    bottom: 19px;
-    width: 200px;
-    height: 82px;
-    border-radius: 16px 16px 24px 24px;
+  .fireworks-finale {
+    place-items: center;
+    isolation: isolate;
+    overflow: hidden;
+    color: white;
     background:
-      radial-gradient(circle at 18px 25px, #ffd400 0 5px, transparent 6px),
-      radial-gradient(circle at 55px 48px, #00c853 0 5px, transparent 6px),
-      radial-gradient(circle at 92px 24px, #7b2cbf 0 5px, transparent 6px),
-      radial-gradient(circle at 138px 50px, #ff1f7a 0 5px, transparent 6px),
-      radial-gradient(circle at 176px 24px, #ffd400 0 5px, transparent 6px),
-      linear-gradient(180deg, #ff8dbd, #ff4f9c);
-    border: 5px solid white;
-    box-shadow: 0 8px 0 #c81f6c, 0 15px 22px rgba(125, 20, 83, 0.18);
+      radial-gradient(circle at 18% 24%, rgba(255,81,155,0.22), transparent 24%),
+      radial-gradient(circle at 82% 30%, rgba(255,210,105,0.2), transparent 26%),
+      linear-gradient(160deg, #23081a 0%, #100511 48%, #27091f 100%);
   }
-  .cake-icing {
+  .fireworks-finale::before,
+  .fireworks-finale::after {
+    content: '';
     position: absolute;
-    left: 35px;
-    bottom: 87px;
-    width: 200px;
-    height: 34px;
-    border-radius: 50%;
-    background: #fff8dc;
-    border: 4px solid white;
-    box-shadow: 0 5px 0 #ffd4e7;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(circle, rgba(255,245,202,0.9) 0 1px, transparent 1.5px),
+      radial-gradient(circle, rgba(255,164,204,0.75) 0 1px, transparent 1.5px);
+    background-position: 0 0, 23px 31px;
+    background-size: 58px 58px, 73px 73px;
+    opacity: 0.32;
   }
-  .candles {
-    position: absolute;
-    left: 45px;
-    bottom: 114px;
-    width: 180px;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
+  .fireworks-finale::after {
+    background:
+      radial-gradient(circle at center, rgba(255,217,124,0.18), transparent 42%);
+    animation: finaleGlow 2.4s ease-in-out infinite alternate;
   }
-  .candle {
+  .finale-content {
     position: relative;
-    width: 12px;
-    height: 45px;
-    border-radius: 4px 4px 2px 2px;
-    background: repeating-linear-gradient(145deg, #7b2cbf 0 6px, #ffd400 6px 11px);
-    box-shadow: inset -2px 0 rgba(0,0,0,0.08);
+    z-index: 2;
+    width: min(760px, 86%);
+    padding: 112px 28px 38px;
   }
-  .candle:nth-child(2n) {
-    height: 52px;
-    background: repeating-linear-gradient(145deg, #ff1f7a 0 6px, #fff 6px 11px);
+  .finale-eyebrow {
+    color: #ffe49a;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
   }
-  .flame {
-    position: absolute;
-    left: 50%;
-    top: -23px;
-    width: 15px;
-    height: 24px;
-    border-radius: 50% 50% 48% 48%;
-    background: radial-gradient(circle at 50% 65%, white 0 15%, #ffd400 18% 45%, #ff7b00 48% 74%, transparent 76%);
-    filter: drop-shadow(0 0 8px #ffb100);
-    transform: translateX(-50%);
-    animation: flicker 0.75s ease-in-out infinite alternate;
-    transition: opacity 0.35s ease, transform 0.35s ease;
+  .fireworks-finale .gala-title {
+    margin: 18px 0 16px;
+    color: #fff8df;
+    font-size: clamp(3.2rem, 8vw, 6.6rem);
+    text-shadow:
+      0 0 22px rgba(255,209,111,0.44),
+      0 5px 30px rgba(0,0,0,0.84);
   }
-  .candle:nth-child(2n) .flame { animation-delay: -0.35s; }
-  .gala.wished .flame {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-8px) scale(0.2);
-  }
-  @keyframes flicker {
-    from { transform: translateX(-50%) rotate(-3deg) scale(0.95); }
-    to { transform: translateX(-50%) rotate(3deg) scale(1.08); }
-  }
-  .wish-prompt {
-    color: #8b195c;
-    font-weight: 700;
-  }
-  .finale {
-    margin-top: 14px;
-    animation: finaleRise 0.7s cubic-bezier(.2,.9,.2,1.2);
-  }
-  .gala.wished .wish-prompt,
-  .gala.wished #wishBtn { display: none; }
-  .finale h3 {
-    margin: 0;
+  .finale-message {
+    margin: 0 auto;
+    max-width: 640px;
+    color: #ffe9f2;
     font-family: 'Playfair Display', Georgia, serif;
-    color: #b20f5a;
-    font-size: clamp(1.6rem, 6vw, 2.5rem);
+    font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+    line-height: 1.55;
+    text-wrap: balance;
   }
-  .finale p {
-    margin: 8px auto 0;
-    max-width: 470px;
-    color: #74425f;
-    line-height: 1.5;
+  .fireworks-finale .gala-controls {
+    margin-top: 28px;
   }
-  @keyframes finaleRise {
-    from { opacity: 0; transform: translateY(14px) scale(0.94); }
+  .fireworks-finale .gala-btn.secondary {
+    color: #fff5cf;
+    border-color: rgba(255,229,157,0.48);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
   }
-
-  .birthday-letter {
-    display: none;
-    margin: 18px auto 0;
-    max-width: 500px;
-    padding: 22px;
-    text-align: left;
-    color: #573047;
-    line-height: 1.7;
-    white-space: pre-line;
-    border: 1px solid rgba(178,15,90,0.15);
-    border-radius: 18px;
-    background: #fffaf3;
-    box-shadow: inset 0 0 0 5px #fff0f7;
-  }
-  .birthday-letter.open {
-    display: block;
-    animation: finaleRise 0.55s ease;
+  @keyframes finaleGlow {
+    to { opacity: 0.72; transform: scale(1.08); }
   }
 
   .party-particle {
@@ -871,8 +807,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .curtain, .gala-stage, .flame, .party-particle, .firework,
-    .ambient-petal, .chandelier, .light-beam, .gold-trail {
+    .curtain, .gala-stage, .party-particle, .firework, .cinematic-wish-image,
+    .ambient-petal, .chandelier, .light-beam, .gold-trail, .fireworks-finale::after {
       animation: none !important;
       transition-duration: 0.01ms !important;
     }
@@ -888,10 +824,7 @@
       height: auto;
       max-height: none;
       min-height: 0;
-      padding:
-        max(18px, env(safe-area-inset-top))
-        14px
-        max(24px, env(safe-area-inset-bottom));
+      padding: 0;
       border: 1px solid rgba(239,203,119,0.8);
       border-radius: 24px;
     }
@@ -907,37 +840,42 @@
     .garden-vine.left { left: -62px; }
     .garden-vine.right { right: -62px; }
     .gala-event-mark {
-      margin-top: 2px;
+      top: max(14px, env(safe-area-inset-top));
     }
     .gala-topbar {
-      grid-template-columns: 70px 1fr 70px;
-      margin-bottom: 10px;
+      top: max(15px, env(safe-area-inset-top));
+      left: 12px;
+      right: 12px;
+      grid-template-columns: 78px 1fr 78px;
     }
-    .memory-grid {
-      gap: 7px;
+    .gala-monogram {
+      width: 40px;
+      height: 40px;
+      font-size: 1.4rem;
     }
-    .moment-title {
-      max-width: 100%;
-      font-size: clamp(1.6rem, 7vw, 1.9rem);
+    .gala-event-name,
+    .gala-flourish {
+      display: none;
     }
-    .memory-card {
-      border-width: 3px;
-      border-radius: 14px;
+    .cinematic-wish-content,
+    .finale-content {
+      width: 92%;
+      padding:
+        max(104px, calc(env(safe-area-inset-top) + 86px))
+        18px
+        max(28px, env(safe-area-inset-bottom));
     }
-    .memory-caption {
-      padding: 7px;
-      font-size: 0.62rem;
+    .cinematic-wish-text {
+      font-size: clamp(2rem, 10vw, 3.3rem);
     }
-    .cake {
-      transform: scale(0.82);
-      margin-top: -16px;
-      margin-bottom: -22px;
+    .cinematic-wish-image {
+      object-position: center 25%;
     }
     .gala-controls {
       align-items: stretch;
     }
     .gala-controls .gala-btn {
-      flex: 1 1 150px;
+      flex: 1 1 140px;
     }
   }
 </style>
@@ -987,97 +925,48 @@
         <span data-progress-step="3"></span>
         <span data-progress-step="4"></span>
       </div>
-      <button class="gala-nav-btn" id="skipToCandlesBtn" type="button">Candles →</button>
+      <button class="gala-nav-btn" id="musicBtn" type="button" aria-pressed="false">Music</button>
     </div>
 
-    <section class="gala-step active" data-gala-step="1">
-      <div class="gala-kicker">Moment 1 · Favorite glimpses</div>
-      <h2 class="moment-title">A few memories of you</h2>
-      <p class="gala-subtitle">Tap each portrait to uncover a favorite glimpse.</p>
-      <div class="memory-grid">
-        <button class="memory-card" type="button">
-          <img src="/tiles/photos/photo-96.jpg" alt="A favorite memory of Fatema" />
-          <span class="memory-cover">I</span>
-          <span class="memory-caption">Your smile makes ordinary moments feel special.</span>
-        </button>
-        <button class="memory-card" type="button">
-          <img src="/tiles/photos/photo-49.jpg" alt="A happy memory of Fatema" />
-          <span class="memory-cover">II</span>
-          <span class="memory-caption">You bring warmth wherever you go.</span>
-        </button>
-        <button class="memory-card" type="button">
-          <img src="/tiles/photos/photo-46.jpg" alt="A cherished memory of Fatema" />
-          <span class="memory-cover">III</span>
-          <span class="memory-caption">Life is brighter and more beautiful with you.</span>
-        </button>
-      </div>
-      <div class="gala-controls">
-        <button class="gala-btn" data-next-step="2" type="button">Continue to Your Birthday Wishes</button>
+    <section class="gala-step cinematic-wish active" data-gala-step="1">
+      <img class="cinematic-wish-image" src="/tiles/photos/photo-96.jpg" alt="Fatema smiling" />
+      <div class="cinematic-wish-content">
+        <div class="cinematic-wish-number">Birthday wish · one</div>
+        <h2 class="cinematic-wish-text">May your smile keep turning ordinary moments into something beautiful.</h2>
+        <div class="cinematic-wish-signature">For the joy you bring into every day</div>
+        <button class="gala-btn" data-next-step="2" type="button">The Next Wish</button>
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="2">
-      <div class="gala-kicker">Moment 2 · Six wishes</div>
-      <h2 class="moment-title">A year of beautiful things</h2>
-      <p class="gala-subtitle">Choose each word to reveal what I hope this year brings you.</p>
-      <div class="wish-garden">
-        <button class="wish-flower" type="button" data-wish="May your mornings feel peaceful and unhurried.">Peace</button>
-        <button class="wish-flower" type="button" data-wish="May laughter find you in all the little moments.">Joy</button>
-        <button class="wish-flower" type="button" data-wish="May your creativity keep turning ideas into beautiful things.">Creativity</button>
-        <button class="wish-flower" type="button" data-wish="May new adventures bring stories you love telling.">Adventure</button>
-        <button class="wish-flower" type="button" data-wish="May every dream receive the courage and time it deserves.">Dreams</button>
-        <button class="wish-flower" type="button" data-wish="May you always feel deeply loved, today and every day.">Love</button>
-      </div>
-      <p class="wish-message" id="wishMessage">Six wishes, each carrying something beautiful for you.</p>
-      <div class="gala-controls">
-        <button class="gala-btn" data-next-step="3" type="button">Continue to Your Birthday Candles</button>
+    <section class="gala-step cinematic-wish" data-gala-step="2">
+      <img class="cinematic-wish-image" src="/tiles/photos/photo-49.jpg" alt="A happy moment with Fatema" />
+      <div class="cinematic-wish-content">
+        <div class="cinematic-wish-number">Birthday wish · two</div>
+        <h2 class="cinematic-wish-text">May this year bring you peaceful mornings, endless laughter, and dreams that bloom.</h2>
+        <div class="cinematic-wish-signature">For every beautiful thing waiting ahead</div>
+        <button class="gala-btn" data-next-step="3" type="button">One More Wish</button>
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="3">
-      <div class="gala-kicker">Moment 3 · The birthday wish</div>
-      <h2 class="moment-title">Your candles are waiting</h2>
-      <p class="gala-subtitle">Close your eyes, think of one wonderful wish, and let the candles glow.</p>
-      <div class="cake" aria-label="Birthday cake with six candles">
-        <div class="cake-plate"></div>
-        <div class="cake-layer"></div>
-        <div class="cake-icing"></div>
-        <div class="candles">
-          <span class="candle"><span class="flame"></span></span>
-          <span class="candle"><span class="flame"></span></span>
-          <span class="candle"><span class="flame"></span></span>
-          <span class="candle"><span class="flame"></span></span>
-          <span class="candle"><span class="flame"></span></span>
-          <span class="candle"><span class="flame"></span></span>
-        </div>
-      </div>
-      <p class="wish-prompt" id="candlePrompt">Ready when you are.</p>
-      <div class="gala-controls">
-        <button class="gala-btn" id="wishBtn" type="button">Make a Wish</button>
-        <button class="gala-btn secondary" id="musicBtn" type="button" aria-pressed="false">Play Music</button>
+    <section class="gala-step cinematic-wish" data-gala-step="3">
+      <img class="cinematic-wish-image" src="/tiles/photos/photo-46.jpg" alt="A cherished portrait of Fatema" />
+      <div class="cinematic-wish-content">
+        <div class="cinematic-wish-number">Birthday wish · three</div>
+        <h2 class="cinematic-wish-text">May you always feel as deeply loved as you make me feel—today, and every day.</h2>
+        <div class="cinematic-wish-signature">With all my love, Husein</div>
+        <button class="gala-btn" data-next-step="4" type="button">Celebrate Fatema</button>
       </div>
     </section>
 
-    <section class="gala-step" data-gala-step="4">
-      <div class="gala-kicker">Moment 4 · With all my love</div>
-      <h2 class="gala-title">Happy Birthday,<br>Fatema!</h2>
-      <div class="finale" id="birthdayFinale">
-        <h3>May every wish come true.</h3>
-        <p>Happy birthday to the person who makes ordinary days feel like celebrations.</p>
+    <section class="gala-step fireworks-finale" data-gala-step="4">
+      <div class="finale-content">
+        <div class="finale-eyebrow">The whole sky is celebrating you</div>
+        <h2 class="gala-title">Happy Birthday,<br>Fatema!</h2>
+        <p class="finale-message">May this new year of your life be as radiant, vivid, and wonderful as you are.</p>
         <div class="gala-controls">
-          <button class="gala-btn secondary" id="letterBtn" type="button">Open Your Letter</button>
-          <button class="gala-btn secondary" id="replayWishBtn" type="button">Celebrate Again</button>
+          <button class="gala-btn secondary" id="replayGalaBtn" type="button">See Your Wishes Again</button>
           <button class="gala-btn" id="enterGamesBtn" type="button">Enter Your Game Room</button>
         </div>
-        <div class="birthday-letter" id="birthdayLetter">Fatema,
-
-Today is a celebration of your smile, your warmth, and every little thing that makes you wonderfully you.
-
-I hope this year brings you beautiful surprises, peaceful mornings, endless laughter, and more happiness than you can count.
-
-Happy Birthday, my love. The world is brighter with you in it.
-
-— Husein</div>
       </div>
     </section>
   </section>
@@ -1164,15 +1053,12 @@ Happy Birthday, my love. The world is brighter with you in it.
   const gala = document.getElementById('birthdayGala');
   const music = document.getElementById('birthdayMusic');
   const musicBtn = document.getElementById('musicBtn');
-  const letter = document.getElementById('birthdayLetter');
   const reopenGalaBtn = document.getElementById('reopenGalaBtn');
   const galaStage = document.querySelector('.gala-stage');
   const backBtn = document.getElementById('galaBackBtn');
-  const skipToCandlesBtn = document.getElementById('skipToCandlesBtn');
-  const progressKey = 'fatema-birthday-gala-step-v3';
+  const progressKey = 'fatema-birthday-gala-step-v4';
   const savedStep = Math.min(4, Math.max(1, Number(sessionStorage.getItem(progressKey)) || 1));
   let currentStep = savedStep;
-  let wishInProgress = false;
   let ambientPetalTimer = null;
 
   body.classList.add('birthday-mode');
@@ -1193,9 +1079,11 @@ Happy Birthday, my love. The world is brighter with you in it.
       dot.classList.toggle('active', Number(dot.dataset.progressStep) <= currentStep);
     });
     backBtn.hidden = currentStep === 1;
-    skipToCandlesBtn.hidden = currentStep >= 3;
     gala.classList.toggle('finale-mode', currentStep === 4);
     galaStage.scrollTo({ top: 0, behavior: 'smooth' });
+    if (currentStep === 4 && gala.classList.contains('opened')) {
+      launchGrandFinale();
+    }
   }
 
   setStep(savedStep);
@@ -1216,81 +1104,11 @@ Happy Birthday, my love. The world is brighter with you in it.
   });
 
   backBtn.addEventListener('click', () => {
-    if (currentStep === 4) resetCandleWish();
     if (currentStep > 1) setStep(currentStep - 1);
   });
 
-  skipToCandlesBtn.addEventListener('click', () => setStep(3));
-
-  document.querySelectorAll('.memory-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      card.classList.add('revealed');
-      card.setAttribute('aria-pressed', 'true');
-    });
-  });
-
-  document.querySelectorAll('.wish-flower').forEach((flower) => {
-    flower.addEventListener('click', () => {
-      flower.classList.add('opened');
-      document.getElementById('wishMessage').textContent = flower.dataset.wish;
-    });
-  });
-
-  document.getElementById('wishBtn').addEventListener('click', () => {
-    if (wishInProgress || gala.classList.contains('wished')) return;
-    wishInProgress = true;
-    const wishBtn = document.getElementById('wishBtn');
-    const prompt = document.getElementById('candlePrompt');
-    const countdown = ['Three…', 'Two…', 'One…'];
-    wishBtn.disabled = true;
-    let index = 0;
-    const tick = () => {
-      prompt.textContent = countdown[index];
-      index++;
-      if (index < countdown.length) {
-        setTimeout(tick, 700);
-        return;
-      }
-      setTimeout(() => {
-        prompt.textContent = 'May your wish come true! ✨';
-        gala.classList.add('wished');
-        launchFinale();
-        setTimeout(() => {
-          wishInProgress = false;
-          setStep(4);
-        }, 1400);
-      }, 700);
-    };
-    tick();
-  });
-
-  function resetCandleWish() {
-    gala.classList.remove('wished');
-    letter.classList.remove('open');
-    document.getElementById('letterBtn').textContent = 'Open Your Letter';
-    document.getElementById('candlePrompt').textContent = 'Ready when you are.';
-    const wishBtn = document.getElementById('wishBtn');
-    wishBtn.disabled = false;
-    wishBtn.textContent = 'Make a Wish';
-    wishInProgress = false;
-  }
-
-  document.getElementById('replayWishBtn').addEventListener('click', () => {
-    resetCandleWish();
-    setStep(3);
-  });
-
-  document.getElementById('letterBtn').addEventListener('click', () => {
-    const open = letter.classList.toggle('open');
-    document.getElementById('letterBtn').textContent = open ? 'Close Letter' : 'Open Your Letter';
-    if (open) {
-      const letterColors = ['#ff1f7a', '#ffd77d', '#ff8dbd', '#f7e5a5', '#7b2cbf'];
-      launchFireworks(10, letterColors, 110);
-      setTimeout(() => launchFireworks(7, letterColors, 135), 950);
-      requestAnimationFrame(() => {
-        letter.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      });
-    }
+  document.getElementById('replayGalaBtn').addEventListener('click', () => {
+    setStep(1);
   });
 
   document.getElementById('enterGamesBtn').addEventListener('click', () => {
@@ -1419,6 +1237,13 @@ Happy Birthday, my love. The world is brighter with you in it.
 
     launchFireworks(9, colors, 130);
     setTimeout(() => launchFireworks(8, ['#ffd77d', '#fff0b8', '#ff8dbd', '#d75888'], 145), 950);
+  }
+
+  function launchGrandFinale() {
+    const colors = ['#ff4f9c', '#ffd77d', '#fff0b8', '#d75888', '#9f68dc'];
+    launchFinale();
+    setTimeout(() => launchFireworks(11, colors, 105), 1750);
+    setTimeout(() => launchFireworks(13, colors, 90), 3400);
   }
 
   function launchFireworks(count, colors, delay) {

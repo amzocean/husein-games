@@ -172,24 +172,25 @@ husein-games/
 On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebration for Fatema:
 
 - Animated curtains open onto a birthday stage
-- A cake with six glowing candles has one "Make a Wish" interaction
-- Blowing out the candles launches confetti and fireworks
-- An optional birthday letter and music control are available
+- Three full-screen portraits are darkened and overlaid with large,
+  romantic birthday wishes
+- The fourth scene is a dedicated grand finale with layered fireworks,
+  confetti, and a birthday message
+- Music can be controlled throughout the cinematic sequence
 - The celebration can be replayed, and the Gala can be reopened after entering
   the Game Room
 - Music reports playback failures instead of failing silently
 - The overlay uses mobile viewport/safe-area sizing and locks background scroll
-- The curtain leads through four resumable moments: three photo memories,
-  six birthday wishes, a candle countdown, and the personal-letter finale
-- Opening the birthday letter launches its own pink-and-gold fireworks
+- The curtain leads through four resumable scenes: three image-wishes and
+  the fireworks finale
 - The Gala is staged as a royal romantic garden: blush velvet curtains with
   gold trim, chandelier light, floral architecture, moving light trails,
   continuous falling petals, and gold-framed content
 - Opening the curtains starts the music (when browser playback allows it) and
-  launches a two-wave firework and petal fanfare; the candle and letter finales
-  each add their own layered firework sequences
+  launches a two-wave firework and petal fanfare; the final scene adds its
+  own extended multi-wave fireworks sequence
 - Progress is stored in `sessionStorage` for the current browser session, with
-  Back and Skip-to-candles controls
+  Back, replay, and music controls
 - The normal game cards remain accessible as decorated party booths
 - Photo Tiles is highlighted as "Today's Birthday Game"
 
@@ -197,7 +198,7 @@ Outside that exact date, the existing landing page is unchanged. For local devel
 `?birthday=preview` to the root URL (for example, `http://localhost:3000/?birthday=preview`) to
 activate the gala without changing the device date. The music currently reuses
 `public/valentines/music.mp3`; playback is requested when the user opens the
-curtains and can also be controlled from the candle moment.
+curtains and can also be controlled from the top bar.
 For visual review of a specific opened moment, add `&open=1&step=1` through
 `&open=1&step=4`.
 
