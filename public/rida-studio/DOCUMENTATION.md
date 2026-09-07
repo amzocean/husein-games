@@ -1,8 +1,10 @@
 # Fatema's Rida Studio — `public/rida-studio/`
 
 A permanent, PIN-protected game where Fatema designs a culturally accurate
-Dawoodi Bohra rida and a cheerful scene, then generates **exactly two** live
-AI keepsake images per request via OpenAI's `gpt-image-2` (`images/edits`).
+Dawoodi Bohra rida and a cheerful scene. It generates one medium-quality live
+AI keepsake image per request via OpenAI's `gpt-image-2` (`images/edits`).
+The result can be regenerated repeatedly with the same selections until Fatema
+is satisfied.
 The direct page and API are always available for testing and use. Its Game
 Room card remains hidden until **September 6, 2026 UTC**, alongside the
 birthday gala, and stays visible afterward.
@@ -17,7 +19,7 @@ birthday gala, and stays visible afterward.
    embroidery on/above the panel. The design is adapted to both pieces.
 4. **Choose photograph** — photography treatment and location only.
 5. **Review look** — a summary of every selection before generation.
-6. **Generate + play** — while the server creates two candidates, the loading
+6. **Generate + play** — while the server creates the first candidate, the loading
    card offers **Pattern Atelier**, an untimed sequence-memory game. Six
    jewel-like tiles display an increasingly long pattern for Fatema to repeat.
    Correct rounds increase score and combo, mistakes consume one of three
@@ -26,8 +28,9 @@ birthday gala, and stays visible afterward.
    request. An elapsed-status line explains the generation phase. OpenAI
    requests have a four-minute server timeout, after which the UI returns to
    Review with a retry message.
-7. **Results** — two candidate cards, each downloadable, plus a "make
-   another look" button to go back and try again.
+7. **Results** — the candidate is immediately downloadable. Fatema can
+   repeatedly replace it with a fresh candidate using the same requirements,
+   or use "make another look" to return to the design flow.
 
 Descriptions are sanitized and capped at 300 characters. Input precedence is
 upload first, description second, curated options third.
@@ -49,8 +52,8 @@ views instead of all ten identity photos, reducing competition from reference
 clothing while retaining Fatema's identity.
 
 When uploads are used, reference ordering is deliberately optimized for image
-fidelity: the primary identity image is first, the base cloth is second, the
-optional tailoring design is next, and the remaining identity views follow.
+fidelity: the base cloth is first, the optional tailoring design is next, and
+the reduced identity-reference set follows.
 The locked prompt treats the uploaded cloth as mandatory and requires its exact
 colors, print, motif scale, spacing, weave, sheen, and texture to remain clearly
 visible across both pardi and ghagra in both generated candidates.

@@ -17,7 +17,7 @@
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 11</span>
+    <span class="build-badge">Build 12</span>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
 
@@ -210,21 +210,24 @@
       <div class="screen-head">
         <span class="step-pill">Step 5 of 5</span>
         <h2>Choose your favorite 💫</h2>
-        <p class="subtle">Two candidates were generated. Download the one you love — or try another look.</p>
+        <p class="subtle" id="resultsSubtitle">Download this candidate, or regenerate a fresh one using the same requirements.</p>
       </div>
 
       <div class="results-grid" id="resultsGrid"></div>
 
+      <p class="subtle" id="regenerationStatus" aria-live="polite"></p>
+      <p class="error-text" id="resultsError" role="alert"></p>
       <div class="nav-row">
+        <button class="btn btn-primary" id="regenerateBtn" type="button">✨ Regenerate with the same requirements</button>
         <button class="btn btn-ghost" id="newLookBtn" type="button">🪄 Make another look</button>
       </div>
     </section>
 
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 11</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 12</footer>
 </div>
 
-<script src="/rida-studio/app-v6.js?build=11"></script>
+<script src="/rida-studio/app-v6.js?build=12"></script>
 </body>
 </html>

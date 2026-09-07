@@ -513,6 +513,40 @@
     showScreen('review');
   });
 
+  function buildGenerationPayload() {
+    return {
+      ...state.selections,
+      baseDescription: el('baseDescription').value.trim(),
+      designDescription: el('designDescription').value.trim(),
+      embroideryDescription: el('embroideryDescription').value.trim(),
+      baseClothPhoto: state.baseClothPhoto
+        ? { mimeType: state.baseClothPhoto.mimeType, base64: state.baseClothPhoto.base64 }
+        : null,
+      designPhoto: state.designPhoto
+        ? { mimeType: state.designPhoto.mimeType, base64: state.designPhoto.base64 }
+        : null,
+    };
+  }
+
+  async function requestCandidate() {
+    return api(`${API}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      timeoutMs: 4 * 60 * 1000 + 15 * 1000,
+      body: JSON.stringify(buildGenerationPayload()),
+    });
+  }
+
+  function generationErrorMessage(err) {
+    if (err.status === 504) {
+      return 'That image request took longer than four minutes and was stopped. Please try again.';
+    }
+    if (err.status === 409) {
+      return 'A generation is already running for this session — please wait for it to finish.';
+    }
+    return `Something went wrong: ${err.message}. You can try again.`;
+  }
+
   el('generateBtn').addEventListener('click', async () => {
     const btn = el('generateBtn');
     btn.disabled = true;
@@ -521,23 +555,7 @@
     startPatternGame();
     startGenerationClock();
     try {
-      const data = await api(`${API}/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        timeoutMs: 4 * 60 * 1000 + 15 * 1000,
-        body: JSON.stringify({
-          ...state.selections,
-          baseDescription: el('baseDescription').value.trim(),
-          designDescription: el('designDescription').value.trim(),
-          embroideryDescription: el('embroideryDescription').value.trim(),
-          baseClothPhoto: state.baseClothPhoto
-            ? { mimeType: state.baseClothPhoto.mimeType, base64: state.baseClothPhoto.base64 }
-            : null,
-          designPhoto: state.designPhoto
-            ? { mimeType: state.designPhoto.mimeType, base64: state.designPhoto.base64 }
-            : null,
-        }),
-      });
+      const data = await requestCandidate();
       state.lastResults = data.images;
       renderResults(data.images);
       stopPatternGame();
@@ -548,15 +566,15 @@
       stopGenerationClock();
       showScreen('review');
       if (err.status === 504) {
-        el('generateError').textContent = 'That image request took longer than four minutes and was stopped. Please try again; it did not consume a generation.';
+        el('generateError').textContent = generationErrorMessage(err);
       } else if (err.status === 409) {
-        el('generateError').textContent = 'A generation is already running for this session — please wait for it to finish.';
+        el('generateError').textContent = generationErrorMessage(err);
       } else if (err.status === 401) {
         el('generateError').textContent = 'Your session expired — please log in again.';
         el('logoutBtn').hidden = true;
         showScreen('welcome');
       } else {
-        el('generateError').textContent = `Something went wrong: ${err.message}. You can try again — nothing was charged for this attempt if it failed before generating.`;
+        el('generateError').textContent = generationErrorMessage(err);
       }
     } finally {
       btn.disabled = false;
@@ -578,7 +596,34 @@
       `;
       grid.appendChild(card);
     });
+    el('resultsSubtitle').textContent =
+      'Download this candidate, or regenerate a fresh one using the same requirements.';
+    el('regenerateBtn').hidden = false;
+    el('regenerationStatus').textContent = '';
   }
+
+  el('regenerateBtn').addEventListener('click', async () => {
+    const btn = el('regenerateBtn');
+    btn.disabled = true;
+    el('resultsError').textContent = '';
+    el('regenerationStatus').textContent =
+      'Creating a fresh candidate with the same requirements…';
+    try {
+      const data = await requestCandidate();
+      state.lastResults = data.images;
+      renderResults(state.lastResults);
+    } catch (err) {
+      if (err.status === 401) {
+        el('logoutBtn').hidden = true;
+        showScreen('welcome');
+      } else {
+        el('resultsError').textContent = generationErrorMessage(err);
+        el('regenerationStatus').textContent = '';
+      }
+    } finally {
+      btn.disabled = false;
+    }
+  });
 
   el('newLookBtn').addEventListener('click', () => {
     showScreen('rida');

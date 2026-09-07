@@ -11,7 +11,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
 - **📖 Hidaayaat Lookup** — A static single-player search page (`public/quote-search/`) over 142 quotes across 2 volumes of Raudat Hidayaat.
-- **🌸 Fatema's Rida Studio** — A directly accessible, PIN-protected single-player game. Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene and generates 2 live AI keepsake images per request (`gpt-image-2`) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
+- **🌸 Fatema's Rida Studio** — A directly accessible, PIN-protected single-player game. Fatema configures a culturally accurate Dawoodi Bohra rida + cheerful scene, generates one live AI keepsake image per request, and can repeatedly regenerate it with the same requirements (`gpt-image-2`) → [Rida Studio docs](public/rida-studio/DOCUMENTATION.md)
 - **📷 Fatema's Photo Studio** — A directly accessible, PIN-protected freeform studio. Fatema describes a scene and generates 2 guarded AI pictures that preserve her identity and authentic rida (`gpt-image-2`) → [Photo Studio docs](public/photo-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
@@ -293,8 +293,9 @@ She can upload a design example, describe the full design, or select the
 panel and lace (including None) and describe embroidery. The coordinated
 design applies to both pardi and ghagra. Descriptions are sanitized and
 capped at 300 characters. She then chooses a photorealistic photography
-treatment and location. The game generates exactly 2 live AI images per
-request via OpenAI `gpt-image-2`
+treatment and location. The game generates one medium-quality live AI image
+per request via OpenAI `gpt-image-2`; the results screen can repeatedly replace
+it with a new variation without repeating the selections
 (`POST /v1/images/edits`, multipart `image[]` identity references).
 
 Full flow, security/privacy design, locked-prompt design, env vars, local
