@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-9" />
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-10" />
 </head>
 <body>
 
@@ -17,7 +17,7 @@
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 9</span>
+    <span class="build-badge">Build 10</span>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
 
@@ -178,17 +178,29 @@
         <div class="waiting-game">
           <div class="waiting-game-head">
             <div>
-              <strong>Petal Pop 🌸</strong>
-              <span>Catch as many as you can in 20 seconds!</span>
+              <strong>Pattern Atelier ✨</strong>
+              <span>Watch the sequence, then recreate it. Every round grows.</span>
             </div>
             <div class="waiting-score" aria-live="polite">
-              <span>Score <b id="petalScore">0</b></span>
-              <span>Time <b id="petalTime">20</b>s</span>
+              <span>Round <b id="patternRound">1</b></span>
+              <span>Score <b id="patternScore">0</b></span>
             </div>
           </div>
-          <div class="petal-field" id="petalField" aria-label="Petal Pop game area"></div>
-          <button class="btn btn-ghost petal-start" id="petalStartBtn" type="button">Play Petal Pop</button>
-          <p class="petal-message" id="petalMessage" aria-live="polite"></p>
+          <div class="pattern-status-row">
+            <span id="patternLives" aria-label="Three lives">♥ ♥ ♥</span>
+            <span>Combo <b id="patternCombo">×0</b></span>
+            <span>Best <b id="patternBest">0</b></span>
+          </div>
+          <div class="pattern-board" id="patternBoard" aria-label="Pattern matching game">
+            <button class="pattern-tile rose" type="button" data-pattern-tile="0" aria-label="Rose">✦</button>
+            <button class="pattern-tile gold" type="button" data-pattern-tile="1" aria-label="Gold">◆</button>
+            <button class="pattern-tile mint" type="button" data-pattern-tile="2" aria-label="Mint">❋</button>
+            <button class="pattern-tile lilac" type="button" data-pattern-tile="3" aria-label="Lilac">●</button>
+            <button class="pattern-tile coral" type="button" data-pattern-tile="4" aria-label="Coral">♥</button>
+            <button class="pattern-tile sky" type="button" data-pattern-tile="5" aria-label="Sky">✧</button>
+          </div>
+          <p class="pattern-message" id="patternMessage" aria-live="polite">The first pattern will begin automatically.</p>
+          <button class="btn btn-ghost pattern-restart" id="patternRestartBtn" type="button">Restart Pattern</button>
         </div>
       </div>
     </section>
@@ -210,9 +222,9 @@
 
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 9</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 10</footer>
 </div>
 
-<script src="/rida-studio/app-v6.js?build=9"></script>
+<script src="/rida-studio/app-v6.js?build=10"></script>
 </body>
 </html>

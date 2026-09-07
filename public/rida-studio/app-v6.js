@@ -1,4 +1,4 @@
-// Fatema's Rida Studio — browser UI logic (Build 6).
+// Fatema's Rida Studio — browser UI logic.
 // No API key and no PIN ever live in this file or in any network response it
 // reads. All mutation requests are JSON; the server enforces the real rules
 // (auth, allowlisted options, rate limits) — this file only renders and
@@ -24,14 +24,29 @@
   };
 
   const el = (id) => document.getElementById(id);
-  const PETAL_GAME_SECONDS = 20;
-  const PETALS = ['🌸', '🌺', '🌼', '💮', '💖'];
-  const petalGame = {
+  const PATTERN_TILE_COUNT = 6;
+  const PATTERN_START_LENGTH = 3;
+  const PATTERN_BEST_KEY = 'fatemaRidaPatternBestV1';
+  function readPatternBest() {
+    try {
+      const saved = Number(localStorage.getItem(PATTERN_BEST_KEY));
+      return Number.isFinite(saved) && saved > 0 ? saved : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  const patternGame = {
     active: false,
+    acceptingInput: false,
+    round: 1,
     score: 0,
-    seconds: PETAL_GAME_SECONDS,
-    spawnTimer: null,
-    clockTimer: null,
+    combo: 0,
+    lives: 3,
+    best: readPatternBest(),
+    sequence: [],
+    inputIndex: 0,
+    timers: [],
   };
   let generationClockTimer = null;
 
@@ -139,73 +154,160 @@
       .join('');
   }
 
-  function clearPetalTimers() {
-    clearTimeout(petalGame.spawnTimer);
-    clearInterval(petalGame.clockTimer);
-    petalGame.spawnTimer = null;
-    petalGame.clockTimer = null;
-  }
-
-  function renderPetalScore() {
-    el('petalScore').textContent = String(petalGame.score);
-    el('petalTime').textContent = String(petalGame.seconds);
-  }
-
-  function spawnPetal() {
-    if (!petalGame.active) return;
-    const field = el('petalField');
-    field.innerHTML = '';
-    const target = document.createElement('button');
-    target.type = 'button';
-    target.className = 'petal-target';
-    target.textContent = PETALS[Math.floor(Math.random() * PETALS.length)];
-    target.setAttribute('aria-label', 'Catch this flower');
-    target.style.left = `${10 + Math.random() * 80}%`;
-    target.style.top = `${14 + Math.random() * 72}%`;
-    target.addEventListener('click', () => {
-      if (!petalGame.active) return;
-      petalGame.score += 1;
-      renderPetalScore();
-      clearTimeout(petalGame.spawnTimer);
-      spawnPetal();
+  function clearPatternTimers() {
+    patternGame.timers.forEach((timer) => clearTimeout(timer));
+    patternGame.timers = [];
+    document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
+      tile.classList.remove('lit', 'wrong');
     });
-    field.appendChild(target);
-    petalGame.spawnTimer = setTimeout(spawnPetal, 850);
   }
 
-  function endPetalGame() {
-    if (!petalGame.active) return;
-    petalGame.active = false;
-    clearPetalTimers();
-    el('petalField').innerHTML = '';
-    el('petalStartBtn').hidden = false;
-    el('petalStartBtn').textContent = 'Play again';
-    el('petalMessage').textContent = `Lovely! You caught ${petalGame.score} flower${petalGame.score === 1 ? '' : 's'} ✨`;
+  function savePatternBest() {
+    try {
+      localStorage.setItem(PATTERN_BEST_KEY, String(patternGame.best));
+    } catch {
+      // The game remains fully playable when browser storage is unavailable.
+    }
   }
 
-  function startPetalGame() {
-    clearPetalTimers();
-    petalGame.active = true;
-    petalGame.score = 0;
-    petalGame.seconds = PETAL_GAME_SECONDS;
-    renderPetalScore();
-    el('petalStartBtn').hidden = true;
-    el('petalMessage').textContent = '';
-    spawnPetal();
-    petalGame.clockTimer = setInterval(() => {
-      petalGame.seconds -= 1;
-      renderPetalScore();
-      if (petalGame.seconds <= 0) endPetalGame();
-    }, 1000);
+  function schedulePattern(callback, delay) {
+    const timer = setTimeout(callback, delay);
+    patternGame.timers.push(timer);
+    return timer;
   }
 
-  function stopPetalGame() {
-    petalGame.active = false;
-    clearPetalTimers();
-    el('petalField').innerHTML = '';
+  function renderPatternStats() {
+    el('patternRound').textContent = String(patternGame.round);
+    el('patternScore').textContent = String(patternGame.score);
+    el('patternCombo').textContent = `×${patternGame.combo}`;
+    el('patternBest').textContent = String(patternGame.best);
+    el('patternLives').textContent = Array.from(
+      { length: 3 },
+      (_, index) => index < patternGame.lives ? '♥' : '♡',
+    ).join(' ');
   }
 
-  el('petalStartBtn').addEventListener('click', startPetalGame);
+  function setPatternTilesEnabled(enabled) {
+    document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
+      tile.disabled = !enabled;
+    });
+  }
+
+  function flashPatternTile(index, className = 'lit') {
+    const tile = document.querySelector(`[data-pattern-tile="${index}"]`);
+    if (!tile) return;
+    tile.classList.remove(className);
+    void tile.offsetWidth;
+    tile.classList.add(className);
+    schedulePattern(() => tile.classList.remove(className), 280);
+  }
+
+  function playPatternSequence() {
+    if (!patternGame.active) return;
+    clearPatternTimers();
+    patternGame.acceptingInput = false;
+    patternGame.inputIndex = 0;
+    setPatternTilesEnabled(false);
+    el('patternMessage').textContent = `Watch carefully — ${patternGame.sequence.length} symbols.`;
+    const beat = Math.max(390, 720 - patternGame.round * 24);
+    patternGame.sequence.forEach((tileIndex, index) => {
+      schedulePattern(() => flashPatternTile(tileIndex), 500 + index * beat);
+    });
+    schedulePattern(() => {
+      if (!patternGame.active) return;
+      patternGame.acceptingInput = true;
+      setPatternTilesEnabled(true);
+      el('patternMessage').textContent = 'Your turn — recreate the pattern.';
+    }, 650 + patternGame.sequence.length * beat);
+  }
+
+  function endPatternGame() {
+    patternGame.active = false;
+    patternGame.acceptingInput = false;
+    clearPatternTimers();
+    setPatternTilesEnabled(false);
+    el('patternMessage').textContent =
+      `Atelier complete — ${patternGame.score} points across ${patternGame.round} rounds. Restart anytime.`;
+    el('patternRestartBtn').textContent = 'Play Again';
+  }
+
+  function startPatternGame() {
+    clearPatternTimers();
+    patternGame.active = true;
+    patternGame.acceptingInput = false;
+    patternGame.round = 1;
+    patternGame.score = 0;
+    patternGame.combo = 0;
+    patternGame.lives = 3;
+    patternGame.inputIndex = 0;
+    patternGame.sequence = Array.from(
+      { length: PATTERN_START_LENGTH },
+      () => Math.floor(Math.random() * PATTERN_TILE_COUNT),
+    );
+    el('patternRestartBtn').textContent = 'Restart Pattern';
+    renderPatternStats();
+    playPatternSequence();
+  }
+
+  function stopPatternGame() {
+    patternGame.active = false;
+    patternGame.acceptingInput = false;
+    clearPatternTimers();
+    setPatternTilesEnabled(false);
+  }
+
+  function handlePatternTile(tileIndex) {
+    if (!patternGame.active || !patternGame.acceptingInput) return;
+    flashPatternTile(tileIndex);
+    const expected = patternGame.sequence[patternGame.inputIndex];
+    if (tileIndex !== expected) {
+      patternGame.acceptingInput = false;
+      patternGame.lives -= 1;
+      patternGame.combo = 0;
+      renderPatternStats();
+      flashPatternTile(tileIndex, 'wrong');
+      if (patternGame.lives <= 0) {
+        schedulePattern(endPatternGame, 550);
+        return;
+      }
+      setPatternTilesEnabled(false);
+      el('patternMessage').textContent = 'Not quite — the atelier will show that pattern again.';
+      schedulePattern(playPatternSequence, 900);
+      return;
+    }
+
+    patternGame.inputIndex += 1;
+    if (patternGame.inputIndex < patternGame.sequence.length) {
+      el('patternMessage').textContent =
+        `${patternGame.inputIndex} of ${patternGame.sequence.length} correct…`;
+      return;
+    }
+
+    patternGame.acceptingInput = false;
+    setPatternTilesEnabled(false);
+    patternGame.combo += 1;
+    patternGame.score += patternGame.round * 100 + patternGame.combo * 25;
+    patternGame.best = Math.max(patternGame.best, patternGame.score);
+    savePatternBest();
+    renderPatternStats();
+    el('patternMessage').textContent =
+      patternGame.combo >= 3
+        ? `Perfect ×${patternGame.combo}! The next pattern is longer.`
+        : 'Beautifully matched! Adding one more symbol…';
+    patternGame.round += 1;
+    patternGame.sequence.push(Math.floor(Math.random() * PATTERN_TILE_COUNT));
+    schedulePattern(() => {
+      renderPatternStats();
+      playPatternSequence();
+    }, 950);
+  }
+
+  document.querySelectorAll('[data-pattern-tile]').forEach((tile) => {
+    tile.addEventListener('click', () => handlePatternTile(Number(tile.dataset.patternTile)));
+  });
+  el('patternRestartBtn').addEventListener('click', startPatternGame);
+  renderPatternStats();
+  setPatternTilesEnabled(false);
 
   function startGenerationClock() {
     clearInterval(generationClockTimer);
@@ -416,7 +518,7 @@
     btn.disabled = true;
     el('generateError').textContent = '';
     showScreen('loading');
-    startPetalGame();
+    startPatternGame();
     startGenerationClock();
     try {
       const data = await api(`${API}/generate`, {
@@ -438,11 +540,11 @@
       });
       state.lastResults = data.images;
       renderResults(data.images);
-      stopPetalGame();
+      stopPatternGame();
       stopGenerationClock();
       showScreen('results');
     } catch (err) {
-      stopPetalGame();
+      stopPatternGame();
       stopGenerationClock();
       showScreen('review');
       if (err.status === 504) {

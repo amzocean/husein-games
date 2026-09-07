@@ -18,11 +18,14 @@ birthday gala, and stays visible afterward.
 4. **Choose photograph** — photography treatment and location only.
 5. **Review look** — a summary of every selection before generation.
 6. **Generate + play** — while the server creates two candidates, the loading
-   card offers a replayable 20-second **Petal Pop** flower-catching game. The
-   game is entirely local and never interrupts or duplicates the API request.
-   An elapsed-status line explains the current phase. OpenAI requests have a
-   four-minute server timeout, after which the UI returns to Review with a
-   retry message.
+   card offers **Pattern Atelier**, an untimed sequence-memory game. Six
+   jewel-like tiles display an increasingly long pattern for Fatema to repeat.
+   Correct rounds increase score and combo, mistakes consume one of three
+   lives and replay the same pattern, and the game can be restarted without
+   limit. It is entirely local and never interrupts or duplicates the API
+   request. An elapsed-status line explains the generation phase. OpenAI
+   requests have a four-minute server timeout, after which the UI returns to
+   Review with a retry message.
 7. **Results** — two candidate cards, each downloadable, plus a "make
    another look" button to go back and try again.
 
