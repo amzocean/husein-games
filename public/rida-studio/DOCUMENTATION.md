@@ -29,6 +29,13 @@ birthday gala, and stays visible afterward.
 Descriptions are sanitized and capped at 300 characters. Input precedence is
 upload first, description second, curated options third.
 
+When uploads are used, reference ordering is deliberately optimized for image
+fidelity: the primary identity image is first, the base cloth is second, the
+optional tailoring design is next, and the remaining identity views follow.
+The locked prompt treats the uploaded cloth as mandatory and requires its exact
+colors, print, motif scale, spacing, weave, sheen, and texture to remain clearly
+visible across both pardi and ghagra in both generated candidates.
+
 ## Files
 
 ```
