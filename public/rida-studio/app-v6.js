@@ -18,8 +18,6 @@
       style: null,
       location: null,
     },
-    remaining: null,
-    dailyLimit: 10,
     lastResults: null,
     baseClothPhoto: null,
     designPhoto: null,
@@ -139,7 +137,6 @@
     el('summaryCard').innerHTML = rows
       .map(([label, value]) => `<div class="summary-row"><div><span class="label">${label}</span><span class="value">${value}</span></div></div>`)
       .join('');
-    renderAllowanceNote('allowanceNote');
   }
 
   function clearPetalTimers() {
@@ -231,24 +228,10 @@
     generationClockTimer = null;
   }
 
-  function renderAllowanceNote(targetId) {
-    const node = el(targetId);
-    if (!node) return;
-    if (state.remaining === null) {
-      node.textContent = '';
-      return;
-    }
-    node.textContent = state.remaining > 0
-      ? `You have ${state.remaining} of ${state.dailyLimit} generations left today.`
-      : `You've used all ${state.dailyLimit} generations for today (UTC) — please come back tomorrow!`;
-  }
-
   async function refreshSessionInfo() {
     try {
       const info = await api(`${API}/session`);
       if (info.authenticated) {
-        state.remaining = info.remaining;
-        state.dailyLimit = info.dailyLimit;
         return true;
       }
     } catch (err) {
@@ -260,8 +243,6 @@
   async function loadOptionsAndEnterStudio() {
     const data = await api(`${API}/options`);
     state.options = data.options;
-    state.remaining = data.remaining;
-    state.dailyLimit = data.dailyLimit;
     renderAllGrids();
     el('logoutBtn').hidden = false;
     showScreen('rida');
@@ -455,7 +436,6 @@
             : null,
         }),
       });
-      state.remaining = data.remaining;
       state.lastResults = data.images;
       renderResults(data.images);
       stopPetalGame();
@@ -465,9 +445,7 @@
       stopPetalGame();
       stopGenerationClock();
       showScreen('review');
-      if (err.status === 429) {
-        el('generateError').textContent = `Daily limit reached: ${err.message}`;
-      } else if (err.status === 504) {
+      if (err.status === 504) {
         el('generateError').textContent = 'That image request took longer than four minutes and was stopped. Please try again; it did not consume a generation.';
       } else if (err.status === 409) {
         el('generateError').textContent = 'A generation is already running for this session — please wait for it to finish.';
@@ -498,7 +476,6 @@
       `;
       grid.appendChild(card);
     });
-    renderAllowanceNote('resultsAllowanceNote');
   }
 
   el('newLookBtn').addEventListener('click', () => {

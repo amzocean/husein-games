@@ -17,15 +17,14 @@ requests.
    or select a panel and lace (including explicit None choices) and describe
    embroidery on/above the panel. The design is adapted to both pieces.
 4. **Choose photograph** — photography treatment and location only.
-6. **Review look** — a summary of every selection, plus remaining daily
-   allowance.
-7. **Generate + play** — while the server creates two candidates, the loading
+5. **Review look** — a summary of every selection before generation.
+6. **Generate + play** — while the server creates two candidates, the loading
    card offers a replayable 20-second **Petal Pop** flower-catching game. The
    game is entirely local and never interrupts or duplicates the API request.
    An elapsed-status line explains the current phase. OpenAI requests have a
    four-minute server timeout, after which the UI returns to Review with a
-   retry message and does not consume the daily allowance.
-8. **Results** — two candidate cards, each downloadable, plus a "make
+   retry message.
+7. **Results** — two candidate cards, each downloadable, plus a "make
    another look" button to go back and try again.
 
 Descriptions are sanitized and capped at 300 characters. Input precedence is
@@ -45,7 +44,7 @@ lib/ridaStudio/        Server-side logic, mounted by the root server.js
   promptBuilder.js       Locked prompt template + bounded description handling
   identity.js             Reference-photo resolution (RIDA_REFERENCE_PHOTOS env, or local .birthday-studio/rida-identity.json fallback)
   session.js               PIN login, failed-attempt lockout + opaque in-memory session tokens
-  rateLimit.js               Shared 10/UTC-day limiter + concurrency guard
+  rateLimit.js               Shared cross-studio concurrency guard
   router.js                  Express router: /login, /logout, /session, /options, /generate
   selftest.js                 Self-test suite (see below) — never calls OpenAI
 
@@ -101,12 +100,9 @@ a fresh Render deploy.
    **JSON only**, rejects unexpected fields and unknown option values. Base
    cloth, full design, and embroidery descriptions are sanitized and capped
    at 300 characters.
-4. **Rate limiting: 10 requests/UTC day for the PIN-protected user**, enforced
-   in `lib/ridaStudio/rateLimit.js` *before* calling OpenAI. The allowance is
-   shared across sessions, so logging out and back in cannot reset it. Only successful
-   generations consume allowance — validation failures and OpenAI API
-   errors do not. A `generating` flag is set synchronously (before any
-   `await`), so two near-simultaneous requests for the same session can
+4. **No daily generation limit.** A shared `generating` flag is set
+   synchronously in `lib/ridaStudio/rateLimit.js` before calling OpenAI, so
+   two near-simultaneous requests across Rida Studio and Photo Studio can
    never both proceed; the second gets an explicit `409`.
 5. **Identity references never reach the browser.** `RIDA_REFERENCE_PHOTOS`
    (or the local fallback file) is resolved only on the server, inside the
@@ -221,7 +217,7 @@ Covers: option/selection validation, locked prompt content (required +
 forbidden clauses), identity resolution from both the env var and the local
 fallback file (including traversal rejection, and restoring any pre-existing
 local file exactly), PIN login success/failure and lockout, cookie-based auth,
-logout, unauthenticated rejection, shared daily rate-limit enforcement, concurrency
+logout, unauthenticated rejection, unlimited sequential generation, concurrency
 rejection, the two-image response shape, and `no-store` headers — all with
 a fetch guard that fails loudly if anything ever tries to reach
 `api.openai.com`, and without ever reading real photo bytes (a synthetic

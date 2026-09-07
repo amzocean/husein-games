@@ -31,7 +31,7 @@ app.use('/rida-studio/api', ridaStudioRouter.createRouter());
 
 // ============================================================
 // FATEMA'S PHOTO STUDIO — freeform, guarded AI portrait generator.
-// Shares Rida Studio auth configuration, references, and daily allowance.
+// Shares Rida Studio auth configuration, references, and concurrency guard.
 // ============================================================
 const photoStudioRouter = require('./lib/photoStudio/router');
 app.use('/photo-studio/api', photoStudioRouter.createRouter());

@@ -345,13 +345,6 @@ h1, h2, h3 {
 .summary-row .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #a9829e; display: block; }
 .summary-row .value { font-weight: 700; color: var(--ink); }
 
-.allowance-note {
-  text-align: center;
-  color: #7a5b74;
-  font-size: 0.85rem;
-  margin: 14px 4px 0;
-}
-
 .loading-card { padding: 48px 22px; }
 .loading-spinner {
   font-size: 3rem;

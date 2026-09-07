@@ -313,14 +313,6 @@ main { min-height: 70vh; }
 }
 .safety-note strong { color: var(--berry); }
 
-.allowance-note {
-  min-height: 1.3em;
-  margin: 16px 0 10px;
-  color: var(--muted);
-  font-size: 0.84rem;
-  text-align: center;
-}
-
 .generate-btn,
 .another-btn {
   display: block;

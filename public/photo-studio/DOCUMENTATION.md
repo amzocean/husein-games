@@ -45,9 +45,8 @@ exact signature style.
   `RIDA_REFERENCE_PHOTOS`.
 - Model: `gpt-image-2` unless `OPENAI_IMAGE_MODEL` overrides it.
 - Output: exactly two `1024x1536` PNG images.
-- Allowance: ten successful generations per UTC day shared with Rida Studio.
+- Daily allowance: unlimited.
 - Concurrency: only one generation may run across either studio at a time.
-- Failed validation and failed OpenAI requests do not consume allowance.
 - PIN protection uses the same five-attempt lockout and ten-hour session
   implementation as Rida Studio.
 - API responses and studio assets disable caching.

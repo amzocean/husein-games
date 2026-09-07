@@ -169,7 +169,7 @@ husein-games/
   5. **🔐 Hidaayat Ciphers** → `/hidaayat-ciphers/` (tag: Solo)
   6. **📖 Hidaayaat Lookup** → `/quote-search/` (tag: Solo)
   7. **🌸 Fatema's Rida Studio** → `/rida-studio/` (tag: Private · PIN) — hidden until September 6, 2026 UTC, then permanent; see section 9
-  8. **📷 Fatema's Photo Studio** → `/photo-studio/` (tag: Private · PIN) — same release gate, PIN, references, and shared daily generation allowance; see section 10
+  8. **📷 Fatema's Photo Studio** → `/photo-studio/` (tag: Private · PIN) — same release gate, PIN, references, and shared concurrency protection; see section 10
 - Footer: "Made with ♥ by Husein"
 
 ### September 6 Birthday Gala
@@ -322,7 +322,7 @@ setup instructions, and self-test coverage:
 `public/photo-studio/` + `lib/photoStudio/` implement a separate, streamlined
 AI portrait experience at `/photo-studio/`. It uses the same September 6 UTC
 release boundary, `RIDA_STUDIO_PIN`, ten identity references, OpenAI image
-client, and daily allowance as Rida Studio.
+client, and concurrency protection as Rida Studio.
 
 The UI is centered on one freeform description box with curated suggestion
 chips spanning realistic photography, dreamy scenes, cute cartoons, and
@@ -334,9 +334,9 @@ description can direct the setting, mood, pose, lighting, camera style, props,
 and artistic medium, but cannot override identity, modesty, single-person
 composition, or safety.
 
-Each successful request produces exactly two `1024x1536` PNG candidates. The
-ten-success UTC allowance and concurrency lock are shared with Rida Studio,
-so using either app counts against the same daily total.
+Each successful request produces exactly two `1024x1536` PNG candidates.
+There is no daily generation limit. A shared concurrency lock allows only one
+generation to run across the two studios at a time.
 
 Full behavior and production details:
 [public/photo-studio/DOCUMENTATION.md](public/photo-studio/DOCUMENTATION.md).

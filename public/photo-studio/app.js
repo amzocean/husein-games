@@ -4,8 +4,6 @@
   const API = '/photo-studio/api';
   const MAX_REQUEST_LENGTH = 700;
   const state = {
-    remaining: null,
-    dailyLimit: 10,
     lastRequest: '',
   };
   let generationClockTimer = null;
@@ -51,14 +49,6 @@
     return body;
   }
 
-  function renderAllowance(targetId) {
-    const target = el(targetId);
-    if (!target || state.remaining === null) return;
-    target.textContent = state.remaining > 0
-      ? `${state.remaining} of ${state.dailyLimit} shared studio generations remaining today.`
-      : `All ${state.dailyLimit} shared studio generations have been used today (UTC).`;
-  }
-
   function updateCharacterCount() {
     el('characterCount').textContent = `${el('photoRequest').value.length} / ${MAX_REQUEST_LENGTH}`;
   }
@@ -87,8 +77,6 @@
     try {
       const info = await api(`${API}/session`);
       if (!info.authenticated) return false;
-      state.remaining = info.remaining;
-      state.dailyLimit = info.dailyLimit;
       return true;
     } catch (err) {
       return false;
@@ -97,7 +85,6 @@
 
   function enterStudio() {
     el('logoutBtn').hidden = false;
-    renderAllowance('allowanceNote');
     showScreen('compose');
     requestAnimationFrame(() => el('photoRequest').focus());
   }
@@ -111,8 +98,6 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pin: el('pinInput').value }),
       });
-      state.remaining = data.remaining;
-      state.dailyLimit = data.dailyLimit;
       el('pinInput').value = '';
       enterStudio();
     } catch (err) {
@@ -162,7 +147,6 @@
         timeoutMs: 4 * 60 * 1000 + 15 * 1000,
         body: JSON.stringify({ request }),
       });
-      state.remaining = data.remaining;
       renderResults(data.images);
       showScreen('results');
     } catch (err) {
@@ -173,8 +157,6 @@
         showScreen('welcome');
       } else if (err.status === 409) {
         el('generateError').textContent = 'A generation is already running in one of the studios. Please wait for it to finish.';
-      } else if (err.status === 429) {
-        el('generateError').textContent = err.message;
       } else if (err.status === 504) {
         el('generateError').textContent = 'That request took longer than four minutes and was stopped. It did not consume a generation.';
       } else {
@@ -208,11 +190,9 @@
       grid.appendChild(card);
     });
     el('resultPrompt').textContent = `“${state.lastRequest}”`;
-    renderAllowance('resultsAllowanceNote');
   }
 
   el('newPhotoBtn').addEventListener('click', () => {
-    renderAllowance('allowanceNote');
     showScreen('compose');
   });
 
