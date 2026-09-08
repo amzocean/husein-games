@@ -300,6 +300,9 @@ elements, and Complete Rida extracts the coordinated full garment. The user
 can review and correct that interpretation before generation. The prompt fixes
 Fatema at her natural 5'10" height/body type and
 uses 6–8 inch standard or 8–10 inch broad panels at realistic garment scale.
+Referenced design stacks repeat independently on both pieces instead of being
+split between the pardi and ghaghro, and upload-based requests use six
+distributed identity references to strengthen body fidelity.
 She then chooses a photorealistic treatment and location. The game generates
 one medium-quality live AI image per request via OpenAI `gpt-image-2`; the
 results screen can repeatedly replace it with a new variation

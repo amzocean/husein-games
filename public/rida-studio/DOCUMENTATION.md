@@ -68,7 +68,7 @@ Literal fabric photos are matched as closely as generation permits. A
 non-fabric source such as artwork, packaging, or an advertisement has its
 colors, non-text shapes, and visual rhythm transformed into a repeatable
 textile pattern; words, logos, faces, and products are not copied. Upload-based
-requests use the primary identity photo plus three distributed supporting
+requests use the primary identity photo plus five distributed supporting
 views instead of all ten identity photos, reducing competition from reference
 clothing while retaining Fatema's identity.
 
@@ -183,7 +183,8 @@ a fresh Render deploy.
 9. **Structured reference interpretation.** `referenceAnalyzer.js` uses the
    upload slot as a mandatory semantic role and returns a strict schema:
    source type, base-cloth relationship, base cloth, exact top-to-bottom design
-   layers, embroidery above the lower design, and a user-facing summary.
+   layers, per-layer vertical size, embroidery above the lower design, and a
+   user-facing summary.
    Worn-rida photos discard the sample wearer and setting. Base-cloth uploads
    discard trim; design uploads discard base cloth; complete uploads retain
    both. The validated specification and optional user correction accompany
@@ -195,6 +196,12 @@ a fresh Render deploy.
    different roles per session and three analysis calls process-wide. If the
    login session changes, retained photos are analyzed again automatically so
    their tokens bind to the new authenticated session.
+
+For layers assigned to both pieces, generation must repeat the complete stack
+independently at the bottom of the pardi and again at the bottom of the
+ghaghro. Layers cannot be distributed between pieces or expanded into the
+base cloth. Structured sizes distinguish 1–3 inch trim, 3–5 inch narrow
+elements, 6–8 inch standard panels, and 8–10 inch broad panels.
 10. **Automated response-shape checks** in `lib/shared/openaiImagesClient.js`
    verify the OpenAI response contains exactly the requested number of
    images, each with valid `b64_json` data, before anything is returned to

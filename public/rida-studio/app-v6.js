@@ -649,9 +649,17 @@
       const details = [];
       if (analysis.spec.baseCloth) details.push(`Base cloth: ${analysis.spec.baseCloth}.`);
       if (analysis.spec.designLayers.length) {
+        const sizeLabels = {
+          trim_1_3: '1–3 inch trim',
+          narrow_3_5: '3–5 inches',
+          standard_6_8: '6–8 inches',
+          broad_8_10: '8–10 inches',
+          not_applicable: 'no band height',
+        };
         details.push(
           `Top-to-bottom design: ${analysis.spec.designLayers
-            .map((layer, index) => `${index + 1}) ${layer.description}`)
+            .map((layer, index) =>
+              `${index + 1}) ${layer.description} (${sizeLabels[layer.verticalSize] || layer.verticalSize})`)
             .join('; ')}.`,
         );
       }
