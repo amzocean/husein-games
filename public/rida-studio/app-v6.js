@@ -643,7 +643,10 @@
     const analysis = state.referenceAnalyses[key];
     const hasPhoto = Boolean(state[config.photoKey]);
     el(config.cardId).hidden = !hasPhoto;
-    if (!hasPhoto) return;
+    if (!hasPhoto) {
+      updateAnalysisProgressUi();
+      return;
+    }
 
     if (analysis.spec) {
       const details = [];
@@ -679,6 +682,58 @@
       el(config.statusId).textContent = analysis.error;
     } else {
       el(config.statusId).textContent = 'Ready to analyze.';
+    }
+    updateAnalysisProgressUi();
+  }
+
+  function activeReferenceAnalysisKeys() {
+    return state.designMode === 'complete'
+      ? ['completeRida']
+      : ['baseCloth', 'design'];
+  }
+
+  function updateAnalysisProgressUi() {
+    const active = activeReferenceAnalysisKeys()
+      .map((key) => ({
+        key,
+        config: REFERENCE_ANALYSIS_CONFIG[key],
+        analysis: state.referenceAnalyses[key],
+      }))
+      .filter((entry) => Boolean(state[entry.config.photoKey]));
+    const pending = active.filter((entry) => Boolean(entry.analysis.promise));
+    const failed = active.filter((entry) => Boolean(entry.analysis.error));
+    const completeButton = el('completeToSceneBtn');
+    const baseButton = el('toDesignBtn');
+    const designButton = el('toSceneBtn');
+    const reviewButton = el('toReviewBtn');
+    completeButton.textContent = state.completeRidaPhoto &&
+      state.referenceAnalyses.completeRida.promise
+      ? 'Continue while analysis runs →'
+      : 'Choose style & location →';
+    baseButton.textContent = state.baseClothPhoto && state.referenceAnalyses.baseCloth.promise
+      ? 'Continue while cloth analysis runs →'
+      : 'Design the rida →';
+    designButton.textContent = active.some((entry) => entry.analysis.promise)
+      ? 'Continue while analysis runs →'
+      : 'Choose style & location →';
+    reviewButton.textContent = pending.length
+      ? 'Finish analysis & review →'
+      : 'Review my look →';
+
+    const banner = el('sceneAnalysisProgress');
+    banner.className = 'analysis-progress-banner';
+    banner.hidden = active.length === 0;
+    if (!active.length) return;
+    if (failed.length) {
+      banner.classList.add('error');
+      banner.textContent =
+        'Photo analysis needs attention. Choose your scene, then use Back to retry before Review.';
+    } else if (pending.length) {
+      banner.textContent =
+        'Your photo is still being analyzed in the background. Keep choosing the style and location—Review will wait for it to finish.';
+    } else {
+      banner.classList.add('ready');
+      banner.textContent = '✓ Photo analysis is complete. You can continue to Review.';
     }
   }
 
@@ -999,10 +1054,12 @@
     state.designMode = 'complete';
     el('completeRidaError').textContent = '';
     updateCompleteRidaMode();
+    updateAnalysisProgressUi();
     showScreen('complete-rida');
   });
   el('guidedModeBtn').addEventListener('click', () => {
     state.designMode = 'guided';
+    updateAnalysisProgressUi();
     showScreen('rida');
   });
   el('completeToSceneBtn').addEventListener('click', () => {
@@ -1014,6 +1071,7 @@
       return;
     }
     el('completeRidaError').textContent = '';
+    updateAnalysisProgressUi();
     showScreen('scene');
   });
   el('toDesignBtn').addEventListener('click', () => {
@@ -1022,6 +1080,7 @@
   });
   el('toSceneBtn').addEventListener('click', () => {
     el('designError').textContent = '';
+    updateAnalysisProgressUi();
     showScreen('scene');
   });
   el('sceneBackBtn').addEventListener('click', () => {
@@ -1030,6 +1089,7 @@
   el('toReviewBtn').addEventListener('click', async () => {
     const button = el('toReviewBtn');
     button.disabled = true;
+    button.textContent = 'Finishing photo analysis…';
     let ready;
     let failureScreen;
     if (state.designMode === 'complete') {
@@ -1044,6 +1104,7 @@
       }
     }
     button.disabled = false;
+    updateAnalysisProgressUi();
     if (!ready) {
       showScreen(failureScreen);
       return;
