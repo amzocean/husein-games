@@ -23,6 +23,11 @@
     baseClothPhoto: null,
     designPhoto: null,
     completeRidaPhoto: null,
+    referenceAnalyses: {
+      baseCloth: { spec: null, token: null, promise: null, error: '', controller: null },
+      design: { spec: null, token: null, promise: null, error: '', controller: null },
+      completeRida: { spec: null, token: null, promise: null, error: '', controller: null },
+    },
     libraryReturnScreen: 'design-path',
     libraryCursor: null,
     libraryRenderedCount: 0,
@@ -48,12 +53,20 @@
   }
 
   async function api(url, opts = {}) {
-    const { timeoutMs, ...fetchOptions } = opts;
-    const signal = timeoutMs ? AbortSignal.timeout(timeoutMs) : undefined;
+    const { timeoutMs, signal: callerSignal, ...fetchOptions } = opts;
+    const timeoutSignal = timeoutMs ? AbortSignal.timeout(timeoutMs) : null;
+    const signal = callerSignal && timeoutSignal && typeof AbortSignal.any === 'function'
+      ? AbortSignal.any([callerSignal, timeoutSignal])
+      : callerSignal || timeoutSignal || undefined;
     let res;
     try {
       res = await fetch(url, { credentials: 'same-origin', ...fetchOptions, signal });
     } catch (err) {
+      if (callerSignal && callerSignal.aborted) {
+        const cancelledError = new Error('The request was cancelled.');
+        cancelledError.code = 'CLIENT_ABORTED';
+        throw cancelledError;
+      }
       if (err && (err.name === 'TimeoutError' || err.name === 'AbortError')) {
         const timeoutError = new Error('The request timed out before the server returned a result.');
         timeoutError.status = 504;
@@ -306,6 +319,12 @@
         ['Complete rida', state.completeRidaPhoto
           ? 'Uploaded complete rida photo'
           : el('completeRidaDescription').value.trim()],
+        ...(state.completeRidaPhoto && state.referenceAnalyses.completeRida.spec ? [
+          ['Detected structure', state.referenceAnalyses.completeRida.spec.summary],
+          ...(el('completeRidaCorrection').value.trim()
+            ? [['Your correction', el('completeRidaCorrection').value.trim()]]
+            : []),
+        ] : []),
       ]
       : [
         ['Design method', 'Build step by step'],
@@ -319,6 +338,18 @@
         ['Shared design', state.designPhoto
           ? 'Uploaded design example'
           : el('designDescription').value.trim() || 'Selected design options'],
+        ...(state.baseClothPhoto && state.referenceAnalyses.baseCloth.spec ? [
+          ['Detected base cloth', state.referenceAnalyses.baseCloth.spec.summary],
+          ...(el('baseClothCorrection').value.trim()
+            ? [['Base-cloth correction', el('baseClothCorrection').value.trim()]]
+            : []),
+        ] : []),
+        ...(state.designPhoto && state.referenceAnalyses.design.spec ? [
+          ['Detected design', state.referenceAnalyses.design.spec.summary],
+          ...(el('designCorrection').value.trim()
+            ? [['Design correction', el('designCorrection').value.trim()]]
+            : []),
+        ] : []),
         ...(!state.designPhoto && !el('designDescription').value.trim() ? [
           ['Panel', labelFor('panels', state.selections.panel)],
           ['Lace / nehl', labelFor('borders', state.selections.border)],
@@ -462,6 +493,7 @@
     el('logoutBtn').hidden = false;
     el('libraryBtn').hidden = false;
     showScreen('design-path');
+    reanalyzeRetainedReferences();
   }
 
   function setUploadStatus(statusId, message, kind) {
@@ -579,7 +611,185 @@
     );
   }
 
-  function wirePhotoInput({ inputId, stateKey, statusId, preview, clearTextId }) {
+  const REFERENCE_ANALYSIS_CONFIG = {
+    baseCloth: {
+      photoKey: 'baseClothPhoto',
+      role: 'base_cloth',
+      cardId: 'baseClothAnalysisCard',
+      statusId: 'baseClothAnalysisStatus',
+      summaryId: 'baseClothAnalysisSummary',
+      retryId: 'baseClothAnalysisRetry',
+    },
+    design: {
+      photoKey: 'designPhoto',
+      role: 'design',
+      cardId: 'designAnalysisCard',
+      statusId: 'designAnalysisStatus',
+      summaryId: 'designAnalysisSummary',
+      retryId: 'designAnalysisRetry',
+    },
+    completeRida: {
+      photoKey: 'completeRidaPhoto',
+      role: 'complete',
+      cardId: 'completeRidaAnalysisCard',
+      statusId: 'completeRidaAnalysisStatus',
+      summaryId: 'completeRidaAnalysisSummary',
+      retryId: 'completeRidaAnalysisRetry',
+    },
+  };
+
+  function renderReferenceAnalysis(key) {
+    const config = REFERENCE_ANALYSIS_CONFIG[key];
+    const analysis = state.referenceAnalyses[key];
+    const hasPhoto = Boolean(state[config.photoKey]);
+    el(config.cardId).hidden = !hasPhoto;
+    if (!hasPhoto) return;
+
+    if (analysis.spec) {
+      const details = [];
+      if (analysis.spec.baseCloth) details.push(`Base cloth: ${analysis.spec.baseCloth}.`);
+      if (analysis.spec.designLayers.length) {
+        details.push(
+          `Top-to-bottom design: ${analysis.spec.designLayers
+            .map((layer, index) => `${index + 1}) ${layer.description}`)
+            .join('; ')}.`,
+        );
+      }
+      if (analysis.spec.embroideryAboveDesign) {
+        details.push(`Embroidery above the design: ${analysis.spec.embroideryAboveDesign}.`);
+      }
+      el(config.summaryId).textContent = `${analysis.spec.summary} ${details.join(' ')}`.trim();
+    } else {
+      el(config.summaryId).textContent = '';
+    }
+    el(config.retryId).hidden = !analysis.error;
+    if (analysis.promise) {
+      el(config.statusId).textContent = 'Studying the photo and separating its garment elements…';
+    } else if (analysis.spec) {
+      el(config.statusId).textContent = 'Analysis complete. Check the interpretation below before continuing.';
+    } else if (analysis.error) {
+      el(config.statusId).textContent = analysis.error;
+    } else {
+      el(config.statusId).textContent = 'Ready to analyze.';
+    }
+  }
+
+  function resetReferenceAnalysis(key) {
+    const previous = state.referenceAnalyses[key];
+    if (previous && previous.controller) previous.controller.abort();
+    state.referenceAnalyses[key] = {
+      spec: null,
+      token: null,
+      promise: null,
+      error: '',
+      controller: null,
+    };
+    renderReferenceAnalysis(key);
+  }
+
+  function reanalyzeRetainedReferences() {
+    Object.keys(REFERENCE_ANALYSIS_CONFIG).forEach((key) => {
+      const config = REFERENCE_ANALYSIS_CONFIG[key];
+      resetReferenceAnalysis(key);
+      if (state[config.photoKey]) analyzeReferencePhoto(key);
+    });
+  }
+
+  function analyzeReferencePhoto(key) {
+    const config = REFERENCE_ANALYSIS_CONFIG[key];
+    const photo = state[config.photoKey];
+    const analysis = state.referenceAnalyses[key];
+    if (!photo) {
+      resetReferenceAnalysis(key);
+      return Promise.resolve(false);
+    }
+
+    analysis.spec = null;
+    analysis.token = null;
+    analysis.error = '';
+    if (analysis.controller) analysis.controller.abort();
+    analysis.controller = new AbortController();
+    const analyzedPhoto = photo;
+    const requestAnalysis = async (attempt = 0) => {
+      try {
+        return await api(`${API}/analyze-reference`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          timeoutMs: 35 * 1000,
+          signal: analysis.controller.signal,
+          body: JSON.stringify({
+            role: config.role,
+            photo: { mimeType: photo.mimeType, base64: photo.base64 },
+          }),
+        });
+      } catch (err) {
+        if (err.status === 409 && attempt < 2 &&
+            state[config.photoKey] === analyzedPhoto &&
+            !analysis.controller.signal.aborted) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          return requestAnalysis(attempt + 1);
+        }
+        throw err;
+      }
+    };
+    const request = requestAnalysis()
+      .then((data) => {
+        if (state[config.photoKey] !== analyzedPhoto) return false;
+        analysis.spec = data.analysis;
+        analysis.token = data.analysisToken;
+        return true;
+      })
+      .catch((err) => {
+        if (state[config.photoKey] !== analyzedPhoto) return false;
+        if (err.code === 'CLIENT_ABORTED') return false;
+        analysis.error = err.status === 401
+          ? 'Your session expired. Log in again before analyzing this photo.'
+          : `We could not interpret this photo: ${err.message}`;
+        if (err.status === 401) {
+          el('logoutBtn').hidden = true;
+          el('libraryBtn').hidden = true;
+          el('loginError').textContent = 'Your session expired — enter the PIN to continue.';
+          showScreen('welcome');
+        }
+        return false;
+      })
+      .finally(() => {
+        if (state[config.photoKey] === analyzedPhoto) {
+          analysis.promise = null;
+          analysis.controller = null;
+          renderReferenceAnalysis(key);
+        }
+      });
+    analysis.promise = request;
+    renderReferenceAnalysis(key);
+    return request;
+  }
+
+  async function ensureReferenceAnalysis(keys, errorId) {
+    for (const key of keys) {
+      const config = REFERENCE_ANALYSIS_CONFIG[key];
+      if (!state[config.photoKey]) continue;
+      const analysis = state.referenceAnalyses[key];
+      if (!analysis.spec && !analysis.promise) analyzeReferencePhoto(key);
+      if (analysis.promise) await analysis.promise;
+      if (!analysis.spec || !analysis.token) {
+        el(errorId).textContent =
+          'The uploaded photo must be interpreted before continuing. Retry its analysis or choose another photo.';
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function wirePhotoInput({
+    inputId,
+    stateKey,
+    statusId,
+    preview,
+    clearTextId,
+    analysisKey,
+    correctionId,
+  }) {
     el(inputId).addEventListener('change', async (event) => {
       const [file] = event.target.files;
       if (!file) return;
@@ -587,9 +797,13 @@
       try {
         state[stateKey] = await prepareReferencePhoto(file);
         if (clearTextId) el(clearTextId).value = '';
+        if (correctionId) el(correctionId).value = '';
+        resetReferenceAnalysis(analysisKey);
         preview();
+        analyzeReferencePhoto(analysisKey);
       } catch (err) {
         state[stateKey] = null;
+        resetReferenceAnalysis(analysisKey);
         event.target.value = '';
         preview();
         setUploadStatus(statusId, err.message, 'error');
@@ -603,6 +817,8 @@
     statusId: 'baseClothStatus',
     preview: updateBaseMode,
     clearTextId: 'baseDescription',
+    analysisKey: 'baseCloth',
+    correctionId: 'baseClothCorrection',
   });
   wirePhotoInput({
     inputId: 'designPhotoInput',
@@ -610,6 +826,8 @@
     statusId: 'designStatus',
     preview: updateDesignMode,
     clearTextId: 'designDescription',
+    analysisKey: 'design',
+    correctionId: 'designCorrection',
   });
   wirePhotoInput({
     inputId: 'completeRidaPhotoInput',
@@ -617,26 +835,37 @@
     statusId: 'completeRidaStatus',
     preview: updateCompleteRidaMode,
     clearTextId: 'completeRidaDescription',
+    analysisKey: 'completeRida',
+    correctionId: 'completeRidaCorrection',
   });
 
   el('removeBaseClothBtn').addEventListener('click', () => {
     state.baseClothPhoto = null;
     el('baseClothPhotoInput').value = '';
+    el('baseClothCorrection').value = '';
+    resetReferenceAnalysis('baseCloth');
     updateBaseMode();
   });
   el('removeDesignBtn').addEventListener('click', () => {
     state.designPhoto = null;
     el('designPhotoInput').value = '';
+    el('designCorrection').value = '';
+    resetReferenceAnalysis('design');
     updateDesignMode();
   });
   el('removeCompleteRidaBtn').addEventListener('click', () => {
     state.completeRidaPhoto = null;
     el('completeRidaPhotoInput').value = '';
+    el('completeRidaCorrection').value = '';
+    resetReferenceAnalysis('completeRida');
     updateCompleteRidaMode();
   });
   el('baseDescription').addEventListener('input', updateBaseMode);
   el('designDescription').addEventListener('input', updateDesignMode);
   el('completeRidaDescription').addEventListener('input', updateCompleteRidaMode);
+  Object.entries(REFERENCE_ANALYSIS_CONFIG).forEach(([key, config]) => {
+    el(config.retryId).addEventListener('click', () => analyzeReferencePhoto(key));
+  });
 
   async function renderLibrary(append = false) {
     const grid = el('libraryGrid');
@@ -743,6 +972,7 @@
   });
 
   el('logoutBtn').addEventListener('click', async () => {
+    Object.keys(REFERENCE_ANALYSIS_CONFIG).forEach(resetReferenceAnalysis);
     try {
       await api(`${API}/logout`, { method: 'POST' });
     } catch (err) {
@@ -778,12 +1008,38 @@
     el('completeRidaError').textContent = '';
     showScreen('scene');
   });
-  el('toDesignBtn').addEventListener('click', () => showScreen('design'));
-  el('toSceneBtn').addEventListener('click', () => showScreen('scene'));
+  el('toDesignBtn').addEventListener('click', () => {
+    el('baseClothError').textContent = '';
+    showScreen('design');
+  });
+  el('toSceneBtn').addEventListener('click', () => {
+    el('designError').textContent = '';
+    showScreen('scene');
+  });
   el('sceneBackBtn').addEventListener('click', () => {
     showScreen(state.designMode === 'complete' ? 'complete-rida' : 'design');
   });
-  el('toReviewBtn').addEventListener('click', () => {
+  el('toReviewBtn').addEventListener('click', async () => {
+    const button = el('toReviewBtn');
+    button.disabled = true;
+    let ready;
+    let failureScreen;
+    if (state.designMode === 'complete') {
+      ready = await ensureReferenceAnalysis(['completeRida'], 'completeRidaError');
+      failureScreen = 'complete-rida';
+    } else {
+      ready = await ensureReferenceAnalysis(['baseCloth'], 'baseClothError');
+      failureScreen = 'rida';
+      if (ready) {
+        ready = await ensureReferenceAnalysis(['design'], 'designError');
+        failureScreen = 'design';
+      }
+    }
+    button.disabled = false;
+    if (!ready) {
+      showScreen(failureScreen);
+      return;
+    }
     renderSummary();
     showScreen('review');
   });
@@ -827,6 +1083,8 @@
       return {
         ...common,
         completeRidaDescription: el('completeRidaDescription').value.trim(),
+        completeRidaAnalysisToken: state.referenceAnalyses.completeRida.token,
+        completeRidaCorrection: el('completeRidaCorrection').value.trim(),
         completeRidaPhoto: state.completeRidaPhoto
           ? { mimeType: state.completeRidaPhoto.mimeType, base64: state.completeRidaPhoto.base64 }
           : null,
@@ -841,6 +1099,10 @@
       baseDescription: el('baseDescription').value.trim(),
       designDescription: el('designDescription').value.trim(),
       embroideryDescription: el('embroideryDescription').value.trim(),
+      baseClothAnalysisToken: state.referenceAnalyses.baseCloth.token,
+      baseClothCorrection: el('baseClothCorrection').value.trim(),
+      designAnalysisToken: state.referenceAnalyses.design.token,
+      designCorrection: el('designCorrection').value.trim(),
       baseClothPhoto: state.baseClothPhoto
         ? { mimeType: state.baseClothPhoto.mimeType, base64: state.baseClothPhoto.base64 }
         : null,

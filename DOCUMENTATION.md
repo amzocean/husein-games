@@ -294,7 +294,11 @@ until September 6, 2026 UTC. Fatema logs in with a private PIN, then uploads,
 then chooses **Complete Rida** or **Build Step by Step**. Complete mode accepts
 one whole-rida photo or description and skips split cloth/design configuration.
 Guided mode retains separate base cloth, panel, lace, border, and embroidery
-controls. The prompt fixes Fatema at her natural 5'10" height/body type and
+controls. Uploaded images are analyzed in the background according to their
+slot: Base Cloth extracts only fabric, Design extracts ordered lower-design
+elements, and Complete Rida extracts the coordinated full garment. The user
+can review and correct that interpretation before generation. The prompt fixes
+Fatema at her natural 5'10" height/body type and
 uses 6–8 inch standard or 8–10 inch broad panels at realistic garment scale.
 She then chooses a photorealistic treatment and location. The game generates
 one medium-quality live AI image per request via OpenAI `gpt-image-2`; the

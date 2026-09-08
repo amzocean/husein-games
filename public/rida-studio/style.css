@@ -278,6 +278,30 @@ h1, h2, h3 {
 }
 .upload-status.ok { color: #167561; }
 .upload-status.error { color: #b3001b; font-weight: 600; }
+.reference-analysis {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1.5px solid #e9d8ff;
+  border-radius: 16px;
+  background: #fbf8ff;
+}
+.reference-analysis[hidden] { display: none; }
+.reference-analysis > strong {
+  color: #74488a;
+  font-family: 'Quicksand', sans-serif;
+}
+.reference-analysis > p {
+  margin: 7px 0 0;
+  color: #715d73;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+.reference-analysis .reference-analysis-summary {
+  color: var(--ink);
+  font-weight: 600;
+}
+.reference-analysis .design-note { background: #fff; }
+.reference-retry { margin-top: 10px; padding: 8px 14px; }
 
 .design-note-label {
   display: block;

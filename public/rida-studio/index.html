@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/rida-studio/style.css?v=20260906-14" />
+<link rel="stylesheet" href="/rida-studio/style.css?v=20260907-15" />
 </head>
 <body>
 
@@ -17,7 +17,7 @@
   <header class="rida-header">
     <a class="rida-home" href="/" aria-label="Back to Game Room">←</a>
     <h1>🌸 Fatema's Rida Studio</h1>
-    <span class="build-badge">Build 17</span>
+    <span class="build-badge">Build 18</span>
     <button class="rida-library-btn" id="libraryBtn" type="button" hidden>Creations</button>
     <button class="rida-logout" id="logoutBtn" type="button" hidden>Log out</button>
   </header>
@@ -50,8 +50,8 @@
       <div class="design-path-grid">
         <button class="design-path-card" id="completeRidaModeBtn" type="button">
           <span class="design-path-icon">💖</span>
-          <strong>Use a Complete Rida</strong>
-          <span>Upload one sample rida photo or describe the entire rida in your own words. The studio will use it as the complete garment specification.</span>
+          <strong>Start from a Complete Rida</strong>
+          <span>Upload a rida you love, then keep it as-is or change only the parts you want. You can also describe an entire new rida.</span>
         </button>
         <button class="design-path-card" id="guidedModeBtn" type="button">
           <span class="design-path-icon">🧵</span>
@@ -75,7 +75,7 @@
 
       <div class="option-block fabric-upload-block">
         <h3>📸 Upload a complete rida photo</h3>
-        <p class="option-help">Use a clear photo of the full rida. The studio copies the garment—not the person, body, pose, or background in the sample.</p>
+        <p class="option-help">Use a clear photo of the full rida. After selection, it is sent to OpenAI for garment analysis and again when you generate; it is never stored by this server. The studio copies the garment—not the person, body, pose, or background in the sample.</p>
         <label class="fabric-upload-btn" for="completeRidaPhotoInput">Choose complete rida photo</label>
         <input id="completeRidaPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
         <div class="fabric-preview-wrap" id="completeRidaPreviewWrap" hidden>
@@ -83,6 +83,14 @@
           <button class="btn btn-ghost fabric-remove" id="removeCompleteRidaBtn" type="button">Remove photo</button>
         </div>
         <p class="upload-status" id="completeRidaStatus"></p>
+        <div class="reference-analysis" id="completeRidaAnalysisCard" hidden>
+          <strong>What the studio found</strong>
+          <p id="completeRidaAnalysisStatus" aria-live="polite"></p>
+          <p class="reference-analysis-summary" id="completeRidaAnalysisSummary"></p>
+          <label class="design-note-label" for="completeRidaCorrection">Keep this design or request specific changes</label>
+          <textarea class="design-note" id="completeRidaCorrection" maxlength="300" rows="2" placeholder="Example: Keep everything else, but use the floral panel only on the ghaghro."></textarea>
+          <button class="btn btn-ghost reference-retry" id="completeRidaAnalysisRetry" type="button" hidden>Retry analysis</button>
+        </div>
       </div>
 
       <div class="option-block" id="completeRidaDescriptionBlock">
@@ -107,7 +115,7 @@
 
       <div class="option-block fabric-upload-block">
         <h3>📸 Upload cloth or visual inspiration</h3>
-        <p class="option-help">For an exact cloth match, use a close, well-lit photo filled by the fabric. Other images will have their colors, shapes, and artwork transformed into a textile pattern. The image is sent only when you press Generate and is never stored by the server.</p>
+        <p class="option-help">For an exact cloth match, use a close, well-lit photo filled by the fabric. Other images will have their colors, shapes, and artwork transformed into a textile pattern. After selection, the image is sent to OpenAI for cloth analysis and again when you generate; it is never stored by this server.</p>
         <label class="fabric-upload-btn" for="baseClothPhotoInput">Choose base image</label>
         <input id="baseClothPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
         <div class="fabric-preview-wrap" id="baseClothPreviewWrap" hidden>
@@ -115,6 +123,14 @@
           <button class="btn btn-ghost fabric-remove" id="removeBaseClothBtn" type="button">Remove photo</button>
         </div>
         <p class="upload-status" id="baseClothStatus"></p>
+        <div class="reference-analysis" id="baseClothAnalysisCard" hidden>
+          <strong>Base cloth detected</strong>
+          <p id="baseClothAnalysisStatus" aria-live="polite"></p>
+          <p class="reference-analysis-summary" id="baseClothAnalysisSummary"></p>
+          <label class="design-note-label" for="baseClothCorrection">Keep this cloth or adjust what to take from it</label>
+          <textarea class="design-note" id="baseClothCorrection" maxlength="300" rows="2" placeholder="Example: Use only the pale striped fabric above the panels, but make the stripes slightly wider."></textarea>
+          <button class="btn btn-ghost reference-retry" id="baseClothAnalysisRetry" type="button" hidden>Retry analysis</button>
+        </div>
       </div>
 
       <div class="option-block" id="baseDescriptionBlock">
@@ -133,6 +149,7 @@
         </div>
       </div>
 
+      <p class="error-text" id="baseClothError" role="alert"></p>
       <div class="nav-row">
         <button class="btn btn-ghost" data-go="design-path" type="button">Back</button>
         <button class="btn btn-primary" id="toDesignBtn" type="button">Design the rida →</button>
@@ -149,7 +166,7 @@
 
       <div class="option-block">
         <h3>📸 Upload a design example</h3>
-        <p class="option-help">Upload a rida or tailoring example whose panel, lace, and embroidery arrangement you like.</p>
+        <p class="option-help">Upload a rida or tailoring example whose panel, lace, and embroidery arrangement you like. After selection, it is sent to OpenAI for design analysis and again when you generate; it is never stored by this server.</p>
         <label class="fabric-upload-btn" for="designPhotoInput">Choose design photo</label>
         <input id="designPhotoInput" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" />
         <div class="fabric-preview-wrap" id="designPreviewWrap" hidden>
@@ -157,6 +174,14 @@
           <button class="btn btn-ghost fabric-remove" id="removeDesignBtn" type="button">Remove photo</button>
         </div>
         <p class="upload-status" id="designStatus"></p>
+        <div class="reference-analysis" id="designAnalysisCard" hidden>
+          <strong>Design elements detected</strong>
+          <p id="designAnalysisStatus" aria-live="polite"></p>
+          <p class="reference-analysis-summary" id="designAnalysisSummary"></p>
+          <label class="design-note-label" for="designCorrection">Keep this design or request specific changes</label>
+          <textarea class="design-note" id="designCorrection" maxlength="300" rows="2" placeholder="Example: Keep both panels separate, replace the first panel with embroidery, and retain the ivory bottom lace."></textarea>
+          <button class="btn btn-ghost reference-retry" id="designAnalysisRetry" type="button" hidden>Retry analysis</button>
+        </div>
       </div>
 
       <div class="option-block" id="designDescriptionBlock">
@@ -180,6 +205,7 @@
         </div>
       </div>
 
+      <p class="error-text" id="designError" role="alert"></p>
       <div class="nav-row">
         <button class="btn btn-ghost" data-go="rida" type="button">Back</button>
         <button class="btn btn-primary" id="toSceneBtn" type="button">Choose style & location →</button>
@@ -293,9 +319,9 @@
 
   </main>
 
-  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 17</footer>
+  <footer class="rida-footer">Made with ♥ for Fatema · Studio build 18</footer>
 </div>
 
-<script src="/rida-studio/app-v6.js?build=17"></script>
+<script src="/rida-studio/app-v6.js?build=18"></script>
 </body>
 </html>

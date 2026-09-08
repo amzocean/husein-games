@@ -13,12 +13,23 @@ birthday gala, and stays visible afterward.
 
 1. **Welcome / PIN** — Fatema enters her private PIN (`RIDA_STUDIO_PIN`).
 2. **Choose a design path**:
-   - **Complete Rida** — upload one full-rida sample photo or describe the
-     entire garment. This skips the split base-cloth and tailoring steps.
+   - **Complete Rida** — upload one full-rida sample photo, retain it as-is or
+     request specific changes to selected parts, or describe the entire
+     garment. This skips the split base-cloth and tailoring steps.
    - **Build Step by Step** — upload/describe/select the base cloth, then
      upload/describe/select the panel, lace, border, and embroidery.
-3. **Choose photograph** — photography treatment and location only.
-4. **Review look** — a mode-aware summary before generation.
+3. **Interpret uploaded references** — image analysis starts immediately in
+   the background. The upload slot defines intent:
+   - Base Cloth extracts only the repeating fabric, even from a whole-rida photo.
+   - Design extracts only ordered panels, border, piping, lace, and embroidery.
+   - Complete Rida extracts the entire coordinated pardi-and-ghaghro structure.
+   The UI shows the detected interpretation and accepts short, explicit
+   changes, allowing a reference to be inspiration rather than an all-or-
+   nothing copy.
+4. **Choose photograph** — photography treatment and location while reference
+   analysis continues.
+5. **Review look** — a mode-aware summary before generation. The studio waits
+   here only if background analysis has not finished.
 6. **Generate + watch** — while the server creates the candidate, the loading
    card offers a passive **Celebration Showcase**. Fifteen messages are
    shuffled for every generation, with no immediate repeat across reshuffles.
@@ -81,15 +92,19 @@ public/rida-studio/
 lib/ridaStudio/        Server-side logic, mounted by the root server.js
   options.js            Curated color, motif, panel, lace, photography, and location catalog
   promptBuilder.js       Locked prompt template + bounded description handling
+  referenceSpec.js        Strict structured rida-reference schema + prompt formatting
+  referenceAnalyzer.js    Slot-aware base/design/complete image interpretation
+  analysisToken.js        Signed session/role/photo binding for analyzed specifications
   identity.js             Reference-photo resolution (RIDA_REFERENCE_PHOTOS env, or local .birthday-studio/rida-identity.json fallback)
   session.js               PIN login, failed-attempt lockout + opaque in-memory session tokens
   rateLimit.js               Shared cross-studio concurrency guard
-  router.js                  Express router: /login, /logout, /session, /options, /generate
+  router.js                  Express router: auth, analysis, options, and generation
   selftest.js                 Self-test suite (see below) — never calls OpenAI
 
 lib/shared/             Production photo-validation and OpenAI helpers
   tilesPhotos.js          Tiles-photo allowlist/path-traversal validation
   openaiImagesClient.js    OpenAI images/edits caller (no SDK dependency)
+  openaiVisionClient.js    OpenAI Responses image-analysis caller with strict JSON output
 ```
 
 Production `server.js` mounts the API with:
@@ -111,6 +126,7 @@ route is needed for `index.html`/`style.css`/`app-v6.js`.
 | `RIDA_STUDIO_PIN` | Yes | Fatema's private PIN. Compared with a constant-time check; never logged or returned. |
 | `RIDA_REFERENCE_PHOTOS` | Yes (to generate) | Comma-separated list of exactly 10 filenames from `public/tiles/photos/manifest.json`. **Never** returned to or chosen by the public browser. |
 | `OPENAI_IMAGE_MODEL` | No | Overrides the default `gpt-image-2` model. |
+| `OPENAI_RIDA_ANALYSIS_MODEL` | No | Overrides the reference-analysis model; defaults to `gpt-5-mini`. |
 | `RIDA_SESSION_SECRET` | No | Reserved for future use. Sessions are already unguessable random tokens kept in memory, so this is optional and not required for setup to work. |
 
 If `RIDA_REFERENCE_PHOTOS` isn't set, the server falls back to reading
@@ -133,8 +149,8 @@ a fresh Render deploy.
    HTTPS (checked via `req.secure` or `X-Forwarded-Proto`, so it works behind
    Render's proxy without needing `trust proxy`). Sessions reset if the
    Render process restarts — an accepted tradeoff for the free tier.
-3. **All generation routes require authentication.** `/options` and
-   `/generate` both run through `requireAuth`, which validates the session
+3. **All studio data routes require authentication.** `/options`,
+   `/analyze-reference`, and `/generate` run through `requireAuth`, which validates the session
    cookie against the in-memory map. `/generate` additionally accepts
    **JSON only**, rejects unexpected fields and unknown option values. Base
    cloth, full design, complete-rida, and embroidery descriptions are
@@ -152,7 +168,8 @@ a fresh Render deploy.
 6. **Reference uploads are ephemeral.** The browser downsizes base-cloth,
    design-example, and complete-rida photos to at most 2048px, adaptively
    recompresses them below the server's 5 MB decoded-image limit, and sends them
-   only with Generate. The server validates MIME type, signature, base64
+   first to the authenticated analysis route and later with Generate. The
+   server validates MIME type, signature, base64
    encoding, and the 5MB decoded-size cap. Complete-rida or guided visual
    references are ordered before a reduced identity set so garment fidelity
    is not overwhelmed. Uploads are never written to disk.
@@ -163,7 +180,22 @@ a fresh Render deploy.
 8. **Explicit `no-store` headers** (`Cache-Control: no-store`, `Pragma:
    no-cache`) are set on every response from this router, including
    login/session/generate.
-9. **Automated response-shape checks** in `lib/shared/openaiImagesClient.js`
+9. **Structured reference interpretation.** `referenceAnalyzer.js` uses the
+   upload slot as a mandatory semantic role and returns a strict schema:
+   source type, base-cloth relationship, base cloth, exact top-to-bottom design
+   layers, embroidery above the lower design, and a user-facing summary.
+   Worn-rida photos discard the sample wearer and setting. Base-cloth uploads
+   discard trim; design uploads discard base cloth; complete uploads retain
+   both. The validated specification and optional user correction accompany
+   the original photo in the locked generation prompt. The server returns a
+   signed opaque token binding the specification to the authenticated session,
+   upload role, exact photo digest, and expiry; `/generate` reconstructs the
+   trusted specification only after verifying that token. The browser cancels
+   obsolete analysis when a photo is replaced. The server permits at most two
+   different roles per session and three analysis calls process-wide. If the
+   login session changes, retained photos are analyzed again automatically so
+   their tokens bind to the new authenticated session.
+10. **Automated response-shape checks** in `lib/shared/openaiImagesClient.js`
    verify the OpenAI response contains exactly the requested number of
    images, each with valid `b64_json` data, before anything is returned to
    the browser. There is no additional (paid) vision-review call in this
