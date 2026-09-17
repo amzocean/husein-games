@@ -98,18 +98,18 @@ function renderRomanticShape(icon, c, o) {
   if (icon === 33) return `<ellipse cx="50" cy="46" rx="22" ry="26" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M50,72 V79 M37,80 H63" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><path d="M39,39 Q50,29 61,39" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.65}"/>`;
   if (icon === 34) return `<path d="M50,45 C35,25 24,33 31,49 C37,59 45,52 50,47 C55,52 63,59 69,49 C76,33 65,25 50,45Z" fill="${c}" opacity="${o}"/><path d="M46,50 L36,75 L50,67 L64,75 L54,50" fill="${c}" opacity="${o*0.82}"/>`;
   if (icon === 35) return `<g fill="${c}" opacity="${o}"><ellipse cx="50" cy="34" rx="7" ry="15"/><ellipse cx="65" cy="48" rx="15" ry="7"/><ellipse cx="50" cy="63" rx="7" ry="15"/><ellipse cx="35" cy="48" rx="15" ry="7"/></g><circle cx="50" cy="48" r="8" fill="white" opacity="0.5"/>`;
-  if (icon === 36) return `<path d="M38,72 V44 L34,31 Q33,25 38,24 Q43,24 44,31 L46,42 V25 Q46,19 51,19 Q56,20 56,26 V42 L59,28 Q60,22 65,23 Q70,25 68,31 L64,49 L71,43 Q76,40 79,44 Q81,48 76,53 L64,69 Q58,76 49,76Z" fill="${c}" opacity="${o}"/><path d="M45,55 Q51,47 59,55 Q54,63 45,55Z" fill="white" opacity="0.45"/>`;
-  if (icon === 37) return `<circle cx="50" cy="50" r="23" fill="none" stroke="${c}" stroke-width="6" opacity="${o}"/><circle cx="50" cy="50" r="15" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.8}"/><path d="M34,34 L66,66 M66,34 L34,66" stroke="${c}" stroke-width="2" opacity="${o*0.55}"/>`;
-  if (icon === 38) return `<path d="M51,24 C72,35 75,57 57,72 C42,83 25,68 30,52 C35,37 49,39 51,24Z" fill="${c}" opacity="${o}"/><path d="M50,35 C60,42 61,55 52,62 C44,68 36,61 39,52 C42,44 49,45 50,35Z" fill="white" opacity="0.45"/>`;
-  if (icon === 39) return `<path d="M30,67 L58,29 L70,41 L42,76Z" fill="${c}" opacity="${o}"/><path d="M58,29 L64,21 L78,35 L70,41 M33,64 L43,74" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><circle cx="29" cy="72" r="4" fill="${c}" opacity="${o}"/>`;
+  if (icon === 36) return `<g fill="none" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M39,72 C34,64 35,54 36,47 L34,34 Q34,29 38,29 Q42,29 43,34 L45,44 L45,27 Q45,22 49,22 Q53,22 53,27 V43 L56,29 Q57,24 61,25 Q65,26 64,31 L61,46 L66,37 Q69,33 72,35 Q76,38 73,42 L64,61 Q60,72 50,75Z" stroke-width="2.8"/><path d="M44,57 Q50,48 57,56 Q53,64 44,57Z M49,51 Q49,58 54,61 M40,65 Q49,68 58,64" stroke-width="1.8"/><circle cx="50" cy="57" r="1.8" fill="${c}" stroke="none"/></g>`;
+  if (icon === 37) return `<g fill="none" stroke="${c}" opacity="${o}"><ellipse cx="50" cy="49" rx="21" ry="12" stroke-width="2.8"/><ellipse cx="50" cy="54" rx="19" ry="11" stroke-width="2.2"/><ellipse cx="50" cy="59" rx="17" ry="10" stroke-width="1.8"/><circle cx="34" cy="44" r="2.5" fill="${c}" stroke="none"/><circle cx="50" cy="38" r="2.5" fill="${c}" stroke="none"/><circle cx="66" cy="44" r="2.5" fill="${c}" stroke="none"/></g>`;
+  if (icon === 38) return `<g fill="none" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M52,27 C68,35 70,52 58,65 C48,76 32,69 32,56 C32,44 44,42 52,27Z" stroke-width="2.8"/><path d="M51,38 C59,43 59,53 53,59 C47,64 40,60 41,53 C42,47 48,46 51,38Z" stroke-width="1.8"/><path d="M55,33 Q62,28 67,31 M37,61 Q31,65 31,71" stroke-width="1.7"/><circle cx="52" cy="50" r="2.2" fill="${c}" stroke="none"/></g>`;
+  if (icon === 39) return `<g fill="none" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M35,66 L58,34 L66,42 L43,72Z" stroke-width="2.6"/><path d="M58,34 L63,27 L73,37 L66,42 M38,63 L45,69" stroke-width="2"/><path d="M34,70 Q29,73 27,68 M32,74 Q28,78 24,75" stroke-width="1.7"/><circle cx="30" cy="65" r="2" fill="${c}" stroke="none"/></g>`;
   if (icon === 40) return `<circle cx="50" cy="45" r="19" fill="${c}" opacity="${o}"/><path d="M24,64 Q38,56 50,64 Q63,55 76,64 M25,71 H75" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/>`;
   if (icon === 41) return `<path d="M25,62 H75 M29,62 V76 M71,62 V76 M35,44 H47 V63 H35Z M53,44 H65 V63 H53Z" fill="none" stroke="${c}" stroke-width="5" stroke-linejoin="round" opacity="${o}"/><path d="M38,42 Q41,32 44,42 M56,42 Q59,32 62,42" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
   if (icon === 42) return `<circle cx="39" cy="35" r="9" fill="${c}" opacity="${o}"/><circle cx="61" cy="35" r="9" fill="${c}" opacity="${o}"/><path d="M25,72 Q28,48 39,47 Q50,50 50,66 Q50,50 61,47 Q72,48 75,72Z" fill="${c}" opacity="${o}"/>`;
   if (icon === 43) return `<path d="M32,24 H68 M32,76 H68 M37,27 Q38,43 50,50 Q62,43 63,27 M37,73 Q38,57 50,50 Q62,57 63,73" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><path d="M42,32 H58 Q56,42 50,46 Q44,42 42,32Z" fill="${c}" opacity="${o*0.75}"/>`;
-  if (icon === 44) return `<path d="M28,43 H72 L67,73 H33Z" fill="${c}" opacity="${o}"/><path d="M37,43 Q38,25 50,25 Q62,25 63,43 M31,52 H69 M35,62 H66 M43,44 L40,72 M57,44 L60,72" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  if (icon === 45) return `<path d="M25,31 H75 V72 H25Z" fill="${c}" opacity="${o}"/><path d="M25,45 H75 M25,59 H75 M41,31 V72 M58,31 V72" stroke="white" stroke-width="3" opacity="0.5"/><path d="M25,72 L32,78 M35,72 L42,78 M58,72 L65,78 M68,72 L75,78" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  if (icon === 46) return `<path d="M27,43 Q37,29 48,43 Q51,58 38,72 Q25,58 27,43Z M52,43 Q63,29 74,43 Q77,58 64,72 Q51,58 52,43Z" fill="${c}" opacity="${o}"/><path d="M31,39 L25,32 L37,35 L40,28 L44,38 M56,39 L51,32 L62,35 L65,28 L69,38" fill="${c}" opacity="${o*0.85}"/>`;
-  if (icon === 47) return `<rect x="34" y="30" width="32" height="45" rx="8" fill="${c}" opacity="${o}"/><path d="M41,30 V22 H59 V30 M38,48 H62" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M42,55 H58 V67 H42Z" fill="white" opacity="0.45"/>`;
+  if (icon === 44) return `<g stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M34,45 H66 L63,68 Q50,73 37,68Z" fill="${c}" fill-opacity="0.18" stroke-width="2.8"/><path d="M40,45 Q40,31 50,31 Q60,31 60,45 M36,53 H64 M38,61 H63 M43,46 L41,68 M50,46 V70 M57,46 L59,68" fill="none" stroke-width="2"/><path d="M42,43 Q48,38 54,44 L59,50 H39Z" fill="white" fill-opacity="0.58" stroke-width="1.6"/><path d="M45,43 L49,48 M52,42 L56,47" fill="none" stroke-width="1.2"/></g>`;
+  if (icon === 45) return `<g stroke="${c}" stroke-linejoin="round" opacity="${o}"><path d="M33,38 H67 V65 H33Z" fill="${c}" fill-opacity="0.22" stroke-width="2.4"/><path d="M33,47 H67 M33,56 H67 M44,38 V65 M56,38 V65" fill="none" stroke-width="1.7"/><path d="M33,65 L38,71 M42,65 L47,71 M53,65 L58,71 M62,65 L67,71" fill="none" stroke-width="1.8"/><path d="M50,49 C45,43 40,48 43,53 Q46,57 50,60 Q54,57 57,53 C60,48 55,43 50,49Z" fill="${c}" stroke="none"/></g>`;
+  if (icon === 46) return `<g fill="${c}" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M34,47 Q40,38 46,47 Q47,57 40,64 Q33,57 34,47Z M48,41 Q54,31 61,41 Q62,52 54,59 Q47,52 48,41Z M57,52 Q63,43 69,52 Q70,61 63,67 Q56,61 57,52Z" fill-opacity="0.82" stroke-width="1.8"/><path d="M36,44 L34,39 L40,41 L43,37 L44,44 M51,38 L49,33 L55,35 L58,31 L59,38 M59,49 L58,44 L64,47 L67,43 L68,50" fill="none" stroke-width="1.8"/><circle cx="39" cy="52" r="1" fill="white" stroke="none"/><circle cx="54" cy="46" r="1" fill="white" stroke="none"/><circle cx="63" cy="57" r="1" fill="white" stroke="none"/></g>`;
+  if (icon === 47) return `<g fill="none" stroke="${c}" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M37,38 H63 L60,70 H40Z" fill="${c}" fill-opacity="0.18" stroke-width="2.6"/><path d="M41,48 Q50,44 60,48 M43,55 Q51,51 59,55" stroke-width="1.5"/><path d="M55,39 L64,24" stroke-width="2.2"/><circle cx="62" cy="34" r="7" fill="white" fill-opacity="0.55" stroke-width="2"/><path d="M62,27 V41 M55,34 H69" stroke-width="1.2"/><path d="M50,58 C46,53 42,57 44,61 Q47,65 50,67 Q53,65 56,61 C58,57 54,53 50,58Z" fill="${c}" stroke="none"/></g>`;
   if (icon === 48) return `<path d="M29,27 H40 V44 H60 V27 H71 V73 H60 V55 H40 V73 H29Z" fill="${c}" opacity="${o}"/>`;
   if (icon === 49) return `<path d="M31,27 H71 V38 H43 V47 H66 V58 H43 V73 H31Z" fill="${c}" opacity="${o}"/>`;
   if (icon === 50) return `<path d="M20,29 H31 V45 H45 V29 H56 V72 H45 V55 H31 V72 H20Z M61,29 H82 V39 H71 V47 H80 V57 H71 V72 H61Z" fill="${c}" opacity="${o}"/>`;
@@ -3177,18 +3177,18 @@ function renderRing(attr) {
     case 'silk-mirror-frame': return renderRomanticRing(8, 0, c);
     case 'silk-ribbon-border': return renderRomanticRing(8, 1, c);
     case 'silk-vanity-arch': return renderRomanticRing(8, 2, c);
-    case 'henna-paisley-patch': return renderRomanticStickerRing(9, 0, c);
-    case 'henna-bangle-frame': return renderRomanticStickerRing(9, 1, c);
-    case 'henna-mehndi-border': return renderRomanticStickerRing(9, 2, c);
+    case 'henna-paisley-patch': return renderRomanticRing(9, 0, c);
+    case 'henna-bangle-frame': return renderRomanticRing(9, 1, c);
+    case 'henna-mehndi-border': return renderRomanticRing(9, 2, c);
     case 'golden-sunset-frame': return renderRomanticRing(10, 0, c);
     case 'golden-balcony-rail': return renderRomanticRing(10, 1, c);
     case 'golden-ray-border': return renderRomanticRing(10, 2, c);
-    case 'picnic-blanket-patch': return renderRomanticStickerRing(11, 0, c);
-    case 'picnic-basket-frame': return renderRomanticStickerRing(11, 1, c);
-    case 'picnic-scallop-border': return renderRomanticStickerRing(11, 2, c);
-    case 'hf-monogram-patch': return renderRomanticStickerRing(12, 0, c);
-    case 'hf-together-frame': return renderRomanticStickerRing(12, 1, c);
-    case 'hf-heart-border': return renderRomanticStickerRing(12, 2, c);
+    case 'picnic-blanket-patch': return renderRomanticRing(11, 0, c);
+    case 'picnic-basket-frame': return renderRomanticRing(11, 1, c);
+    case 'picnic-scallop-border': return renderRomanticRing(11, 2, c);
+    case 'hf-monogram-patch': return renderRomanticRing(12, 0, c);
+    case 'hf-together-frame': return renderRomanticRing(12, 1, c);
+    case 'hf-heart-border': return renderRomanticRing(12, 2, c);
 
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-sequin-frame':
@@ -4613,22 +4613,23 @@ function renderShape(attr) {
     case 'silk-vanity-mirror': return renderRomanticShape(33, c, o);
     case 'silk-ribbon': return renderRomanticShape(34, c, o);
     case 'silk-jasmine': return renderRomanticShape(35, c, o);
-    case 'henna-hand': return renderRomanticStickerShape(36, c, o);
-    case 'henna-bangles': return renderRomanticStickerShape(37, c, o);
-    case 'henna-paisley': return renderRomanticStickerShape(38, c, o);
-    case 'henna-cone': return renderRomanticStickerShape(39, c, o);
+    case 'henna-hand': return renderRomanticShape(36, c, o);
+    case 'henna-bangles': return renderRomanticShape(37, c, o);
+    case 'henna-paisley': return renderRomanticShape(38, c, o);
+    case 'henna-cone': return renderRomanticShape(39, c, o);
     case 'golden-setting-sun': return renderRomanticShape(40, c, o);
     case 'golden-balcony-chairs': return renderRomanticShape(41, c, o);
     case 'golden-two-shadows': return renderRomanticShape(42, c, o);
     case 'golden-hourglass': return renderRomanticShape(43, c, o);
-    case 'picnic-basket': return renderRomanticStickerShape(44, c, o);
-    case 'picnic-blanket': return renderRomanticStickerShape(45, c, o);
-    case 'picnic-strawberries': return renderRomanticStickerShape(46, c, o);
-    case 'picnic-thermos': return renderRomanticStickerShape(47, c, o);
-    case 'hf-letter-h': return renderRomanticStickerShape(48, c, o);
-    case 'hf-letter-f': return renderRomanticStickerShape(49, c, o);
-    case 'hf-monogram': return renderRomanticStickerShape(50, c, o);
-    case 'hf-shared-heart': return renderRomanticStickerShape(51, c, o);
+    case 'picnic-basket': return renderRomanticShape(44, c, o);
+    case 'picnic-blanket': return renderRomanticShape(45, c, o);
+    case 'picnic-strawberries': return renderRomanticShape(46, c, o);
+    case 'picnic-thermos': return renderRomanticShape(47, c, o);
+    case 'picnic-lemonade': return renderRomanticShape(47, c, o);
+    case 'hf-letter-h': return renderRomanticShape(48, c, o);
+    case 'hf-letter-f': return renderRomanticShape(49, c, o);
+    case 'hf-monogram': return renderRomanticShape(50, c, o);
+    case 'hf-shared-heart': return renderRomanticShape(51, c, o);
 
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-cupcake':
@@ -5770,22 +5771,22 @@ function renderAccent(attr) {
       case 'silk-bows': out += renderRomanticAccent(8, 1, c, cx, cy); break;
       case 'silk-petals': out += renderRomanticAccent(8, 2, c, cx, cy); break;
       case 'silk-glints': out += renderRomanticAccent(8, 3, c, cx, cy); break;
-      case 'henna-dots': out += renderRomanticStickerAccent(9, 0, c, cx, cy); break;
-      case 'henna-leaves': out += renderRomanticStickerAccent(9, 1, c, cx, cy); break;
-      case 'henna-petals': out += renderRomanticStickerAccent(9, 2, c, cx, cy); break;
-      case 'henna-diamonds': out += renderRomanticStickerAccent(9, 3, c, cx, cy); break;
+      case 'henna-dots': out += renderRomanticAccent(9, 0, c, cx, cy); break;
+      case 'henna-leaves': out += renderRomanticAccent(9, 1, c, cx, cy); break;
+      case 'henna-petals': out += renderRomanticAccent(9, 2, c, cx, cy); break;
+      case 'henna-diamonds': out += renderRomanticAccent(9, 3, c, cx, cy); break;
       case 'golden-rays': out += renderRomanticAccent(10, 0, c, cx, cy); break;
       case 'golden-birds': out += renderRomanticAccent(10, 1, c, cx, cy); break;
       case 'golden-glints': out += renderRomanticAccent(10, 2, c, cx, cy); break;
       case 'golden-horizon-marks': out += renderRomanticAccent(10, 3, c, cx, cy); break;
-      case 'picnic-berries': out += renderRomanticStickerAccent(11, 0, c, cx, cy); break;
-      case 'picnic-daisies': out += renderRomanticStickerAccent(11, 1, c, cx, cy); break;
-      case 'picnic-leaves': out += renderRomanticStickerAccent(11, 2, c, cx, cy); break;
-      case 'picnic-checks': out += renderRomanticStickerAccent(11, 3, c, cx, cy); break;
-      case 'hf-initials': out += renderRomanticStickerAccent(12, 0, c, cx, cy); break;
-      case 'hf-hearts': out += renderRomanticStickerAccent(12, 1, c, cx, cy); break;
-      case 'hf-links': out += renderRomanticStickerAccent(12, 2, c, cx, cy); break;
-      case 'hf-sparkles': out += renderRomanticStickerAccent(12, 3, c, cx, cy); break;
+      case 'picnic-berries': out += renderRomanticAccent(11, 0, c, cx, cy); break;
+      case 'picnic-daisies': out += renderRomanticAccent(11, 1, c, cx, cy); break;
+      case 'picnic-leaves': out += renderRomanticAccent(11, 2, c, cx, cy); break;
+      case 'picnic-checks': out += renderRomanticAccent(11, 3, c, cx, cy); break;
+      case 'hf-initials': out += renderRomanticAccent(12, 0, c, cx, cy); break;
+      case 'hf-hearts': out += renderRomanticAccent(12, 1, c, cx, cy); break;
+      case 'hf-links': out += renderRomanticAccent(12, 2, c, cx, cy); break;
+      case 'hf-sparkles': out += renderRomanticAccent(12, 3, c, cx, cy); break;
 
       // ── September Sparkle (birthday countdown) ──
       case 'septspark-stars':
@@ -5893,7 +5894,19 @@ function createTileSVG(tile, theme) {
     ? [...tile.attributes.values()].sort((a, b) => ({ ring: 0, shape: 1, accent: 2 }[a.type] - { ring: 0, shape: 1, accent: 2 }[b.type]))
     : sortAttributes([...tile.attributes.values()]);
   for (const attr of attrs) {
-    html += `<g class="attr-layer" data-attr-id="${attr.id}">${renderAttributeInner(attr)}</g>`;
+    let rendered = renderAttributeInner(attr);
+    if (theme && theme.style === 'cute-light') {
+      if (attr.type === 'shape') {
+        rendered = `<g transform="translate(16 16) scale(0.68)">${rendered}</g>` +
+          `<path d="M76,29 C72,23 64,27 67,34 C69,38 73,40 76,43 C79,40 83,38 85,34 C88,27 80,23 76,29Z" fill="${attr.color}" opacity="0.48"/>` +
+          `<path d="M23,69 V79 M18,74 H28" stroke="${attr.color}" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>`;
+      } else if (attr.type === 'ring') {
+        rendered = `<g transform="translate(4 4) scale(0.92)" opacity="0.68">${rendered}</g>`;
+      } else if (attr.type === 'accent') {
+        rendered = `<g transform="translate(7 7) scale(0.86)" opacity="0.76">${rendered}</g>`;
+      }
+    }
+    html += `<g class="attr-layer" data-attr-id="${attr.id}">${rendered}</g>`;
   }
 
   svg.innerHTML = html;

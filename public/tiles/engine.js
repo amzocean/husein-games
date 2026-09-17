@@ -13,6 +13,7 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 const THEMES = [
   {
     name: 'Rainy Days Together', emoji: '☔',
+    style: 'cute-light',
     palette: {
       bg:     ['#58bce8', '#ff6f91', '#ffc44d'],
       ring:   ['#263f5b', '#76243a', '#76500f', '#4f3477'],
@@ -27,6 +28,7 @@ const THEMES = [
   },
   {
     name: 'The Book of Us', emoji: '📖',
+    style: 'cute-light',
     palette: {
       bg:     ['#d85d91', '#8fbd55', '#6f7fe0'],
       ring:   ['#552034', '#405723', '#173f59', '#663a17'],
@@ -41,6 +43,7 @@ const THEMES = [
   },
   {
     name: 'Silk & Scent', emoji: '🪞',
+    style: 'cute-light',
     palette: {
       bg:     ['#bf6bd5', '#f29a62', '#43bec0'],
       ring:   ['#4d254d', '#6f4018', '#0d555b', '#713047'],
@@ -55,7 +58,7 @@ const THEMES = [
   },
   {
     name: 'Henna Promises', emoji: '🤲',
-    style: 'bold-sticker',
+    style: 'cute-light',
     palette: {
       bg:     ['#f47a32', '#18a78b', '#dc4c91'],
       ring:   ['#78310b', '#075548', '#721940', '#52307f'],
@@ -70,6 +73,7 @@ const THEMES = [
   },
   {
     name: 'Golden Hour Together', emoji: '🌅',
+    style: 'cute-light',
     palette: {
       bg:     ['#ff765f', '#806bd5', '#a8bd48'],
       ring:   ['#8d3528', '#352553', '#40591f', '#6d4713'],
@@ -84,7 +88,7 @@ const THEMES = [
   },
   {
     name: 'Picnic for Two', emoji: '🧺',
-    style: 'bold-sticker',
+    style: 'cute-light',
     palette: {
       bg:     ['#ef6544', '#46ad6d', '#6877dc'],
       ring:   ['#7e2917', '#124b32', '#2d3473', '#6c3f13'],
@@ -93,13 +97,13 @@ const THEMES = [
     },
     bgPatterns:   ['picnic-check-weave', 'picnic-grass-stitches', 'picnic-basket-lines', 'picnic-cloud-drift', 'picnic-blanket-folds'],
     ringStyles:   ['picnic-blanket-patch', 'picnic-basket-frame', 'picnic-scallop-border'],
-    shapeNames:   ['picnic-basket', 'picnic-blanket', 'picnic-strawberries', 'picnic-thermos'],
+    shapeNames:   ['picnic-basket', 'picnic-blanket', 'picnic-strawberries', 'picnic-lemonade'],
     accentShapes: ['picnic-berries', 'picnic-daisies', 'picnic-leaves', 'picnic-checks'],
     boardBg:      { pattern: 'picnic-check-weave', color: '#ef6544' },
   },
   {
     name: 'Husein & Fatema', emoji: '❤️',
-    style: 'bold-sticker',
+    style: 'cute-light',
     palette: {
       bg:     ['#e83e8c', '#e0ad2f', '#4d91d8'],
       ring:   ['#681039', '#72500c', '#193c5f', '#4d276f'],
