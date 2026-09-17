@@ -657,6 +657,8 @@
           narrow_3_5: '3–5 inches',
           standard_6_8: '6–8 inches',
           broad_8_10: '8–10 inches',
+          extra_broad_10_16: '10–16 inches',
+          deep_16_plus: 'more than 16 inches',
           not_applicable: 'no band height',
         };
         details.push(

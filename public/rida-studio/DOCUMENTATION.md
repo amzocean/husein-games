@@ -206,7 +206,8 @@ For layers assigned to both pieces, generation must repeat the complete stack
 independently at the bottom of the pardi and again at the bottom of the
 ghaghro. Layers cannot be distributed between pieces or expanded into the
 base cloth. Structured sizes distinguish 1–3 inch trim, 3–5 inch narrow
-elements, 6–8 inch standard panels, and 8–10 inch broad panels.
+elements, 6–8 inch standard panels, 8–10 inch moderately broad panels, 10–16
+inch extra-broad panels, and unusually deep panels over 16 inches.
 10. **Automated response-shape checks** in `lib/shared/openaiImagesClient.js`
    verify the OpenAI response contains exactly the requested number of
    images, each with valid `b64_json` data, before anything is returned to
@@ -244,16 +245,20 @@ includes:
 - Every selectable visual treatment is photographic. The prompt explicitly
   rejects illustrations, paintings, cartoons, anime, chibi, 3D renders, dolls,
   generic-model beautification, enlarged eyes, and stylized facial features.
-- When a cloth photo is supplied, it is explicitly separated from the first
-  ten identity references and used only for its colors, print, motif scale,
-  spacing, weave, sheen, and texture. It overrides catalog color/pattern
-  choices and is applied across both pardi and ghagra.
+- When a cloth photo is supplied, it follows the primary identity image and is
+  used only for its colors, print, motif scale, spacing, weave, sheen, and
+  texture. It overrides catalog color/pattern choices and is applied across
+  both pardi and ghagra.
 - The design route applies one coordinated panel/lace/embroidery language to
   both pardi and ghagra. Lace is placed immediately below the panel when
   present; embroidery is placed on the panel or just above it.
-- Standard panels are constrained to **6–8 inches** of vertical height and
-  broad/wide panels to **8–10 inches**, scaled relative to Fatema's 5'10"
-  height. Panels must never expand into an oversized quarter-skirt section.
+- Panel height follows explicit user instructions first, visible uploaded-source
+  proportions second, structured analysis third, and catalog defaults last.
+  Standard panels are **6–8 inches**, moderately broad panels **8–10 inches**,
+  extra-broad panels **10–16 inches**, and unusually deep source/requested
+  panels may exceed 16 inches or occupy a substantial lower garment section.
+  Broad panels are explicitly forbidden from being normalized back to the
+  standard narrow height.
 - Complete-rida mode treats one uploaded sample as the whole-garment source:
   cloth, print, panel, lace, border, embroidery, embellishments, and pardi/
   ghagra coordination. The sample's person, face, body, pose, and background
