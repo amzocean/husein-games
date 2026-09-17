@@ -14,7 +14,7 @@ const THEMES = [
   {
     name: 'Rainy Days Together', emoji: '☔',
     palette: {
-      bg:     ['#52677f', '#b5455f', '#c58a2c'],
+      bg:     ['#58bce8', '#ff6f91', '#ffc44d'],
       ring:   ['#263f5b', '#76243a', '#76500f', '#4f3477'],
       shape:  ['#304c68', '#842c45', '#805913'],
       accent: ['#294e68', '#7d2947', '#5d4a1a'],
@@ -23,12 +23,12 @@ const THEMES = [
     ringStyles:   ['rain-window-frame', 'rain-umbrella-arch', 'rain-puddle-border'],
     shapeNames:   ['rain-shared-umbrella', 'rain-window', 'rain-warm-mug', 'rain-paired-boots'],
     accentShapes: ['rain-drops', 'rain-window-lights', 'rain-umbrella-tips', 'rain-ripples'],
-    boardBg:      { pattern: 'rain-window-streams', color: '#52677f' },
+    boardBg:      { pattern: 'rain-window-streams', color: '#58bce8' },
   },
   {
     name: 'The Book of Us', emoji: '📖',
     palette: {
-      bg:     ['#7f3348', '#71834d', '#355e7a'],
+      bg:     ['#d85d91', '#8fbd55', '#6f7fe0'],
       ring:   ['#552034', '#405723', '#173f59', '#663a17'],
       shape:  ['#61243a', '#496329', '#1e4b67'],
       accent: ['#6b2940', '#3f6127', '#244969'],
@@ -37,12 +37,12 @@ const THEMES = [
     ringStyles:   ['book-hardcover-frame', 'book-page-edge', 'book-ribbon-border'],
     shapeNames:   ['book-open-story', 'book-reading-lamp', 'book-spectacles', 'book-ribbon-mark'],
     accentShapes: ['book-page-tabs', 'book-ink-dots', 'book-glasses', 'book-bookmarks'],
-    boardBg:      { pattern: 'book-page-lines', color: '#7f3348' },
+    boardBg:      { pattern: 'book-page-lines', color: '#d85d91' },
   },
   {
     name: 'Silk & Scent', emoji: '🪞',
     palette: {
-      bg:     ['#743f73', '#a66a32', '#237f82'],
+      bg:     ['#bf6bd5', '#f29a62', '#43bec0'],
       ring:   ['#4d254d', '#6f4018', '#0d555b', '#713047'],
       shape:  ['#572b59', '#754719', '#126068'],
       accent: ['#612c5e', '#704319', '#145b62'],
@@ -51,13 +51,13 @@ const THEMES = [
     ringStyles:   ['silk-mirror-frame', 'silk-ribbon-border', 'silk-vanity-arch'],
     shapeNames:   ['silk-perfume-bottle', 'silk-vanity-mirror', 'silk-ribbon', 'silk-jasmine'],
     accentShapes: ['silk-scent-drops', 'silk-bows', 'silk-petals', 'silk-glints'],
-    boardBg:      { pattern: 'silk-fabric-folds', color: '#743f73' },
+    boardBg:      { pattern: 'silk-fabric-folds', color: '#bf6bd5' },
   },
   {
     name: 'Henna Promises', emoji: '🤲',
     style: 'bold-sticker',
     palette: {
-      bg:     ['#d66a1f', '#13826f', '#b12f69'],
+      bg:     ['#f47a32', '#18a78b', '#dc4c91'],
       ring:   ['#78310b', '#075548', '#721940', '#52307f'],
       shape:  ['#87380d', '#086052', '#7d1d48'],
       accent: ['#7f350c', '#095c50', '#75214c'],
@@ -66,12 +66,12 @@ const THEMES = [
     ringStyles:   ['henna-paisley-patch', 'henna-bangle-frame', 'henna-mehndi-border'],
     shapeNames:   ['henna-hand', 'henna-bangles', 'henna-paisley', 'henna-cone'],
     accentShapes: ['henna-dots', 'henna-leaves', 'henna-petals', 'henna-diamonds'],
-    boardBg:      { pattern: 'henna-paisley-flow', color: '#d66a1f' },
+    boardBg:      { pattern: 'henna-paisley-flow', color: '#f47a32' },
   },
   {
     name: 'Golden Hour Together', emoji: '🌅',
     palette: {
-      bg:     ['#d96b4d', '#55407f', '#71883f'],
+      bg:     ['#ff765f', '#806bd5', '#a8bd48'],
       ring:   ['#8d3528', '#352553', '#40591f', '#6d4713'],
       shape:  ['#963b2c', '#3d2b61', '#496425'],
       accent: ['#91382b', '#402d63', '#486021'],
@@ -80,13 +80,13 @@ const THEMES = [
     ringStyles:   ['golden-sunset-frame', 'golden-balcony-rail', 'golden-ray-border'],
     shapeNames:   ['golden-setting-sun', 'golden-balcony-chairs', 'golden-two-shadows', 'golden-hourglass'],
     accentShapes: ['golden-rays', 'golden-birds', 'golden-glints', 'golden-horizon-marks'],
-    boardBg:      { pattern: 'golden-horizon-bands', color: '#d96b4d' },
+    boardBg:      { pattern: 'golden-horizon-bands', color: '#ff765f' },
   },
   {
     name: 'Picnic for Two', emoji: '🧺',
     style: 'bold-sticker',
     palette: {
-      bg:     ['#c75332', '#26704e', '#4d57a8'],
+      bg:     ['#ef6544', '#46ad6d', '#6877dc'],
       ring:   ['#7e2917', '#124b32', '#2d3473', '#6c3f13'],
       shape:  ['#8b2e1a', '#17573a', '#343d80'],
       accent: ['#852b1a', '#16533a', '#303a78'],
@@ -95,13 +95,13 @@ const THEMES = [
     ringStyles:   ['picnic-blanket-patch', 'picnic-basket-frame', 'picnic-scallop-border'],
     shapeNames:   ['picnic-basket', 'picnic-blanket', 'picnic-strawberries', 'picnic-thermos'],
     accentShapes: ['picnic-berries', 'picnic-daisies', 'picnic-leaves', 'picnic-checks'],
-    boardBg:      { pattern: 'picnic-check-weave', color: '#c75332' },
+    boardBg:      { pattern: 'picnic-check-weave', color: '#ef6544' },
   },
   {
     name: 'Husein & Fatema', emoji: '❤️',
     style: 'bold-sticker',
     palette: {
-      bg:     ['#a61e5c', '#b8861b', '#315e8a'],
+      bg:     ['#e83e8c', '#e0ad2f', '#4d91d8'],
       ring:   ['#681039', '#72500c', '#193c5f', '#4d276f'],
       shape:  ['#781442', '#7d590e', '#20486e'],
       accent: ['#71113f', '#76530d', '#1e4569'],
@@ -110,7 +110,7 @@ const THEMES = [
     ringStyles:   ['hf-monogram-patch', 'hf-together-frame', 'hf-heart-border'],
     shapeNames:   ['hf-letter-h', 'hf-letter-f', 'hf-monogram', 'hf-shared-heart'],
     accentShapes: ['hf-initials', 'hf-hearts', 'hf-links', 'hf-sparkles'],
-    boardBg:      { pattern: 'hf-signature-weave', color: '#a61e5c' },
+    boardBg:      { pattern: 'hf-signature-weave', color: '#e83e8c' },
   },
 ];
 
