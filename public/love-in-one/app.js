@@ -324,7 +324,7 @@ function shakeInput() {
 }
 
 function celebrate() {
-  const colors = ['#b93668', '#bb7b18', '#d98aa8', '#7a5771', '#f2bd52'];
+  const colors = ['#8c45b8', '#a23e72', '#c98bea', '#67576f', '#f09ac2'];
   celebration.innerHTML = '';
   for (let i = 0; i < 30; i++) {
     const piece = document.createElement('i');

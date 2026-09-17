@@ -1,21 +1,21 @@
 :root {
-  --ink: #342531;
-  --muted: #6d5c66;
-  --paper: #fffdfb;
-  --blush: #fff1f3;
-  --rose: #b93668;
-  --rose-dark: #802044;
-  --gold: #915600;
-  --slate: #66717d;
-  --line: #eadde2;
-  --shadow: 0 18px 50px rgba(88, 42, 63, 0.12);
+  --ink: #35243f;
+  --muted: #67576f;
+  --paper: #fffdfd;
+  --blush: #f5efff;
+  --rose: #8c45b8;
+  --rose-dark: #5b276f;
+  --gold: #a23e72;
+  --slate: #665b72;
+  --line: #e5d7ef;
+  --shadow: 0 18px 50px rgba(79, 43, 104, 0.14);
 }
 
 * { box-sizing: border-box; }
 
 html {
   min-height: 100%;
-  background: #fff8f4;
+  background: #f7f1ff;
 }
 
 body {
@@ -24,9 +24,9 @@ body {
   color: var(--ink);
   font-family: "DM Sans", sans-serif;
   background:
-    radial-gradient(circle at 15% 5%, rgba(185, 54, 104, 0.1), transparent 26rem),
-    radial-gradient(circle at 90% 95%, rgba(187, 123, 24, 0.09), transparent 24rem),
-    #fff8f4;
+    radial-gradient(circle at 15% 5%, rgba(165, 105, 215, 0.16), transparent 26rem),
+    radial-gradient(circle at 90% 95%, rgba(232, 116, 170, 0.12), transparent 24rem),
+    #f7f1ff;
 }
 
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -126,11 +126,11 @@ button { font: inherit; }
   border-color: var(--rose);
   color: white;
   background: var(--rose);
-  box-shadow: 0 7px 18px rgba(185, 54, 104, 0.24);
+  box-shadow: 0 7px 18px rgba(140, 69, 184, 0.24);
 }
 
 .round-tab.solved:not(.active) {
-  border-color: rgba(187, 123, 24, 0.35);
+  border-color: rgba(162, 62, 114, 0.35);
   color: var(--gold);
   background: #fff7e6;
 }
@@ -140,7 +140,7 @@ button { font: inherit; }
 .round-tab.solved::after { font-size: 0.9rem; }
 
 .puzzle-card {
-  border: 1px solid rgba(185, 54, 104, 0.13);
+  border: 1px solid rgba(140, 69, 184, 0.16);
   border-radius: 28px;
   padding: 20px 16px 16px;
   background: rgba(255, 253, 251, 0.94);
@@ -268,12 +268,12 @@ button { font: inherit; }
 .tile.absent::after { content: "×"; }
 
 .tile.fresh {
-  border-color: rgba(185, 54, 104, 0.48);
+  border-color: rgba(140, 69, 184, 0.48);
   animation: pop 120ms ease;
 }
 
 .tile.filled {
-  border-color: rgba(185, 54, 104, 0.48);
+  border-color: rgba(140, 69, 184, 0.48);
 }
 
 .word-row.reveal .tile { animation: reveal 420ms ease both; }
@@ -294,10 +294,10 @@ button { font: inherit; }
 .answer-card {
   margin: 10px 0 16px;
   padding: 18px;
-  border: 1px solid rgba(187, 123, 24, 0.25);
+  border: 1px solid rgba(162, 62, 114, 0.25);
   border-radius: 20px;
   text-align: center;
-  background: linear-gradient(145deg, #fff8e8, #fff1f4);
+  background: linear-gradient(145deg, #f4eaff, #fff0f7);
 }
 
 .answer-card h3 {
@@ -328,7 +328,7 @@ blockquote {
   background: var(--rose);
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(185, 54, 104, 0.22);
+  box-shadow: 0 8px 18px rgba(140, 69, 184, 0.24);
 }
 
 .keyboard {
