@@ -34,6 +34,8 @@ const dailyPuzzles = selectDailyPuzzles(dateKey);
 const storageKey = `love-in-one:v2:${dateKey}`;
 let state = loadState();
 let currentInput = '';
+let freshInputIndex = -1;
+let revealGuessIndex = -1;
 
 todayLabel.textContent = new Intl.DateTimeFormat(undefined, {
   weekday: 'long',
@@ -158,14 +160,16 @@ function renderTabs() {
 function renderBoard(puzzle, round) {
   board.innerHTML = '';
   board.appendChild(createScoredRow(puzzle.clue, puzzle.answer, 'clue-row'));
-  round.guesses.forEach(guess => board.appendChild(createScoredRow(guess, puzzle.answer)));
+  round.guesses.forEach((guess, index) => {
+    board.appendChild(createScoredRow(guess, puzzle.answer, index === revealGuessIndex ? 'reveal' : ''));
+  });
 
   if (!round.solved) {
     const inputRow = document.createElement('div');
     inputRow.className = 'word-row input-row';
     for (let i = 0; i < 5; i++) {
       const tile = document.createElement('span');
-      tile.className = `tile${currentInput[i] ? ' filled' : ''}`;
+      tile.className = `tile${currentInput[i] ? ' filled' : ''}${i === freshInputIndex ? ' fresh' : ''}`;
       tile.textContent = currentInput[i] || '';
       inputRow.appendChild(tile);
     }
@@ -175,11 +179,13 @@ function renderBoard(puzzle, round) {
   requestAnimationFrame(() => {
     boardScroll.scrollTop = boardScroll.scrollHeight;
   });
+  freshInputIndex = -1;
+  revealGuessIndex = -1;
 }
 
 function createScoredRow(word, answer, extraClass = '') {
   const row = document.createElement('div');
-  row.className = `word-row reveal ${extraClass}`.trim();
+  row.className = `word-row ${extraClass}`.trim();
   const scores = scoreGuess(word, answer);
   word.split('').forEach((letter, index) => {
     const tile = document.createElement('span');
@@ -261,6 +267,7 @@ function handleKey(key) {
 
   if (key === 'BACK') {
     currentInput = currentInput.slice(0, -1);
+    freshInputIndex = -1;
     renderBoard(puzzle, round);
     return;
   }
@@ -272,6 +279,7 @@ function handleKey(key) {
 
   if (/^[A-Z]$/.test(key) && currentInput.length < 5) {
     currentInput += key;
+    freshInputIndex = currentInput.length - 1;
     renderBoard(puzzle, round);
   }
 }
@@ -291,6 +299,7 @@ function submitGuess(puzzle, round) {
 
   const guess = currentInput;
   round.guesses.push(guess);
+  revealGuessIndex = round.guesses.length - 1;
   currentInput = '';
 
   if (guess === puzzle.answer) {

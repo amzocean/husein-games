@@ -267,9 +267,13 @@ button { font: inherit; }
 .tile.present::after { content: "↔"; }
 .tile.absent::after { content: "×"; }
 
-.tile.filled {
+.tile.fresh {
   border-color: rgba(185, 54, 104, 0.48);
   animation: pop 120ms ease;
+}
+
+.tile.filled {
+  border-color: rgba(185, 54, 104, 0.48);
 }
 
 .word-row.reveal .tile { animation: reveal 420ms ease both; }
