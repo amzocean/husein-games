@@ -18,7 +18,7 @@ Add entries to `puzzles.js` in complete groups of three to extend the schedule. 
 ## Rules
 
 - The scored clue row is provided automatically.
-- Correct-position, wrong-position, and absent feedback use rose, gold, and slate with visible symbols.
+- Correct-position, wrong-position, and absent feedback use familiar Wordle-style green, yellow, and gray with visible symbols, surrounded by a soft romantic Love in One treatment.
 - Players have unlimited guesses and can move freely among the three daily rounds.
 - Progress is stored in `localStorage` under `love-in-one:v2:YYYY-MM-DD`.
 - Repeated letters are scored in two passes: exact positions first, then remaining misplaced letters.
