@@ -123,6 +123,17 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
+### Non-Negotiable Quality Gates
+
+Every new collection must satisfy all of these before it is considered complete:
+
+1. **Instant match readability** — players must distinguish every ring, shape, and accent color at normal tile size without pausing to scrutinize shades. Different hex values are not enough.
+2. **Collection-level color identity** — each active theme needs a recognizable dominant color story. Do not build six themes from minor variations of the same pink/yellow/green/blue triad.
+3. **Recent-history novelty** — compare against the active set and at least the 15–20 most recently archived themes. Do not repeat their central objects, accent vocabulary, border silhouettes, or background grammar with renamed identifiers.
+4. **Theme-specific rendering** — a helper is acceptable only when it produces visibly different geometry for each theme. Passing different numeric family IDs into the same five backgrounds and three borders is not sufficient.
+5. **Actual-size review** — generate several boards and judge them at the size players see. Artwork that looks distinct when zoomed into SVG source may collapse into the same silhouette or color at gameplay scale.
+6. **Emotional intent** — for romantic collections, novelty must not make the art cold or abstract. Preserve rounded forms, bright cheerful backgrounds, affectionate paired motifs, and specific H/F storytelling.
+
 ### Four Workflows
 
 | # | Workflow | When | Files Modified |
@@ -169,7 +180,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 | Style | Theme property | Rendering approach |
 |-------|----------------|--------------------|
 | Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
-| Cute Light | `style: 'cute-light'` | Bright romantic SVG motifs rendered slightly smaller, with airy ring/accent treatment and small decorative flourishes |
+| Cute Light | `style: 'cute-light'` | Bright romantic SVG motifs rendered at 0.78 scale, with airy ring/accent treatment and small decorative flourishes |
 | Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
 
 `style` selects a renderer convention only; it never changes the theme schema, matching rules, or validator requirements. Cute Light receives the shared airy treatment in `renderer.js`, while Bold Sticker cases provide their own keyline and shadow layers. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks. (Board *selection* can branch on other metadata — see Workflow 4 for date-scheduled themes — but that only affects which theme object is chosen, never how its 16 cases are matched.)
@@ -189,7 +200,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
    - ...
    ```
 
-2. **Read archived themes** — scan `ARCHIVED_THEMES` in the same file. Note names to avoid re-proposing (unless explicitly reactivating). Present count to user.
+2. **Read archived themes** — scan `ARCHIVED_THEMES` in the same file. Note names to avoid re-proposing (unless explicitly reactivating). Present count to user. For implementation planning, inspect at least the **15–20 most recently archived themes**, including their shape, accent, ring, and background identifiers—not only their display names.
 
 3. **Assess the current palette spread** — categorize each active theme by intensity:
    - **Light**: pastel/soft bg colors (HSL lightness > 60%)
@@ -208,9 +219,9 @@ The theme schema and matching engine stay the same for every visual style. A sty
 5. **Identify dominant hue families** — list which hue families are already used across all active themes' bg colors. If blue appears in 3 themes, avoid proposing another blue-dominant theme.
 
 6. **Generate 5–7 theme ideas** with these criteria:
-   - **Novelty**: Not similar to any active OR recently archived theme
+   - **Novelty**: Not similar to any active theme or the 15–20 most recently archived themes. Changing names while reusing hearts, stars, bows, gifts, flowers, cups, or the same border geometry does not count as novelty.
    - **Rich element vocabulary**: The theme concept must support at least 4 distinct shapes, 4 distinct accents, 3 distinct ring styles, and 5 bg patterns — all visually different from each other
-   - **Unique color identity**: Each proposed theme should have a signature color family NOT already dominant in active themes
+   - **Unique color identity**: Each proposed theme should have a signature dominant color family NOT already dominant in active themes. When proposing a multi-theme collection, describe how a player will identify each theme from color alone.
    - **Variety of intensity**: Propose a mix of light, medium, and bold themes
    - **Variety of style**: Recommend ideas across the three supported rendering styles. A normal 5–7 idea set should include a suitable mix of Standard, Cute Light, and Bold Sticker options unless the user explicitly restricts the style.
    - **Style fit is the primary rule**: Assign each idea the style that best supports its subject and visual vocabulary. Never force a theme into a style merely to satisfy a numerical balance.
@@ -227,6 +238,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
    - Intensity category (light/medium/bold)
    - Style-appropriate visual vocabulary:
      - Standard: sample rings, center shapes, and corner accents
+     - Cute Light: rounded romantic centers, paired storytelling details, airy but theme-specific borders, and playful accents
      - Bold Sticker: sample chunky sticker silhouettes, patch borders, and decal accents
    
    Let the user pick which themes to implement. If the user selects a theme but does not confirm its recommended style, ask whether to use the recommended style before coding.
@@ -241,7 +253,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 
 #### Step 1: Plan Color Identity (BEFORE any code)
 
-> **The #1 lesson learned**: Themes that individually look fine can feel identical when played together. Every theme needs a **unique color fingerprint** — a set of bg colors that no other active theme shares.
+> **The #1 lesson learned**: Themes that individually look fine can feel identical when played together. Every theme needs a **unique color fingerprint**, and every matchable palette needs colors that are instantly distinguishable at actual tile size.
 
 **Exact procedure:**
 
@@ -261,7 +273,9 @@ The theme schema and matching engine stay the same for every visual style. A sty
 4. For element colors (ring/shape/accent), choose colors with:
    - ✅ HSL lightness ≤ 50% (Material Design 600–900 range) — these render on near-white tiles
    - ✅ No color that matches any bg color in the same theme (element would disappear on that bg tile)
-   - ✅ All colors within each group visually distinct (no duplicates, no near-duplicates)
+   - ✅ All colors within each group perceptually separated. `validate-themes.js` requires a minimum CIE Lab distance of **45** for active ring, shape, and accent palettes.
+   - ✅ Prefer clearly separated hue families such as red/green/cyan/blue over nearby dark shades such as berry/chocolate, blue/teal, or green/teal
+   - ✅ Keep cute softness in `palette.bg`; use saturated jewel-tone colors for matchable elements when necessary for instant recognition
    - ❌ NEVER use: white (`#ffffff`), near-white (`#eeeeee`), light gray (`#cccccc`), bright yellow (`#ffeb3b`, `#ffff00`, `#ffd740`), or any pastel as an element color
 
 5. **Present the planned palette to the user** before coding:
@@ -272,13 +286,21 @@ The theme schema and matching engine stay the same for every visual style. A sty
    Compared to active themes: [why this is different]
    ```
 
+6. **For a multi-theme collection, present the collection matrix before coding:**
+   ```
+   Theme                    Dominant identity       Closest active theme       Why still distinct
+   Strawberry Kisses        Berry/blush/mint        [name]                     [difference]
+   Butterfly Wishes         Lavender/aqua/lime      [name]                     [difference]
+   ```
+   If two rows sound interchangeable, redesign one palette before implementing either theme.
+
 #### Step 2: Define Theme Object (engine.js)
 
 **Exact procedure:**
 
 1. Open `engine.js`, find the `THEMES` array (starts at line 13 with `const THEMES = [`).
 
-2. Find the closing `];` of the THEMES array (look for `];` followed by a blank line and `const ARCHIVED_THEMES`).
+2. Find the closing `];` of the active `THEMES` array immediately before the Birthday Countdown Themes section. Do not add ordinary themes to `BIRTHDAY_THEMES` or `ARCHIVED_THEMES`.
 
 3. **Add the new theme object BEFORE the closing `];`**, after the last existing theme. Follow this exact template:
 
@@ -318,11 +340,11 @@ The theme schema and matching engine stay the same for every visual style. A sty
 
 #### Step 3: Add Renderer Cases (renderer.js)
 
-**Add exactly 16 case blocks** across 4 switch statements. The renderer file is ~2500 lines. Here are the exact locations and function signatures:
+**Add exactly 16 case blocks** across 4 switch statements. `renderer.js` is large and grows with every archived theme; locate functions and insertion points by symbol name and nearby theme headers, never by remembered line number.
 
 ##### 3a: Background patterns — `renderBg()` (5 cases)
 
-**Function location**: Starts at line ~16. Ends with `default: return '';` at line ~927.
+**Function location**: Search for `function renderBg(attr)`. Add cases inside its `switch(attr.pattern)` before `default: return '';`.
 
 **Function signature and available variables:**
 ```javascript
@@ -345,6 +367,8 @@ function renderBg(attr) {
 **Rules for bg patterns:**
 - ✅ Start each pattern with a base tint rect: `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>`
 - ✅ Add decorative elements on top (lines, dashes, texture marks)
+- ✅ Give each theme a distinct pattern grammar: for example rows, sweeping curves, vertical steam, staff lines, spiral tracks, or botanical hatching
+- ✅ If using a shared helper, inspect the generated SVG and confirm themes differ in structure—not merely spacing, stroke width, or a numeric seed
 - ❌ NEVER use circles, rings, or geometric shapes — they'll be confused with game elements
 - ❌ NEVER use elements positioned in corners — they'll be confused with accents
 - For randomness: `const rng = mulberry32(c.charCodeAt(1));` then `rng()` returns 0-1
@@ -364,7 +388,7 @@ function renderBg(attr) {
 
 ##### 3b: Ring styles — `renderRing()` (3 cases)
 
-**Function location**: Starts at line ~931. Ends with `default: return '';` at line ~1304.
+**Function location**: Search for `function renderRing(attr)`. Add cases inside its `switch(attr.style)` before `default: return '';`.
 
 **Function signature and available variables:**
 ```javascript
@@ -379,6 +403,8 @@ function renderRing(attr) {
 ```
 
 **Rules**: `stroke-width ≥ 2.5`, `opacity ≥ 0.6`. Rings are borders/frames around the tile edge.
+
+The three ring styles must also have different silhouettes. A rounded rectangle, the same rectangle with dashes, and the same rectangle with a second inset line are not enough for a fresh theme collection. Use subject-specific structures such as canopies, rails, wing fans, tray ovals, perches, crossed sashes, or botanical arches.
 
 **Template — simple rect border:**
 ```javascript
@@ -410,7 +436,7 @@ function renderRing(attr) {
 
 ##### 3c: Center shapes — `renderShape()` (4 cases)
 
-**Function location**: Starts at line ~1310. Ends with `default: return '';` at line ~1940.
+**Function location**: Search for `function renderShape(attr)`. Add cases inside its `switch(attr.shape)` before `default: return '';`.
 
 **Function signature and available variables:**
 ```javascript
@@ -426,6 +452,8 @@ function renderShape(attr) {
 ```
 
 **Rules**: Shapes render in the CENTER of the tile (~50,50). Keep within roughly x:25-75, y:25-75 to avoid overlap with ring borders and corner accents.
+
+For `cute-light`, remember that `createTileSVG()` applies `translate(11 11) scale(0.78)`. Design the source artwork around the full 100×100 coordinate system, then inspect its rendered size. Avoid tiny internal details that disappear after scaling.
 
 **Template — simple filled shape:**
 ```javascript
@@ -459,7 +487,7 @@ function renderShape(attr) {
 
 ##### 3d: Corner accents — `renderAccent()` (4 cases)
 
-**Function location**: Starts at line ~1946 (after `const CORNERS = [[16, 16], [84, 16], [16, 84], [84, 84]];`). Ends with `default: return '';` at line ~2422 (inside `renderAttributeInner`).
+**Function location**: Search for `function renderAccent(attr)` after the `CORNERS` constant. Add cases inside its `switch(attr.accentShape)` before `default: break;`.
 
 **⚠️ renderAccent is DIFFERENT from the other functions** — it loops over 4 corners and uses `break` + `out +=`, NOT `return`:
 
@@ -528,22 +556,32 @@ node validate-themes.js
 | Engine→Renderer coverage | Pattern defined in engine.js but no case in renderer.js | Add the missing case block in the right function |
 | Duplicate cases | Same label twice in one function | Search for the label, remove the duplicate |
 | Function dependencies | Calling undefined functions | If using `mulberry32`, it's at the top of renderer.js — already defined |
-| Color distinctness | Identical hex in same palette group | Change one of the duplicate hex values |
+| Color distinctness | Duplicate colors, or active match colors with CIE Lab distance below 45 | Replace near-neighbor shades with clearly separated hue families; do not merely adjust lightness |
 | Bg hue diversity | All 3 bg colors same hue (needs 40°+ spread) | Replace one bg color with a different hue family. Warm tones (~15°) are close to each other — pair with a cool tone (180°+). |
 | boardBg validation | Missing boardBg property | Add `boardBg: { pattern: 'solid', color: '#hex' }` |
 | Orphan cases | Cases in renderer with no theme using them | Warning only — OK for archived themes. Ignore. |
 
-#### Step 5: Manual Verification (IMPORTANT — validator misses these)
+#### Step 5: Manual Verification (IMPORTANT — validator cannot judge the full board)
 
-The validator catches structural errors but NOT visual problems. Check these manually:
+The validator catches structural errors and minimum match-color distance, but it cannot decide whether a board is effortless to read, emotionally coherent, or visually original. Check these manually:
 
-1. **Element color lightness** — Eyeball every ring/shape/accent hex. If it looks light/pastel, it WILL be invisible on the near-white tile. Use a color picker to verify HSL lightness ≤ 50%.
+1. **Generate multiple boards** — reload until every palette color and most visual variants appear. One favorable board is not sufficient.
 
-2. **Bg-vs-element collision** — For each of the 3 bg colors, mentally overlay each element color. Any element color that's the same hue AND similar lightness to a bg color will disappear on tiles with that bg tint. Example: dark red accent (`#c62828`) on red bg tint → invisible.
+2. **Use the one-second test** — at normal browser size, glance at the board for one second. Every ring color, shape color, and accent color should form an obvious category. If two colors require comparison tile-by-tile, replace one.
 
-3. **Cross-theme similarity** — Compare your new theme's bg colors to ALL other active themes. If two themes have the same color feel (both blue/green/warm, both all-pastels), one needs to change. This was our #1 iteration issue.
+3. **Check same-type colors first** — compare ring against ring, shape against shape, and accent against accent. Near-neighbor shades such as berry red versus chocolate brown can pass casual code review but fail during play.
 
-4. **Accent-on-bg contrast** — Any accent can land on any bg (random assignment). If accent hue ≈ bg hue, that accent vanishes on that tile. Ensure no accent shares a hue with any bg in the same theme.
+4. **Element color lightness** — Eyeball every ring/shape/accent hex. If it looks light/pastel, it may disappear on the near-white tile. Verify HSL lightness ≤ 50%.
+
+5. **Bg-vs-element collision** — Any matchable color can land on any tile tint. Verify every ring, shape, and accent remains legible across all three backgrounds.
+
+6. **Cross-theme identity** — Compare screenshots of all new themes side by side. Each should have a clearly different dominant color impression, background grammar, border silhouette, and center-object vocabulary.
+
+7. **Recent-history comparison** — compare against screenshots or renderer definitions for the 15–20 latest archived themes. Reject renamed repeats of recent cups, gifts, bows, generic hearts, bouquets, watering cans, stars, flowers, or identical helper-generated borders.
+
+8. **Romantic/cute intent** — after improving contrast and novelty, verify the theme still feels affectionate and playful. High-separation colors should support the art, not turn the collection harsh. Keep soft backgrounds, rounded geometry, paired H/F details, and a clear romantic interaction.
+
+9. **Center scale** — centers should be recognizable immediately and visually balanced with the rings. For Cute Light, the current target is 0.78 scale; increase source geometry rather than adding fragile tiny details.
 
 #### Step 6: Commit & Deploy
 
