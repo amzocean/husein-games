@@ -12,6 +12,191 @@ const CENTER_INDEX = 12;         // position [2,2] in 5x5 grid
 
 const THEMES = [
   {
+    name: 'Strawberry Kisses', emoji: '🍓',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#f04462', '#ffb6c1', '#60d6a7'],
+      ring:   ['#a21010', '#0e900e', '#11acac', '#1111ac'],
+      shape:  ['#ac1138', '#0e902f', '#115eac'],
+      accent: ['#ac3811', '#0e904f', '#5e11ac'],
+    },
+    bgPatterns:   ['skiss-berry-rows', 'skiss-seed-texture', 'skiss-chocolate-drizzle', 'skiss-parasol-stripes', 'skiss-sundae-waves'],
+    ringStyles:   ['skiss-berry-basket-rail', 'skiss-chocolate-drip-border', 'skiss-parasol-canopy-frame'],
+    shapeNames:   ['skiss-chocolate-dipped-pair', 'skiss-berry-milk-bottle', 'skiss-strawberry-parasol', 'skiss-berry-sundae-for-two'],
+    accentShapes: ['skiss-berry-slices', 'skiss-chocolate-drips', 'skiss-seed-trios', 'skiss-cream-swirls'],
+    boardBg:      { pattern: 'skiss-berry-rows', color: '#f04462' },
+  },
+  {
+    name: 'Butterfly Wishes', emoji: '🦋',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#9b73f0', '#33d8e8', '#a8eb4a'],
+      ring:   ['#a210a2', '#4f900e', '#11acac', '#ac5e11'],
+      shape:  ['#8511ac', '#0e900e', '#1185ac'],
+      accent: ['#ac115e', '#0e904f', '#90900e'],
+    },
+    bgPatterns:   ['bwish-wing-vein-diagonals', 'bwish-iridescent-sweeps', 'bwish-flight-paths', 'bwish-scale-bands', 'bwish-chrysalis-threads'],
+    ringStyles:   ['bwish-mirrored-wing-frame', 'bwish-scale-fan-border', 'bwish-chrysalis-lattice'],
+    shapeNames:   ['bwish-hf-wing-medallion', 'bwish-butterfly-kite', 'bwish-winged-wish-bottle', 'bwish-butterfly-sundial'],
+    accentShapes: ['bwish-antenna-curls', 'bwish-wing-scales', 'bwish-flight-loops', 'bwish-chrysalis-stitches'],
+    boardBg:      { pattern: 'bwish-iridescent-sweeps', color: '#9b73f0' },
+  },
+  {
+    name: 'Tea Party for Two', emoji: '🫖',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#f49a68', '#f6d66f', '#55c5c1'],
+      ring:   ['#a25910', '#0e900e', '#115eac', '#ac11ac'],
+      shape:  ['#ac3811', '#0e904f', '#1111ac'],
+      accent: ['#906f0e', '#11acac', '#ac115e'],
+    },
+    bgPatterns:   ['teatwo-table-linen', 'teatwo-porcelain-pinstripes', 'teatwo-steam-verticals', 'teatwo-tray-lattice', 'teatwo-clock-ticks'],
+    ringStyles:   ['teatwo-saucer-stack-frame', 'teatwo-caddy-clasp-border', 'teatwo-tea-tray-oval'],
+    shapeNames:   ['teatwo-hf-tea-caddy', 'teatwo-tiered-macaron-stand', 'teatwo-heart-steam-kettle', 'teatwo-tea-timer'],
+    accentShapes: ['teatwo-tea-tags', 'teatwo-lemon-wedges', 'teatwo-sugar-tongs', 'teatwo-saucer-beads'],
+    boardBg:      { pattern: 'teatwo-table-linen', color: '#f49a68' },
+  },
+  {
+    name: 'Love Birds Forever', emoji: '🐦',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#55b8ee', '#7188e8', '#ff756b'],
+      ring:   ['#a21010', '#0e900e', '#11acac', '#5e11ac'],
+      shape:  ['#ac3811', '#0e904f', '#1138ac'],
+      accent: ['#ac1138', '#0e902f', '#1185ac'],
+    },
+    bgPatterns:   ['lovebird-airy-wind-lines', 'lovebird-perch-bars', 'lovebird-feather-chevrons', 'lovebird-song-staff', 'lovebird-sunrise-arcs'],
+    ringStyles:   ['lovebird-swing-perch-frame', 'lovebird-tail-fan-border', 'lovebird-song-staff-arch'],
+    shapeNames:   ['lovebird-duet-on-swing', 'lovebird-paired-feather-quills', 'lovebird-post-perch', 'lovebird-sunrise-birdbath'],
+    accentShapes: ['lovebird-tail-fans', 'lovebird-tiny-beaks', 'lovebird-song-bubbles', 'lovebird-eggshell-mosaics'],
+    boardBg:      { pattern: 'lovebird-airy-wind-lines', color: '#55b8ee' },
+  },
+  {
+    name: 'Dancing Ribbons', emoji: '🎀',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#f43b9d', '#ff7a24', '#8b42e8'],
+      ring:   ['#a21059', '#ac5e11', '#0e900e', '#1111ac'],
+      shape:  ['#ac1185', '#90900e', '#11acac'],
+      accent: ['#ac1138', '#4f900e', '#115eac'],
+    },
+    bgPatterns:   ['ribbons-energetic-crossings', 'ribbons-spiral-tracks', 'ribbons-dance-beats', 'ribbons-woven-sash', 'ribbons-looping-paths'],
+    ringStyles:   ['ribbons-crossed-sash-frame', 'ribbons-spiral-track-border', 'ribbons-maypole-loop-edge'],
+    shapeNames:   ['ribbons-dancer-silhouette', 'ribbons-hf-intertwined-spools', 'ribbons-paired-ballet-slippers', 'ribbons-maypole-for-two'],
+    accentShapes: ['ribbons-dance-step-marks', 'ribbons-spool-ends', 'ribbons-knot-loops', 'ribbons-rhythm-ticks'],
+    boardBg:      { pattern: 'ribbons-energetic-crossings', color: '#f43b9d' },
+  },
+  {
+    name: 'A Flower Crown for Fatema', emoji: '🌼',
+    style: 'cute-light',
+    palette: {
+      bg:     ['#45b86b', '#ffd34e', '#f05a4f'],
+      ring:   ['#0d870d', '#11acac', '#1111ac', '#ac1111'],
+      shape:  ['#0e902f', '#906f0e', '#ac1138'],
+      accent: ['#2f900e', '#ac5e11', '#115eac'],
+    },
+    bgPatterns:   ['fcrown-fern-fronds', 'fcrown-garland-chains', 'fcrown-pressed-stems', 'fcrown-crown-points', 'fcrown-botanical-hatching'],
+    ringStyles:   ['fcrown-fern-wreath-frame', 'fcrown-crown-point-border', 'fcrown-pressed-stem-arch'],
+    shapeNames:   ['fcrown-fatema-floral-tiara', 'fcrown-pressed-flower-portrait-frame', 'fcrown-daisy-bracelet', 'fcrown-botanical-letter-f'],
+    accentShapes: ['fcrown-fern-curls', 'fcrown-pollen-clusters', 'fcrown-petal-chains', 'fcrown-crown-gems'],
+    boardBg:      { pattern: 'fcrown-fern-fronds', color: '#45b86b' },
+  },
+];
+
+// ── Birthday Countdown Themes ──
+// Scheduled, date-locked themes for Fatema's birthday countdown (Sept 2–6, 2026).
+// NOT part of THEMES — never enter the random rotation. generateBoard() checks
+// BIRTHDAY_THEMES first (by UTC calendar date) before falling back to THEMES.
+// Each entry carries activeDate (YYYY-MM-DD, UTC) and countdownMessage shown in the toast.
+const BIRTHDAY_THEMES = [
+  {
+    name: 'September Sparkle', emoji: '✨',
+    activeDate: '2026-09-02',
+    countdownMessage: '4 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#ff4f9c', '#ffce3d', '#22c1c9'],
+      ring:   ['#9c1257', '#8a6a00', '#0b7b81', '#5b21b6'],
+      shape:  ['#a81261', '#8f5f00', '#0e6b70'],
+      accent: ['#c2185b', '#00838f', '#6a1fb5'],
+    },
+    bgPatterns:   ['septspark-confetti-shower', 'septspark-glitter-drift', 'septspark-firework-trails', 'septspark-ribbon-swirls', 'septspark-star-scatter'],
+    ringStyles:   ['septspark-sequin-frame', 'septspark-sparkle-dash', 'septspark-starlight-arch'],
+    shapeNames:   ['septspark-cupcake', 'septspark-sparkler', 'septspark-gift-star', 'septspark-party-hat'],
+    accentShapes: ['septspark-stars', 'septspark-confetti', 'septspark-sparkle-bursts', 'septspark-ribbons'],
+    boardBg:      { pattern: 'septspark-confetti-shower', color: '#ff4f9c' },
+  },
+  {
+    name: 'Wrapped With Love', emoji: '🎁',
+    activeDate: '2026-09-03',
+    countdownMessage: '3 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#e8385f', '#f2a541', '#7d5fff'],
+      ring:   ['#9c1030', '#8a5a06', '#4a35b0', '#7a1150'],
+      shape:  ['#a3123a', '#8f5c08', '#4433ad'],
+      accent: ['#b5123f', '#a5660a', '#4f35b3'],
+    },
+    bgPatterns:   ['wraplove-gift-tags', 'wraplove-ribbon-weave', 'wraplove-paper-folds', 'wraplove-bow-trails', 'wraplove-heart-wrap'],
+    ringStyles:   ['wraplove-ribbon-frame', 'wraplove-bow-corners', 'wraplove-tag-string-border'],
+    shapeNames:   ['wraplove-gift-box', 'wraplove-bow', 'wraplove-heart-tag', 'wraplove-wrapped-heart'],
+    accentShapes: ['wraplove-bows', 'wraplove-tags', 'wraplove-hearts', 'wraplove-ribbon-curls'],
+    boardBg:      { pattern: 'wraplove-gift-tags', color: '#e8385f' },
+  },
+  {
+    name: 'Balloons & Kisses', emoji: '🎈',
+    style: 'bold-sticker',
+    activeDate: '2026-09-04',
+    countdownMessage: '2 days until Fatema’s birthday',
+    palette: {
+      bg:     ['#ff2e7e', '#ffb100', '#2f6fed'],
+      ring:   ['#8a0f42', '#8a5a00', '#123f8a', '#146356'],
+      shape:  ['#9c1049', '#8a5c05', '#163f8a'],
+      accent: ['#a3124f', '#956008', '#1c4a95'],
+    },
+    bgPatterns:   ['balloonkiss-confetti-pop', 'balloonkiss-balloon-strings', 'balloonkiss-lipstick-marks', 'balloonkiss-streamer-waves', 'balloonkiss-polka-scatter'],
+    ringStyles:   ['balloonkiss-patch-frame', 'balloonkiss-varsity-double', 'balloonkiss-ticket-patch'],
+    shapeNames:   ['balloonkiss-balloon-bunch', 'balloonkiss-kiss-lips', 'balloonkiss-party-popper', 'balloonkiss-cupcake-sticker'],
+    accentShapes: ['balloonkiss-kiss-marks', 'balloonkiss-balloon-dots', 'balloonkiss-confetti-badges', 'balloonkiss-star-badges'],
+    boardBg:      { pattern: 'balloonkiss-confetti-pop', color: '#ff2e7e' },
+  },
+  {
+    name: 'Birthday Eve Wishes', emoji: '🕯️',
+    activeDate: '2026-09-05',
+    countdownMessage: 'Tomorrow is Fatema’s birthday',
+    palette: {
+      bg:     ['#6c3ce8', '#ff8a3d', '#ff6f91'],
+      ring:   ['#4a1fae', '#a4470a', '#8a1246', '#6d2e8f'],
+      shape:  ['#551fb8', '#a84e0d', '#93144c'],
+      accent: ['#5f2ac2', '#b9560f', '#9c1552'],
+    },
+    bgPatterns:   ['candleeve-candle-glow', 'candleeve-starlit-sky', 'candleeve-wish-ribbons', 'candleeve-melting-wax', 'candleeve-nightfall-bands'],
+    ringStyles:   ['candleeve-flame-frame', 'candleeve-wish-dash', 'candleeve-glow-arch'],
+    shapeNames:   ['candleeve-lit-candle', 'candleeve-wish-star', 'candleeve-crescent-moon', 'candleeve-cake-silhouette'],
+    accentShapes: ['candleeve-flames', 'candleeve-stars', 'candleeve-wish-sparkles', 'candleeve-moons'],
+    boardBg:      { pattern: 'candleeve-nightfall-bands', color: '#6c3ce8' },
+  },
+  {
+    name: 'Fatema\'s Birthday', emoji: '🎂',
+    style: 'bold-sticker',
+    activeDate: '2026-09-06',
+    countdownMessage: 'Happy Birthday, Fatema! 💖',
+    palette: {
+      bg:     ['#ff1f7a', '#ffd400', '#00c853'],
+      ring:   ['#8a0f45', '#8a6a00', '#0b7a3a', '#4a1470'],
+      shape:  ['#9c1049', '#8f6d02', '#0e8241'],
+      accent: ['#a3124f', '#a6790a', '#127a45'],
+    },
+    bgPatterns:   ['fbday-cake-confetti', 'fbday-candle-flicker', 'fbday-balloon-parade', 'fbday-cake-frosting-swirls', 'fbday-celebration-burst'],
+    ringStyles:   ['fbday-patch-frame', 'fbday-varsity-double', 'fbday-ticket-patch'],
+    shapeNames:   ['fbday-birthday-cake', 'fbday-crown-sticker', 'fbday-gift-sticker', 'fbday-number-candle'],
+    accentShapes: ['fbday-confetti-badges', 'fbday-star-badges', 'fbday-heart-badges', 'fbday-candle-badges'],
+    boardBg:      { pattern: 'fbday-cake-confetti', color: '#ff1f7a' },
+  },
+];
+
+// Archived themes — preserved for reference, not selectable in-game
+const ARCHIVED_THEMES = [
+  // Archived September 2026 (cute-light romantic rotation refresh)
+  {
     name: 'Rainy Days Together', emoji: '☔',
     style: 'cute-light',
     palette: {
@@ -116,100 +301,7 @@ const THEMES = [
     accentShapes: ['hf-initials', 'hf-hearts', 'hf-links', 'hf-sparkles'],
     boardBg:      { pattern: 'hf-signature-weave', color: '#e83e8c' },
   },
-];
 
-// ── Birthday Countdown Themes ──
-// Scheduled, date-locked themes for Fatema's birthday countdown (Sept 2–6, 2026).
-// NOT part of THEMES — never enter the random rotation. generateBoard() checks
-// BIRTHDAY_THEMES first (by UTC calendar date) before falling back to THEMES.
-// Each entry carries activeDate (YYYY-MM-DD, UTC) and countdownMessage shown in the toast.
-const BIRTHDAY_THEMES = [
-  {
-    name: 'September Sparkle', emoji: '✨',
-    activeDate: '2026-09-02',
-    countdownMessage: '4 days until Fatema’s birthday',
-    palette: {
-      bg:     ['#ff4f9c', '#ffce3d', '#22c1c9'],
-      ring:   ['#9c1257', '#8a6a00', '#0b7b81', '#5b21b6'],
-      shape:  ['#a81261', '#8f5f00', '#0e6b70'],
-      accent: ['#c2185b', '#00838f', '#6a1fb5'],
-    },
-    bgPatterns:   ['septspark-confetti-shower', 'septspark-glitter-drift', 'septspark-firework-trails', 'septspark-ribbon-swirls', 'septspark-star-scatter'],
-    ringStyles:   ['septspark-sequin-frame', 'septspark-sparkle-dash', 'septspark-starlight-arch'],
-    shapeNames:   ['septspark-cupcake', 'septspark-sparkler', 'septspark-gift-star', 'septspark-party-hat'],
-    accentShapes: ['septspark-stars', 'septspark-confetti', 'septspark-sparkle-bursts', 'septspark-ribbons'],
-    boardBg:      { pattern: 'septspark-confetti-shower', color: '#ff4f9c' },
-  },
-  {
-    name: 'Wrapped With Love', emoji: '🎁',
-    activeDate: '2026-09-03',
-    countdownMessage: '3 days until Fatema’s birthday',
-    palette: {
-      bg:     ['#e8385f', '#f2a541', '#7d5fff'],
-      ring:   ['#9c1030', '#8a5a06', '#4a35b0', '#7a1150'],
-      shape:  ['#a3123a', '#8f5c08', '#4433ad'],
-      accent: ['#b5123f', '#a5660a', '#4f35b3'],
-    },
-    bgPatterns:   ['wraplove-gift-tags', 'wraplove-ribbon-weave', 'wraplove-paper-folds', 'wraplove-bow-trails', 'wraplove-heart-wrap'],
-    ringStyles:   ['wraplove-ribbon-frame', 'wraplove-bow-corners', 'wraplove-tag-string-border'],
-    shapeNames:   ['wraplove-gift-box', 'wraplove-bow', 'wraplove-heart-tag', 'wraplove-wrapped-heart'],
-    accentShapes: ['wraplove-bows', 'wraplove-tags', 'wraplove-hearts', 'wraplove-ribbon-curls'],
-    boardBg:      { pattern: 'wraplove-gift-tags', color: '#e8385f' },
-  },
-  {
-    name: 'Balloons & Kisses', emoji: '🎈',
-    style: 'bold-sticker',
-    activeDate: '2026-09-04',
-    countdownMessage: '2 days until Fatema’s birthday',
-    palette: {
-      bg:     ['#ff2e7e', '#ffb100', '#2f6fed'],
-      ring:   ['#8a0f42', '#8a5a00', '#123f8a', '#146356'],
-      shape:  ['#9c1049', '#8a5c05', '#163f8a'],
-      accent: ['#a3124f', '#956008', '#1c4a95'],
-    },
-    bgPatterns:   ['balloonkiss-confetti-pop', 'balloonkiss-balloon-strings', 'balloonkiss-lipstick-marks', 'balloonkiss-streamer-waves', 'balloonkiss-polka-scatter'],
-    ringStyles:   ['balloonkiss-patch-frame', 'balloonkiss-varsity-double', 'balloonkiss-ticket-patch'],
-    shapeNames:   ['balloonkiss-balloon-bunch', 'balloonkiss-kiss-lips', 'balloonkiss-party-popper', 'balloonkiss-cupcake-sticker'],
-    accentShapes: ['balloonkiss-kiss-marks', 'balloonkiss-balloon-dots', 'balloonkiss-confetti-badges', 'balloonkiss-star-badges'],
-    boardBg:      { pattern: 'balloonkiss-confetti-pop', color: '#ff2e7e' },
-  },
-  {
-    name: 'Birthday Eve Wishes', emoji: '🕯️',
-    activeDate: '2026-09-05',
-    countdownMessage: 'Tomorrow is Fatema’s birthday',
-    palette: {
-      bg:     ['#6c3ce8', '#ff8a3d', '#ff6f91'],
-      ring:   ['#4a1fae', '#a4470a', '#8a1246', '#6d2e8f'],
-      shape:  ['#551fb8', '#a84e0d', '#93144c'],
-      accent: ['#5f2ac2', '#b9560f', '#9c1552'],
-    },
-    bgPatterns:   ['candleeve-candle-glow', 'candleeve-starlit-sky', 'candleeve-wish-ribbons', 'candleeve-melting-wax', 'candleeve-nightfall-bands'],
-    ringStyles:   ['candleeve-flame-frame', 'candleeve-wish-dash', 'candleeve-glow-arch'],
-    shapeNames:   ['candleeve-lit-candle', 'candleeve-wish-star', 'candleeve-crescent-moon', 'candleeve-cake-silhouette'],
-    accentShapes: ['candleeve-flames', 'candleeve-stars', 'candleeve-wish-sparkles', 'candleeve-moons'],
-    boardBg:      { pattern: 'candleeve-nightfall-bands', color: '#6c3ce8' },
-  },
-  {
-    name: 'Fatema\'s Birthday', emoji: '🎂',
-    style: 'bold-sticker',
-    activeDate: '2026-09-06',
-    countdownMessage: 'Happy Birthday, Fatema! 💖',
-    palette: {
-      bg:     ['#ff1f7a', '#ffd400', '#00c853'],
-      ring:   ['#8a0f45', '#8a6a00', '#0b7a3a', '#4a1470'],
-      shape:  ['#9c1049', '#8f6d02', '#0e8241'],
-      accent: ['#a3124f', '#a6790a', '#127a45'],
-    },
-    bgPatterns:   ['fbday-cake-confetti', 'fbday-candle-flicker', 'fbday-balloon-parade', 'fbday-cake-frosting-swirls', 'fbday-celebration-burst'],
-    ringStyles:   ['fbday-patch-frame', 'fbday-varsity-double', 'fbday-ticket-patch'],
-    shapeNames:   ['fbday-birthday-cake', 'fbday-crown-sticker', 'fbday-gift-sticker', 'fbday-number-candle'],
-    accentShapes: ['fbday-confetti-badges', 'fbday-star-badges', 'fbday-heart-badges', 'fbday-candle-badges'],
-    boardBg:      { pattern: 'fbday-cake-confetti', color: '#ff1f7a' },
-  },
-];
-
-// Archived themes — preserved for reference, not selectable in-game
-const ARCHIVED_THEMES = [
   // Archived September 2026 (romantic collection refresh)
   {
     name: 'Love Letters', emoji: '💌',

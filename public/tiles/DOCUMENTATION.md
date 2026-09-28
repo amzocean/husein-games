@@ -169,9 +169,10 @@ The theme schema and matching engine stay the same for every visual style. A sty
 | Style | Theme property | Rendering approach |
 |-------|----------------|--------------------|
 | Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
+| Cute Light | `style: 'cute-light'` | Bright romantic SVG motifs rendered slightly smaller, with airy ring/accent treatment and small decorative flourishes |
 | Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
 
-`style` is descriptive metadata for Bold Sticker themes. The engine does not branch on it for rendering, and the existing validator rules remain unchanged. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks. (Board *selection* can branch on other metadata — see Workflow 4 for date-scheduled themes — but that only affects which theme object is chosen, never how its 16 cases are drawn.)
+`style` selects a renderer convention only; it never changes the theme schema, matching rules, or validator requirements. Cute Light receives the shared airy treatment in `renderer.js`, while Bold Sticker cases provide their own keyline and shadow layers. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks. (Board *selection* can branch on other metadata — see Workflow 4 for date-scheduled themes — but that only affects which theme object is chosen, never how its 16 cases are matched.)
 
 ---
 
@@ -199,6 +200,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 
 4. **Assess the current style spread** — count active themes by rendering style:
    - **Standard**: no `style` property
+   - **Cute Light**: `style: 'cute-light'`
    - **Bold Sticker**: `style: 'bold-sticker'`
 
    Identify under-represented styles. Recommendations should improve or preserve style variety rather than defaulting every new idea to Standard.
@@ -210,9 +212,9 @@ The theme schema and matching engine stay the same for every visual style. A sty
    - **Rich element vocabulary**: The theme concept must support at least 4 distinct shapes, 4 distinct accents, 3 distinct ring styles, and 5 bg patterns — all visually different from each other
    - **Unique color identity**: Each proposed theme should have a signature color family NOT already dominant in active themes
    - **Variety of intensity**: Propose a mix of light, medium, and bold themes
-   - **Variety of style**: Recommend ideas across both supported rendering styles. A normal 5–7 idea set should include Standard and Bold Sticker options unless the user explicitly restricts the style.
+   - **Variety of style**: Recommend ideas across the three supported rendering styles. A normal 5–7 idea set should include a suitable mix of Standard, Cute Light, and Bold Sticker options unless the user explicitly restricts the style.
    - **Style fit is the primary rule**: Assign each idea the style that best supports its subject and visual vocabulary. Never force a theme into a style merely to satisfy a numerical balance.
-   - **Do not rotate styles mechanically**: Bold Sticker needs chunky recognizable silhouettes. Standard is best when the subject naturally reads through borders, a central icon, and corner accents.
+   - **Do not rotate styles mechanically**: Bold Sticker needs chunky recognizable silhouettes. Cute Light suits bright, romantic, playful subjects with airy detail. Standard is best when the subject naturally reads through borders, a central icon, and corner accents.
    - **Style balance is the tie-breaker**: Only when two styles fit equally well, prefer the style with fewer active themes.
    - **Implementability**: Shapes/accents should be achievable in simple SVG (paths, circles, rects, polygons). Avoid themes that require complex illustrations.
 

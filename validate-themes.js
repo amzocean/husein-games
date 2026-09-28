@@ -444,7 +444,32 @@ console.log(`\n${BOLD}CHECK 6: Function/utility dependencies (renderer.js)${RESE
 console.log(`\n${BOLD}CHECK 8: Palette color distinctness${RESET}`);
 if (THEMES) {
   let anyDup = false;
+  let anyTooClose = false;
   const paletteGroups = ['bg', 'ring', 'shape', 'accent'];
+  const matchableGroups = ['ring', 'shape', 'accent'];
+  const activeThemes = THEMES.slice(0, THEMES.length - BIRTHDAY_THEME_COUNT);
+  const MIN_MATCH_COLOR_DISTANCE = 45;
+
+  function hexToLab(hex) {
+    const normalized = hex.replace('#', '');
+    const channels = [0, 2, 4].map(offset => parseInt(normalized.slice(offset, offset + 2), 16) / 255);
+    const [r, g, b] = channels.map(value =>
+      value > 0.04045 ? ((value + 0.055) / 1.055) ** 2.4 : value / 12.92
+    );
+    let x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+    let y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+    let z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+    [x, y, z] = [x, y, z].map(value =>
+      value > 0.008856 ? Math.cbrt(value) : 7.787 * value + 16 / 116
+    );
+    return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
+  }
+
+  function colorDistance(first, second) {
+    const a = hexToLab(first);
+    const b = hexToLab(second);
+    return Math.sqrt(a.reduce((sum, value, index) => sum + (value - b[index]) ** 2, 0));
+  }
 
   for (const theme of THEMES) {
     for (const group of paletteGroups) {
@@ -467,8 +492,24 @@ if (THEMES) {
       }
     }
   }
-  if (!anyDup) {
-    check(true, `All ${THEMES.length} themes have distinct colors within each palette group`, '');
+
+  for (const theme of activeThemes) {
+    for (const group of matchableGroups) {
+      const colors = theme.palette[group];
+      for (let i = 0; i < colors.length; i++) {
+        for (let j = i + 1; j < colors.length; j++) {
+          const distance = colorDistance(colors[i], colors[j]);
+          if (distance < MIN_MATCH_COLOR_DISTANCE) {
+            check(false, '', `${theme.name}: palette.${group} colors ${colors[i]} and ${colors[j]} are too similar for quick play (distance ${distance.toFixed(1)}, minimum ${MIN_MATCH_COLOR_DISTANCE})`);
+            anyTooClose = true;
+          }
+        }
+      }
+    }
+  }
+
+  if (!anyDup && !anyTooClose) {
+    check(true, `All ${THEMES.length} themes have unique palette colors, and all ${activeThemes.length} active themes have clearly separated match colors`, '');
   }
 } else {
   check(false, '', 'Skipped — could not parse THEMES');

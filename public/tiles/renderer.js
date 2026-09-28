@@ -190,6 +190,213 @@ function renderRomanticStickerAccent(family, variant, c, cx, cy) {
          renderRomanticAccent(family, variant, c, cx, cy);
 }
 
+function renderLoveLetterBgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+  if (family === 'strawberry') {
+    if (variant === 0) {
+      for (let y = 14; y <= 86; y += 14) s += `<path d="M9,${y} Q16,${y-6} 23,${y} T37,${y} T51,${y} T65,${y} T79,${y} T93,${y}" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.26}"/>`;
+    } else if (variant === 1) {
+      for (let y = 13; y <= 87; y += 12) for (let x = 12 + (y % 24 ? 5 : 0); x <= 88; x += 16) s += `<ellipse cx="${x}" cy="${y}" rx="1.2" ry="2.5" fill="${c}" opacity="${o*0.3}"/>`;
+    } else if (variant === 2) {
+      for (let x = 12; x <= 88; x += 15) s += `<path d="M${x},8 V${28+(x%4)} Q${x+5},35 ${x},43 V92" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" opacity="${o*0.24}"/>`;
+    } else if (variant === 3) {
+      for (let x = -4; x <= 92; x += 16) s += `<path d="M${x},96 L${x+32},4" stroke="${c}" stroke-width="3.5" opacity="${o*0.12}"/>`;
+    } else {
+      for (let y = 14; y <= 86; y += 13) s += `<path d="M8,${y} Q20,${y-7} 32,${y} T56,${y} T80,${y} T92,${y}" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.27}"/>`;
+    }
+  } else if (family === 'butterfly') {
+    if (variant === 0) {
+      for (let x = -12; x <= 84; x += 16) s += `<path d="M${x},92 L${x+36},8 M${x+10},92 L${x+31},42" stroke="${c}" stroke-width="0.8" opacity="${o*0.27}"/>`;
+    } else if (variant === 1) {
+      for (let y = 17; y <= 83; y += 17) s += `<path d="M8,${y} C28,${y-13} 67,${y+13} 92,${y-2}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o*0.08}"/>`;
+    } else if (variant === 2) {
+      s += `<path d="M8,78 C21,46 37,76 48,42 S77,44 92,15 M8,55 C27,20 43,54 59,25 S82,35 92,12" fill="none" stroke="${c}" stroke-width="0.9" stroke-dasharray="5 4" opacity="${o*0.28}"/>`;
+    } else if (variant === 3) {
+      for (let y = 12; y <= 88; y += 10) s += `<path d="M8,${y} Q18,${y-5} 28,${y} T48,${y} T68,${y} T88,${y}" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.2}"/>`;
+    } else {
+      for (let x = 12; x <= 88; x += 12) s += `<path d="M${x},8 Q${x-6},28 ${x},48 T${x},92" fill="none" stroke="${c}" stroke-width="0.8" stroke-dasharray="2 5" opacity="${o*0.28}"/>`;
+    }
+  } else if (family === 'tea') {
+    if (variant === 0) {
+      for (let x = 12; x <= 88; x += 16) s += `<line x1="${x}" y1="8" x2="${x}" y2="92" stroke="${c}" stroke-width="0.7" opacity="${o*0.2}"/>`;
+      for (let y = 12; y <= 88; y += 16) s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="0.7" opacity="${o*0.2}"/>`;
+    } else if (variant === 1) {
+      for (let x = 10; x <= 90; x += 9) s += `<line x1="${x}" y1="8" x2="${x}" y2="92" stroke="${c}" stroke-width="${x%18 ? 0.6 : 1.4}" opacity="${o*0.23}"/>`;
+    } else if (variant === 2) {
+      for (let x = 14; x <= 86; x += 14) s += `<path d="M${x},92 C${x-5},73 ${x+5},57 ${x},39 S${x-3},18 ${x+2},8" fill="none" stroke="${c}" stroke-width="0.85" opacity="${o*0.27}"/>`;
+    } else if (variant === 3) {
+      for (let i = -6; i <= 96; i += 14) {
+        s += `<line x1="${i}" y1="8" x2="${i+34}" y2="92" stroke="${c}" stroke-width="0.65" opacity="${o*0.22}"/>`;
+        s += `<line x1="${i+34}" y1="8" x2="${i}" y2="92" stroke="${c}" stroke-width="0.65" opacity="${o*0.22}"/>`;
+      }
+    } else {
+      for (let y = 14; y <= 86; y += 18) s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="0.7" stroke-dasharray="2 5 7 5" opacity="${o*0.26}"/>`;
+    }
+  } else if (family === 'lovebird') {
+    if (variant === 0) {
+      for (let y = 15; y <= 85; y += 14) s += `<path d="M8,${y} C27,${y-6} 43,${y+6} 62,${y} S82,${y-4} 92,${y}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
+    } else if (variant === 1) {
+      for (let y = 15; y <= 85; y += 14) s += `<line x1="8" y1="${y}" x2="92" y2="${y}" stroke="${c}" stroke-width="${y%28 ? 1.5 : 0.6}" opacity="${o*0.22}"/>`;
+    } else if (variant === 2) {
+      for (let y = 14; y <= 86; y += 14) s += `<path d="M8,${y-5} L19,${y+3} L30,${y-5} M38,${y-5} L49,${y+3} L60,${y-5} M68,${y-5} L79,${y+3} L90,${y-5}" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.25}"/>`;
+    } else if (variant === 3) {
+      for (let y = 18; y <= 82; y += 16) s += `<path d="M8,${y} H92 M18,${y-4} V${y+4} M43,${y-4} V${y+4} M68,${y-4} V${y+4}" stroke="${c}" stroke-width="0.7" opacity="${o*0.23}"/>`;
+    } else {
+      for (let r = 18; r <= 58; r += 10) s += `<path d="M${50-r},88 A${r},${r} 0 0 1 ${50+r},88" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.24}"/>`;
+    }
+  } else if (family === 'ribbons') {
+    if (variant === 0) {
+      for (let x = -8; x <= 88; x += 20) {
+        s += `<path d="M${x},8 C${x+30},35 ${x+5},65 ${x+35},92" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o*0.14}"/>`;
+        s += `<path d="M${x+35},8 C${x+5},35 ${x+30},65 ${x},92" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.2}"/>`;
+      }
+    } else if (variant === 1) {
+      s += `<path d="M50,50 C25,25 16,65 45,72 C78,80 88,37 58,25 C31,14 13,39 26,57" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.28}"/>`;
+    } else if (variant === 2) {
+      for (let y = 14; y <= 86; y += 12) s += `<path d="M8,${y} H22 M28,${y} H34 M42,${y} H66 M72,${y} H80 M86,${y} H92" stroke="${c}" stroke-width="2" opacity="${o*0.24}"/>`;
+    } else if (variant === 3) {
+      for (let i = -30; i <= 90; i += 18) s += `<path d="M${i},8 L${i+48},92 M${i+12},8 L${i-36},92" stroke="${c}" stroke-width="1.4" opacity="${o*0.17}"/>`;
+    } else {
+      for (let y = 14; y <= 86; y += 18) s += `<path d="M8,${y} C23,${y-14} 38,${y+14} 53,${y} S78,${y-11} 92,${y}" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.25}"/>`;
+    }
+  } else {
+    if (variant === 0) {
+      for (let y = 14; y <= 86; y += 14) s += `<path d="M12,${y+5} Q18,${y-7} 25,${y+5} M25,${y+5} Q32,${y-7} 39,${y+5} M58,${y+5} Q65,${y-7} 72,${y+5} M72,${y+5} Q79,${y-7} 86,${y+5}" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.24}"/>`;
+    } else if (variant === 1) {
+      for (let y = 15; y <= 85; y += 14) s += `<path d="M8,${y} Q18,${y-8} 28,${y} T48,${y} T68,${y} T88,${y}" fill="none" stroke="${c}" stroke-width="0.9" stroke-dasharray="7 3" opacity="${o*0.25}"/>`;
+    } else if (variant === 2) {
+      for (let x = 13; x <= 87; x += 15) s += `<path d="M${x},92 Q${x-5},71 ${x+2},52 T${x},8" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.25}"/>`;
+    } else if (variant === 3) {
+      for (let x = 10; x <= 90; x += 16) s += `<path d="M${x-6},18 L${x},8 L${x+6},18 M${x-6},50 L${x},40 L${x+6},50 M${x-6},82 L${x},72 L${x+6},82" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.25}"/>`;
+    } else {
+      for (let x = -8; x <= 92; x += 12) s += `<path d="M${x},92 L${x+28},8" stroke="${c}" stroke-width="0.65" opacity="${o*0.22}"/>`;
+    }
+  }
+  return s;
+}
+
+function renderLoveLetterBg(family, variant, c, o) {
+  return `<g stroke-linecap="round" stroke-linejoin="round">${renderLoveLetterBgInner(family, variant, c, o)}</g>`;
+}
+
+function renderLoveLetterRingInner(family, variant, c) {
+  if (family === 'strawberry') {
+    if (variant === 0) return `<path d="M10,18 H90 V82 H10Z M10,30 H90 M10,70 H90" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" opacity="0.78"/><path d="M20,12 V24 M35,12 V24 M50,12 V24 M65,12 V24 M80,12 V24" stroke="${c}" stroke-width="2" opacity="0.62"/>`;
+    if (variant === 1) return `<path d="M9,12 H91 V70 Q84,70 84,82 Q77,70 70,70 Q63,70 63,82 Q56,70 49,70 Q42,70 42,82 Q35,70 28,70 Q21,70 21,82 Q16,70 9,70Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/>`;
+    return `<path d="M12,31 Q20,10 50,10 Q80,10 88,31 M16,31 H84 V84 H16Z M34,13 L34,31 M50,10 V31 M66,13 V31" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" opacity="0.78"/>`;
+  }
+  if (family === 'butterfly') {
+    if (variant === 0) return `<path d="M49,12 C34,1 14,11 15,31 C16,43 27,47 38,41 C29,52 30,71 45,86 M51,12 C66,1 86,11 85,31 C84,43 73,47 62,41 C71,52 70,71 55,86" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/>`;
+    if (variant === 1) return `<path d="M12,25 Q20,9 35,15 Q50,4 65,15 Q80,9 88,25 V75 Q80,91 65,85 Q50,96 35,85 Q20,91 12,75Z" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="10 3" opacity="0.78"/>`;
+    return `<path d="M15,12 Q50,25 85,12 L78,88 Q50,75 22,88Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M26,18 L36,84 M50,22 V80 M74,18 L64,84" stroke="${c}" stroke-width="1.5" opacity="0.5"/>`;
+  }
+  if (family === 'tea') {
+    if (variant === 0) return `<ellipse cx="50" cy="50" rx="42" ry="34" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><ellipse cx="50" cy="50" rx="36" ry="28" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.5"/>`;
+    if (variant === 1) return `<path d="M12,18 H88 V82 H12Z M12,30 H88 M22,18 V30 M38,18 V30 M54,18 V30 M70,18 V30" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" opacity="0.78"/><circle cx="20" cy="50" r="3" fill="${c}"/><circle cx="80" cy="50" r="3" fill="${c}"/>`;
+    return `<path d="M8,30 Q50,10 92,30 V70 Q50,90 8,70Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M18,34 Q50,20 82,34 M18,66 Q50,80 82,66" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.52"/>`;
+  }
+  if (family === 'lovebird') {
+    if (variant === 0) return `<path d="M12,76 H88 M20,76 V86 M80,76 V86 M28,18 Q50,4 72,18 M31,18 V32 M69,18 V32" fill="none" stroke="${c}" stroke-width="3.2" stroke-linecap="round" opacity="0.78"/>`;
+    if (variant === 1) return `<path d="M13,18 Q26,8 39,18 Q50,5 61,18 Q74,8 87,18 V82 Q74,92 61,82 Q50,95 39,82 Q26,92 13,82Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M25,18 L34,30 M50,14 V29 M75,18 L66,30" stroke="${c}" stroke-width="1.5" opacity="0.55"/>`;
+    return `<path d="M10,24 Q50,6 90,24 M10,33 Q50,15 90,33 M10,76 Q50,94 90,76 M10,67 Q50,85 90,67 M10,24 V76 M90,24 V76" fill="none" stroke="${c}" stroke-width="2.4" opacity="0.76"/>`;
+  }
+  if (family === 'ribbons') {
+    if (variant === 0) return `<path d="M8,18 C30,5 37,29 50,18 C63,7 70,31 92,18 M8,82 C30,95 37,71 50,82 C63,93 70,69 92,82 M18,8 C5,30 29,37 18,50 C7,63 31,70 18,92 M82,8 C95,30 71,37 82,50 C93,63 69,70 82,92" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/>`;
+    if (variant === 1) return `<path d="M50,8 C18,8 8,24 8,50 C8,82 29,92 50,92 C82,92 92,71 92,50 C92,18 71,8 50,8Z" fill="none" stroke="${c}" stroke-width="3.2" stroke-dasharray="14 5 3 5" opacity="0.78"/>`;
+    return `<path d="M50,8 V92 M8,24 Q50,42 92,24 M8,76 Q50,58 92,76 M13,15 Q50,31 87,15 M13,85 Q50,69 87,85" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.76"/>`;
+  }
+  if (variant === 0) return `<path d="M50,8 Q61,20 73,13 Q76,28 91,29 Q82,42 91,54 Q76,58 76,73 Q62,70 50,92 Q38,70 24,73 Q24,58 9,54 Q18,42 9,29 Q24,28 27,13 Q39,20 50,8Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/>`;
+  if (variant === 1) return `<path d="M10,28 L19,12 L28,28 L37,12 L46,28 L55,12 L64,28 L73,12 L82,28 L90,12 V88 H10Z" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" opacity="0.78"/>`;
+  return `<path d="M13,82 Q24,65 19,47 Q16,28 31,15 M87,82 Q76,65 81,47 Q84,28 69,15 M22,84 Q50,75 78,84 M31,15 Q50,24 69,15" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="0.78"/>`;
+}
+
+function renderLoveLetterRing(family, variant, c) {
+  return `<g stroke-linecap="round" stroke-linejoin="round">${renderLoveLetterRingInner(family, variant, c)}</g>`;
+}
+
+function renderLoveLetterShapeInner(family, variant, c, o) {
+  const text = (x, y, value, size = 8) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="${size}" font-weight="800" fill="white" opacity="0.84">${value}</text>`;
+  if (family === 'strawberry') {
+    if (variant === 0) return `<g fill="${c}" stroke="${c}" stroke-linejoin="round" opacity="${o}"><path d="M25,38 Q35,24 45,38 Q46,52 35,67 Q24,52 25,38Z"/><path d="M55,38 Q65,24 75,38 Q76,52 65,67 Q54,52 55,38Z"/><path d="M27,37 L24,29 L33,33 L38,27 L42,36 M57,37 L54,29 L63,33 L68,27 L72,36" fill="none" stroke-width="3"/></g><path d="M24,50 Q35,60 46,50 L43,61 Q35,72 27,61Z M54,50 Q65,60 76,50 L73,61 Q65,72 57,61Z" fill="white" opacity="0.58"/>${text(35,48,'H')}${text(65,48,'F')}`;
+    if (variant === 1) return `<path d="M35,30 H65 L62,74 H38Z" fill="${c}" opacity="${o}"/><rect x="39" y="24" width="22" height="9" rx="3" fill="${c}" opacity="${o}"/><path d="M42,44 Q50,39 58,44 M42,54 Q50,49 58,54" fill="none" stroke="white" stroke-width="2" opacity="0.6"/>${text(50,68,'H/F',7)}`;
+    if (variant === 2) return `<path d="M20,48 Q50,16 80,48 Q65,41 50,49 Q35,41 20,48Z" fill="${c}" opacity="${o}"/><path d="M50,46 V72 Q50,79 42,74" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M31,42 L42,28 M50,45 V22 M69,42 L58,28" stroke="white" stroke-width="2" opacity="0.55"/>`;
+    return `<path d="M31,45 H69 L65,72 H35Z" fill="${c}" opacity="${o}"/><ellipse cx="50" cy="45" rx="22" ry="8" fill="${c}" opacity="${o}"/><path d="M36,43 Q41,31 47,42 Q52,27 58,42 Q64,32 67,44" fill="white" opacity="0.6"/><path d="M45,56 Q50,51 55,56" fill="none" stroke="white" stroke-width="2" opacity="0.58"/>${text(42,66,'H',7)}${text(58,66,'F',7)}`;
+  }
+  if (family === 'butterfly') {
+    if (variant === 0) return `<circle cx="50" cy="51" r="12" fill="${c}" opacity="${o}"/><g fill="${c}" opacity="${o}"><path d="M45,48 C28,21 16,36 28,52 Q36,61 47,53Z"/><path d="M55,48 C72,21 84,36 72,52 Q64,61 53,53Z"/><path d="M46,56 Q27,52 31,69 Q37,80 49,59Z"/><path d="M54,56 Q73,52 69,69 Q63,80 51,59Z"/></g>${text(39,50,'H',7)}${text(61,50,'F',7)}`;
+    if (variant === 1) return `<polygon points="50,22 72,49 50,72 28,49" fill="${c}" opacity="${o}"/><path d="M50,22 V72 M28,49 H72 M50,72 Q64,77 57,85" fill="none" stroke="white" stroke-width="2" opacity="0.58"/><path d="M57,85 L53,80 M57,85 L63,81" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+    if (variant === 2) return `<path d="M39,32 H61 L66,70 H34Z" fill="${c}" opacity="${o}"/><rect x="42" y="24" width="16" height="10" rx="3" fill="${c}" opacity="${o}"/><path d="M34,47 Q22,34 26,58 Q31,67 38,57 M66,47 Q78,34 74,58 Q69,67 62,57" fill="${c}" opacity="${o}"/><path d="M42,48 Q50,41 58,48 M43,57 Q50,51 57,57" fill="none" stroke="white" stroke-width="2" opacity="0.58"/>`;
+    return `<circle cx="50" cy="57" r="20" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M50,57 L50,36 M50,57 L66,48 M31,71 H69" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M45,33 Q50,24 55,33" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+  }
+  if (family === 'tea') {
+    if (variant === 0) return `<rect x="29" y="31" width="42" height="43" rx="5" fill="${c}" opacity="${o}"/><path d="M29,42 H71 M40,31 V42 M60,31 V42 M35,51 H65 M35,60 H65" stroke="white" stroke-width="2" opacity="0.55"/>${text(42,70,'H',8)}${text(58,70,'F',8)}`;
+    if (variant === 1) return `<path d="M50,28 V73 M35,73 H65" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><ellipse cx="50" cy="43" rx="23" ry="6" fill="${c}" opacity="${o}"/><ellipse cx="50" cy="61" rx="28" ry="7" fill="${c}" opacity="${o}"/><g fill="white" opacity="0.62"><ellipse cx="39" cy="42" rx="6" ry="3"/><ellipse cx="50" cy="42" rx="6" ry="3"/><ellipse cx="61" cy="42" rx="6" ry="3"/><ellipse cx="36" cy="60" rx="7" ry="3"/><ellipse cx="50" cy="60" rx="7" ry="3"/><ellipse cx="64" cy="60" rx="7" ry="3"/></g>`;
+    if (variant === 2) return `<path d="M30,45 H63 L67,70 H27Z" fill="${c}" opacity="${o}"/><path d="M61,48 Q79,45 77,59 Q74,67 66,64 M35,45 Q37,29 50,30 Q60,31 62,45 M75,45 L84,40" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M41,29 C35,21 44,17 50,24 C56,17 65,21 59,29 Q50,39 41,29Z" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>`;
+    return `<circle cx="50" cy="51" r="23" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M50,51 V36 M50,51 L62,58 M39,25 H61 M43,75 H57" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><circle cx="50" cy="51" r="3" fill="${c}" opacity="${o}"/>`;
+  }
+  if (family === 'lovebird') {
+    if (variant === 0) return `<path d="M23,30 Q50,12 77,30 M31,30 V65 M69,30 V65 M25,67 Q50,61 75,67" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><g fill="${c}" opacity="${o}"><ellipse cx="40" cy="53" rx="12" ry="9"/><circle cx="48" cy="47" r="7"/><ellipse cx="60" cy="53" rx="12" ry="9"/><circle cx="52" cy="47" r="7"/></g>${text(38,56,'H',6)}${text(62,56,'F',6)}`;
+    if (variant === 1) return `<path d="M30,70 Q45,49 58,27 Q65,20 69,28 Q71,34 64,39 Q48,53 30,70Z M70,70 Q55,49 42,27 Q35,20 31,28 Q29,34 36,39 Q52,53 70,70Z" fill="${c}" opacity="${o}"/><path d="M34,63 L61,34 M66,63 L39,34" stroke="white" stroke-width="2" opacity="0.55"/>`;
+    if (variant === 2) return `<path d="M22,66 H78 M30,66 V76 M70,66 V76 M37,35 H63 V61 H37Z M50,35 V24" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><path d="M37,35 L50,25 L63,35" fill="${c}" opacity="${o}"/><circle cx="50" cy="48" r="6" fill="${c}" opacity="${o}"/>`;
+    return `<path d="M25,67 Q50,79 75,67 Q70,49 50,53 Q30,49 25,67Z" fill="${c}" opacity="${o}"/><path d="M20,50 Q50,18 80,50 M27,50 Q50,29 73,50" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><ellipse cx="42" cy="52" rx="6" ry="8" fill="white" opacity="0.62"/><ellipse cx="58" cy="52" rx="6" ry="8" fill="white" opacity="0.62"/>`;
+  }
+  if (family === 'ribbons') {
+    if (variant === 0) return `<circle cx="48" cy="29" r="7" fill="${c}" opacity="${o}"/><path d="M47,36 Q38,49 43,62 L35,77 M44,49 L31,57 M44,49 L59,41 M43,62 L59,74" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><path d="M58,31 C74,39 62,52 75,60 C63,64 72,78 55,79" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+    if (variant === 1) return `<circle cx="36" cy="48" r="12" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><circle cx="64" cy="52" r="12" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M36,36 C46,24 54,70 64,64 M36,60 C46,72 54,28 64,40" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>${text(36,52,'H',7)}${text(64,56,'F',7)}`;
+    if (variant === 2) return `<path d="M25,47 Q36,35 47,45 L43,66 Q33,77 23,67Z M53,45 Q64,35 75,47 L77,67 Q67,77 57,66Z" fill="${c}" opacity="${o}"/><path d="M27,46 Q32,31 43,31 M57,31 Q68,31 73,46 M24,69 Q35,76 45,68 M55,68 Q65,76 76,69" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+    return `<path d="M50,23 V76 M24,35 Q50,49 76,35 M28,76 H72" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/><path d="M28,76 C17,65 24,55 35,62 M72,76 C83,65 76,55 65,62" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>${text(39,49,'H',7)}${text(61,49,'F',7)}`;
+  }
+  if (variant === 0) return `<path d="M25,58 Q30,37 41,44 Q50,24 59,44 Q70,37 75,58 Q50,73 25,58Z" fill="none" stroke="${c}" stroke-width="5" stroke-linejoin="round" opacity="${o}"/><path d="M31,53 Q38,42 45,53 Q52,38 59,53 Q66,42 72,53" fill="${c}" opacity="${o}"/><path d="M38,65 Q50,73 62,65" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o}"/>${text(42,64,'H',7)}${text(58,64,'F',7)}`;
+  if (variant === 1) return `<rect x="27" y="27" width="46" height="48" rx="5" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M34,64 Q38,45 45,58 Q50,36 56,57 Q63,43 68,64" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><circle cx="40" cy="42" r="5" fill="${c}" opacity="${o}"/><circle cx="59" cy="39" r="6" fill="${c}" opacity="${o}"/>`;
+  if (variant === 2) return `<ellipse cx="50" cy="52" rx="25" ry="17" fill="none" stroke="${c}" stroke-width="5" opacity="${o}"/><path d="M30,52 Q37,39 44,52 Q50,36 56,52 Q63,39 70,52" fill="${c}" opacity="${o}"/><circle cx="50" cy="52" r="5" fill="white" opacity="0.58"/>`;
+  return `<path d="M35,25 H68 V36 H48 V47 H64 V58 H48 V75 H35Z" fill="${c}" opacity="${o}"/><path d="M28,70 Q35,61 42,70 M28,58 Q35,49 42,58" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+}
+
+function renderLoveLetterShape(family, variant, c, o) {
+  return `<g stroke-linecap="round" stroke-linejoin="round">${renderLoveLetterShapeInner(family, variant, c, o)}</g>`;
+}
+
+function renderLoveLetterAccentInner(family, variant, c, cx, cy) {
+  if (family === 'strawberry') {
+    if (variant === 0) return `<circle cx="${cx}" cy="${cy}" r="6" fill="${c}" opacity="0.78"/><path d="M${cx},${cy-6} V${cy+6} M${cx-5},${cy-2} L${cx+5},${cy+2}" stroke="white" stroke-width="1.2" opacity="0.55"/>`;
+    if (variant === 1) return `<path d="M${cx-7},${cy-5} H${cx+7} V${cy} Q${cx+4},${cy+7} ${cx},${cy} Q${cx-4},${cy+7} ${cx-7},${cy}Z" fill="${c}" opacity="0.8"/>`;
+    if (variant === 2) return `<g fill="${c}" opacity="0.8"><ellipse cx="${cx-4}" cy="${cy}" rx="1.6" ry="3"/><ellipse cx="${cx+1}" cy="${cy-4}" rx="1.6" ry="3"/><ellipse cx="${cx+5}" cy="${cy+2}" rx="1.6" ry="3"/></g>`;
+    return `<path d="M${cx-7},${cy+3} Q${cx-3},${cy-5} ${cx+1},${cy+1} Q${cx+5},${cy+7} ${cx+8},${cy-2}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round" opacity="0.78"/>`;
+  }
+  if (family === 'butterfly') {
+    if (variant === 0) return `<path d="M${cx-5},${cy+5} Q${cx-8},${cy-4} ${cx},${cy-2} Q${cx+8},${cy-4} ${cx+5},${cy+5}" fill="none" stroke="${c}" stroke-width="2" opacity="0.8"/>`;
+    if (variant === 1) return `<path d="M${cx-7},${cy+5} Q${cx-4},${cy-6} ${cx},${cy+2} Q${cx+4},${cy-6} ${cx+7},${cy+5}" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.78"/>`;
+    if (variant === 2) return `<path d="M${cx-8},${cy+3} C${cx-3},${cy-8} ${cx+3},${cy+8} ${cx+8},${cy-3}" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.8"/>`;
+    return `<path d="M${cx-6},${cy-6} L${cx-2},${cy-2} L${cx-6},${cy+2} M${cx+2},${cy-2} L${cx+6},${cy+2} L${cx+2},${cy+6}" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.78"/>`;
+  }
+  if (family === 'tea') {
+    if (variant === 0) return `<path d="M${cx-6},${cy-5} H${cx+3} L${cx+7},${cy} L${cx+3},${cy+5} H${cx-6}Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.78"/><circle cx="${cx-3}" cy="${cy}" r="1.5" fill="${c}"/>`;
+    if (variant === 1) return `<path d="M${cx},${cy} L${cx+7},${cy+6} A9,9 0 0 0 ${cx+6},${cy-7}Z" fill="${c}" opacity="0.78"/><path d="M${cx+1},${cy} L${cx+6},${cy+3}" stroke="white" stroke-width="1.2" opacity="0.55"/>`;
+    if (variant === 2) return `<path d="M${cx-7},${cy-4} Q${cx},${cy} ${cx+7},${cy-4} M${cx-7},${cy+4} Q${cx},${cy} ${cx+7},${cy+4}" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" opacity="0.8"/>`;
+    return `<g fill="${c}" opacity="0.78"><circle cx="${cx-6}" cy="${cy}" r="2.5"/><circle cx="${cx}" cy="${cy}" r="2.5"/><circle cx="${cx+6}" cy="${cy}" r="2.5"/></g>`;
+  }
+  if (family === 'lovebird') {
+    if (variant === 0) return `<path d="M${cx-7},${cy+5} Q${cx},${cy-8} ${cx+7},${cy+5} M${cx-4},${cy+1} L${cx},${cy+5} L${cx+4},${cy+1}" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.78"/>`;
+    if (variant === 1) return `<path d="M${cx-7},${cy} L${cx+2},${cy-5} L${cx+7},${cy} L${cx+2},${cy+5}Z" fill="${c}" opacity="0.8"/>`;
+    if (variant === 2) return `<g fill="none" stroke="${c}" stroke-width="2" opacity="0.78"><circle cx="${cx-4}" cy="${cy+2}" r="3"/><circle cx="${cx+2}" cy="${cy-2}" r="4"/><circle cx="${cx+7}" cy="${cy+4}" r="2"/></g>`;
+    return `<path d="M${cx-7},${cy-2} L${cx-2},${cy-7} L${cx+2},${cy-2} L${cx+7},${cy-7} M${cx-7},${cy+4} L${cx-2},${cy-1} L${cx+2},${cy+4} L${cx+7},${cy-1}" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.78"/>`;
+  }
+  if (family === 'ribbons') {
+    if (variant === 0) return `<path d="M${cx-7},${cy-5} H${cx-1} V${cy+1} H${cx+5} V${cy+7}" fill="none" stroke="${c}" stroke-width="2.6" opacity="0.8"/>`;
+    if (variant === 1) return `<circle cx="${cx}" cy="${cy}" r="6" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.8"/><path d="M${cx-6},${cy} H${cx+6}" stroke="${c}" stroke-width="2"/>`;
+    if (variant === 2) return `<path d="M${cx},${cy} C${cx-8},${cy-8} ${cx-12},${cy+2} ${cx-5},${cy+5} C${cx},${cy+8} ${cx+5},${cy+8} ${cx+5},${cy+1} C${cx+12},${cy-2} ${cx+8},${cy-8} ${cx},${cy}Z" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.8"/>`;
+    return `<path d="M${cx-7},${cy-5} V${cy+5} M${cx-2},${cy-2} V${cy+2} M${cx+3},${cy-6} V${cy+6} M${cx+8},${cy-3} V${cy+3}" stroke="${c}" stroke-width="2.3" opacity="0.8"/>`;
+  }
+  if (variant === 0) return `<path d="M${cx-6},${cy+5} Q${cx-1},${cy-6} ${cx+6},${cy-4} M${cx-3},${cy+3} Q${cx+1},${cy-3} ${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.8"/>`;
+  if (variant === 1) return `<g fill="${c}" opacity="0.78"><circle cx="${cx-5}" cy="${cy}" r="2.5"/><circle cx="${cx}" cy="${cy-4}" r="2"/><circle cx="${cx+5}" cy="${cy+1}" r="2.5"/><circle cx="${cx}" cy="${cy+5}" r="1.8"/></g>`;
+  if (variant === 2) return `<path d="M${cx-8},${cy} Q${cx-4},${cy-5} ${cx},${cy} Q${cx+4},${cy+5} ${cx+8},${cy}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.8"/><circle cx="${cx}" cy="${cy}" r="2" fill="${c}"/>`;
+  return `<polygon points="${cx},${cy-7} ${cx+6},${cy} ${cx},${cy+7} ${cx-6},${cy}" fill="${c}" opacity="0.8"/><circle cx="${cx}" cy="${cy}" r="2" fill="white" opacity="0.6"/>`;
+}
+
+function renderLoveLetterAccent(family, variant, c, cx, cy) {
+  return `<g stroke-linecap="round" stroke-linejoin="round">${renderLoveLetterAccentInner(family, variant, c, cx, cy)}</g>`;
+}
+
 // ── Background Zone (full tile, 4-96 inset) ──
 
 function renderBg(attr) {
@@ -2114,6 +2321,38 @@ function renderBg(attr) {
     case 'hf-keepsake-ribbons': return renderRomanticBg(12, 3, c, o);
     case 'hf-forever-glow': return renderRomanticBg(12, 4, c, o);
 
+    // ── September 2026 love-letter collection ──
+    case 'skiss-berry-rows': return renderLoveLetterBg('strawberry', 0, c, o);
+    case 'skiss-seed-texture': return renderLoveLetterBg('strawberry', 1, c, o);
+    case 'skiss-chocolate-drizzle': return renderLoveLetterBg('strawberry', 2, c, o);
+    case 'skiss-parasol-stripes': return renderLoveLetterBg('strawberry', 3, c, o);
+    case 'skiss-sundae-waves': return renderLoveLetterBg('strawberry', 4, c, o);
+    case 'bwish-wing-vein-diagonals': return renderLoveLetterBg('butterfly', 0, c, o);
+    case 'bwish-iridescent-sweeps': return renderLoveLetterBg('butterfly', 1, c, o);
+    case 'bwish-flight-paths': return renderLoveLetterBg('butterfly', 2, c, o);
+    case 'bwish-scale-bands': return renderLoveLetterBg('butterfly', 3, c, o);
+    case 'bwish-chrysalis-threads': return renderLoveLetterBg('butterfly', 4, c, o);
+    case 'teatwo-table-linen': return renderLoveLetterBg('tea', 0, c, o);
+    case 'teatwo-porcelain-pinstripes': return renderLoveLetterBg('tea', 1, c, o);
+    case 'teatwo-steam-verticals': return renderLoveLetterBg('tea', 2, c, o);
+    case 'teatwo-tray-lattice': return renderLoveLetterBg('tea', 3, c, o);
+    case 'teatwo-clock-ticks': return renderLoveLetterBg('tea', 4, c, o);
+    case 'lovebird-airy-wind-lines': return renderLoveLetterBg('lovebird', 0, c, o);
+    case 'lovebird-perch-bars': return renderLoveLetterBg('lovebird', 1, c, o);
+    case 'lovebird-feather-chevrons': return renderLoveLetterBg('lovebird', 2, c, o);
+    case 'lovebird-song-staff': return renderLoveLetterBg('lovebird', 3, c, o);
+    case 'lovebird-sunrise-arcs': return renderLoveLetterBg('lovebird', 4, c, o);
+    case 'ribbons-energetic-crossings': return renderLoveLetterBg('ribbons', 0, c, o);
+    case 'ribbons-spiral-tracks': return renderLoveLetterBg('ribbons', 1, c, o);
+    case 'ribbons-dance-beats': return renderLoveLetterBg('ribbons', 2, c, o);
+    case 'ribbons-woven-sash': return renderLoveLetterBg('ribbons', 3, c, o);
+    case 'ribbons-looping-paths': return renderLoveLetterBg('ribbons', 4, c, o);
+    case 'fcrown-fern-fronds': return renderLoveLetterBg('flower-crown', 0, c, o);
+    case 'fcrown-garland-chains': return renderLoveLetterBg('flower-crown', 1, c, o);
+    case 'fcrown-pressed-stems': return renderLoveLetterBg('flower-crown', 2, c, o);
+    case 'fcrown-crown-points': return renderLoveLetterBg('flower-crown', 3, c, o);
+    case 'fcrown-botanical-hatching': return renderLoveLetterBg('flower-crown', 4, c, o);
+
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-confetti-shower': {
       const rng = mulberry32(c.charCodeAt(1) * 7 + 1);
@@ -3189,6 +3428,26 @@ function renderRing(attr) {
     case 'hf-monogram-patch': return renderRomanticRing(12, 0, c);
     case 'hf-together-frame': return renderRomanticRing(12, 1, c);
     case 'hf-heart-border': return renderRomanticRing(12, 2, c);
+
+    // ── September 2026 love-letter collection ──
+    case 'skiss-berry-basket-rail': return renderLoveLetterRing('strawberry', 0, c);
+    case 'skiss-chocolate-drip-border': return renderLoveLetterRing('strawberry', 1, c);
+    case 'skiss-parasol-canopy-frame': return renderLoveLetterRing('strawberry', 2, c);
+    case 'bwish-mirrored-wing-frame': return renderLoveLetterRing('butterfly', 0, c);
+    case 'bwish-scale-fan-border': return renderLoveLetterRing('butterfly', 1, c);
+    case 'bwish-chrysalis-lattice': return renderLoveLetterRing('butterfly', 2, c);
+    case 'teatwo-saucer-stack-frame': return renderLoveLetterRing('tea', 0, c);
+    case 'teatwo-caddy-clasp-border': return renderLoveLetterRing('tea', 1, c);
+    case 'teatwo-tea-tray-oval': return renderLoveLetterRing('tea', 2, c);
+    case 'lovebird-swing-perch-frame': return renderLoveLetterRing('lovebird', 0, c);
+    case 'lovebird-tail-fan-border': return renderLoveLetterRing('lovebird', 1, c);
+    case 'lovebird-song-staff-arch': return renderLoveLetterRing('lovebird', 2, c);
+    case 'ribbons-crossed-sash-frame': return renderLoveLetterRing('ribbons', 0, c);
+    case 'ribbons-spiral-track-border': return renderLoveLetterRing('ribbons', 1, c);
+    case 'ribbons-maypole-loop-edge': return renderLoveLetterRing('ribbons', 2, c);
+    case 'fcrown-fern-wreath-frame': return renderLoveLetterRing('flower-crown', 0, c);
+    case 'fcrown-crown-point-border': return renderLoveLetterRing('flower-crown', 1, c);
+    case 'fcrown-pressed-stem-arch': return renderLoveLetterRing('flower-crown', 2, c);
 
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-sequin-frame':
@@ -4631,6 +4890,32 @@ function renderShape(attr) {
     case 'hf-monogram': return renderRomanticShape(50, c, o);
     case 'hf-shared-heart': return renderRomanticShape(51, c, o);
 
+    // ── September 2026 love-letter collection ──
+    case 'skiss-chocolate-dipped-pair': return renderLoveLetterShape('strawberry', 0, c, o);
+    case 'skiss-berry-milk-bottle': return renderLoveLetterShape('strawberry', 1, c, o);
+    case 'skiss-strawberry-parasol': return renderLoveLetterShape('strawberry', 2, c, o);
+    case 'skiss-berry-sundae-for-two': return renderLoveLetterShape('strawberry', 3, c, o);
+    case 'bwish-hf-wing-medallion': return renderLoveLetterShape('butterfly', 0, c, o);
+    case 'bwish-butterfly-kite': return renderLoveLetterShape('butterfly', 1, c, o);
+    case 'bwish-winged-wish-bottle': return renderLoveLetterShape('butterfly', 2, c, o);
+    case 'bwish-butterfly-sundial': return renderLoveLetterShape('butterfly', 3, c, o);
+    case 'teatwo-hf-tea-caddy': return renderLoveLetterShape('tea', 0, c, o);
+    case 'teatwo-tiered-macaron-stand': return renderLoveLetterShape('tea', 1, c, o);
+    case 'teatwo-heart-steam-kettle': return renderLoveLetterShape('tea', 2, c, o);
+    case 'teatwo-tea-timer': return renderLoveLetterShape('tea', 3, c, o);
+    case 'lovebird-duet-on-swing': return renderLoveLetterShape('lovebird', 0, c, o);
+    case 'lovebird-paired-feather-quills': return renderLoveLetterShape('lovebird', 1, c, o);
+    case 'lovebird-post-perch': return renderLoveLetterShape('lovebird', 2, c, o);
+    case 'lovebird-sunrise-birdbath': return renderLoveLetterShape('lovebird', 3, c, o);
+    case 'ribbons-dancer-silhouette': return renderLoveLetterShape('ribbons', 0, c, o);
+    case 'ribbons-hf-intertwined-spools': return renderLoveLetterShape('ribbons', 1, c, o);
+    case 'ribbons-paired-ballet-slippers': return renderLoveLetterShape('ribbons', 2, c, o);
+    case 'ribbons-maypole-for-two': return renderLoveLetterShape('ribbons', 3, c, o);
+    case 'fcrown-fatema-floral-tiara': return renderLoveLetterShape('flower-crown', 0, c, o);
+    case 'fcrown-pressed-flower-portrait-frame': return renderLoveLetterShape('flower-crown', 1, c, o);
+    case 'fcrown-daisy-bracelet': return renderLoveLetterShape('flower-crown', 2, c, o);
+    case 'fcrown-botanical-letter-f': return renderLoveLetterShape('flower-crown', 3, c, o);
+
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-cupcake':
       return `<path d="M34,58 H66 L61,74 H39 Z" fill="${c}" opacity="${o}"/>` +
@@ -5788,6 +6073,32 @@ function renderAccent(attr) {
       case 'hf-links': out += renderRomanticAccent(12, 2, c, cx, cy); break;
       case 'hf-sparkles': out += renderRomanticAccent(12, 3, c, cx, cy); break;
 
+      // ── September 2026 love-letter collection ──
+      case 'skiss-berry-slices': out += renderLoveLetterAccent('strawberry', 0, c, cx, cy); break;
+      case 'skiss-chocolate-drips': out += renderLoveLetterAccent('strawberry', 1, c, cx, cy); break;
+      case 'skiss-seed-trios': out += renderLoveLetterAccent('strawberry', 2, c, cx, cy); break;
+      case 'skiss-cream-swirls': out += renderLoveLetterAccent('strawberry', 3, c, cx, cy); break;
+      case 'bwish-antenna-curls': out += renderLoveLetterAccent('butterfly', 0, c, cx, cy); break;
+      case 'bwish-wing-scales': out += renderLoveLetterAccent('butterfly', 1, c, cx, cy); break;
+      case 'bwish-flight-loops': out += renderLoveLetterAccent('butterfly', 2, c, cx, cy); break;
+      case 'bwish-chrysalis-stitches': out += renderLoveLetterAccent('butterfly', 3, c, cx, cy); break;
+      case 'teatwo-tea-tags': out += renderLoveLetterAccent('tea', 0, c, cx, cy); break;
+      case 'teatwo-lemon-wedges': out += renderLoveLetterAccent('tea', 1, c, cx, cy); break;
+      case 'teatwo-sugar-tongs': out += renderLoveLetterAccent('tea', 2, c, cx, cy); break;
+      case 'teatwo-saucer-beads': out += renderLoveLetterAccent('tea', 3, c, cx, cy); break;
+      case 'lovebird-tail-fans': out += renderLoveLetterAccent('lovebird', 0, c, cx, cy); break;
+      case 'lovebird-tiny-beaks': out += renderLoveLetterAccent('lovebird', 1, c, cx, cy); break;
+      case 'lovebird-song-bubbles': out += renderLoveLetterAccent('lovebird', 2, c, cx, cy); break;
+      case 'lovebird-eggshell-mosaics': out += renderLoveLetterAccent('lovebird', 3, c, cx, cy); break;
+      case 'ribbons-dance-step-marks': out += renderLoveLetterAccent('ribbons', 0, c, cx, cy); break;
+      case 'ribbons-spool-ends': out += renderLoveLetterAccent('ribbons', 1, c, cx, cy); break;
+      case 'ribbons-knot-loops': out += renderLoveLetterAccent('ribbons', 2, c, cx, cy); break;
+      case 'ribbons-rhythm-ticks': out += renderLoveLetterAccent('ribbons', 3, c, cx, cy); break;
+      case 'fcrown-fern-curls': out += renderLoveLetterAccent('flower-crown', 0, c, cx, cy); break;
+      case 'fcrown-pollen-clusters': out += renderLoveLetterAccent('flower-crown', 1, c, cx, cy); break;
+      case 'fcrown-petal-chains': out += renderLoveLetterAccent('flower-crown', 2, c, cx, cy); break;
+      case 'fcrown-crown-gems': out += renderLoveLetterAccent('flower-crown', 3, c, cx, cy); break;
+
       // ── September Sparkle (birthday countdown) ──
       case 'septspark-stars':
         out += `<polygon points="${cx},${cy-6} ${cx+2},${cy-2} ${cx+6},${cy-2} ${cx+3},${cy+1} ${cx+4},${cy+6} ${cx},${cy+3} ${cx-4},${cy+6} ${cx-3},${cy+1} ${cx-6},${cy-2} ${cx-2},${cy-2}" fill="${c}" opacity="0.78"/>`; break;
@@ -5897,9 +6208,9 @@ function createTileSVG(tile, theme) {
     let rendered = renderAttributeInner(attr);
     if (theme && theme.style === 'cute-light') {
       if (attr.type === 'shape') {
-        rendered = `<g transform="translate(16 16) scale(0.68)">${rendered}</g>` +
-          `<path d="M76,29 C72,23 64,27 67,34 C69,38 73,40 76,43 C79,40 83,38 85,34 C88,27 80,23 76,29Z" fill="${attr.color}" opacity="0.48"/>` +
-          `<path d="M23,69 V79 M18,74 H28" stroke="${attr.color}" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>`;
+        rendered = `<g transform="translate(11 11) scale(0.78)">${rendered}</g>` +
+          `<text x="85" y="24" text-anchor="middle" font-size="7" font-weight="800" fill="${attr.color}" opacity="0.42">H/F</text>` +
+          `<circle cx="15" cy="82" r="4" fill="none" stroke="${attr.color}" stroke-width="1.5" opacity="0.38"/><circle cx="20" cy="82" r="4" fill="none" stroke="${attr.color}" stroke-width="1.5" opacity="0.38"/>`;
       } else if (attr.type === 'ring') {
         rendered = `<g transform="translate(4 4) scale(0.92)" opacity="0.68">${rendered}</g>`;
       } else if (attr.type === 'accent') {
