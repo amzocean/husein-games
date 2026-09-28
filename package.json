@@ -7,7 +7,8 @@
     "start": "node server.js",
     "rida-studio:local": "pwsh -NoProfile -File tools/start-rida-local.ps1",
     "rida-studio:selftest": "node lib/ridaStudio/selftest.js",
-    "photo-studio:selftest": "node lib/photoStudio/selftest.js"
+    "photo-studio:selftest": "node lib/photoStudio/selftest.js",
+    "love-in-one:validate": "node tools/validate-love-in-one.js"
   },
   "dependencies": {
     "express": "^4.18.2",

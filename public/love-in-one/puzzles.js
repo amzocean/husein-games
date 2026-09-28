@@ -1,10 +1,14 @@
+import { NEW_PUZZLE_CLUES, NEW_PUZZLE_CONTENT } from './expanded-puzzles.js';
+
 // puzzles.js — Love in One puzzle bank
 //
-// Schedule: this array is the 10-day puzzle schedule for the game. Every
+// Schedule: every
 // consecutive group of THREE entries (indices [0,1,2], [3,4,5], ...) forms
-// one calendar day's set of three rounds, keyed to UTC days. Day 1 is
-// entries 0-2, Day 2 is entries 3-5, and so on through Day 10 (entries
-// 27-29). Do not reorder entries independently of their day-triplet, and
+// one calendar day's set of three rounds, keyed to UTC days. The first ten
+// triplets preserve September 17-26, 2026, the next triplet explicitly
+// preserves September 27's historical modulo repeat, and the remaining 100
+// triplets provide new content through January 5, 2027. Do not reorder
+// entries independently of their day-triplet, and
 // keep each triplet's clues from spoiling the other two answers in that day.
 //
 // Each entry: { answer, clue, definition, sentence }
@@ -15,7 +19,7 @@
 //   - definition: a concise, plain-English definition of the answer.
 //   - sentence: a tender/romantic sentence that uses the answer naturally.
 
-export const PUZZLES = [
+const ORIGINAL_PUZZLES = [
   { answer: 'BRAVE', clue: 'BEAST', definition: 'Showing courage in the face of fear or difficulty.', sentence: 'Fatema, you are brave enough to turn every setback into a fresh beginning.' },
   { answer: 'CHAIR', clue: 'SHARD', definition: 'A seat for one person, typically with a back and four legs.', sentence: 'I always save the chair closest to mine for Fatema.' },
   { answer: 'CLOUD', clue: 'CHILD', definition: 'A visible mass of water droplets floating in the sky.', sentence: 'Even a gray cloud looks softer on days when I get to see you.' },
@@ -46,4 +50,19 @@ export const PUZZLES = [
   { answer: 'BREAD', clue: 'BLAND', definition: 'A staple food made by baking a dough of flour and water.', sentence: 'Warm bread and your laughter across the table is my favorite kind of morning.' },
   { answer: 'CHARM', clue: 'SCARY', definition: 'A quality that delights, attracts, or fascinates others.', sentence: 'Fatema has a charm that only grows lovelier the longer you know her.' },
   { answer: 'CREAM', clue: 'CRIMP', definition: 'The thick, fatty part of milk, or something smooth and rich.', sentence: 'Even plain coffee tastes better with cream and your company, Fatema.' },
+];
+
+const SEPTEMBER_27_REPEAT = ORIGINAL_PUZZLES.slice(0, 3).map(puzzle => ({ ...puzzle }));
+
+const NEW_PUZZLES = NEW_PUZZLE_CONTENT.map(([answer, definition, sentence], index) => ({
+  answer,
+  clue: NEW_PUZZLE_CLUES[index],
+  definition,
+  sentence,
+}));
+
+export const PUZZLES = [
+  ...ORIGINAL_PUZZLES,
+  ...SEPTEMBER_27_REPEAT,
+  ...NEW_PUZZLES,
 ];
