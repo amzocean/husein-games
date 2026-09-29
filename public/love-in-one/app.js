@@ -13,6 +13,44 @@ const keyboardRows = [
   ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK'],
 ];
 
+function getDayIndex(key) {
+  const scheduleStart = Date.parse('2026-09-17T00:00:00Z');
+  const requestedDay = Date.parse(`${key}T00:00:00Z`);
+  const elapsedDays = Math.floor((requestedDay - scheduleStart) / 86400000);
+  const scheduleDays = PUZZLES.length / 3;
+  return ((elapsedDays % scheduleDays) + scheduleDays) % scheduleDays;
+}
+
+function selectDailyPuzzles(key) {
+  const dayIndex = getDayIndex(key);
+  return PUZZLES.slice(dayIndex * 3, dayIndex * 3 + 3);
+}
+
+function loadState() {
+  const empty = { current: 0, rounds: Array.from({ length: 3 }, () => ({ guesses: [], solved: false })) };
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    if (!saved || !Array.isArray(saved.rounds) || saved.rounds.length !== 3) return empty;
+    return {
+      current: Math.max(0, Math.min(2, Number(saved.current) || 0)),
+      rounds: saved.rounds.map(round => ({
+        guesses: Array.isArray(round.guesses) ? round.guesses.filter(guess => /^[A-Z]{5}$/.test(guess)) : [],
+        solved: Boolean(round.solved),
+      })),
+    };
+  } catch {
+    return empty;
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(state));
+  } catch (error) {
+    console.warn('Daily progress could not be saved.', error);
+  }
+}
+
 const board = document.getElementById('board');
 const boardScroll = document.getElementById('boardScroll');
 const keyboard = document.getElementById('keyboard');
@@ -24,6 +62,8 @@ const answerCard = document.getElementById('answerCard');
 const answerWord = document.getElementById('answerWord');
 const answerDefinition = document.getElementById('answerDefinition');
 const answerSentence = document.getElementById('answerSentence');
+const answerAudio = document.getElementById('answerAudio');
+const playAudioBtn = document.getElementById('playAudioBtn');
 const nextButton = document.getElementById('nextButton');
 const todayLabel = document.getElementById('todayLabel');
 const helpDialog = document.getElementById('helpDialog');
@@ -63,6 +103,10 @@ nextButton.addEventListener('click', () => {
   render();
 });
 
+playAudioBtn.addEventListener('click', () => {
+  answerAudio.play();
+});
+
 document.addEventListener('keydown', event => {
   if (helpDialog.open || event.ctrlKey || event.metaKey || event.altKey) return;
   if (event.target.closest('button, a, input, textarea, select')) return;
@@ -70,40 +114,6 @@ document.addEventListener('keydown', event => {
   else if (event.key === 'Backspace' || event.key === 'Delete') handleKey('BACK');
   else if (/^[a-zA-Z]$/.test(event.key)) handleKey(event.key.toUpperCase());
 });
-
-function selectDailyPuzzles(key) {
-  const scheduleStart = Date.parse('2026-09-17T00:00:00Z');
-  const requestedDay = Date.parse(`${key}T00:00:00Z`);
-  const elapsedDays = Math.floor((requestedDay - scheduleStart) / 86400000);
-  const scheduleDays = PUZZLES.length / 3;
-  const dayIndex = ((elapsedDays % scheduleDays) + scheduleDays) % scheduleDays;
-  return PUZZLES.slice(dayIndex * 3, dayIndex * 3 + 3);
-}
-
-function loadState() {
-  const empty = { current: 0, rounds: Array.from({ length: 3 }, () => ({ guesses: [], solved: false })) };
-  try {
-    const saved = JSON.parse(localStorage.getItem(storageKey));
-    if (!saved || !Array.isArray(saved.rounds) || saved.rounds.length !== 3) return empty;
-    return {
-      current: Math.max(0, Math.min(2, Number(saved.current) || 0)),
-      rounds: saved.rounds.map(round => ({
-        guesses: Array.isArray(round.guesses) ? round.guesses.filter(guess => /^[A-Z]{5}$/.test(guess)) : [],
-        solved: Boolean(round.solved),
-      })),
-    };
-  } catch {
-    return empty;
-  }
-}
-
-function saveState() {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(state));
-  } catch (error) {
-    console.warn('Daily progress could not be saved.', error);
-  }
-}
 
 function scoreGuess(guess, answer) {
   const result = Array(5).fill('absent');
@@ -256,8 +266,14 @@ function renderAnswer(puzzle, round) {
   answerDefinition.textContent = puzzle.definition;
   answerSentence.textContent = `“${puzzle.sentence}”`;
 
+  // Set up audio playback: calculate absolute puzzle index in the 300-puzzle array
+  const dayIndex = getDayIndex(dateKey);
+  const puzzleIndex = dayIndex * 3 + state.current;
+  answerAudio.src = `/audio/sentence-${puzzleIndex}.mp3`;
+  playAudioBtn.style.display = 'block';
+
   const solvedCount = state.rounds.filter(item => item.solved).length;
-  nextButton.textContent = solvedCount === 3 ? 'See today’s words again' : 'Next word';
+  nextButton.textContent = solvedCount === 3 ? 'See today\'s words again' : 'Next word';
 }
 
 function handleKey(key) {
