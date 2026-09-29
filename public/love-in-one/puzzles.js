@@ -1,6 +1,6 @@
 import { NEW_PUZZLE_CLUES, NEW_PUZZLE_CONTENT } from './expanded-puzzles.js';
 
-// puzzles.js — Love in One puzzle bank
+// puzzles.js — Better Half puzzle bank
 //
 // Schedule: every
 // consecutive group of THREE entries (indices [0,1,2], [3,4,5], ...) forms

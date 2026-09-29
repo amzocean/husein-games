@@ -164,7 +164,7 @@ async function main() {
     });
   }
 
-  console.log('Love in One validation passed.');
+  console.log('Better Half validation passed.');
   console.log('Schedule: 111 days / 333 entries (September 17, 2026 through January 5, 2027).');
   console.log('Expansion: 100 days / 300 unique answers with 0 historical overlaps.');
   console.log(`September 28: ${answersForDate(PUZZLES, NEW_CONTENT_START).join(', ')}.`);
@@ -172,6 +172,6 @@ async function main() {
 }
 
 main().catch(error => {
-  console.error(`Love in One validation failed: ${error.message}`);
+  console.error(`Better Half validation failed: ${error.message}`);
   process.exitCode = 1;
 });

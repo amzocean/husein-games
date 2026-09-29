@@ -1,6 +1,8 @@
-# Love in One
+# Better Half
 
-Love in One is a daily five-letter deduction game with three rounds per UTC calendar date.
+Better Half is a daily five-letter deduction game that begins each puzzle with a completed clue—a loving head start rather than a blank board. Its core line is **“I’ll meet you halfway.”**
+
+The public route remains `/love-in-one/`, the validation command remains `npm run love-in-one:validate`, and saved progress remains under the existing `love-in-one:v2` key. These implementation identifiers are intentionally unchanged to preserve bookmarks, deployment routing, tooling, and player progress.
 
 ## Daily selection
 
@@ -44,7 +46,7 @@ The validator resolves the shipped 333-entry browser catalog and verifies schedu
 ## Rules
 
 - The scored clue row is provided automatically.
-- Correct-position, wrong-position, and absent feedback use familiar Wordle-style green, yellow, and gray with visible symbols, surrounded by a soft romantic Love in One treatment.
+- Correct-position, wrong-position, and absent feedback use familiar Wordle-style green, yellow, and gray with visible symbols, surrounded by the soft romantic Better Half treatment.
 - Players have unlimited guesses and can move freely among the three daily rounds.
 - Progress is stored in `localStorage` under `love-in-one:v2:YYYY-MM-DD`.
 - Repeated letters are scored in two passes: exact positions first, then remaining misplaced letters.
