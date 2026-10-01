@@ -894,9 +894,235 @@
       flex: 1 1 140px;
     }
   }
+
+  /* IVF Support Love Letter */
+  .ivf-letter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .ivf-letter-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ivf-letter-backdrop {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(245, 194, 215, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(200, 150, 200, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .ivf-letter-container {
+    position: relative;
+    max-width: 560px;
+    width: 100%;
+    animation: letterFloat 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes letterFloat {
+    from {
+      opacity: 0;
+      transform: scale(0.92) translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .ivf-letter-envelope {
+    background: linear-gradient(135deg, #fdf8f7 0%, #fff5f5 100%);
+    border: 2px solid rgba(196, 69, 105, 0.18);
+    border-radius: 16px;
+    padding: 48px 42px;
+    position: relative;
+    box-shadow: 
+      0 20px 60px rgba(196, 69, 105, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+  }
+
+  .ivf-letter-envelope::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 35px,
+        rgba(184, 134, 11, 0.03) 35px,
+        rgba(184, 134, 11, 0.03) 70px
+      );
+    pointer-events: none;
+  }
+
+  .ivf-letter-seal {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #d4929e 0%, #c44569 50%, #a83a5c 100%);
+    border-radius: 50%;
+    box-shadow: 0 6px 16px rgba(196, 69, 105, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    z-index: 2;
+  }
+
+  .ivf-letter-seal::after {
+    content: '♥';
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .ivf-letter-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ivf-letter-date {
+    font-size: 0.8rem;
+    color: #b8860b;
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .ivf-letter-greeting {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    color: #c44569;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .ivf-letter-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ivf-letter-body p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #3a3a3a;
+    font-weight: 400;
+  }
+
+  .ivf-letter-closing {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(196, 69, 105, 0.12);
+  }
+
+  .ivf-letter-sign {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .ivf-letter-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.4rem;
+    color: #c44569;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .ivf-letter-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    background: rgba(196, 69, 105, 0.08);
+    border: 1px solid rgba(196, 69, 105, 0.12);
+    border-radius: 50%;
+    font-size: 1.4rem;
+    color: #c44569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .ivf-letter-close:hover {
+    background: rgba(196, 69, 105, 0.15);
+    transform: rotate(90deg);
+  }
+
+  @media (max-width: 640px) {
+    .ivf-letter-envelope {
+      padding: 36px 24px;
+    }
+    .ivf-letter-greeting {
+      font-size: 1.3rem;
+    }
+    .ivf-letter-body p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+  }
 </style>
 </head>
 <body>
+
+<!-- IVF Support Love Letter - October 2, 2026 -->
+<div class="ivf-letter-overlay" id="ivfLetterOverlay" aria-hidden="true">
+  <div class="ivf-letter-backdrop"></div>
+  <div class="ivf-letter-container">
+    <div class="ivf-letter-envelope">
+      <div class="ivf-letter-seal"></div>
+      <div class="ivf-letter-content">
+        <div class="ivf-letter-date">October 2, 2026</div>
+        <div class="ivf-letter-greeting">My dearest Fatema,</div>
+        
+        <div class="ivf-letter-body">
+          <p>I know today is hard. I know the waiting is harder still—the uncertainty, the anxiety, the weight of hope mixed with fear. I see how brave you are, every single day.</p>
+          
+          <p>This journey we're on together, it's tested us in ways we couldn't have imagined. The emotional toll, the physical demands, the countless unknowns—they're real, and they matter. But so do we. So does our love.</p>
+          
+          <p>I want you to know that I'm not just here for the good news days. I'm here for the hard days, the sad days, the days when hope feels far away. I'm here for the ups and the downs, the tears and the laughter, the moments of doubt and the moments of strength.</p>
+          
+          <p>You are the strongest person I know. Your courage isn't just about going through this; it's about doing it with grace, with hope, with a heart that refuses to give up. I'm so proud of you. I love you so deeply.</p>
+          
+          <p>Whatever today brings, whatever the next cycles bring—we face it together. You are never alone in this. My heart beats alongside yours.</p>
+          
+          <p>I love you now, I'll love you through this, and I'll love you always.</p>
+        </div>
+        
+        <div class="ivf-letter-closing">
+          <div class="ivf-letter-sign">Yours, completely & forever</div>
+          <div class="ivf-letter-name">Husein</div>
+        </div>
+      </div>
+      <button class="ivf-letter-close" id="closeIvfLetterBtn" type="button" aria-label="Close love letter">×</button>
+    </div>
+  </div>
+</div>
 
 <div class="gala" id="birthdayGala" aria-hidden="true">
   <div class="gala-ambience" aria-hidden="true">
@@ -1063,6 +1289,55 @@
 <footer>
   For Fatema <span>♥</span> By Husein
 </footer>
+
+<script>
+(() => {
+  const IVF_SUPPORT_DATE = '2026-10-02';
+  const params = new URLSearchParams(window.location.search);
+  const isIvfPreview = params.get('ivf-support') === 'preview';
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  const isIvfSupportDay = todayUtc === IVF_SUPPORT_DATE;
+
+  if (isIvfSupportDay || isIvfPreview) {
+    const letterOverlay = document.getElementById('ivfLetterOverlay');
+    const closeLetterBtn = document.getElementById('closeIvfLetterBtn');
+    const letterKey = 'ivf-support-letter-viewed-v1';
+
+    function showLetter() {
+      letterOverlay.classList.add('active');
+      letterOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      sessionStorage.setItem(letterKey, 'true');
+    }
+
+    function closeLetter() {
+      letterOverlay.classList.remove('active');
+      letterOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    if (!sessionStorage.getItem(letterKey)) {
+      setTimeout(showLetter, 300);
+    } else {
+      showLetter();
+    }
+
+    closeLetterBtn.addEventListener('click', closeLetter);
+
+    letterOverlay.addEventListener('click', (e) => {
+      if (e.target === letterOverlay) {
+        closeLetter();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && letterOverlay.classList.contains('active')) {
+        closeLetter();
+      }
+    });
+  }
+})();
+</script>
 
 <script>
 (() => {

@@ -172,6 +172,22 @@ husein-games/
   8. **📷 Fatema's Photo Studio** → `/photo-studio/` (tag: Private · PIN) — direct URL always works; Game Room card has the same September 6 visibility gate; see section 10
 - Footer: "Made with ♥ by Husein"
 
+### October 2 IVF Support Love Letter
+
+On `2026-10-02` UTC (Cycle 4 blood test results day), the landing page displays an intimate love letter overlay:
+
+- Elegant letter card with rose silk aesthetic
+- Heart seal at top with warm gradient
+- Empathetic, personal message acknowledging the emotional toll of the IVF journey
+- Expresses commitment to being together through ups and downs
+- Styled as a handwritten intimate letter, not a celebration (unlike the birthday gala)
+- Scrollable card layout (intimate, personal, letter-based)
+- Close button (×) to dismiss; clicking backdrop or pressing Escape also closes
+- Stored in `sessionStorage` — shows once per session but can be reopened
+- Mobile-optimized sizing with proper padding
+
+For local development, append `?ivf-support=preview` to test without changing the device date.
+
 ### September 6 Birthday Gala
 
 On `2026-09-06` UTC, the root landing page becomes a one-day birthday celebration for Fatema:
