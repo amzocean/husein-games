@@ -397,6 +397,277 @@ function renderLoveLetterAccent(family, variant, c, cx, cy) {
   return `<g stroke-linecap="round" stroke-linejoin="round">${renderLoveLetterAccentInner(family, variant, c, cx, cy)}</g>`;
 }
 
+function renderCoffee_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>`;
+  if (variant === 0) {
+    for (const y of [18, 34, 50, 66, 82]) s += `<path d="M16,${y} C26,${y-10} 34,${y+8} 48,${y-2} C60,${y-10} 68,${y+12} 82,${y+2}" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.22}"/>`;
+  } else if (variant === 1) {
+    for (const [x, y, r] of [[18,18,4],[34,30,3],[62,20,4],[78,36,3],[24,60,4],[50,52,3],[72,70,4],[40,80,3]]) {
+      s += `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${(r*0.68).toFixed(1)}" fill="none" stroke="${c}" stroke-width="1.4" opacity="${o*0.22}" transform="rotate(-18 ${x} ${y})"/>`;
+      s += `<path d="M${x-r/2},${y} Q${x},${y+r+2} ${x+r/2},${y}" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.18}"/>`;
+    }
+  } else if (variant === 2) {
+    for (let y = 14; y <= 86; y += 14) s += `<path d="M8,${y} Q28,${y-4} 50,${y} Q72,${y+4} 92,${y}" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.18}"/>`;
+    for (let x = 14; x <= 86; x += 18) s += `<line x1="${x}" y1="10" x2="${x+4}" y2="90" stroke="${c}" stroke-width="0.7" opacity="${o*0.12}"/>`;
+  } else if (variant === 3) {
+    for (const y of [16, 32, 48, 64, 80]) s += `<rect x="8" y="${y}" width="84" height="8" rx="4" fill="${c}" opacity="${o*0.12}"/>`;
+  } else {
+    s += `<path d="M10,76 H90" stroke="${c}" stroke-width="2" opacity="${o*0.18}"/>`;
+    s += `<path d="M20,24 L26,76 M40,18 L44,76 M60,20 L58,76 M78,16 L72,76" stroke="${c}" stroke-width="0.9" opacity="${o*0.14}"/>`;
+  }
+  return s;
+}
+
+function renderCoffee_RingInner(family, variant, c) {
+  if (variant === 0) return `<circle cx="50" cy="50" r="38" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><circle cx="50" cy="50" r="31" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.46"/><path d="M28,82 Q50,90 72,82" fill="none" stroke="${c}" stroke-width="2" opacity="0.55"/>`;
+  if (variant === 1) return `<path d="M18,18 H82 V82 H18Z M18,28 H82 M18,72 H82" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><circle cx="24" cy="50" r="3" fill="${c}" opacity="0.82"/><circle cx="76" cy="50" r="3" fill="${c}" opacity="0.82"/>`;
+  return `<path d="M14,30 Q18,12 40,16 Q50,6 60,16 Q82,12 86,30 V70 Q82,88 60,84 Q50,94 40,84 Q18,88 14,70Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M24,18 Q30,24 24,30 M76,18 Q70,24 76,30" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.54"/>`;
+}
+
+function renderCoffee_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<path d="M27,46 H46 V61 Q46,69 37,69 Q27,69 27,61Z M54,46 H73 V61 Q73,69 63,69 Q54,69 54,61Z" fill="${c}" opacity="${o}"/><path d="M46,50 Q55,50 50,58 M73,50 Q82,50 77,58" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M33,46 Q33,33 41,33 Q49,33 49,46 M51,46 Q51,33 59,33 Q67,33 67,46" fill="none" stroke="${c}" stroke-width="3.5" opacity="${o}"/><path d="M38,76 Q50,84 62,76" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.9}"/>`;
+  if (variant === 1) return `<path d="M34,62 H66 L63,72 Q50,77 37,72Z" fill="${c}" opacity="${o}"/><path d="M50,62 C34,48 34,38 43,38 C48,38 50,42 50,42 C50,42 52,38 57,38 C66,38 66,48 50,62Z" fill="white" opacity="0.58"/><path d="M43,39 C39,30 45,25 50,29 C55,25 61,30 57,39 M50,35 C45,27 48,20 52,17" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.78}"/>`;
+  if (variant === 2) return `<path d="M34,38 C30,29 36,25 42,29 C48,23 55,27 57,36 C63,34 68,39 66,47 C63,58 55,62 50,70 C45,62 37,58 34,49 C31,43 32,40 34,38Z" fill="${c}" opacity="${o}"/><ellipse cx="42" cy="41" rx="5" ry="2.4" fill="white" opacity="0.48" transform="rotate(-24 42 41)"/><ellipse cx="57" cy="44" rx="5" ry="2.4" fill="white" opacity="0.48" transform="rotate(24 57 44)"/><ellipse cx="50" cy="54" rx="5.5" ry="2.8" fill="white" opacity="0.46"/>`;
+  return `<path d="M22,58 H78 M30,58 V73 M70,58 V73" fill="none" stroke="${c}" stroke-width="4.5" stroke-linecap="round" opacity="${o}"/><path d="M28,45 H72 V58 H28Z" fill="${c}" opacity="${o}"/><path d="M34,45 Q34,30 44,30 Q50,30 50,45 M50,45 Q50,30 56,30 Q66,30 66,45" fill="none" stroke="${c}" stroke-width="3.6" opacity="${o}"/><path d="M37,36 C41,30 48,31 50,37 C52,31 59,30 63,36" fill="none" stroke="white" stroke-width="1.8" opacity="0.52"/>`;
+}
+
+function renderCoffee_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<ellipse cx="${cx-3}" cy="${cy}" rx="3.2" ry="2.2" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8" transform="rotate(-20 ${cx-3} ${cy})"/><ellipse cx="${cx+3}" cy="${cy}" rx="3.2" ry="2.2" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8" transform="rotate(20 ${cx+3} ${cy})"/>`;
+  if (variant === 1) return `<path d="M${cx-3},${cy+5} C${cx-8},${cy-1} ${cx-1},${cy-8} ${cx-1},${cy-2} M${cx+3},${cy+5} C${cx+8},${cy-1} ${cx+1},${cy-8} ${cx+1},${cy-2}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/>`;
+  if (variant === 2) return `<path d="M${cx-5},${cy+4} H${cx+3} L${cx+6},${cy} L${cx+3},${cy-4} H${cx-5}Z" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.76"/><circle cx="${cx-2}" cy="${cy}" r="1.6" fill="${c}" opacity="0.78"/>`;
+  return `<circle cx="${cx}" cy="${cy}" r="5.4" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.72"/><circle cx="${cx}" cy="${cy}" r="2.6" fill="none" stroke="${c}" stroke-width="1" opacity="0.52"/>`;
+}
+
+function renderMoonlit_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const [x, y, r] of [[20,20,7],[52,16,8],[78,28,6],[28,56,7],[68,60,8],[46,82,6]]) s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity="${o*0.12}"/>`;
+  } else if (variant === 1) {
+    for (let x = 16; x <= 84; x += 17) s += `<path d="M${x},90 Q${x+8},50 ${x},12" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.18}"/>`;
+  } else if (variant === 2) {
+    for (let y = 18; y <= 82; y += 16) s += `<path d="M10,${y} C24,${y-6} 36,${y+6} 50,${y} C64,${y-6} 76,${y+6} 90,${y}" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.18}"/>`;
+  } else if (variant === 3) {
+    for (const y of [18, 34, 50, 66, 82]) s += `<rect x="8" y="${y}" width="84" height="6" rx="3" fill="${c}" opacity="${o*0.1}"/>`;
+  } else {
+    for (let x = 12; x <= 88; x += 16) for (let y = 12; y <= 88; y += 16) s += `<path d="M${x-4},${y} Q${x},${y-7} ${x+4},${y} Q${x},${y+7} ${x-4},${y}Z" fill="none" stroke="${c}" stroke-width="0.7" opacity="${o*0.16}"/>`;
+  }
+  return s;
+}
+
+function renderMoonlit_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M15,82 V34 Q30,12 50,12 Q70,12 85,34 V82" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M26,24 H74" stroke="${c}" stroke-width="1.6" opacity="0.5"/><circle cx="50" cy="28" r="4" fill="${c}" opacity="0.8"/>`;
+  if (variant === 1) return `<path d="M14,22 H86 V78 H14Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/><path d="M24,22 V78 M76,22 V78" stroke="${c}" stroke-width="1.6" opacity="0.5"/><path d="M14,22 Q50,8 86,22" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.56"/>`;
+  return `<ellipse cx="50" cy="52" rx="39" ry="31" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M18,70 C26,56 34,52 50,52 C66,52 74,56 82,70" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.54"/><path d="M50,21 V84" stroke="${c}" stroke-width="1.2" opacity="0.38" stroke-dasharray="4 6"/>`;
+}
+
+function renderMoonlit_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<path d="M57,29 A20,20 0 1,0 63,65 A16,16 0 1,1 57,29Z" fill="${c}" opacity="${o}"/><path d="M28,70 Q50,48 72,70" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><circle cx="50" cy="58" r="3" fill="${c}" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M28,71 V42 Q38,24 50,24 Q62,24 72,42 V71" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M41,43 L50,56 L59,43 V34 H41Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="57" r="3" fill="white" opacity="0.58"/>`;
+  if (variant === 2) return `<path d="M50,72 V40" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,31 34,35 36,44 C38,52 46,53 50,46 C54,53 62,52 64,44 C66,35 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,56 C43,49 34,52 36,61 C38,68 45,69 50,63 C55,69 62,68 64,61 C66,52 57,49 50,56Z" fill="none" stroke="${c}" stroke-width="2.4" opacity="${o*0.88}"/>`;
+  return `<path d="M31,63 C36,42 47,31 50,31 C53,31 64,42 69,63" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M33,60 C42,52 48,52 50,58 C52,52 58,52 67,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M50,68 C37,56 37,45 45,45 C49,45 50,49 50,49 C50,49 51,45 55,45 C63,45 63,56 50,68Z" fill="white" opacity="0.56"/>`;
+}
+
+function renderMoonlit_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<path d="M${cx-4},${cy+5} L${cx},${cy-5} L${cx+4},${cy+5}Z" fill="${c}" opacity="0.78"/><circle cx="${cx}" cy="${cy-7}" r="1.6" fill="${c}" opacity="0.82"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="1.5" opacity="0.78"/>`;
+  if (variant === 2) return `<path d="M${cx},${cy-5} C${cx+2},${cy-7} ${cx+5},${cy-4} ${cx+4},${cy-1} C${cx+7},${cy} ${cx+6},${cy+3} ${cx+2},${cy+3} C${cx+1},${cy+6} ${cx-1},${cy+6} ${cx-2},${cy+3} C${cx-6},${cy+3} ${cx-7},${cy} ${cx-4},${cy-1} C${cx-5},${cy-4} ${cx-2},${cy-7} ${cx},${cy-5} Z" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.8"/>`;
+  return `<path d="M${cx-6},${cy+4} Q${cx-2},${cy-5} ${cx},${cy} Q${cx+2},${cy+5} ${cx+6},${cy-4}" fill="none" stroke="${c}" stroke-width="2" opacity="0.78"/>`;
+}
+
+function renderFlowers_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const y of [18, 34, 50, 66, 82]) s += `<line x1="12" y1="${y}" x2="88" y2="${y}" stroke="${c}" stroke-width="0.9" opacity="${o*0.16}"/>`;
+  } else if (variant === 1) {
+    for (const x of [20, 36, 52, 68, 84]) s += `<path d="M${x},14 C${x-6},32 ${x+6},55 ${x},84" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.18}"/><path d="M${x},34 L${x-8},28 M${x},52 L${x+8},46" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.14}"/>`;
+  } else if (variant === 2) {
+    for (let d = -50; d <= 90; d += 18) s += `<line x1="${d}" y1="96" x2="${d+48}" y2="4" stroke="${c}" stroke-width="0.7" opacity="${o*0.13}"/>`;
+  } else if (variant === 3) {
+    for (const [x, y] of [[22,22],[50,28],[76,20],[30,58],[66,54],[48,80]]) s += `<circle cx="${x}" cy="${y}" r="8" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.15}"/><circle cx="${x}" cy="${y}" r="3" fill="${c}" opacity="${o*0.12}"/>`;
+  } else {
+    const fibers = [[14,16,26,14],[36,20,50,18],[60,14,78,16],[18,42,32,40],[48,38,64,39],[74,44,88,42],[14,70,26,68],[40,76,58,73],[70,84,88,80]];
+    for (const [x1, y1, x2, y2] of fibers) s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="0.8" opacity="${o*0.15}"/>`;
+  }
+  return s;
+}
+
+function renderFlowers_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M18,18 H82 V82 H18Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M18,18 L32,32 M82,18 L68,32 M18,82 L32,68 M82,82 L68,68" stroke="${c}" stroke-width="2" opacity="0.56"/><path d="M26,14 H74" stroke="${c}" stroke-width="1.5" opacity="0.44"/>`;
+  if (variant === 1) return `<path d="M13,22 H87 V78 H13Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M13,50 H87 M50,22 V78" stroke="${c}" stroke-width="1.2" opacity="0.38" stroke-dasharray="6 6"/><path d="M20,22 Q50,8 80,22 M20,78 Q50,92 80,78" fill="none" stroke="${c}" stroke-width="2" opacity="0.52"/>`;
+  return `<path d="M12,70 Q20,15 50,15 Q80,15 88,70" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M20,70 Q50,88 80,70" fill="none" stroke="${c}" stroke-width="3" opacity="0.68"/><circle cx="50" cy="20" r="5" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.5"/>`;
+}
+
+function renderFlowers_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<rect x="30" y="32" width="40" height="36" rx="4" fill="${c}" opacity="${o}"/><path d="M30,40 L50,54 L70,40 M34,58 H62" fill="none" stroke="white" stroke-width="2.2" opacity="0.58"/><rect x="36" y="24" width="28" height="14" rx="3" fill="${c}" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M50,72 V40" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,29 34,34 36,44 C38,53 46,54 50,46 C54,54 62,53 64,44 C66,34 58,29 50,40Z" fill="${c}" opacity="${o}"/><path d="M42,56 C35,50 28,53 30,61 C32,67 39,68 44,63 M58,56 C65,50 72,53 70,61 C68,67 61,68 56,63" fill="none" stroke="${c}" stroke-width="2.6" opacity="${o*0.88}"/>`;
+  if (variant === 2) return `<circle cx="50" cy="50" r="17" fill="${c}" opacity="${o}"/><circle cx="50" cy="50" r="8" fill="white" opacity="0.52"/><path d="M50,69 C32,55 36,38 45,41 C49,42 50,46 50,46 C50,46 51,42 55,41 C64,38 68,55 50,69Z" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.9}"/>`;
+  return `<path d="M38,24 H62 L68,36 H32Z" fill="${c}" opacity="${o}"/><path d="M40,36 C34,30 28,34 30,42 C32,48 38,49 42,44 C46,49 52,48 54,42 C56,34 50,30 44,36" fill="${c}" opacity="${o}"/><path d="M58,36 C52,30 46,34 48,42 C50,48 56,49 60,44 C64,49 70,48 72,42 C74,34 68,30 62,36" fill="${c}" opacity="${o}"/><path d="M34,55 Q50,68 66,55" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+}
+
+function renderFlowers_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<path d="M${cx},${cy-5} Q${cx+3},${cy-2} ${cx},${cy+1} Q${cx-3},${cy-2} ${cx},${cy-5}Z M${cx+5},${cy} Q${cx+8},${cy+3} ${cx+5},${cy+6} Q${cx+2},${cy+3} ${cx+5},${cy}Z M${cx},${cy+5} Q${cx+3},${cy+8} ${cx},${cy+11} Q${cx-3},${cy+8} ${cx},${cy+5}Z" fill="${c}" opacity="0.76" transform="translate(0 -3)"/>`;
+  if (variant === 1) return `<path d="M${cx-5},${cy-4} L${cx+1},${cy+2} M${cx+1},${cy+2} L${cx+5},${cy-5} M${cx+1},${cy+2} L${cx+1},${cy+7}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/>`;
+  if (variant === 2) return `<circle cx="${cx}" cy="${cy}" r="4.8" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.78"/><circle cx="${cx}" cy="${cy}" r="1.8" fill="${c}" opacity="0.8"/>`;
+  return `<path d="M${cx-6},${cy+1} Q${cx-1},${cy-5} ${cx+4},${cy-1} M${cx-4},${cy+5} Q${cx+1},${cy-1} ${cx+6},${cy+3}" fill="none" stroke="${c}" stroke-width="1.9" opacity="0.78"/>`;
+}
+
+function renderVelvet_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const y of [18, 34, 50, 66, 82]) s += `<path d="M8,${y} C22,${y-6} 38,${y+6} 52,${y} C66,${y-6} 80,${y+6} 92,${y}" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.07}"/>`;
+  } else if (variant === 1) {
+    for (const [x, y, r] of [[20,18,2.5],[44,14,3],[74,20,2.5],[30,44,2.8],[60,40,3.1],[84,54,2.6],[18,74,2.4],[50,78,2.8],[78,82,2.4]]) s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity="${o*0.2}"/>`;
+  } else if (variant === 2) {
+    for (let x = -10; x <= 88; x += 20) s += `<path d="M${x},8 C${x+22},28 ${x+10},72 ${x+34},92" fill="none" stroke="${c}" stroke-width="1.6" opacity="${o*0.14}"/>`;
+  } else if (variant === 3) {
+    for (const y of [20, 38, 56, 74]) s += `<path d="M14,${y} Q32,${y-8} 50,${y} T86,${y}" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.14}"/>`;
+  } else {
+    for (let d = -60; d <= 92; d += 18) {
+      s += `<line x1="${d}" y1="96" x2="${d+50}" y2="4" stroke="${c}" stroke-width="0.7" opacity="${o*0.1}"/>`;
+      s += `<line x1="${d}" y1="4" x2="${d+50}" y2="96" stroke="${c}" stroke-width="0.7" opacity="${o*0.08}"/>`;
+    }
+  }
+  return s;
+}
+
+function renderVelvet_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M18,18 H82 V82 H18Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/><path d="M50,18 C42,9 32,14 34,24 C36,31 43,31 50,25 C57,31 64,31 66,24 C68,14 58,9 50,18Z" fill="${c}" opacity="0.8"/><path d="M30,82 Q50,92 70,82" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.5"/>`;
+  if (variant === 1) return `<path d="M13,22 H87 V78 H13Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M22,22 C30,11 39,20 32,30 C40,19 50,27 50,35 C50,27 60,19 68,30 C61,20 70,11 78,22" fill="none" stroke="${c}" stroke-width="2" opacity="0.54"/><path d="M22,78 C30,89 39,80 32,70 C40,81 50,73 50,65 C50,73 60,81 68,70 C61,80 70,89 78,78" fill="none" stroke="${c}" stroke-width="2" opacity="0.54"/>`;
+  return `<ellipse cx="50" cy="50" rx="39" ry="31" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><circle cx="26" cy="50" r="2.5" fill="${c}" opacity="0.72"/><circle cx="38" cy="25" r="2.5" fill="${c}" opacity="0.72"/><circle cx="62" cy="25" r="2.5" fill="${c}" opacity="0.72"/><circle cx="74" cy="50" r="2.5" fill="${c}" opacity="0.72"/><circle cx="38" cy="75" r="2.5" fill="${c}" opacity="0.72"/><circle cx="62" cy="75" r="2.5" fill="${c}" opacity="0.72"/>`;
+}
+
+function renderVelvet_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<path d="M50,72 C28,54 31,33 43,38 C49,40 50,46 50,46 C50,46 51,40 57,38 C69,33 72,54 50,72Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="56" r="8" fill="none" stroke="white" stroke-width="2" opacity="0.48"/><path d="M42,56 H58" stroke="white" stroke-width="1.4" opacity="0.46"/>`;
+  if (variant === 1) return `<path d="M28,44 Q38,29 48,42 Q50,49 43,59 L34,71 Q30,63 28,56 Q26,50 28,44Z M72,44 Q62,29 52,42 Q50,49 57,59 L66,71 Q70,63 72,56 Q74,50 72,44Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="46" r="5" fill="${c}" opacity="${o}"/>`;
+  if (variant === 2) return `<circle cx="34" cy="36" r="5" fill="${c}" opacity="${o}"/><circle cx="46" cy="32" r="5" fill="${c}" opacity="${o}"/><circle cx="58" cy="34" r="5" fill="${c}" opacity="${o}"/><circle cx="66" cy="44" r="5" fill="${c}" opacity="${o}"/><path d="M34,36 C40,52 46,59 50,67 C54,59 60,52 66,44" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M42,53 Q50,45 58,53" fill="none" stroke="white" stroke-width="1.8" opacity="0.5"/>`;
+  return `<path d="M34,61 C36,46 46,43 50,52 C54,43 64,46 66,61 C58,72 42,72 34,61Z" fill="${c}" opacity="${o}"/><path d="M28,46 C36,34 44,36 42,49 M72,46 C64,34 56,36 58,49" fill="none" stroke="${c}" stroke-width="3.6" opacity="${o}"/><path d="M42,49 C47,43 53,43 58,49" fill="none" stroke="white" stroke-width="1.8" opacity="0.5"/>`;
+}
+
+function renderVelvet_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="2.6" fill="${c}" opacity="0.78"/><circle cx="${cx+3}" cy="${cy-1}" r="2.4" fill="${c}" opacity="0.7"/><circle cx="${cx}" cy="${cy+4}" r="2.4" fill="${c}" opacity="0.72"/>`;
+  if (variant === 1) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.76"/><circle cx="${cx-1}" cy="${cy}" r="2.1" fill="${c}" opacity="0.86"/>`;
+  if (variant === 2) return `<path d="M${cx-6},${cy+5} Q${cx},${cy-6} ${cx+6},${cy+5} M${cx-4},${cy+3} Q${cx},${cy-2} ${cx+4},${cy+3}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/>`;
+  return `<path d="M${cx},${cy+5} C${cx-7},${cy-1} ${cx-3},${cy-8} ${cx},${cy-3} C${cx+3},${cy-8} ${cx+7},${cy-1} ${cx},${cy+5}Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.78"/>`;
+}
+
+function renderConstellation_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const [x, y] of [[14,18],[30,10],[48,22],[70,14],[84,28],[24,44],[44,40],[64,54],[82,66],[18,76],[40,82],[62,78],[80,86]]) s += `<circle cx="${x}" cy="${y}" r="2" fill="${c}" opacity="${o*0.3}"/>`;
+  } else if (variant === 1) {
+    for (const y of [24, 50, 76]) s += `<path d="M8,${y} C26,${y-10} 44,${y+8} 62,${y-3} C74,${y-10} 84,${y+3} 92,${y}" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.18}"/>`;
+  } else if (variant === 2) {
+    const lines = ['16,20 32,12 48,22 68,16 82,30','24,46 42,40 60,54 78,44','18,76 40,82 62,78 84,86'];
+    for (const pts of lines) {
+      const pairs = pts.split(' ');
+      for (let i = 0; i < pairs.length - 1; i++) {
+        const [x1, y1] = pairs[i].split(',');
+        const [x2, y2] = pairs[i+1].split(',');
+        s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="0.8" opacity="${o*0.16}"/>`;
+      }
+    }
+  } else if (variant === 3) {
+    for (const y of [18, 34, 50, 66, 82]) s += `<rect x="8" y="${y}" width="84" height="7" rx="3.5" fill="${c}" opacity="${o*0.08}"/>`;
+  } else {
+    const dust = [[18,14],[38,18],[56,12],[76,20],[88,38],[16,56],[32,64],[52,58],[70,72],[84,82],[44,86]];
+    for (const [x, y] of dust) s += `<polygon points="${x},${y-3} ${x+3},${y} ${x},${y+3} ${x-3},${y}" fill="${c}" opacity="${o*0.16}"/>`;
+  }
+  return s;
+}
+
+function renderConstellation_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M18,24 Q50,6 82,24 V76 Q50,94 18,76Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><circle cx="18" cy="24" r="3" fill="${c}" opacity="0.8"/><circle cx="82" cy="24" r="3" fill="${c}" opacity="0.8"/><circle cx="18" cy="76" r="3" fill="${c}" opacity="0.8"/><circle cx="82" cy="76" r="3" fill="${c}" opacity="0.8"/>`;
+  if (variant === 1) return `<ellipse cx="50" cy="50" rx="40" ry="31" fill="none" stroke="${c}" stroke-width="3.1" opacity="0.78"/><path d="M20,24 C36,16 64,16 80,24" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5" stroke-dasharray="3 6"/><path d="M20,76 C36,84 64,84 80,76" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.5" stroke-dasharray="3 6"/>`;
+  return `<path d="M15,50 A35,24 0 1,1 85,50 A35,24 0 1,1 15,50Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M50,14 V86 M16,50 H84" stroke="${c}" stroke-width="1.2" opacity="0.36" stroke-dasharray="5 7"/>`;
+}
+
+function renderConstellation_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<circle cx="35" cy="42" r="4" fill="${c}" opacity="${o}"/><circle cx="50" cy="32" r="4" fill="${c}" opacity="${o}"/><circle cx="65" cy="42" r="4" fill="${c}" opacity="${o}"/><circle cx="42" cy="56" r="4" fill="${c}" opacity="${o}"/><circle cx="58" cy="56" r="4" fill="${c}" opacity="${o}"/><path d="M35,42 L50,32 L65,42 L58,56 L42,56 Z" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M28,58 L50,34 L58,42 L40,60 Z" fill="${c}" opacity="${o}"/><path d="M50,34 L64,28 L58,42" fill="${c}" opacity="${o*0.82}"/><path d="M38,64 C50,64 62,57 72,44" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M72,44 L67,44 M72,44 L72,49" stroke="${c}" stroke-width="2.2" opacity="${o}"/>`;
+  if (variant === 2) return `<circle cx="34" cy="50" r="4" fill="${c}" opacity="${o}"/><circle cx="46" cy="38" r="4" fill="${c}" opacity="${o}"/><circle cx="58" cy="50" r="4" fill="${c}" opacity="${o}"/><circle cx="70" cy="40" r="4" fill="${c}" opacity="${o}"/><path d="M34,50 L46,38 L58,50 L70,40" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M42,62 C46,54 54,54 58,62" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  return `<path d="M64,30 A18,18 0 1,0 68,64 A14,14 0 1,1 64,30Z" fill="${c}" opacity="${o}"/><path d="M32,62 L40,48 L48,62 L34,54 H46" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><circle cx="38" cy="38" r="3" fill="${c}" opacity="${o}"/><circle cx="72" cy="38" r="3" fill="${c}" opacity="${o}"/>`;
+}
+
+function renderConstellation_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="1.4" opacity="0.8"/>`;
+  if (variant === 1) return `<path d="M${cx-6},${cy+4} C${cx-1},${cy-5} ${cx+3},${cy-4} ${cx+7},${cy-8}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/><circle cx="${cx+7}" cy="${cy-8}" r="1.8" fill="${c}" opacity="0.82"/>`;
+  if (variant === 2) return `<path d="M${cx},${cy-5} V${cy+5} M${cx-5},${cy} H${cx+5}" stroke="${c}" stroke-width="1.7" opacity="0.78"/><circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.8"/>`;
+  return `<circle cx="${cx-4}" cy="${cy+1}" r="2" fill="${c}" opacity="0.8"/><circle cx="${cx+1}" cy="${cy-4}" r="2" fill="${c}" opacity="0.72"/><circle cx="${cx+5}" cy="${cy+3}" r="2" fill="${c}" opacity="0.8"/><path d="M${cx-4},${cy+1} L${cx+1},${cy-4} L${cx+5},${cy+3}" fill="none" stroke="${c}" stroke-width="1.3" opacity="0.72"/>`;
+}
+
+function renderRoses_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const x of [18, 36, 54, 72, 88]) s += `<path d="M${x},10 C${x-6},26 ${x+6},52 ${x},90" fill="none" stroke="${c}" stroke-width="0.9" opacity="${o*0.18}"/><path d="M${x},34 L${x-8},28 M${x},54 L${x+8},48" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.14}"/>`;
+  } else if (variant === 1) {
+    for (const [x, y] of [[16,20],[34,30],[60,18],[80,34],[24,56],[50,50],[74,68],[38,82]]) s += `<path d="M${x},${y+4} C${x-5},${y} ${x-2},${y-5} ${x},${y-2} C${x+2},${y-5} ${x+5},${y} ${x},${y+4}Z" fill="${c}" opacity="${o*0.18}"/>`;
+  } else if (variant === 2) {
+    for (const y of [18, 36, 54, 72]) s += `<rect x="8" y="${y}" width="84" height="8" rx="4" fill="${c}" opacity="${o*0.1}"/>`;
+  } else if (variant === 3) {
+    for (let x = 12; x <= 88; x += 16) for (let y = 12; y <= 88; y += 16) s += `<path d="M${x-6},${y+6} L${x},${y} L${x+6},${y+6} M${x},${y} V${y+12}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o*0.16}"/>`;
+  } else {
+    for (const y of [24, 48, 72]) s += `<path d="M10,${y} C30,${y-8} 60,${y+8} 90,${y}" fill="none" stroke="${c}" stroke-width="6" opacity="${o*0.05}" stroke-linecap="round"/>`;
+  }
+  return s;
+}
+
+function renderRoses_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M16,24 Q50,8 84,24 V76 Q50,92 16,76Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M18,24 L24,18 M30,16 L36,22 M70,16 L64,22 M82,24 L76,18 M18,76 L24,82 M82,76 L76,82" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.52"/>`;
+  if (variant === 1) return `<path d="M13,18 H87 V82 H13Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/><path d="M18,18 C28,10 38,18 34,28 C42,20 50,26 50,35 C50,26 58,20 66,28 C62,18 72,10 82,18" fill="none" stroke="${c}" stroke-width="2" opacity="0.54"/><path d="M18,82 C28,90 38,82 34,72 C42,80 50,74 50,65 C50,74 58,80 66,72 C62,82 72,90 82,82" fill="none" stroke="${c}" stroke-width="2" opacity="0.54"/>`;
+  return `<path d="M14,70 Q22,16 50,16 Q78,16 86,70" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.78"/><path d="M24,70 Q50,88 76,70" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.7"/><circle cx="50" cy="19" r="4" fill="${c}" opacity="0.78"/>`;
+}
+
+function renderRoses_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<path d="M35,52 C29,43 31,33 39,33 C45,33 49,39 47,46 C54,42 61,47 61,55 C61,64 53,68 50,74 C47,68 39,64 35,58 C31,60 25,59 23,53 C21,47 27,41 33,44" fill="${c}" opacity="${o}"/><path d="M65,52 C59,43 61,33 69,33 C75,33 79,39 77,46 C84,42 91,47 91,55" fill="none" stroke="${c}" stroke-width="0" opacity="0"/>`;
+  if (variant === 1) return `<path d="M33,37 C28,31 30,24 36,24 C42,24 46,30 44,36 C49,34 54,37 54,43 C54,50 48,54 45,59 C42,54 36,50 33,45Z" fill="${c}" opacity="${o}"/><path d="M56,44 C51,38 53,31 59,31 C65,31 69,37 67,43 C72,41 77,44 77,50 C77,57 71,61 68,66 C65,61 59,57 56,52Z" fill="${c}" opacity="${o}"/><path d="M42,59 Q50,70 58,78" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M58,78 C62,72 69,72 72,78" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  if (variant === 2) return `<path d="M50,68 C28,54 31,36 43,39 C49,41 50,47 50,47 C50,47 51,41 57,39 C69,36 72,54 50,68Z" fill="${c}" opacity="${o}"/><path d="M35,60 C41,53 46,54 50,60 C54,54 59,53 65,60" fill="none" stroke="white" stroke-width="2" opacity="0.58"/><path d="M50,35 C44,27 49,20 55,24 C61,28 58,36 50,35Z" fill="${c}" opacity="${o*0.8}"/>`;
+  return `<path d="M50,28 V68" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,31 34,36 36,46 C38,53 46,55 50,47 C54,55 62,53 64,46 C66,36 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,54 C58,45 66,50 64,60 C62,67 54,69 50,61 C46,69 38,67 36,60 C34,50 42,45 50,54Z" fill="${c}" opacity="${o*0.9}"/><path d="M42,73 Q50,66 58,73" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+}
+
+function renderRoses_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<path d="M${cx},${cy+4} C${cx-5},${cy} ${cx-2},${cy-5} ${cx},${cy-2} C${cx+2},${cy-5} ${cx+5},${cy} ${cx},${cy+4}Z" fill="${c}" opacity="0.78"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy+4} C${cx-4},${cy+1} ${cx-2},${cy-4} ${cx},${cy-1} C${cx+2},${cy-4} ${cx+4},${cy+1} ${cx},${cy+4}Z" fill="${c}" opacity="0.76"/><path d="M${cx},${cy+4} V${cy+8}" stroke="${c}" stroke-width="1.3" opacity="0.72"/>`;
+  if (variant === 2) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.74"/><circle cx="${cx-1}" cy="${cy}" r="2" fill="${c}" opacity="0.84"/>`;
+  return `<path d="M${cx},${cy-6} V${cy+6} M${cx},${cy-1} L${cx-5},${cy-4} M${cx},${cy+2} L${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.78"/>`;
+}
+
+function renderHandwritten_BgInner(family, variant, c, o) {
+  let s = `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.18}"/>`;
+  if (variant === 0) {
+    for (const y of [20, 36, 52, 68, 84]) s += `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="${c}" stroke-width="0.9" opacity="${o*0.16}"/>`;
+  } else if (variant === 1) {
+    for (const y of [22, 46, 70]) s += `<path d="M10,${y} q6,-8 12,0 t12,0 t12,0 t12,0 t12,0 t12,0" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.18}"/>`;
+  } else if (variant === 2) {
+    for (const x of [18, 42, 66]) s += `<path d="M${x},18 C${x+8},8 ${x+14},28 ${x+6},34 C${x-2},40 ${x+6},52 ${x+14},46" fill="none" stroke="${c}" stroke-width="1.1" opacity="${o*0.16}"/>`;
+  } else if (variant === 3) {
+    const hearts = [[18,20],[42,18],[70,28],[30,54],[58,48],[78,68],[46,80]];
+    for (const [x, y] of hearts) s += `<path d="M${x},${y+5} C${x-6},${y} ${x-2},${y-6} ${x},${y-2} C${x+2},${y-6} ${x+6},${y} ${x},${y+5}Z" fill="${c}" opacity="${o*0.16}"/>`;
+  } else {
+    for (let d = -40; d <= 90; d += 18) s += `<line x1="${d}" y1="96" x2="${d+42}" y2="4" stroke="${c}" stroke-width="0.7" opacity="${o*0.1}"/>`;
+  }
+  return s;
+}
+
+function renderHandwritten_RingInner(family, variant, c) {
+  if (variant === 0) return `<path d="M17,24 Q24,14 36,18 Q50,8 64,18 Q76,14 83,24 Q87,50 83,76 Q76,86 64,82 Q50,92 36,82 Q24,86 17,76 Q13,50 17,24Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M24,24 Q34,20 44,24 M56,24 Q66,20 76,24 M24,76 Q34,80 44,76 M56,76 Q66,80 76,76" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.48"/>`;
+  if (variant === 1) return `<path d="M14,18 H86 V82 H14Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/><path d="M20,28 C28,12 42,24 36,36 C45,20 58,20 50,40 C58,20 72,12 80,28" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.56"/><path d="M20,72 C28,88 42,76 36,64 C45,80 58,80 50,60 C58,80 72,88 80,72" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.56"/>`;
+  return `<path d="M18,76 Q50,94 82,76" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M24,28 Q50,10 76,28" fill="none" stroke="${c}" stroke-width="3" opacity="0.78"/><path d="M24,28 V76 M76,28 V76" fill="none" stroke="${c}" stroke-width="2" opacity="0.54"/><path d="M30,16 L24,28 L36,28" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.54"/>`;
+}
+
+function renderHandwritten_ShapeInner(family, variant, c, o) {
+  if (variant === 0) return `<path d="M32,54 C38,42 47,42 50,50 C53,42 62,42 68,54 C62,70 50,75 50,75 C50,75 38,70 32,54Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M24,60 Q34,48 42,60 M58,60 Q66,48 76,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M32,60 L56,36 L64,44 L40,68 Z" fill="${c}" opacity="${o}"/><path d="M56,36 L62,28 L72,38 L64,44" fill="${c}" opacity="${o*0.82}"/><path d="M32,73 Q28,76 25,71 M38,66 Q42,69 45,74" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.88}"/>`;
+  if (variant === 2) return `<rect x="29" y="31" width="42" height="40" rx="4" fill="${c}" opacity="${o}"/><path d="M35,45 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2" opacity="0.6"/><path d="M35,55 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2" opacity="0.6"/><path d="M29,39 L71,39" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  return `<path d="M24,58 Q32,42 42,50 Q50,34 58,50 Q68,42 76,58" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M30,62 q6,10 12,0 t12,0 t12,0" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M46,38 q4,-6 8,0" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.85}"/>`;
+}
+
+function renderHandwritten_AccentInner(family, variant, c, cx, cy) {
+  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="1.8" fill="${c}" opacity="0.82"/><circle cx="${cx+2}" cy="${cy+3}" r="1.4" fill="${c}" opacity="0.74"/><circle cx="${cx+5}" cy="${cy-2}" r="1.6" fill="${c}" opacity="0.78"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy+5} C${cx-6},${cy} ${cx-3},${cy-6} ${cx},${cy-2} C${cx+3},${cy-6} ${cx+6},${cy} ${cx},${cy+5}Z" fill="${c}" opacity="0.78"/>`;
+  if (variant === 2) return `<path d="M${cx-5},${cy+5} Q${cx},${cy-6} ${cx+5},${cy-2}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/><circle cx="${cx+5}" cy="${cy-2}" r="1.6" fill="${c}" opacity="0.82"/>`;
+  return `<path d="M${cx-4},${cy-4} Q${cx+2},${cy-8} ${cx+4},${cy-2} Q${cx+6},${cy+4} ${cx},${cy+5}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/>`;
+}
+
 // ── Background Zone (full tile, 4-96 inset) ──
 
 function renderBg(attr) {
@@ -2353,6 +2624,44 @@ function renderBg(attr) {
     case 'fcrown-crown-points': return renderLoveLetterBg('flower-crown', 3, c, o);
     case 'fcrown-botanical-hatching': return renderLoveLetterBg('flower-crown', 4, c, o);
 
+    // ── Romantic love-letter additions ──
+
+    case 'coffee-steam-wisps': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_BgInner('coffee', 0, c, o)}</g>`;
+    case 'coffee-bean-scatter': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_BgInner('coffee', 1, c, o)}</g>`;
+    case 'coffee-table-grain': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_BgInner('coffee', 2, c, o)}</g>`;
+    case 'coffee-sunrise-bands': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_BgInner('coffee', 3, c, o)}</g>`;
+    case 'coffee-shared-table-edge': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_BgInner('coffee', 4, c, o)}</g>`;
+    case 'moonlit-lantern-glow': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_BgInner('moonlit', 0, c, o)}</g>`;
+    case 'moonlit-garden-arch': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_BgInner('moonlit', 1, c, o)}</g>`;
+    case 'moonlit-vine-trails': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_BgInner('moonlit', 2, c, o)}</g>`;
+    case 'moonlit-starlit-path': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_BgInner('moonlit', 3, c, o)}</g>`;
+    case 'moonlit-moonflower-lattice': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_BgInner('moonlit', 4, c, o)}</g>`;
+    case 'flowers-letter-lines': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_BgInner('flowers', 0, c, o)}</g>`;
+    case 'flowers-pressed-stems': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_BgInner('flowers', 1, c, o)}</g>`;
+    case 'flowers-ribbon-diagonals': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_BgInner('flowers', 2, c, o)}</g>`;
+    case 'flowers-seal-imprints': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_BgInner('flowers', 3, c, o)}</g>`;
+    case 'flowers-paper-grain': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_BgInner('flowers', 4, c, o)}</g>`;
+    case 'velvet-plush-folds': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_BgInner('velvet', 0, c, o)}</g>`;
+    case 'velvet-pearl-scatter': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_BgInner('velvet', 1, c, o)}</g>`;
+    case 'velvet-ribbon-drape': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_BgInner('velvet', 2, c, o)}</g>`;
+    case 'velvet-whisper-lines': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_BgInner('velvet', 3, c, o)}</g>`;
+    case 'velvet-knot-lattice': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_BgInner('velvet', 4, c, o)}</g>`;
+    case 'constellation-starfield': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_BgInner('constellation', 0, c, o)}</g>`;
+    case 'constellation-comet-arcs': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_BgInner('constellation', 1, c, o)}</g>`;
+    case 'constellation-cluster-links': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_BgInner('constellation', 2, c, o)}</g>`;
+    case 'constellation-night-bands': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_BgInner('constellation', 3, c, o)}</g>`;
+    case 'constellation-golden-dust': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_BgInner('constellation', 4, c, o)}</g>`;
+    case 'roses-trailing-stems': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_BgInner('roses', 0, c, o)}</g>`;
+    case 'roses-petal-rain': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_BgInner('roses', 1, c, o)}</g>`;
+    case 'roses-silk-stripes': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_BgInner('roses', 2, c, o)}</g>`;
+    case 'roses-garden-trellis': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_BgInner('roses', 3, c, o)}</g>`;
+    case 'roses-perfume-mist': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_BgInner('roses', 4, c, o)}</g>`;
+    case 'handwritten-paper-lines': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_BgInner('handwritten', 0, c, o)}</g>`;
+    case 'handwritten-ink-flourishes': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_BgInner('handwritten', 1, c, o)}</g>`;
+    case 'handwritten-margin-curls': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_BgInner('handwritten', 2, c, o)}</g>`;
+    case 'handwritten-heart-words': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_BgInner('handwritten', 3, c, o)}</g>`;
+    case 'handwritten-folded-page': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_BgInner('handwritten', 4, c, o)}</g>`;
+
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-confetti-shower': {
       const rng = mulberry32(c.charCodeAt(1) * 7 + 1);
@@ -3448,6 +3757,30 @@ function renderRing(attr) {
     case 'fcrown-fern-wreath-frame': return renderLoveLetterRing('flower-crown', 0, c);
     case 'fcrown-crown-point-border': return renderLoveLetterRing('flower-crown', 1, c);
     case 'fcrown-pressed-stem-arch': return renderLoveLetterRing('flower-crown', 2, c);
+
+    // ── Romantic love-letter additions ──
+
+    case 'coffee-cup-rim-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_RingInner('coffee', 0, c)}</g>`;
+    case 'coffee-bead-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_RingInner('coffee', 1, c)}</g>`;
+    case 'coffee-table-corner-arch': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_RingInner('coffee', 2, c)}</g>`;
+    case 'moonlit-arch-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_RingInner('moonlit', 0, c)}</g>`;
+    case 'moonlit-lantern-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_RingInner('moonlit', 1, c)}</g>`;
+    case 'moonlit-vine-oval': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_RingInner('moonlit', 2, c)}</g>`;
+    case 'flowers-envelope-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_RingInner('flowers', 0, c)}</g>`;
+    case 'flowers-ribbon-wrap-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_RingInner('flowers', 1, c)}</g>`;
+    case 'flowers-seal-medallion-arch': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_RingInner('flowers', 2, c)}</g>`;
+    case 'velvet-locket-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_RingInner('velvet', 0, c)}</g>`;
+    case 'velvet-bow-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_RingInner('velvet', 1, c)}</g>`;
+    case 'velvet-pearl-oval': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_RingInner('velvet', 2, c)}</g>`;
+    case 'constellation-star-link-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_RingInner('constellation', 0, c)}</g>`;
+    case 'constellation-comet-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_RingInner('constellation', 1, c)}</g>`;
+    case 'constellation-orbit-oval': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_RingInner('constellation', 2, c)}</g>`;
+    case 'roses-vine-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_RingInner('roses', 0, c)}</g>`;
+    case 'roses-bow-corner-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_RingInner('roses', 1, c)}</g>`;
+    case 'roses-arching-bloom': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_RingInner('roses', 2, c)}</g>`;
+    case 'handwritten-script-frame': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_RingInner('handwritten', 0, c)}</g>`;
+    case 'handwritten-flourish-border': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_RingInner('handwritten', 1, c)}</g>`;
+    case 'handwritten-pen-arch': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_RingInner('handwritten', 2, c)}</g>`;
 
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-sequin-frame':
@@ -4916,6 +5249,37 @@ function renderShape(attr) {
     case 'fcrown-daisy-bracelet': return renderLoveLetterShape('flower-crown', 2, c, o);
     case 'fcrown-botanical-letter-f': return renderLoveLetterShape('flower-crown', 3, c, o);
 
+    // ── Romantic love-letter additions ──
+
+    case 'coffee-paired-mugs': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_ShapeInner('coffee', 0, c, o)}</g>`;
+    case 'coffee-heart-steam': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_ShapeInner('coffee', 1, c, o)}</g>`;
+    case 'coffee-bean-heart': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_ShapeInner('coffee', 2, c, o)}</g>`;
+    case 'coffee-breakfast-for-two': return `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_ShapeInner('coffee', 3, c, o)}</g>`;
+    case 'moonlit-crescent-path': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_ShapeInner('moonlit', 0, c, o)}</g>`;
+    case 'moonlit-garden-lantern': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_ShapeInner('moonlit', 1, c, o)}</g>`;
+    case 'moonlit-moonflower-stem': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_ShapeInner('moonlit', 2, c, o)}</g>`;
+    case 'moonlit-intertwined-vines': return `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_ShapeInner('moonlit', 3, c, o)}</g>`;
+    case 'flowers-open-letter': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_ShapeInner('flowers', 0, c, o)}</g>`;
+    case 'flowers-pressed-bouquet': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_ShapeInner('flowers', 1, c, o)}</g>`;
+    case 'flowers-wax-seal-heart': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_ShapeInner('flowers', 2, c, o)}</g>`;
+    case 'flowers-ribbon-keepsake': return `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_ShapeInner('flowers', 3, c, o)}</g>`;
+    case 'velvet-heart-locket': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_ShapeInner('velvet', 0, c, o)}</g>`;
+    case 'velvet-ribbon-bow': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_ShapeInner('velvet', 1, c, o)}</g>`;
+    case 'velvet-pearl-knot': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_ShapeInner('velvet', 2, c, o)}</g>`;
+    case 'velvet-whisper-heart': return `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_ShapeInner('velvet', 3, c, o)}</g>`;
+    case 'constellation-heart-map': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_ShapeInner('constellation', 0, c, o)}</g>`;
+    case 'constellation-shooting-star': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_ShapeInner('constellation', 1, c, o)}</g>`;
+    case 'constellation-cluster-heart': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_ShapeInner('constellation', 2, c, o)}</g>`;
+    case 'constellation-moon-medallion': return `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_ShapeInner('constellation', 3, c, o)}</g>`;
+    case 'roses-paired-blooms': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_ShapeInner('roses', 0, c, o)}</g>`;
+    case 'roses-bouquet-bow': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_ShapeInner('roses', 1, c, o)}</g>`;
+    case 'roses-heart-petals': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_ShapeInner('roses', 2, c, o)}</g>`;
+    case 'roses-stem-love-knot': return `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_ShapeInner('roses', 3, c, o)}</g>`;
+    case 'handwritten-ily-heart': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_ShapeInner('handwritten', 0, c, o)}</g>`;
+    case 'handwritten-pen-nib': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_ShapeInner('handwritten', 1, c, o)}</g>`;
+    case 'handwritten-love-note': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_ShapeInner('handwritten', 2, c, o)}</g>`;
+    case 'handwritten-heart-script': return `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_ShapeInner('handwritten', 3, c, o)}</g>`;
+
     // ── September Sparkle (birthday countdown) ──
     case 'septspark-cupcake':
       return `<path d="M34,58 H66 L61,74 H39 Z" fill="${c}" opacity="${o}"/>` +
@@ -6098,6 +6462,37 @@ function renderAccent(attr) {
       case 'fcrown-pollen-clusters': out += renderLoveLetterAccent('flower-crown', 1, c, cx, cy); break;
       case 'fcrown-petal-chains': out += renderLoveLetterAccent('flower-crown', 2, c, cx, cy); break;
       case 'fcrown-crown-gems': out += renderLoveLetterAccent('flower-crown', 3, c, cx, cy); break;
+
+      // ── Romantic love-letter additions ──
+
+      case 'coffee-mini-beans': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_AccentInner('coffee', 0, c, cx, cy)}</g>`; break;
+      case 'coffee-steam-curls': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_AccentInner('coffee', 1, c, cx, cy)}</g>`; break;
+      case 'coffee-spoon-kisses': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_AccentInner('coffee', 2, c, cx, cy)}</g>`; break;
+      case 'coffee-saucer-dots': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderCoffee_AccentInner('coffee', 3, c, cx, cy)}</g>`; break;
+      case 'moonlit-mini-lanterns': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_AccentInner('moonlit', 0, c, cx, cy)}</g>`; break;
+      case 'moonlit-small-stars': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_AccentInner('moonlit', 1, c, cx, cy)}</g>`; break;
+      case 'moonlit-flower-bursts': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_AccentInner('moonlit', 2, c, cx, cy)}</g>`; break;
+      case 'moonlit-vine-curls': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderMoonlit_AccentInner('moonlit', 3, c, cx, cy)}</g>`; break;
+      case 'flowers-petal-sprigs': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_AccentInner('flowers', 0, c, cx, cy)}</g>`; break;
+      case 'flowers-ribbon-ties': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_AccentInner('flowers', 1, c, cx, cy)}</g>`; break;
+      case 'flowers-seal-dots': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_AccentInner('flowers', 2, c, cx, cy)}</g>`; break;
+      case 'flowers-leaf-pairs': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderFlowers_AccentInner('flowers', 3, c, cx, cy)}</g>`; break;
+      case 'velvet-pearls': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_AccentInner('velvet', 0, c, cx, cy)}</g>`; break;
+      case 'velvet-mini-bows': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_AccentInner('velvet', 1, c, cx, cy)}</g>`; break;
+      case 'velvet-soft-knots': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_AccentInner('velvet', 2, c, cx, cy)}</g>`; break;
+      case 'velvet-locket-sparks': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderVelvet_AccentInner('velvet', 3, c, cx, cy)}</g>`; break;
+      case 'constellation-mini-stars': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_AccentInner('constellation', 0, c, cx, cy)}</g>`; break;
+      case 'constellation-comet-tails': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_AccentInner('constellation', 1, c, cx, cy)}</g>`; break;
+      case 'constellation-spark-crosses': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_AccentInner('constellation', 2, c, cx, cy)}</g>`; break;
+      case 'constellation-link-dots': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderConstellation_AccentInner('constellation', 3, c, cx, cy)}</g>`; break;
+      case 'roses-mini-petals': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_AccentInner('roses', 0, c, cx, cy)}</g>`; break;
+      case 'roses-rosebuds': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_AccentInner('roses', 1, c, cx, cy)}</g>`; break;
+      case 'roses-silk-bows': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_AccentInner('roses', 2, c, cx, cy)}</g>`; break;
+      case 'roses-leaf-pairs': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderRoses_AccentInner('roses', 3, c, cx, cy)}</g>`; break;
+      case 'handwritten-ink-dots': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_AccentInner('handwritten', 0, c, cx, cy)}</g>`; break;
+      case 'handwritten-mini-hearts': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_AccentInner('handwritten', 1, c, cx, cy)}</g>`; break;
+      case 'handwritten-pen-flicks': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_AccentInner('handwritten', 2, c, cx, cy)}</g>`; break;
+      case 'handwritten-comma-curls': out += `<g stroke-linecap="round" stroke-linejoin="round">${renderHandwritten_AccentInner('handwritten', 3, c, cx, cy)}</g>`; break;
 
       // ── September Sparkle (birthday countdown) ──
       case 'septspark-stars':
