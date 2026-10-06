@@ -425,17 +425,17 @@ function renderCoffee_RingInner(family, variant, c) {
 }
 
 function renderCoffee_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M27,46 H46 V61 Q46,69 37,69 Q27,69 27,61Z M54,46 H73 V61 Q73,69 63,69 Q54,69 54,61Z" fill="${c}" opacity="${o}"/><path d="M46,50 Q55,50 50,58 M73,50 Q82,50 77,58" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M33,46 Q33,33 41,33 Q49,33 49,46 M51,46 Q51,33 59,33 Q67,33 67,46" fill="none" stroke="${c}" stroke-width="3.5" opacity="${o}"/><path d="M38,76 Q50,84 62,76" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.9}"/>`;
-  if (variant === 1) return `<path d="M34,62 H66 L63,72 Q50,77 37,72Z" fill="${c}" opacity="${o}"/><path d="M50,62 C34,48 34,38 43,38 C48,38 50,42 50,42 C50,42 52,38 57,38 C66,38 66,48 50,62Z" fill="white" opacity="0.58"/><path d="M43,39 C39,30 45,25 50,29 C55,25 61,30 57,39 M50,35 C45,27 48,20 52,17" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.78}"/>`;
-  if (variant === 2) return `<path d="M34,38 C30,29 36,25 42,29 C48,23 55,27 57,36 C63,34 68,39 66,47 C63,58 55,62 50,70 C45,62 37,58 34,49 C31,43 32,40 34,38Z" fill="${c}" opacity="${o}"/><ellipse cx="42" cy="41" rx="5" ry="2.4" fill="white" opacity="0.48" transform="rotate(-24 42 41)"/><ellipse cx="57" cy="44" rx="5" ry="2.4" fill="white" opacity="0.48" transform="rotate(24 57 44)"/><ellipse cx="50" cy="54" rx="5.5" ry="2.8" fill="white" opacity="0.46"/>`;
-  return `<path d="M22,58 H78 M30,58 V73 M70,58 V73" fill="none" stroke="${c}" stroke-width="4.5" stroke-linecap="round" opacity="${o}"/><path d="M28,45 H72 V58 H28Z" fill="${c}" opacity="${o}"/><path d="M34,45 Q34,30 44,30 Q50,30 50,45 M50,45 Q50,30 56,30 Q66,30 66,45" fill="none" stroke="${c}" stroke-width="3.6" opacity="${o}"/><path d="M37,36 C41,30 48,31 50,37 C52,31 59,30 63,36" fill="none" stroke="white" stroke-width="1.8" opacity="0.52"/>`;
+  if (variant === 0) return `<path d="M27,46 H46 V61 Q46,69 37,69 Q27,69 27,61Z M54,46 H73 V61 Q73,69 63,69 Q54,69 54,61Z" fill="${c}" opacity="${o}"/><path d="M46,50 Q55,50 50,58 M73,50 Q82,50 77,58" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o*1.15}"/><path d="M33,46 Q33,33 41,33 Q49,33 49,46 M51,46 Q51,33 59,33 Q67,33 67,46" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.15}"/><path d="M38,76 Q50,84 62,76" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M34,62 H66 L63,72 Q50,77 37,72Z" fill="${c}" opacity="${o}"/><path d="M50,62 C34,48 34,38 43,38 C48,38 50,42 50,42 C50,42 52,38 57,38 C66,38 66,48 50,62Z" fill="white" opacity="0.68"/><path d="M43,39 C39,30 45,25 50,29 C55,25 61,30 57,39 M50,35 C45,27 48,20 52,17" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o*0.95}"/>`;
+  if (variant === 2) return `<path d="M34,38 C30,29 36,25 42,29 C48,23 55,27 57,36 C63,34 68,39 66,47 C63,58 55,62 50,70 C45,62 37,58 34,49 C31,43 32,40 34,38Z" fill="${c}" opacity="${o}"/><ellipse cx="42" cy="41" rx="6.5" ry="3.2" fill="white" opacity="0.62" transform="rotate(-24 42 41)"/><ellipse cx="57" cy="44" rx="6.5" ry="3.2" fill="white" opacity="0.62" transform="rotate(24 57 44)"/><ellipse cx="50" cy="54" rx="6.8" ry="3.5" fill="white" opacity="0.58"/>`;
+  return `<path d="M22,58 H78 M30,58 V73 M70,58 V73" fill="none" stroke="${c}" stroke-width="5.8" stroke-linecap="round" opacity="${o*1.1}"/><path d="M28,45 H72 V58 H28Z" fill="${c}" opacity="${o}"/><path d="M34,45 Q34,30 44,30 Q50,30 50,45 M50,45 Q50,30 56,30 Q66,30 66,45" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.1}"/><path d="M37,36 C41,30 48,31 50,37 C52,31 59,30 63,36" fill="none" stroke="white" stroke-width="2.4" opacity="0.68"/>`;
 }
 
 function renderCoffee_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<ellipse cx="${cx-3}" cy="${cy}" rx="3.2" ry="2.2" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8" transform="rotate(-20 ${cx-3} ${cy})"/><ellipse cx="${cx+3}" cy="${cy}" rx="3.2" ry="2.2" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8" transform="rotate(20 ${cx+3} ${cy})"/>`;
-  if (variant === 1) return `<path d="M${cx-3},${cy+5} C${cx-8},${cy-1} ${cx-1},${cy-8} ${cx-1},${cy-2} M${cx+3},${cy+5} C${cx+8},${cy-1} ${cx+1},${cy-8} ${cx+1},${cy-2}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/>`;
-  if (variant === 2) return `<path d="M${cx-5},${cy+4} H${cx+3} L${cx+6},${cy} L${cx+3},${cy-4} H${cx-5}Z" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.76"/><circle cx="${cx-2}" cy="${cy}" r="1.6" fill="${c}" opacity="0.78"/>`;
-  return `<circle cx="${cx}" cy="${cy}" r="5.4" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.72"/><circle cx="${cx}" cy="${cy}" r="2.6" fill="none" stroke="${c}" stroke-width="1" opacity="0.52"/>`;
+  if (variant === 0) return `<ellipse cx="${cx-3}" cy="${cy}" rx="4.2" ry="2.8" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.95" transform="rotate(-20 ${cx-3} ${cy})"/><ellipse cx="${cx+3}" cy="${cy}" rx="4.2" ry="2.8" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.95" transform="rotate(20 ${cx+3} ${cy})"/>`;
+  if (variant === 1) return `<path d="M${cx-3},${cy+5} C${cx-8},${cy-1} ${cx-1},${cy-8} ${cx-1},${cy-2} M${cx+3},${cy+5} C${cx+8},${cy-1} ${cx+1},${cy-8} ${cx+1},${cy-2}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/>`;
+  if (variant === 2) return `<path d="M${cx-5},${cy+4} H${cx+3} L${cx+6},${cy} L${cx+3},${cy-4} H${cx-5}Z" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.90"/><circle cx="${cx-2}" cy="${cy}" r="2.2" fill="${c}" opacity="0.90"/>`;
+  return `<circle cx="${cx}" cy="${cy}" r="6.8" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.85"/><circle cx="${cx}" cy="${cy}" r="3.4" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.65"/>`;
 }
 
 function renderMoonlit_BgInner(family, variant, c, o) {
@@ -461,17 +461,17 @@ function renderMoonlit_RingInner(family, variant, c) {
 }
 
 function renderMoonlit_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M57,29 A20,20 0 1,0 63,65 A16,16 0 1,1 57,29Z" fill="${c}" opacity="${o}"/><path d="M28,70 Q50,48 72,70" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><circle cx="50" cy="58" r="3" fill="${c}" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M28,71 V42 Q38,24 50,24 Q62,24 72,42 V71" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M41,43 L50,56 L59,43 V34 H41Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="57" r="3" fill="white" opacity="0.58"/>`;
-  if (variant === 2) return `<path d="M50,72 V40" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,31 34,35 36,44 C38,52 46,53 50,46 C54,53 62,52 64,44 C66,35 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,56 C43,49 34,52 36,61 C38,68 45,69 50,63 C55,69 62,68 64,61 C66,52 57,49 50,56Z" fill="none" stroke="${c}" stroke-width="2.4" opacity="${o*0.88}"/>`;
-  return `<path d="M31,63 C36,42 47,31 50,31 C53,31 64,42 69,63" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M33,60 C42,52 48,52 50,58 C52,52 58,52 67,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M50,68 C37,56 37,45 45,45 C49,45 50,49 50,49 C50,49 51,45 55,45 C63,45 63,56 50,68Z" fill="white" opacity="0.56"/>`;
+  if (variant === 0) return `<path d="M57,29 A20,20 0 1,0 63,65 A16,16 0 1,1 57,29Z" fill="${c}" opacity="${o}"/><path d="M28,70 Q50,48 72,70" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.12}"/><circle cx="50" cy="58" r="4.2" fill="${c}" opacity="${o*1.1}"/>`;
+  if (variant === 1) return `<path d="M28,71 V42 Q38,24 50,24 Q62,24 72,42 V71" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.12}"/><path d="M41,43 L50,56 L59,43 V34 H41Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="57" r="4" fill="white" opacity="0.72"/>`;
+  if (variant === 2) return `<path d="M50,72 V40" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,31 34,35 36,44 C38,52 46,53 50,46 C54,53 62,52 64,44 C66,35 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,56 C43,49 34,52 36,61 C38,68 45,69 50,63 C55,69 62,68 64,61 C66,52 57,49 50,56Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o}"/>`;
+  return `<path d="M31,63 C36,42 47,31 50,31 C53,31 64,42 69,63" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M33,60 C42,52 48,52 50,58 C52,52 58,52 67,60" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><path d="M50,68 C37,56 37,45 45,45 C49,45 50,49 50,49 C50,49 51,45 55,45 C63,45 63,56 50,68Z" fill="white" opacity="0.70"/>`;
 }
 
 function renderMoonlit_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<path d="M${cx-4},${cy+5} L${cx},${cy-5} L${cx+4},${cy+5}Z" fill="${c}" opacity="0.78"/><circle cx="${cx}" cy="${cy-7}" r="1.6" fill="${c}" opacity="0.82"/>`;
-  if (variant === 1) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="1.5" opacity="0.78"/>`;
-  if (variant === 2) return `<path d="M${cx},${cy-5} C${cx+2},${cy-7} ${cx+5},${cy-4} ${cx+4},${cy-1} C${cx+7},${cy} ${cx+6},${cy+3} ${cx+2},${cy+3} C${cx+1},${cy+6} ${cx-1},${cy+6} ${cx-2},${cy+3} C${cx-6},${cy+3} ${cx-7},${cy} ${cx-4},${cy-1} C${cx-5},${cy-4} ${cx-2},${cy-7} ${cx},${cy-5} Z" fill="none" stroke="${c}" stroke-width="1.4" opacity="0.8"/>`;
-  return `<path d="M${cx-6},${cy+4} Q${cx-2},${cy-5} ${cx},${cy} Q${cx+2},${cy+5} ${cx+6},${cy-4}" fill="none" stroke="${c}" stroke-width="2" opacity="0.78"/>`;
+  if (variant === 0) return `<path d="M${cx-4},${cy+5} L${cx},${cy-5} L${cx+4},${cy+5}Z" fill="${c}" opacity="0.92"/><circle cx="${cx}" cy="${cy-7}" r="2.2" fill="${c}" opacity="0.95"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="2.2" opacity="0.92"/>`;
+  if (variant === 2) return `<path d="M${cx},${cy-5} C${cx+2},${cy-7} ${cx+5},${cy-4} ${cx+4},${cy-1} C${cx+7},${cy} ${cx+6},${cy+3} ${cx+2},${cy+3} C${cx+1},${cy+6} ${cx-1},${cy+6} ${cx-2},${cy+3} C${cx-6},${cy+3} ${cx-7},${cy} ${cx-4},${cy-1} C${cx-5},${cy-4} ${cx-2},${cy-7} ${cx},${cy-5} Z" fill="none" stroke="${c}" stroke-width="2" opacity="0.94"/>`;
+  return `<path d="M${cx-6},${cy+4} Q${cx-2},${cy-5} ${cx},${cy} Q${cx+2},${cy+5} ${cx+6},${cy-4}" fill="none" stroke="${c}" stroke-width="2.8" opacity="0.92"/>`;
 }
 
 function renderFlowers_BgInner(family, variant, c, o) {
@@ -498,17 +498,17 @@ function renderFlowers_RingInner(family, variant, c) {
 }
 
 function renderFlowers_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<rect x="30" y="32" width="40" height="36" rx="4" fill="${c}" opacity="${o}"/><path d="M30,40 L50,54 L70,40 M34,58 H62" fill="none" stroke="white" stroke-width="2.2" opacity="0.58"/><rect x="36" y="24" width="28" height="14" rx="3" fill="${c}" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M50,72 V40" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,29 34,34 36,44 C38,53 46,54 50,46 C54,54 62,53 64,44 C66,34 58,29 50,40Z" fill="${c}" opacity="${o}"/><path d="M42,56 C35,50 28,53 30,61 C32,67 39,68 44,63 M58,56 C65,50 72,53 70,61 C68,67 61,68 56,63" fill="none" stroke="${c}" stroke-width="2.6" opacity="${o*0.88}"/>`;
-  if (variant === 2) return `<circle cx="50" cy="50" r="17" fill="${c}" opacity="${o}"/><circle cx="50" cy="50" r="8" fill="white" opacity="0.52"/><path d="M50,69 C32,55 36,38 45,41 C49,42 50,46 50,46 C50,46 51,42 55,41 C64,38 68,55 50,69Z" fill="none" stroke="${c}" stroke-width="3" opacity="${o*0.9}"/>`;
-  return `<path d="M38,24 H62 L68,36 H32Z" fill="${c}" opacity="${o}"/><path d="M40,36 C34,30 28,34 30,42 C32,48 38,49 42,44 C46,49 52,48 54,42 C56,34 50,30 44,36" fill="${c}" opacity="${o}"/><path d="M58,36 C52,30 46,34 48,42 C50,48 56,49 60,44 C64,49 70,48 72,42 C74,34 68,30 62,36" fill="${c}" opacity="${o}"/><path d="M34,55 Q50,68 66,55" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/>`;
+  if (variant === 0) return `<rect x="30" y="32" width="40" height="36" rx="4" fill="${c}" opacity="${o}"/><path d="M30,40 L50,54 L70,40 M34,58 H62" fill="none" stroke="white" stroke-width="3" opacity="0.72"/><rect x="36" y="24" width="28" height="14" rx="3" fill="${c}" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M50,72 V40" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,29 34,34 36,44 C38,53 46,54 50,46 C54,54 62,53 64,44 C66,34 58,29 50,40Z" fill="${c}" opacity="${o}"/><path d="M42,56 C35,50 28,53 30,61 C32,67 39,68 44,63 M58,56 C65,50 72,53 70,61 C68,67 61,68 56,63" fill="none" stroke="${c}" stroke-width="3.4" opacity="${o}"/>`;
+  if (variant === 2) return `<circle cx="50" cy="50" r="19" fill="${c}" opacity="${o}"/><circle cx="50" cy="50" r="10" fill="white" opacity="0.62"/><path d="M50,69 C32,55 36,38 45,41 C49,42 50,46 50,46 C50,46 51,42 55,41 C64,38 68,55 50,69Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  return `<path d="M38,24 H62 L68,36 H32Z" fill="${c}" opacity="${o}"/><path d="M40,36 C34,30 28,34 30,42 C32,48 38,49 42,44 C46,49 52,48 54,42 C56,34 50,30 44,36" fill="${c}" opacity="${o}"/><path d="M58,36 C52,30 46,34 48,42 C50,48 56,49 60,44 C64,49 70,48 72,42 C74,34 68,30 62,36" fill="${c}" opacity="${o}"/><path d="M34,55 Q50,68 66,55" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/>`;
 }
 
 function renderFlowers_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<path d="M${cx},${cy-5} Q${cx+3},${cy-2} ${cx},${cy+1} Q${cx-3},${cy-2} ${cx},${cy-5}Z M${cx+5},${cy} Q${cx+8},${cy+3} ${cx+5},${cy+6} Q${cx+2},${cy+3} ${cx+5},${cy}Z M${cx},${cy+5} Q${cx+3},${cy+8} ${cx},${cy+11} Q${cx-3},${cy+8} ${cx},${cy+5}Z" fill="${c}" opacity="0.76" transform="translate(0 -3)"/>`;
-  if (variant === 1) return `<path d="M${cx-5},${cy-4} L${cx+1},${cy+2} M${cx+1},${cy+2} L${cx+5},${cy-5} M${cx+1},${cy+2} L${cx+1},${cy+7}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/>`;
-  if (variant === 2) return `<circle cx="${cx}" cy="${cy}" r="4.8" fill="none" stroke="${c}" stroke-width="1.6" opacity="0.78"/><circle cx="${cx}" cy="${cy}" r="1.8" fill="${c}" opacity="0.8"/>`;
-  return `<path d="M${cx-6},${cy+1} Q${cx-1},${cy-5} ${cx+4},${cy-1} M${cx-4},${cy+5} Q${cx+1},${cy-1} ${cx+6},${cy+3}" fill="none" stroke="${c}" stroke-width="1.9" opacity="0.78"/>`;
+  if (variant === 0) return `<path d="M${cx},${cy-5} Q${cx+3},${cy-2} ${cx},${cy+1} Q${cx-3},${cy-2} ${cx},${cy-5}Z M${cx+5},${cy} Q${cx+8},${cy+3} ${cx+5},${cy+6} Q${cx+2},${cy+3} ${cx+5},${cy}Z M${cx},${cy+5} Q${cx+3},${cy+8} ${cx},${cy+11} Q${cx-3},${cy+8} ${cx},${cy+5}Z" fill="${c}" opacity="0.90" transform="translate(0 -3)"/>`;
+  if (variant === 1) return `<path d="M${cx-5},${cy-4} L${cx+1},${cy+2} M${cx+1},${cy+2} L${cx+5},${cy-5} M${cx+1},${cy+2} L${cx+1},${cy+7}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/>`;
+  if (variant === 2) return `<circle cx="${cx}" cy="${cy}" r="6.2" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.90"/><circle cx="${cx}" cy="${cy}" r="2.4" fill="${c}" opacity="0.90"/>`;
+  return `<path d="M${cx-6},${cy+1} Q${cx-1},${cy-5} ${cx+4},${cy-1} M${cx-4},${cy+5} Q${cx+1},${cy-1} ${cx+6},${cy+3}" fill="none" stroke="${c}" stroke-width="2.6" opacity="0.92"/>`;
 }
 
 function renderVelvet_BgInner(family, variant, c, o) {
@@ -537,17 +537,17 @@ function renderVelvet_RingInner(family, variant, c) {
 }
 
 function renderVelvet_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M50,72 C28,54 31,33 43,38 C49,40 50,46 50,46 C50,46 51,40 57,38 C69,33 72,54 50,72Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="56" r="8" fill="none" stroke="white" stroke-width="2" opacity="0.48"/><path d="M42,56 H58" stroke="white" stroke-width="1.4" opacity="0.46"/>`;
-  if (variant === 1) return `<path d="M28,44 Q38,29 48,42 Q50,49 43,59 L34,71 Q30,63 28,56 Q26,50 28,44Z M72,44 Q62,29 52,42 Q50,49 57,59 L66,71 Q70,63 72,56 Q74,50 72,44Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="46" r="5" fill="${c}" opacity="${o}"/>`;
-  if (variant === 2) return `<circle cx="34" cy="36" r="5" fill="${c}" opacity="${o}"/><circle cx="46" cy="32" r="5" fill="${c}" opacity="${o}"/><circle cx="58" cy="34" r="5" fill="${c}" opacity="${o}"/><circle cx="66" cy="44" r="5" fill="${c}" opacity="${o}"/><path d="M34,36 C40,52 46,59 50,67 C54,59 60,52 66,44" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M42,53 Q50,45 58,53" fill="none" stroke="white" stroke-width="1.8" opacity="0.5"/>`;
-  return `<path d="M34,61 C36,46 46,43 50,52 C54,43 64,46 66,61 C58,72 42,72 34,61Z" fill="${c}" opacity="${o}"/><path d="M28,46 C36,34 44,36 42,49 M72,46 C64,34 56,36 58,49" fill="none" stroke="${c}" stroke-width="3.6" opacity="${o}"/><path d="M42,49 C47,43 53,43 58,49" fill="none" stroke="white" stroke-width="1.8" opacity="0.5"/>`;
+  if (variant === 0) return `<path d="M50,72 C28,54 31,33 43,38 C49,40 50,46 50,46 C50,46 51,40 57,38 C69,33 72,54 50,72Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="56" r="10.4" fill="none" stroke="white" stroke-width="2.8" opacity="0.62"/><path d="M42,56 H58" stroke="white" stroke-width="2" opacity="0.62"/>`;
+  if (variant === 1) return `<path d="M28,44 Q38,29 48,42 Q50,49 43,59 L34,71 Q30,63 28,56 Q26,50 28,44Z M72,44 Q62,29 52,42 Q50,49 57,59 L66,71 Q70,63 72,56 Q74,50 72,44Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="46" r="6.5" fill="${c}" opacity="${o*1.1}"/>`;
+  if (variant === 2) return `<circle cx="34" cy="36" r="6.5" fill="${c}" opacity="${o}"/><circle cx="46" cy="32" r="6.5" fill="${c}" opacity="${o}"/><circle cx="58" cy="34" r="6.5" fill="${c}" opacity="${o}"/><circle cx="66" cy="44" r="6.5" fill="${c}" opacity="${o}"/><path d="M34,36 C40,52 46,59 50,67 C54,59 60,52 66,44" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/><path d="M42,53 Q50,45 58,53" fill="none" stroke="white" stroke-width="2.4" opacity="0.65"/>`;
+  return `<path d="M34,61 C36,46 46,43 50,52 C54,43 64,46 66,61 C58,72 42,72 34,61Z" fill="${c}" opacity="${o}"/><path d="M28,46 C36,34 44,36 42,49 M72,46 C64,34 56,36 58,49" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.1}"/><path d="M42,49 C47,43 53,43 58,49" fill="none" stroke="white" stroke-width="2.4" opacity="0.65"/>`;
 }
 
 function renderVelvet_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="2.6" fill="${c}" opacity="0.78"/><circle cx="${cx+3}" cy="${cy-1}" r="2.4" fill="${c}" opacity="0.7"/><circle cx="${cx}" cy="${cy+4}" r="2.4" fill="${c}" opacity="0.72"/>`;
-  if (variant === 1) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.76"/><circle cx="${cx-1}" cy="${cy}" r="2.1" fill="${c}" opacity="0.86"/>`;
-  if (variant === 2) return `<path d="M${cx-6},${cy+5} Q${cx},${cy-6} ${cx+6},${cy+5} M${cx-4},${cy+3} Q${cx},${cy-2} ${cx+4},${cy+3}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/>`;
-  return `<path d="M${cx},${cy+5} C${cx-7},${cy-1} ${cx-3},${cy-8} ${cx},${cy-3} C${cx+3},${cy-8} ${cx+7},${cy-1} ${cx},${cy+5}Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.78"/>`;
+  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="3.6" fill="${c}" opacity="0.92"/><circle cx="${cx+3}" cy="${cy-1}" r="3.2" fill="${c}" opacity="0.88"/><circle cx="${cx}" cy="${cy+4}" r="3.2" fill="${c}" opacity="0.90"/>`;
+  if (variant === 1) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.90"/><circle cx="${cx-1}" cy="${cy}" r="3" fill="${c}" opacity="0.96"/>`;
+  if (variant === 2) return `<path d="M${cx-6},${cy+5} Q${cx},${cy-6} ${cx+6},${cy+5} M${cx-4},${cy+3} Q${cx},${cy-2} ${cx+4},${cy+3}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/>`;
+  return `<path d="M${cx},${cy+5} C${cx-7},${cy-1} ${cx-3},${cy-8} ${cx},${cy-3} C${cx+3},${cy-8} ${cx+7},${cy-1} ${cx},${cy+5}Z" fill="none" stroke="${c}" stroke-width="2.2" opacity="0.92"/>`;
 }
 
 function renderConstellation_BgInner(family, variant, c, o) {
@@ -582,17 +582,17 @@ function renderConstellation_RingInner(family, variant, c) {
 }
 
 function renderConstellation_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<circle cx="35" cy="42" r="4" fill="${c}" opacity="${o}"/><circle cx="50" cy="32" r="4" fill="${c}" opacity="${o}"/><circle cx="65" cy="42" r="4" fill="${c}" opacity="${o}"/><circle cx="42" cy="56" r="4" fill="${c}" opacity="${o}"/><circle cx="58" cy="56" r="4" fill="${c}" opacity="${o}"/><path d="M35,42 L50,32 L65,42 L58,56 L42,56 Z" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M28,58 L50,34 L58,42 L40,60 Z" fill="${c}" opacity="${o}"/><path d="M50,34 L64,28 L58,42" fill="${c}" opacity="${o*0.82}"/><path d="M38,64 C50,64 62,57 72,44" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M72,44 L67,44 M72,44 L72,49" stroke="${c}" stroke-width="2.2" opacity="${o}"/>`;
-  if (variant === 2) return `<circle cx="34" cy="50" r="4" fill="${c}" opacity="${o}"/><circle cx="46" cy="38" r="4" fill="${c}" opacity="${o}"/><circle cx="58" cy="50" r="4" fill="${c}" opacity="${o}"/><circle cx="70" cy="40" r="4" fill="${c}" opacity="${o}"/><path d="M34,50 L46,38 L58,50 L70,40" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M42,62 C46,54 54,54 58,62" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  return `<path d="M64,30 A18,18 0 1,0 68,64 A14,14 0 1,1 64,30Z" fill="${c}" opacity="${o}"/><path d="M32,62 L40,48 L48,62 L34,54 H46" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><circle cx="38" cy="38" r="3" fill="${c}" opacity="${o}"/><circle cx="72" cy="38" r="3" fill="${c}" opacity="${o}"/>`;
+  if (variant === 0) return `<circle cx="35" cy="42" r="5.6" fill="${c}" opacity="${o}"/><circle cx="50" cy="32" r="5.6" fill="${c}" opacity="${o}"/><circle cx="65" cy="42" r="5.6" fill="${c}" opacity="${o}"/><circle cx="42" cy="56" r="5.6" fill="${c}" opacity="${o}"/><circle cx="58" cy="56" r="5.6" fill="${c}" opacity="${o}"/><path d="M35,42 L50,32 L65,42 L58,56 L42,56 Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  if (variant === 1) return `<path d="M28,58 L50,34 L58,42 L40,60 Z" fill="${c}" opacity="${o}"/><path d="M50,34 L64,28 L58,42" fill="${c}" opacity="${o*0.98}"/><path d="M38,64 C50,64 62,57 72,44" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M72,44 L67,44 M72,44 L72,49" stroke="${c}" stroke-width="3" opacity="${o*1.1}"/>`;
+  if (variant === 2) return `<circle cx="34" cy="50" r="5.6" fill="${c}" opacity="${o}"/><circle cx="46" cy="38" r="5.6" fill="${c}" opacity="${o}"/><circle cx="58" cy="50" r="5.6" fill="${c}" opacity="${o}"/><circle cx="70" cy="40" r="5.6" fill="${c}" opacity="${o}"/><path d="M34,50 L46,38 L58,50 L70,40" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><path d="M42,62 C46,54 54,54 58,62" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  return `<path d="M64,30 A18,18 0 1,0 68,64 A14,14 0 1,1 64,30Z" fill="${c}" opacity="${o}"/><path d="M32,62 L40,48 L48,62 L34,54 H46" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><circle cx="38" cy="38" r="4.2" fill="${c}" opacity="${o}"/><circle cx="72" cy="38" r="4.2" fill="${c}" opacity="${o}"/>`;
 }
 
 function renderConstellation_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="1.4" opacity="0.8"/>`;
-  if (variant === 1) return `<path d="M${cx-6},${cy+4} C${cx-1},${cy-5} ${cx+3},${cy-4} ${cx+7},${cy-8}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/><circle cx="${cx+7}" cy="${cy-8}" r="1.8" fill="${c}" opacity="0.82"/>`;
-  if (variant === 2) return `<path d="M${cx},${cy-5} V${cy+5} M${cx-5},${cy} H${cx+5}" stroke="${c}" stroke-width="1.7" opacity="0.78"/><circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.8"/>`;
-  return `<circle cx="${cx-4}" cy="${cy+1}" r="2" fill="${c}" opacity="0.8"/><circle cx="${cx+1}" cy="${cy-4}" r="2" fill="${c}" opacity="0.72"/><circle cx="${cx+5}" cy="${cy+3}" r="2" fill="${c}" opacity="0.8"/><path d="M${cx-4},${cy+1} L${cx+1},${cy-4} L${cx+5},${cy+3}" fill="none" stroke="${c}" stroke-width="1.3" opacity="0.72"/>`;
+  if (variant === 0) return `<path d="M${cx},${cy-6} V${cy+6} M${cx-6},${cy} H${cx+6} M${cx-4},${cy-4} L${cx+4},${cy+4} M${cx-4},${cy+4} L${cx+4},${cy-4}" stroke="${c}" stroke-width="2" opacity="0.92"/>`;
+  if (variant === 1) return `<path d="M${cx-6},${cy+4} C${cx-1},${cy-5} ${cx+3},${cy-4} ${cx+7},${cy-8}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/><circle cx="${cx+7}" cy="${cy-8}" r="2.4" fill="${c}" opacity="0.95"/>`;
+  if (variant === 2) return `<path d="M${cx},${cy-5} V${cy+5} M${cx-5},${cy} H${cx+5}" stroke="${c}" stroke-width="2.3" opacity="0.92"/><circle cx="${cx}" cy="${cy}" r="2.8" fill="${c}" opacity="0.92"/>`;
+  return `<circle cx="${cx-4}" cy="${cy+1}" r="2.8" fill="${c}" opacity="0.92"/><circle cx="${cx+1}" cy="${cy-4}" r="2.8" fill="${c}" opacity="0.88"/><circle cx="${cx+5}" cy="${cy+3}" r="2.8" fill="${c}" opacity="0.92"/><path d="M${cx-4},${cy+1} L${cx+1},${cy-4} L${cx+5},${cy+3}" fill="none" stroke="${c}" stroke-width="1.9" opacity="0.86"/>`;
 }
 
 function renderRoses_BgInner(family, variant, c, o) {
@@ -619,16 +619,16 @@ function renderRoses_RingInner(family, variant, c) {
 
 function renderRoses_ShapeInner(family, variant, c, o) {
   if (variant === 0) return `<path d="M35,52 C29,43 31,33 39,33 C45,33 49,39 47,46 C54,42 61,47 61,55 C61,64 53,68 50,74 C47,68 39,64 35,58 C31,60 25,59 23,53 C21,47 27,41 33,44" fill="${c}" opacity="${o}"/><path d="M65,52 C59,43 61,33 69,33 C75,33 79,39 77,46 C84,42 91,47 91,55" fill="none" stroke="${c}" stroke-width="0" opacity="0"/>`;
-  if (variant === 1) return `<path d="M33,37 C28,31 30,24 36,24 C42,24 46,30 44,36 C49,34 54,37 54,43 C54,50 48,54 45,59 C42,54 36,50 33,45Z" fill="${c}" opacity="${o}"/><path d="M56,44 C51,38 53,31 59,31 C65,31 69,37 67,43 C72,41 77,44 77,50 C77,57 71,61 68,66 C65,61 59,57 56,52Z" fill="${c}" opacity="${o}"/><path d="M42,59 Q50,70 58,78" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M58,78 C62,72 69,72 72,78" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  if (variant === 2) return `<path d="M50,68 C28,54 31,36 43,39 C49,41 50,47 50,47 C50,47 51,41 57,39 C69,36 72,54 50,68Z" fill="${c}" opacity="${o}"/><path d="M35,60 C41,53 46,54 50,60 C54,54 59,53 65,60" fill="none" stroke="white" stroke-width="2" opacity="0.58"/><path d="M50,35 C44,27 49,20 55,24 C61,28 58,36 50,35Z" fill="${c}" opacity="${o*0.8}"/>`;
-  return `<path d="M50,28 V68" stroke="${c}" stroke-width="4" stroke-linecap="round" opacity="${o}"/><path d="M50,40 C42,31 34,36 36,46 C38,53 46,55 50,47 C54,55 62,53 64,46 C66,36 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,54 C58,45 66,50 64,60 C62,67 54,69 50,61 C46,69 38,67 36,60 C34,50 42,45 50,54Z" fill="${c}" opacity="${o*0.9}"/><path d="M42,73 Q50,66 58,73" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
+  if (variant === 1) return `<path d="M33,37 C28,31 30,24 36,24 C42,24 46,30 44,36 C49,34 54,37 54,43 C54,50 48,54 45,59 C42,54 36,50 33,45Z" fill="${c}" opacity="${o}"/><path d="M56,44 C51,38 53,31 59,31 C65,31 69,37 67,43 C72,41 77,44 77,50 C77,57 71,61 68,66 C65,61 59,57 56,52Z" fill="${c}" opacity="${o}"/><path d="M42,59 Q50,70 58,78" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M58,78 C62,72 69,72 72,78" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  if (variant === 2) return `<path d="M50,68 C28,54 31,36 43,39 C49,41 50,47 50,47 C50,47 51,41 57,39 C69,36 72,54 50,68Z" fill="${c}" opacity="${o}"/><path d="M35,60 C41,53 46,54 50,60 C54,54 59,53 65,60" fill="none" stroke="white" stroke-width="2.8" opacity="0.72"/><path d="M50,35 C44,27 49,20 55,24 C61,28 58,36 50,35Z" fill="${c}" opacity="${o*0.95}"/>`;
+  return `<path d="M50,28 V68" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,31 34,36 36,46 C38,53 46,55 50,47 C54,55 62,53 64,46 C66,36 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,54 C58,45 66,50 64,60 C62,67 54,69 50,61 C46,69 38,67 36,60 C34,50 42,45 50,54Z" fill="${c}" opacity="${o}"/><path d="M42,73 Q50,66 58,73" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
 }
 
 function renderRoses_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<path d="M${cx},${cy+4} C${cx-5},${cy} ${cx-2},${cy-5} ${cx},${cy-2} C${cx+2},${cy-5} ${cx+5},${cy} ${cx},${cy+4}Z" fill="${c}" opacity="0.78"/>`;
-  if (variant === 1) return `<path d="M${cx},${cy+4} C${cx-4},${cy+1} ${cx-2},${cy-4} ${cx},${cy-1} C${cx+2},${cy-4} ${cx+4},${cy+1} ${cx},${cy+4}Z" fill="${c}" opacity="0.76"/><path d="M${cx},${cy+4} V${cy+8}" stroke="${c}" stroke-width="1.3" opacity="0.72"/>`;
-  if (variant === 2) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.74"/><circle cx="${cx-1}" cy="${cy}" r="2" fill="${c}" opacity="0.84"/>`;
-  return `<path d="M${cx},${cy-6} V${cy+6} M${cx},${cy-1} L${cx-5},${cy-4} M${cx},${cy+2} L${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="1.7" opacity="0.78"/>`;
+  if (variant === 0) return `<path d="M${cx},${cy+4} C${cx-5},${cy} ${cx-2},${cy-5} ${cx},${cy-2} C${cx+2},${cy-5} ${cx+5},${cy} ${cx},${cy+4}Z" fill="${c}" opacity="0.92"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy+4} C${cx-4},${cy+1} ${cx-2},${cy-4} ${cx},${cy-1} C${cx+2},${cy-4} ${cx+4},${cy+1} ${cx},${cy+4}Z" fill="${c}" opacity="0.90"/><path d="M${cx},${cy+4} V${cy+8}" stroke="${c}" stroke-width="1.8" opacity="0.88"/>`;
+  if (variant === 2) return `<path d="M${cx-7},${cy} C${cx-3},${cy-6} ${cx+1},${cy-6} ${cx+5},${cy} C${cx+1},${cy+6} ${cx-3},${cy+6} ${cx-7},${cy}Z" fill="${c}" opacity="0.90"/><circle cx="${cx-1}" cy="${cy}" r="2.8" fill="${c}" opacity="0.95"/>`;
+  return `<path d="M${cx},${cy-6} V${cy+6} M${cx},${cy-1} L${cx-5},${cy-4} M${cx},${cy+2} L${cx+5},${cy-1}" fill="none" stroke="${c}" stroke-width="2.3" opacity="0.92"/>`;
 }
 
 function renderHandwritten_BgInner(family, variant, c, o) {
@@ -655,17 +655,17 @@ function renderHandwritten_RingInner(family, variant, c) {
 }
 
 function renderHandwritten_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M32,54 C38,42 47,42 50,50 C53,42 62,42 68,54 C62,70 50,75 50,75 C50,75 38,70 32,54Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M24,60 Q34,48 42,60 M58,60 Q66,48 76,60" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M32,60 L56,36 L64,44 L40,68 Z" fill="${c}" opacity="${o}"/><path d="M56,36 L62,28 L72,38 L64,44" fill="${c}" opacity="${o*0.82}"/><path d="M32,73 Q28,76 25,71 M38,66 Q42,69 45,74" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.88}"/>`;
-  if (variant === 2) return `<rect x="29" y="31" width="42" height="40" rx="4" fill="${c}" opacity="${o}"/><path d="M35,45 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2" opacity="0.6"/><path d="M35,55 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2" opacity="0.6"/><path d="M29,39 L71,39" stroke="${c}" stroke-width="3" opacity="${o}"/>`;
-  return `<path d="M24,58 Q32,42 42,50 Q50,34 58,50 Q68,42 76,58" fill="none" stroke="${c}" stroke-width="4" opacity="${o}"/><path d="M30,62 q6,10 12,0 t12,0 t12,0" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/><path d="M46,38 q4,-6 8,0" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.85}"/>`;
+  if (variant === 0) return `<path d="M32,54 C38,42 47,42 50,50 C53,42 62,42 68,54 C62,70 50,75 50,75 C50,75 38,70 32,54Z" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/><path d="M24,60 Q34,48 42,60 M58,60 Q66,48 76,60" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  if (variant === 1) return `<path d="M32,60 L56,36 L64,44 L40,68 Z" fill="${c}" opacity="${o}"/><path d="M56,36 L62,28 L72,38 L64,44" fill="${c}" opacity="${o*0.98}"/><path d="M32,73 Q28,76 25,71 M38,66 Q42,69 45,74" fill="none" stroke="${c}" stroke-width="3" opacity="${o*1.05}"/>`;
+  if (variant === 2) return `<rect x="29" y="31" width="42" height="40" rx="4" fill="${c}" opacity="${o}"/><path d="M35,45 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2.8" opacity="0.76"/><path d="M35,55 q6,-6 12,0 t12,0" fill="none" stroke="white" stroke-width="2.8" opacity="0.76"/><path d="M29,39 L71,39" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  return `<path d="M24,58 Q32,42 42,50 Q50,34 58,50 Q68,42 76,58" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/><path d="M30,62 q6,10 12,0 t12,0 t12,0" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><path d="M46,38 q4,-6 8,0" fill="none" stroke="${c}" stroke-width="2.8" opacity="${o}"/>`;
 }
 
 function renderHandwritten_AccentInner(family, variant, c, cx, cy) {
-  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="1.8" fill="${c}" opacity="0.82"/><circle cx="${cx+2}" cy="${cy+3}" r="1.4" fill="${c}" opacity="0.74"/><circle cx="${cx+5}" cy="${cy-2}" r="1.6" fill="${c}" opacity="0.78"/>`;
-  if (variant === 1) return `<path d="M${cx},${cy+5} C${cx-6},${cy} ${cx-3},${cy-6} ${cx},${cy-2} C${cx+3},${cy-6} ${cx+6},${cy} ${cx},${cy+5}Z" fill="${c}" opacity="0.78"/>`;
-  if (variant === 2) return `<path d="M${cx-5},${cy+5} Q${cx},${cy-6} ${cx+5},${cy-2}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.8"/><circle cx="${cx+5}" cy="${cy-2}" r="1.6" fill="${c}" opacity="0.82"/>`;
-  return `<path d="M${cx-4},${cy-4} Q${cx+2},${cy-8} ${cx+4},${cy-2} Q${cx+6},${cy+4} ${cx},${cy+5}" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.78"/>`;
+  if (variant === 0) return `<circle cx="${cx-3}" cy="${cy}" r="2.4" fill="${c}" opacity="0.95"/><circle cx="${cx+2}" cy="${cy+3}" r="2" fill="${c}" opacity="0.90"/><circle cx="${cx+5}" cy="${cy-2}" r="2.2" fill="${c}" opacity="0.92"/>`;
+  if (variant === 1) return `<path d="M${cx},${cy+5} C${cx-6},${cy} ${cx-3},${cy-6} ${cx},${cy-2} C${cx+3},${cy-6} ${cx+6},${cy} ${cx},${cy+5}Z" fill="${c}" opacity="0.92"/>`;
+  if (variant === 2) return `<path d="M${cx-5},${cy+5} Q${cx},${cy-6} ${cx+5},${cy-2}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/><circle cx="${cx+5}" cy="${cy-2}" r="2.2" fill="${c}" opacity="0.95"/>`;
+  return `<path d="M${cx-4},${cy-4} Q${cx+2},${cy-8} ${cx+4},${cy-2} Q${cx+6},${cy+4} ${cx},${cy+5}" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.92"/>`;
 }
 
 // ── Background Zone (full tile, 4-96 inset) ──
