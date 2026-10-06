@@ -425,10 +425,62 @@ function renderCoffee_RingInner(family, variant, c) {
 }
 
 function renderCoffee_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M27,46 H46 V61 Q46,69 37,69 Q27,69 27,61Z M54,46 H73 V61 Q73,69 63,69 Q54,69 54,61Z" fill="${c}" opacity="${o}"/><path d="M46,50 Q55,50 50,58 M73,50 Q82,50 77,58" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o*1.15}"/><path d="M33,46 Q33,33 41,33 Q49,33 49,46 M51,46 Q51,33 59,33 Q67,33 67,46" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.15}"/><path d="M38,76 Q50,84 62,76" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M34,62 H66 L63,72 Q50,77 37,72Z" fill="${c}" opacity="${o}"/><path d="M50,62 C34,48 34,38 43,38 C48,38 50,42 50,42 C50,42 52,38 57,38 C66,38 66,48 50,62Z" fill="white" opacity="0.68"/><path d="M43,39 C39,30 45,25 50,29 C55,25 61,30 57,39 M50,35 C45,27 48,20 52,17" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o*0.95}"/>`;
-  if (variant === 2) return `<path d="M34,38 C30,29 36,25 42,29 C48,23 55,27 57,36 C63,34 68,39 66,47 C63,58 55,62 50,70 C45,62 37,58 34,49 C31,43 32,40 34,38Z" fill="${c}" opacity="${o}"/><ellipse cx="42" cy="41" rx="6.5" ry="3.2" fill="white" opacity="0.62" transform="rotate(-24 42 41)"/><ellipse cx="57" cy="44" rx="6.5" ry="3.2" fill="white" opacity="0.62" transform="rotate(24 57 44)"/><ellipse cx="50" cy="54" rx="6.8" ry="3.5" fill="white" opacity="0.58"/>`;
-  return `<path d="M22,58 H78 M30,58 V73 M70,58 V73" fill="none" stroke="${c}" stroke-width="5.8" stroke-linecap="round" opacity="${o*1.1}"/><path d="M28,45 H72 V58 H28Z" fill="${c}" opacity="${o}"/><path d="M34,45 Q34,30 44,30 Q50,30 50,45 M50,45 Q50,30 56,30 Q66,30 66,45" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.1}"/><path d="M37,36 C41,30 48,31 50,37 C52,31 59,30 63,36" fill="none" stroke="white" stroke-width="2.4" opacity="0.68"/>`;
+  // ☕ Coffee & Our Mornings: Two mugs with steam hearts, paired drinking moment
+  if (variant === 0) {
+    // Two mugs clinking together (cheers!)
+    return `
+      <!-- Left mug -->
+      <path d="M24,35 H42 V68 Q42,73 33,73 Q24,73 24,68Z" fill="${c}" opacity="${o}"/>
+      <path d="M24,42 H42" stroke="white" stroke-width="2.5" opacity="0.6"/>
+      <path d="M44,40 Q48,38 50,43 Q48,48 44,46" fill="none" stroke="${c}" stroke-width="4.5" opacity="${o}"/>
+      <!-- Right mug (slightly smaller, tilted) -->
+      <path d="M58,38 H74 V69 Q74,74 66,74 Q58,74 58,69Z" fill="${c}" opacity="${o}" transform="rotate(8 66 56)"/>
+      <path d="M58,46 H74" stroke="white" stroke-width="2.5" opacity="0.6"/>
+      <path d="M52,40 Q56,38 58,43 Q56,48 52,46" fill="none" stroke="${c}" stroke-width="4.5" opacity="${o}"/>
+      <!-- Steam hearts (romantic!) -->
+      <path d="M35,28 C34,24 38,22 40,26 C42,22 46,24 45,28 C45,30 40,32 40,32 C40,32 35,30 35,28Z" fill="${c}" opacity="${o*0.95}"/>
+      <path d="M65,26 C64,22 68,20 70,24 C72,20 76,22 75,26 C75,28 70,30 70,30 C70,30 65,28 65,26Z" fill="${c}" opacity="${o*0.95}"/>
+      <!-- Connection: hands or table between mugs -->
+      <path d="M45,72 Q50,75 55,72" stroke="white" stroke-width="2" opacity="0.45"/>
+    `;
+  }
+  if (variant === 1) {
+    // Coffee bean heart shape
+    return `
+      <path d="M50,28 C62,30 70,40 68,50 C66,65 50,76 36,65 C24,56 28,40 40,36 C45,34 48,35 50,38 C52,35 55,34 60,36 C68,40 72,50 70,60" fill="${c}" opacity="${o}"/>
+      <path d="M50,70 C30,55 28,40 40,34 C55,27 68,40 68,55 C68,68 58,78 45,78 C35,78 28,70 28,60" fill="none" stroke="white" stroke-width="3" opacity="0.52"/>
+      <!-- Shine spots (coffee shine) -->
+      <ellipse cx="42" cy="45" rx="5" ry="7" fill="white" opacity="0.48"/>
+      <ellipse cx="58" cy="52" rx="4" ry="6" fill="white" opacity="0.38"/>
+    `;
+  }
+  if (variant === 2) {
+    // Coffee brewing in pour-over (intimate view)
+    return `
+      <path d="M30,25 L38,32 L40,65 Q40,72 33,72 Q26,72 26,65Z" fill="${c}" opacity="${o}"/>
+      <path d="M60,25 L68,32 L66,65 Q66,72 59,72 Q52,72 52,65Z" fill="${c}" opacity="${o}"/>
+      <path d="M38,32 L52,25 M38,32 L62,32" fill="none" stroke="white" stroke-width="2" opacity="0.55"/>
+      <!-- Pouring water/steam flowing down -->
+      <path d="M44,28 Q42,40 40,58" fill="none" stroke="white" stroke-width="3" opacity="0.65" stroke-linecap="round"/>
+      <path d="M56,28 Q58,40 66,58" fill="none" stroke="white" stroke-width="3" opacity="0.65" stroke-linecap="round"/>
+      <!-- Heart forming in steam -->
+      <path d="M48,35 C47,31 50,29 52,33 C54,29 57,31 56,35 C56,37 52,39 52,39 C52,39 48,37 48,35Z" fill="${c}" opacity="${o*0.9}"/>
+    `;
+  }
+  // Variant 3: Coffee date moment - two cups with hearts rising
+  return `
+    <!-- Left cup -->
+    <circle cx="35" cy="60" r="14" fill="none" stroke="${c}" stroke-width="4.5" opacity="${o}"/>
+    <path d="M35,46 V60 M23,60 H47" stroke="${c}" stroke-width="3.5" opacity="${o*0.7}"/>
+    <!-- Right cup -->
+    <circle cx="65" cy="60" r="14" fill="none" stroke="${c}" stroke-width="4.5" opacity="${o}"/>
+    <path d="M65,46 V60 M53,60 H77" stroke="${c}" stroke-width="3.5" opacity="${o*0.7}"/>
+    <!-- Hearts rising from cups -->
+    <path d="M33,40 C32,34 36,31 38,36 C40,31 44,34 43,40 C43,43 38,45 38,45 C38,45 33,43 33,40Z" fill="${c}" opacity="${o*0.95}"/>
+    <path d="M63,35 C62,27 67,23 70,30 C72,23 77,27 76,35 C76,39 70,42 70,42 C70,42 63,39 63,35Z" fill="${c}" opacity="${o*0.95}"/>
+    <!-- Connecting line/spark -->
+    <path d="M48,50 L52,50" stroke="white" stroke-width="2.5" opacity="0.52"/>
+  `;
 }
 
 function renderCoffee_AccentInner(family, variant, c, cx, cy) {
@@ -461,10 +513,79 @@ function renderMoonlit_RingInner(family, variant, c) {
 }
 
 function renderMoonlit_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M57,29 A20,20 0 1,0 63,65 A16,16 0 1,1 57,29Z" fill="${c}" opacity="${o}"/><path d="M28,70 Q50,48 72,70" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.12}"/><circle cx="50" cy="58" r="4.2" fill="${c}" opacity="${o*1.1}"/>`;
-  if (variant === 1) return `<path d="M28,71 V42 Q38,24 50,24 Q62,24 72,42 V71" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.12}"/><path d="M41,43 L50,56 L59,43 V34 H41Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="57" r="4" fill="white" opacity="0.72"/>`;
-  if (variant === 2) return `<path d="M50,72 V40" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,31 34,35 36,44 C38,52 46,53 50,46 C54,53 62,52 64,44 C66,35 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,56 C43,49 34,52 36,61 C38,68 45,69 50,63 C55,69 62,68 64,61 C66,52 57,49 50,56Z" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o}"/>`;
-  return `<path d="M31,63 C36,42 47,31 50,31 C53,31 64,42 69,63" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M33,60 C42,52 48,52 50,58 C52,52 58,52 67,60" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><path d="M50,68 C37,56 37,45 45,45 C49,45 50,49 50,49 C50,49 51,45 55,45 C63,45 63,56 50,68Z" fill="white" opacity="0.70"/>`;
+  // 🌙 Moonlit Walks Together: Couple silhouettes, moon, connected path
+  if (variant === 0) {
+    // Crescent moon with walking couple silhouette
+    return `
+      <!-- Crescent moon -->
+      <path d="M60,20 A18,18 0 1,1 65,55 A14,14 0 1,0 60,20Z" fill="${c}" opacity="${o}"/>
+      <!-- Walking couple silhouettes under moon -->
+      <ellipse cx="25" cy="72" rx="8" ry="12" fill="white" opacity="0.65"/>
+      <circle cx="20" cy="58" r="4.5" fill="white" opacity="0.68"/>
+      <path d="M17,63 L16,72 M23,63 L25,73" stroke="white" stroke-width="2.5" opacity="0.65"/>
+      <ellipse cx="45" cy="72" rx="8" ry="12" fill="white" opacity="0.65"/>
+      <circle cx="50" cy="58" r="4.5" fill="white" opacity="0.68"/>
+      <path d="M47,63 L48,73 M53,63 L55,72" stroke="white" stroke-width="2.5" opacity="0.65"/>
+      <!-- Connected hands -->
+      <path d="M28,71 L42,71" stroke="white" stroke-width="3" opacity="0.72"/>
+      <!-- Path they walk on -->
+      <path d="M18,75 Q50,80 65,75" fill="none" stroke="white" stroke-width="2" opacity="0.48"/>
+    `;
+  }
+  if (variant === 1) {
+    // Lantern with warm glow, couple silhouette inside light
+    return `
+      <!-- Lantern structure -->
+      <path d="M30,35 H70 L68,65 Q50,72 32,65 Z" fill="none" stroke="${c}" stroke-width="4.5" opacity="${o}"/>
+      <path d="M38,35 V60 M62,35 V60" stroke="${c}" stroke-width="2.5" opacity="${o*0.7}"/>
+      <!-- Warm glow (interior light) -->
+      <ellipse cx="50" cy="52" rx="15" ry="18" fill="${c}" opacity="${o*0.4}"/>
+      <!-- Couple silhouettes in lantern light -->
+      <circle cx="42" cy="50" r="4" fill="white" opacity="0.72"/>
+      <circle cx="58" cy="50" r="4" fill="white" opacity="0.72"/>
+      <!-- Connection/arm reaching across -->
+      <path d="M45,51 L55,51" stroke="white" stroke-width="2.2" opacity="0.68"/>
+      <!-- Lantern handle -->
+      <path d="M35,32 Q50,18 65,32" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o}"/>
+    `;
+  }
+  if (variant === 2) {
+    // Star constellation forming heart shape with couple beneath
+    return `
+      <!-- Star points forming constellation -->
+      <circle cx="35" cy="32" r="3.5" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="65" cy="32" r="3.5" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="50" cy="20" r="4" fill="${c}" opacity="${o}"/>
+      <circle cx="42" cy="46" r="3.5" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="58" cy="46" r="3.5" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="50" cy="58" r="4" fill="${c}" opacity="${o}"/>
+      <!-- Constellation lines forming heart -->
+      <path d="M35,32 L50,20 L65,32 M35,32 L42,46 L50,58 M65,32 L58,46 L50,58" stroke="${c}" stroke-width="2.2" opacity="${o*0.6}"/>
+      <!-- Couple silhouettes -->
+      <ellipse cx="38" cy="68" rx="6" ry="10" fill="white" opacity="0.64"/>
+      <ellipse cx="62" cy="68" rx="6" ry="10" fill="white" opacity="0.64"/>
+      <!-- Connected hands reaching up to stars -->
+      <path d="M43,62 L42,46 M57,62 L58,46" stroke="white" stroke-width="2" opacity="0.55"/>
+    `;
+  }
+  // Variant 3: Shooting star with romantic trail, couple wishing together
+  return `
+    <!-- Crescent moon accent -->
+    <path d="M25,28 A12,12 0 1,1 28,48 A10,10 0 1,0 25,28Z" fill="${c}" opacity="${o*0.8}"/>
+    <!-- Shooting star with trail -->
+    <path d="M72,25 L45,50 L40,55" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o}" stroke-linecap="round"/>
+    <circle cx="72" cy="25" r="4.5" fill="${c}" opacity="${o*0.95}"/>
+    <!-- Star points along trail -->
+    <circle cx="62" cy="33" r="2" fill="${c}" opacity="${o*0.85}"/>
+    <circle cx="52" cy="42" r="2" fill="${c}" opacity="${o*0.85}"/>
+    <!-- Couple silhouettes looking up at stars -->
+    <ellipse cx="32" cy="70" rx="7" ry="11" fill="white" opacity="0.64"/>
+    <circle cx="28" cy="56" r="4" fill="white" opacity="0.66"/>
+    <ellipse cx="68" cy="70" rx="7" ry="11" fill="white" opacity="0.64"/>
+    <circle cx="72" cy="56" r="4" fill="white" opacity="0.66"/>
+    <!-- Hands/hearts reaching toward stars -->
+    <path d="M30,60 L35,42 M70,60 L65,42" stroke="white" stroke-width="2.3" opacity="0.60"/>
+  `;
 }
 
 function renderMoonlit_AccentInner(family, variant, c, cx, cy) {
@@ -498,10 +619,79 @@ function renderFlowers_RingInner(family, variant, c) {
 }
 
 function renderFlowers_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<rect x="30" y="32" width="40" height="36" rx="4" fill="${c}" opacity="${o}"/><path d="M30,40 L50,54 L70,40 M34,58 H62" fill="none" stroke="white" stroke-width="3" opacity="0.72"/><rect x="36" y="24" width="28" height="14" rx="3" fill="${c}" opacity="${o}"/>`;
-  if (variant === 1) return `<path d="M50,72 V40" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,29 34,34 36,44 C38,53 46,54 50,46 C54,54 62,53 64,44 C66,34 58,29 50,40Z" fill="${c}" opacity="${o}"/><path d="M42,56 C35,50 28,53 30,61 C32,67 39,68 44,63 M58,56 C65,50 72,53 70,61 C68,67 61,68 56,63" fill="none" stroke="${c}" stroke-width="3.4" opacity="${o}"/>`;
-  if (variant === 2) return `<circle cx="50" cy="50" r="19" fill="${c}" opacity="${o}"/><circle cx="50" cy="50" r="10" fill="white" opacity="0.62"/><path d="M50,69 C32,55 36,38 45,41 C49,42 50,46 50,46 C50,46 51,42 55,41 C64,38 68,55 50,69Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
-  return `<path d="M38,24 H62 L68,36 H32Z" fill="${c}" opacity="${o}"/><path d="M40,36 C34,30 28,34 30,42 C32,48 38,49 42,44 C46,49 52,48 54,42 C56,34 50,30 44,36" fill="${c}" opacity="${o}"/><path d="M58,36 C52,30 46,34 48,42 C50,48 56,49 60,44 C64,49 70,48 72,42 C74,34 68,30 62,36" fill="${c}" opacity="${o}"/><path d="M34,55 Q50,68 66,55" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/>`;
+  // 💌 Love Letters & Envelope: Open envelope, sealed letter, wax hearts, ribbons
+  if (variant === 0) {
+    // Open envelope with letter peeking out, handwritten words visible
+    return `
+      <!-- Envelope back -->
+      <path d="M22,38 H78 V68 Q78,74 50,74 Q22,74 22,68Z" fill="${c}" opacity="${o}"/>
+      <!-- Envelope flap -->
+      <path d="M22,38 L50,52 L78,38" fill="none" stroke="${c}" stroke-width="3.8" opacity="${o*0.85}"/>
+      <!-- Letter peeking out -->
+      <rect x="28" y="44" width="44" height="26" fill="white" opacity="0.72"/>
+      <!-- Handwritten "I love you" text impression -->
+      <path d="M32,48 Q42,50 52,48 Q60,50 68,48" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.68"/>
+      <path d="M32,56 Q45,58 58,56 Q65,57 68,55" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.68"/>
+      <path d="M32,64 Q40,65 50,63 Q62,65 68,63" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.68"/>
+      <!-- Red wax seal with heart -->
+      <circle cx="32" cy="52" r="6" fill="#E85A5A" opacity="0.88"/>
+      <path d="M30,50 C29,47 31,45 32,48 C33,45 35,47 34,50 C34,51 32,52 32,52 C32,52 30,51 30,50Z" fill="${c}" opacity="0.95"/>
+      <!-- Ribbon bow -->
+      <path d="M50,30 L45,36 L50,34 L55,36 L50,30" fill="${c}" opacity="${o*0.9}"/>
+    `;
+  }
+  if (variant === 1) {
+    // Wax seal with heart imprint (close-up), letter lines
+    return `
+      <!-- Decorative wax seal circle -->
+      <circle cx="50" cy="50" r="18" fill="${c}" opacity="${o}"/>
+      <!-- Heart imprint in seal -->
+      <path d="M48,42 C47,38 50,36 52,40 C54,36 57,38 56,42 C56,45 52,48 52,48 C52,48 48,45 48,42Z" fill="white" opacity="0.75"/>
+      <!-- Seal drip -->
+      <path d="M46,68 L43,72 M54,68 L57,72" stroke="${c}" stroke-width="3" opacity="${o*0.8}"/>
+      <!-- Letter folds/lines around seal -->
+      <path d="M28,30 H72 M28,38 H72 M28,60 H72 M28,68 H72" stroke="white" stroke-width="2" opacity="0.55"/>
+      <!-- Text impressions -->
+      <path d="M32,34 L68,34 M32,42 L65,42 M32,52 L68,52 M32,64 L60,64" stroke="white" stroke-width="1.5" opacity="0.48"/>
+    `;
+  }
+  if (variant === 2) {
+    // Pressed flowers with ribbon bow, letter beneath
+    return `
+      <!-- Ribbon bow at top -->
+      <path d="M40,20 Q42,26 50,24 Q58,26 60,20 M50,24 V35" fill="none" stroke="${c}" stroke-width="3.2" opacity="${o*0.95}"/>
+      <path d="M38,26 Q40,30 45,28 Q50,32 52,26" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.8}"/>
+      <path d="M48,26 Q50,30 55,28 Q60,32 62,26" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.8}"/>
+      <!-- Pressed flower 1 (left) -->
+      <path d="M35,45 C32,40 36,35 40,36 C42,35 45,38 43,42 C41,45 39,48 35,45Z" fill="${c}" opacity="${o*0.8}"/>
+      <circle cx="38" cy="42" r="2.5" fill="white" opacity="0.62"/>
+      <!-- Pressed flower 2 (center) -->
+      <path d="M50,40 C48,34 52,30 56,31 C58,30 60,33 59,37 C57,42 54,46 50,40Z" fill="${c}" opacity="${o*0.8}"/>
+      <circle cx="53" cy="37" r="2.5" fill="white" opacity="0.62"/>
+      <!-- Pressed flower 3 (right) -->
+      <path d="M65,45 C62,40 66,35 70,36 C72,35 75,38 73,42 C71,45 69,48 65,45Z" fill="${c}" opacity="${o*0.8}"/>
+      <circle cx="68" cy="42" r="2.5" fill="white" opacity="0.62"/>
+      <!-- Letter beneath -->
+      <rect x="28" y="56" width="44" height="18" fill="white" opacity="0.68"/>
+      <path d="M32,60 L68,60 M32,66 L65,66" stroke="${c}" stroke-width="1.2" opacity="0.62"/>
+    `;
+  }
+  // Variant 3: Folded letter with wax seal and ribbon wrap
+  return `
+    <!-- Folded letter (envelope style) -->
+    <rect x="28" y="32" width="44" height="38" rx="3" fill="white" opacity="0.75"/>
+    <path d="M28,32 L50,46 L72,32" fill="${c}" opacity="${o*0.4}"/>
+    <!-- Wax seal (bottom right corner) -->
+    <circle cx="68" cy="64" r="7" fill="#E85A5A" opacity="0.88"/>
+    <path d="M66,61 C65,57 67,55 68,59 C69,55 71,57 70,61 C70,63 68,65 68,65 C68,65 66,63 66,61Z" fill="${c}" opacity="0.95"/>
+    <!-- Ribbon wrap -->
+    <path d="M28,50 L72,50" stroke="${c}" stroke-width="3.5" opacity="${o*0.9}"/>
+    <!-- Ribbon bow knot -->
+    <path d="M48,48 L52,48 M48,52 L52,52 M48,50 H52" fill="${c}" opacity="${o*0.85}"/>
+    <!-- Postage stamp impression -->
+    <rect x="32" y="36" width="12" height="10" fill="none" stroke="${c}" stroke-width="1.8" opacity="0.75" stroke-dasharray="2 2"/>
+    <path d="M36,38 C36,37 37,37 37,38 C37,39 36,39 36,38Z" fill="${c}" opacity="0.70"/>
+  `;
 }
 
 function renderFlowers_AccentInner(family, variant, c, cx, cy) {
@@ -537,10 +727,75 @@ function renderVelvet_RingInner(family, variant, c) {
 }
 
 function renderVelvet_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M50,72 C28,54 31,33 43,38 C49,40 50,46 50,46 C50,46 51,40 57,38 C69,33 72,54 50,72Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="56" r="10.4" fill="none" stroke="white" stroke-width="2.8" opacity="0.62"/><path d="M42,56 H58" stroke="white" stroke-width="2" opacity="0.62"/>`;
-  if (variant === 1) return `<path d="M28,44 Q38,29 48,42 Q50,49 43,59 L34,71 Q30,63 28,56 Q26,50 28,44Z M72,44 Q62,29 52,42 Q50,49 57,59 L66,71 Q70,63 72,56 Q74,50 72,44Z" fill="${c}" opacity="${o}"/><circle cx="50" cy="46" r="6.5" fill="${c}" opacity="${o*1.1}"/>`;
-  if (variant === 2) return `<circle cx="34" cy="36" r="6.5" fill="${c}" opacity="${o}"/><circle cx="46" cy="32" r="6.5" fill="${c}" opacity="${o}"/><circle cx="58" cy="34" r="6.5" fill="${c}" opacity="${o}"/><circle cx="66" cy="44" r="6.5" fill="${c}" opacity="${o}"/><path d="M34,36 C40,52 46,59 50,67 C54,59 60,52 66,44" fill="none" stroke="${c}" stroke-width="5.2" opacity="${o*1.1}"/><path d="M42,53 Q50,45 58,53" fill="none" stroke="white" stroke-width="2.4" opacity="0.65"/>`;
-  return `<path d="M34,61 C36,46 46,43 50,52 C54,43 64,46 66,61 C58,72 42,72 34,61Z" fill="${c}" opacity="${o}"/><path d="M28,46 C36,34 44,36 42,49 M72,46 C64,34 56,36 58,49" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*1.1}"/><path d="M42,49 C47,43 53,43 58,49" fill="none" stroke="white" stroke-width="2.4" opacity="0.65"/>`;
+  // 💜 Velvet Ribbons & Whispered Promises: Ribbons, bows, wrapped gifts, silk texture
+  if (variant === 0) {
+    // Wrapped gift with ribbon bow
+    return `
+      <!-- Gift box -->
+      <rect x="32" y="38" width="36" height="30" rx="2" fill="${c}" opacity="${o}"/>
+      <!-- Ribbon wrapping around -->
+      <path d="M32,53 L68,53" stroke="white" stroke-width="4.5" opacity="0.68"/>
+      <path d="M50,38 V68" stroke="white" stroke-width="4.5" opacity="0.68"/>
+      <!-- Bow on top -->
+      <ellipse cx="42" cy="34" rx="6" ry="8" fill="${c}" opacity="${o*0.95}"/>
+      <ellipse cx="58" cy="34" rx="6" ry="8" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="50" cy="36" r="5" fill="white" opacity="0.62"/>
+      <!-- Ribbon tail flourish -->
+      <path d="M45,42 Q35,50 32,60" fill="none" stroke="white" stroke-width="3" opacity="0.60"/>
+      <path d="M55,42 Q65,50 68,60" fill="none" stroke="white" stroke-width="3" opacity="0.60"/>
+    `;
+  }
+  if (variant === 1) {
+    // Silk ribbon cascade with knot
+    return `
+      <!-- Ribbon flowing down -->
+      <path d="M30,25 Q40,35 45,50 Q48,65 50,75" fill="none" stroke="${c}" stroke-width="6.5" opacity="${o}" stroke-linecap="round"/>
+      <path d="M70,25 Q60,35 55,50 Q52,65 50,75" fill="none" stroke="${c}" stroke-width="6.5" opacity="${o}" stroke-linecap="round"/>
+      <!-- Center knot/bow -->
+      <circle cx="50" cy="50" r="8" fill="${c}" opacity="${o*0.95}"/>
+      <ellipse cx="44" cy="48" rx="4" ry="6" fill="white" opacity="0.65"/>
+      <ellipse cx="56" cy="48" rx="4" ry="6" fill="white" opacity="0.65"/>
+      <!-- Ribbon frill edge detail -->
+      <path d="M32,32 Q38,28 44,32" fill="none" stroke="white" stroke-width="2" opacity="0.55"/>
+      <path d="M68,32 Q62,28 56,32" fill="none" stroke="white" stroke-width="2" opacity="0.55"/>
+    `;
+  }
+  if (variant === 2) {
+    // Heart locket on ribbon chain
+    return `
+      <!-- Chain links -->
+      <circle cx="35" cy="30" r="2.5" fill="white" opacity="0.60"/>
+      <circle cx="45" cy="28" r="2.5" fill="white" opacity="0.60"/>
+      <circle cx="55" cy="28" r="2.5" fill="white" opacity="0.60"/>
+      <circle cx="65" cy="30" r="2.5" fill="white" opacity="0.60"/>
+      <path d="M35,30 L45,28 L55,28 L65,30" stroke="white" stroke-width="1.5" opacity="0.50"/>
+      <!-- Locket case -->
+      <circle cx="50" cy="50" r="14" fill="${c}" opacity="${o}"/>
+      <!-- Heart inside locket -->
+      <path d="M47,46 C46,43 48,41 50,44 C52,41 54,43 53,46 C53,49 50,52 50,52 C50,52 47,49 47,46Z" fill="white" opacity="0.75"/>
+      <!-- Locket shine -->
+      <path d="M40,45 Q45,40 48,46" fill="none" stroke="white" stroke-width="2.2" opacity="0.58"/>
+      <!-- Ribbon hanging down -->
+      <path d="M45,64 Q48,72 50,78 Q52,72 55,64" fill="none" stroke="${c}" stroke-width="4.8" opacity="${o*0.95}"/>
+    `;
+  }
+  // Variant 3: Bow with trailing ribbon loops
+  return `
+    <!-- Left ribbon bow -->
+    <ellipse cx="38" cy="50" rx="8" ry="12" fill="${c}" opacity="${o*0.95}"/>
+    <circle cx="38" cy="50" r="3.5" fill="white" opacity="0.65"/>
+    <!-- Right ribbon bow -->
+    <ellipse cx="62" cy="50" rx="8" ry="12" fill="${c}" opacity="${o*0.95}"/>
+    <circle cx="62" cy="50" r="3.5" fill="white" opacity="0.65"/>
+    <!-- Center knot -->
+    <circle cx="50" cy="50" r="6" fill="white" opacity="0.70"/>
+    <!-- Ribbon tails flowing down -->
+    <path d="M42,58 Q40,68 38,75" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o}" stroke-linecap="round"/>
+    <path d="M58,58 Q60,68 62,75" fill="none" stroke="${c}" stroke-width="4.2" opacity="${o}" stroke-linecap="round"/>
+    <!-- Decorative loop accents -->
+    <path d="M35,55 Q30,62 35,70" fill="none" stroke="white" stroke-width="2.5" opacity="0.56"/>
+    <path d="M65,55 Q70,62 65,70" fill="none" stroke="white" stroke-width="2.5" opacity="0.56"/>
+  `;
 }
 
 function renderVelvet_AccentInner(family, variant, c, cx, cy) {
@@ -582,10 +837,85 @@ function renderConstellation_RingInner(family, variant, c) {
 }
 
 function renderConstellation_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<circle cx="35" cy="42" r="5.6" fill="${c}" opacity="${o}"/><circle cx="50" cy="32" r="5.6" fill="${c}" opacity="${o}"/><circle cx="65" cy="42" r="5.6" fill="${c}" opacity="${o}"/><circle cx="42" cy="56" r="5.6" fill="${c}" opacity="${o}"/><circle cx="58" cy="56" r="5.6" fill="${c}" opacity="${o}"/><path d="M35,42 L50,32 L65,42 L58,56 L42,56 Z" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
-  if (variant === 1) return `<path d="M28,58 L50,34 L58,42 L40,60 Z" fill="${c}" opacity="${o}"/><path d="M50,34 L64,28 L58,42" fill="${c}" opacity="${o*0.98}"/><path d="M38,64 C50,64 62,57 72,44" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M72,44 L67,44 M72,44 L72,49" stroke="${c}" stroke-width="3" opacity="${o*1.1}"/>`;
-  if (variant === 2) return `<circle cx="34" cy="50" r="5.6" fill="${c}" opacity="${o}"/><circle cx="46" cy="38" r="5.6" fill="${c}" opacity="${o}"/><circle cx="58" cy="50" r="5.6" fill="${c}" opacity="${o}"/><circle cx="70" cy="40" r="5.6" fill="${c}" opacity="${o}"/><path d="M34,50 L46,38 L58,50 L70,40" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><path d="M42,62 C46,54 54,54 58,62" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
-  return `<path d="M64,30 A18,18 0 1,0 68,64 A14,14 0 1,1 64,30Z" fill="${c}" opacity="${o}"/><path d="M32,62 L40,48 L48,62 L34,54 H46" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/><circle cx="38" cy="38" r="4.2" fill="${c}" opacity="${o}"/><circle cx="72" cy="38" r="4.2" fill="${c}" opacity="${o}"/>`;
+  // ✨ Written in the Stars: Constellation patterns, shooting stars, cosmic love
+  if (variant === 0) {
+    // Love constellation: stars forming heart shape
+    return `
+      <!-- Upper left stars -->
+      <circle cx="30" cy="35" r="3.5" fill="${c}" opacity="${o}"/>
+      <circle cx="40" cy="28" r="3.8" fill="${c}" opacity="${o}"/>
+      <!-- Upper right stars -->
+      <circle cx="70" cy="35" r="3.5" fill="${c}" opacity="${o}"/>
+      <circle cx="60" cy="28" r="3.8" fill="${c}" opacity="${o}"/>
+      <!-- Center top star (brightest) -->
+      <circle cx="50" cy="20" r="4.2" fill="${c}" opacity="${o*1.05}"/>
+      <!-- Lower stars forming heart point -->
+      <circle cx="42" cy="52" r="3.5" fill="${c}" opacity="${o}"/>
+      <circle cx="58" cy="52" r="3.5" fill="${c}" opacity="${o}"/>
+      <circle cx="50" cy="62" r="4" fill="${c}" opacity="${o}"/>
+      <!-- Constellation lines -->
+      <path d="M30,35 L40,28 L50,20 L60,28 L70,35" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.65}"/>
+      <path d="M40,28 L42,52 M60,28 L58,52" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.65}"/>
+      <path d="M42,52 L50,62 L58,52" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.65}"/>
+    `;
+  }
+  if (variant === 1) {
+    // Big Dipper/Plough constellation
+    return `
+      <!-- Cup of dipper -->
+      <circle cx="30" cy="28" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="40" cy="24" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="48" cy="26" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="42" cy="36" r="3" fill="${c}" opacity="${o}"/>
+      <!-- Handle of dipper -->
+      <circle cx="52" cy="44" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="58" cy="52" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="62" cy="60" r="3.2" fill="${c}" opacity="${o}"/>
+      <!-- Lines connecting stars -->
+      <path d="M30,28 L40,24 L48,26 L42,36 Z" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.68}"/>
+      <path d="M42,36 L52,44 L58,52 L62,60" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.68}"/>
+      <!-- Shooting star trail -->
+      <path d="M65,18 L50,35" fill="none" stroke="white" stroke-width="2.5" opacity="0.65"/>
+      <circle cx="65" cy="18" r="2.5" fill="white" opacity="0.75"/>
+    `;
+  }
+  if (variant === 2) {
+    // Orion constellation
+    return `
+      <!-- Shoulders -->
+      <circle cx="25" cy="32" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="75" cy="32" r="3" fill="${c}" opacity="${o}"/>
+      <!-- Belt (iconic 3-star line) -->
+      <circle cx="38" cy="45" r="3.2" fill="${c}" opacity="${o*1.1}"/>
+      <circle cx="50" cy="45" r="3.2" fill="${c}" opacity="${o*1.1}"/>
+      <circle cx="62" cy="45" r="3.2" fill="${c}" opacity="${o*1.1}"/>
+      <!-- Feet -->
+      <circle cx="30" cy="62" r="3" fill="${c}" opacity="${o}"/>
+      <circle cx="70" cy="62" r="3" fill="${c}" opacity="${o}"/>
+      <!-- Sword hanging from belt -->
+      <circle cx="50" cy="56" r="2.5" fill="${c}" opacity="${o*0.95}"/>
+      <!-- Constellation lines -->
+      <path d="M25,32 L38,45 L30,62 M75,32 L62,45 L70,62" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.60}"/>
+      <path d="M38,45 L50,45 L62,45" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o*0.70}"/>
+    `;
+  }
+  // Variant 3: Scorpio constellation with lover's message
+  return `
+    <!-- Scorpio arc pattern -->
+    <circle cx="32" cy="40" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="44" cy="32" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="56" cy="32" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="68" cy="40" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="70" cy="52" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="65" cy="62" r="3" fill="${c}" opacity="${o}"/>
+    <!-- Tail curl -->
+    <circle cx="58" cy="68" r="3" fill="${c}" opacity="${o}"/>
+    <circle cx="50" cy="70" r="3.2" fill="${c}" opacity="${o}"/>
+    <!-- Constellation lines -->
+    <path d="M32,40 L44,32 L56,32 L68,40 L70,52 L65,62 L58,68 L50,70" fill="none" stroke="${c}" stroke-width="2.2" opacity="${o*0.68}"/>
+    <!-- Lover's heart nearby -->
+    <path d="M28,60 C27,56 29,54 31,57 C33,54 35,56 34,60 C34,62 31,64 31,64 C31,64 28,62 28,60Z" fill="white" opacity="0.68"/>
+  `;
 }
 
 function renderConstellation_AccentInner(family, variant, c, cx, cy) {
@@ -618,10 +948,88 @@ function renderRoses_RingInner(family, variant, c) {
 }
 
 function renderRoses_ShapeInner(family, variant, c, o) {
-  if (variant === 0) return `<path d="M35,52 C29,43 31,33 39,33 C45,33 49,39 47,46 C54,42 61,47 61,55 C61,64 53,68 50,74 C47,68 39,64 35,58 C31,60 25,59 23,53 C21,47 27,41 33,44" fill="${c}" opacity="${o}"/><path d="M65,52 C59,43 61,33 69,33 C75,33 79,39 77,46 C84,42 91,47 91,55" fill="none" stroke="${c}" stroke-width="0" opacity="0"/>`;
-  if (variant === 1) return `<path d="M33,37 C28,31 30,24 36,24 C42,24 46,30 44,36 C49,34 54,37 54,43 C54,50 48,54 45,59 C42,54 36,50 33,45Z" fill="${c}" opacity="${o}"/><path d="M56,44 C51,38 53,31 59,31 C65,31 69,37 67,43 C72,41 77,44 77,50 C77,57 71,61 68,66 C65,61 59,57 56,52Z" fill="${c}" opacity="${o}"/><path d="M42,59 Q50,70 58,78" fill="none" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M58,78 C62,72 69,72 72,78" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
-  if (variant === 2) return `<path d="M50,68 C28,54 31,36 43,39 C49,41 50,47 50,47 C50,47 51,41 57,39 C69,36 72,54 50,68Z" fill="${c}" opacity="${o}"/><path d="M35,60 C41,53 46,54 50,60 C54,54 59,53 65,60" fill="none" stroke="white" stroke-width="2.8" opacity="0.72"/><path d="M50,35 C44,27 49,20 55,24 C61,28 58,36 50,35Z" fill="${c}" opacity="${o*0.95}"/>`;
-  return `<path d="M50,28 V68" stroke="${c}" stroke-width="5.2" stroke-linecap="round" opacity="${o*1.1}"/><path d="M50,40 C42,31 34,36 36,46 C38,53 46,55 50,47 C54,55 62,53 64,46 C66,36 58,31 50,40Z" fill="${c}" opacity="${o}"/><path d="M50,54 C58,45 66,50 64,60 C62,67 54,69 50,61 C46,69 38,67 36,60 C34,50 42,45 50,54Z" fill="${c}" opacity="${o}"/><path d="M42,73 Q50,66 58,73" fill="none" stroke="${c}" stroke-width="4" opacity="${o*1.1}"/>`;
+  // 🌹 Roses in Full Bloom: Rose petals, romantic stems, intertwined couples
+  if (variant === 0) {
+    // Single full rose bloom
+    return `
+      <!-- Outer petals -->
+      <circle cx="42" cy="35" r="5" fill="${c}" opacity="${o*0.80}"/>
+      <circle cx="58" cy="35" r="5" fill="${c}" opacity="${o*0.80}"/>
+      <circle cx="38" cy="48" r="5.2" fill="${c}" opacity="${o*0.80}"/>
+      <circle cx="62" cy="48" r="5.2" fill="${c}" opacity="${o*0.80}"/>
+      <circle cx="50" cy="28" r="5.2" fill="${c}" opacity="${o*0.85}"/>
+      <!-- Middle petals -->
+      <circle cx="45" cy="42" r="5.5" fill="${c}" opacity="${o*0.90}"/>
+      <circle cx="55" cy="42" r="5.5" fill="${c}" opacity="${o*0.90}"/>
+      <!-- Center petals (brightest) -->
+      <circle cx="50" cy="40" r="6" fill="${c}" opacity="${o}"/>
+      <circle cx="48" cy="48" r="4" fill="white" opacity="0.62"/>
+      <!-- Stem -->
+      <path d="M50,56 Q48,68 45,78" fill="none" stroke="white" stroke-width="3.2" opacity="0.62"/>
+      <!-- Leaves -->
+      <path d="M48,65 Q42,66 41,72" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>
+      <path d="M50,70 Q56,71 57,76" fill="none" stroke="white" stroke-width="2.5" opacity="0.58"/>
+    `;
+  }
+  if (variant === 1) {
+    // Two roses intertwined (couple roses)
+    return `
+      <!-- Left rose bloom -->
+      <circle cx="32" cy="30" r="4.5" fill="${c}" opacity="${o*0.85}"/>
+      <circle cx="40" cy="32" r="4.8" fill="${c}" opacity="${o*0.85}"/>
+      <circle cx="36" cy="42" r="5" fill="${c}" opacity="${o}"/>
+      <!-- Right rose bloom -->
+      <circle cx="68" cy="30" r="4.5" fill="${c}" opacity="${o*0.85}"/>
+      <circle cx="60" cy="32" r="4.8" fill="${c}" opacity="${o*0.85}"/>
+      <circle cx="64" cy="42" r="5" fill="${c}" opacity="${o}"/>
+      <!-- Center connecting rose -->
+      <circle cx="50" cy="38" r="6" fill="${c}" opacity="${o*0.95}"/>
+      <circle cx="50" cy="42" r="3.5" fill="white" opacity="0.65"/>
+      <!-- Intertwined stems -->
+      <path d="M36,48 Q40,58 42,70" fill="none" stroke="white" stroke-width="3" opacity="0.60"/>
+      <path d="M64,48 Q60,58 58,70" fill="none" stroke="white" stroke-width="3" opacity="0.60"/>
+      <!-- Connection point -->
+      <path d="M42,70 L58,70" fill="none" stroke="white" stroke-width="2.5" opacity="0.55"/>
+    `;
+  }
+  if (variant === 2) {
+    // Rose garden - multiple small blooms with green leaves
+    return `
+      <!-- Left rose -->
+      <circle cx="30" cy="35" r="4.2" fill="${c}" opacity="${o*0.90}"/>
+      <circle cx="33" cy="28" r="4" fill="${c}" opacity="${o*0.85}"/>
+      <!-- Center rose (largest) -->
+      <circle cx="50" cy="28" r="5" fill="${c}" opacity="${o}"/>
+      <circle cx="48" cy="35" r="5.2" fill="${c}" opacity="${o*0.90}"/>
+      <circle cx="52" cy="35" r="5.2" fill="${c}" opacity="${o*0.90}"/>
+      <circle cx="50" cy="42" r="4" fill="white" opacity="0.65"/>
+      <!-- Right rose -->
+      <circle cx="67" cy="35" r="4.2" fill="${c}" opacity="${o*0.90}"/>
+      <circle cx="70" cy="28" r="4" fill="${c}" opacity="${o*0.85}"/>
+      <!-- Stems and leaves -->
+      <path d="M30,42 L28,55 M50,48 L50,68 M70,42 L72,55" stroke="white" stroke-width="2.8" opacity="0.58"/>
+      <!-- Leaf accents -->
+      <path d="M32,52 Q28,54 27,58" fill="none" stroke="white" stroke-width="2" opacity="0.52"/>
+      <path d="M48,58 L45,65 M52,58 L55,65" fill="none" stroke="white" stroke-width="2" opacity="0.52"/>
+    `;
+  }
+  // Variant 3: Rose with thorns and ribbon (classic romantic gift)
+  return `
+    <!-- Rose bloom (full) -->
+    <circle cx="50" cy="28" r="5.5" fill="${c}" opacity="${o}"/>
+    <circle cx="45" cy="35" r="5" fill="${c}" opacity="${o*0.92}"/>
+    <circle cx="55" cy="35" r="5" fill="${c}" opacity="${o*0.92}"/>
+    <circle cx="50" cy="40" r="4" fill="white" opacity="0.68"/>
+    <!-- Stem with thorns -->
+    <path d="M50,48 L50,72" stroke="white" stroke-width="3.5" opacity="0.62"/>
+    <!-- Thorns -->
+    <path d="M48,54 L45,55 M52,60 L55,61 M48,68 L45,69" stroke="white" stroke-width="2" opacity="0.52"/>
+    <!-- Ribbon wrap around stem -->
+    <path d="M48,55 Q46,60 48,65" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.85}"/>
+    <path d="M52,55 Q54,60 52,65" fill="none" stroke="${c}" stroke-width="4" opacity="${o*0.85}"/>
+    <!-- Ribbon bow -->
+    <path d="M48,72 L50,75 L52,72" fill="${c}" opacity="${o*0.90}"/>
+  `;
 }
 
 function renderRoses_AccentInner(family, variant, c, cx, cy) {
