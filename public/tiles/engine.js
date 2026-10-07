@@ -124,7 +124,7 @@ const THEMES = [
     name: 'Italian Dolce Vita', emoji: '🍝',
     style: 'cute-light',
     palette: {
-      bg:     ['#8A3A2A', '#FFF5E0', '#1A5A1A'],
+      bg:     ['#8A3A2A', '#FFE8B0', '#1A5A1A'],
       ring:   ['#2A1010', '#0A4A0A', '#FF5A0A', '#CC9800'],
       shape:  ['#FF2A00', '#2ABA00', '#FFDC00'],
       accent: ['#FF6A2A', '#6ADA2A', '#FFED50'],
@@ -140,7 +140,7 @@ const THEMES = [
     name: 'Indian Masala Magic', emoji: '🌶️',
     style: 'cute-light',
     palette: {
-      bg:     ['#AA4A2A', '#FFF8E8', '#1A6A1A'],
+      bg:     ['#AA4A2A', '#FFF0C0', '#1A6A1A'],
       ring:   ['#3A0A00', '#0A5A0A', '#FFB000', '#FF0A00'],
       shape:  ['#FF2A00', '#4ADA00', '#FFD000'],
       accent: ['#FF7A2A', '#6AEA2A', '#FFEC40'],
@@ -156,7 +156,7 @@ const THEMES = [
     name: 'Mediterranean Grace', emoji: '🫒',
     style: 'cute-light',
     palette: {
-      bg:     ['#0A4A8A', '#FFF5E8', '#1A7A1A'],
+      bg:     ['#0A4A8A', '#E0F0FF', '#1A7A1A'],
       ring:   ['#1A1010', '#0A5A0A', '#FFC000', '#003A8A'],
       shape:  ['#0AAAAA', '#FFDC00', '#3ADA3A'],
       accent: ['#2AAAAA', '#FFED50', '#5AEA5A'],
@@ -172,7 +172,7 @@ const THEMES = [
     name: 'Mexican Fiesta', emoji: '🌮',
     style: 'cute-light',
     palette: {
-      bg:     ['#8A2A1A', '#FFF5E8', '#1A6A1A'],
+      bg:     ['#8A2A1A', '#FFE8D0', '#1A6A1A'],
       ring:   ['#2A0A0A', '#0A5A0A', '#FFC000', '#FF0000'],
       shape:  ['#FF2A00', '#2ADA00', '#FFDC00'],
       accent: ['#FF6A1A', '#6AEA2A', '#FFED50'],
