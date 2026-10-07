@@ -3286,6 +3286,153 @@ function renderBg(attr) {
       return s;
     }
 
+    // ── Italian Dolce Vita ──
+    case 'italian-grape-vine':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:6}, (_,i) => 
+               `<path d="M${8+i*15},8 Q${15+i*15},35 ${12+i*15},65 Q${10+i*15},85 ${8+i*15},92" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.5}"/>` +
+               `<circle cx="${15+i*15}" cy="${20+i*5}" r="3" fill="${c}" opacity="${o}"/>`
+             ).join('');
+    case 'italian-pasta-frame':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             `<path d="M12,40 H88 M12,60 H88" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.45}"/>` +
+             Array.from({length:4}, (_,i) => 
+               `<circle cx="${20+i*20}" cy="40" r="2.5" fill="${c}" opacity="${o}"/>` +
+               `<circle cx="${20+i*20}" cy="60" r="2.5" fill="${c}" opacity="${o}"/>`
+             ).join('');
+    case 'italian-tomato-vine':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:5}, (_,i) => 
+               `<path d="M${15+i*16},10 L${18+i*16},50 L${12+i*16},85" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.4}"/>` +
+               `<circle cx="${18+i*16}" cy="${30+i*3}" r="4" fill="${c}" opacity="${o*0.7}"/>`
+             ).join('');
+    case 'italian-oil-drip':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             Array.from({length:8}, (_,i) => 
+               `<path d="M${10+i*11},8 L${14+i*11},70 Q${12+i*11},80 ${10+i*11},92" fill="none" stroke="${c}" stroke-width="2.5" opacity="${o*0.5}"/>`
+             ).join('');
+    case 'italian-basil-scatter':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:12}, (_,i) => 
+               `<ellipse cx="${8+Math.random()*84}" cy="${8+Math.random()*84}" rx="3" ry="5" transform="rotate(${i*15} ${12+Math.random()*76} ${12+Math.random()*76})" fill="${c}" opacity="${o*0.5}"/>`
+             ).join('');
+
+    // ── Indian Masala Magic ──
+    case 'indian-chai-steam':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:5}, (_,i) =>
+               `<path d="M${15+i*15},85 Q${12+i*15},65 ${15+i*15},40 Q${18+i*15},20 ${15+i*15},8" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.4}"/>`
+             ).join('');
+    case 'indian-spice-dust':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:30}, (_,i) =>
+               `<circle cx="${8+Math.random()*84}" cy="${8+Math.random()*84}" r="${1+Math.random()*1.5}" fill="${c}" opacity="${o*0.6}"/>`
+             ).join('');
+    case 'indian-mandala-circles':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             `<circle cx="50" cy="50" r="35" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.4}"/>` +
+             `<circle cx="50" cy="50" r="25" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.3}"/>` +
+             `<circle cx="50" cy="50" r="15" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.35}"/>`;
+    case 'indian-naan-texture':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:4}, (_,i) =>
+               `<path d="M8,${16+i*20} Q30,${14+i*20} 50,${16+i*20} Q70,${14+i*20} 92,${16+i*20}" fill="none" stroke="${c}" stroke-width="1.8" opacity="${o*0.45}"/>`
+             ).join('');
+    case 'indian-saffron-strands':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:8}, (_,i) =>
+               `<path d="M${12+i*10},4 L${14+i*10},96" fill="none" stroke="${c}" stroke-width="1.8" opacity="${o*0.5}"/>`
+             ).join('');
+
+    // ── Mediterranean Grace ──
+    case 'med-olive-oil-pour':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.2}"/>` +
+             Array.from({length:6}, (_,i) =>
+               `<path d="M${15+i*13},8 Q${20+i*13},45 ${12+i*13},92" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.45}"/>`
+             ).join('');
+    case 'med-lemon-grove':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:8}, (_,i) =>
+               `<circle cx="${12+i*11}" cy="${15+Math.sin(i)*8}" r="3" fill="${c}" opacity="${o}"/>` +
+               `<circle cx="${12+i*11}" cy="${70+Math.sin(i+2)*8}" r="2.5" fill="${c}" opacity="${o*0.7}"/>`
+             ).join('');
+    case 'med-sea-waves':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:5}, (_,i) =>
+               `<path d="M4,${18+i*14} Q25,${16+i*14} 50,${18+i*14} Q75,${20+i*14} 96,${18+i*14}" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.45}"/>`
+             ).join('');
+    case 'med-feta-crumble':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:18}, (_,i) =>
+               `<rect x="${8+Math.random()*84}" y="${8+Math.random()*84}" width="${3+Math.random()*3}" height="${2+Math.random()*2}" fill="${c}" opacity="${o*0.6}"/>`
+             ).join('');
+    case 'med-branch-scatter':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:6}, (_,i) =>
+               `<path d="M${10+i*14},15 L${12+i*14},75 M${8+i*14},35 L${16+i*14},45 M${6+i*14},60 L${18+i*14},65" fill="none" stroke="${c}" stroke-width="1.2" opacity="${o*0.5}"/>`
+             ).join('');
+
+    // ── Mexican Fiesta ──
+    case 'mexican-chili-scatter':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:10}, (_,i) =>
+               `<path d="M${12+i*8},12 L${14+i*8},40 L${10+i*8},50" fill="${c}" opacity="${o*0.7}"/>`
+             ).join('');
+    case 'mexican-lime-burst':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             `<circle cx="50" cy="50" r="28" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.45}"/>` +
+             Array.from({length:12}, (_,i) =>
+               `<line x1="50" y1="50" x2="${50+Math.cos((i/12)*Math.PI*2)*28}" y2="${50+Math.sin((i/12)*Math.PI*2)*28}" stroke="${c}" stroke-width="1" opacity="${o*0.4}"/>`
+             ).join('');
+    case 'mexican-cilantro-weave':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:5}, (_,i) =>
+               `<path d="M8,${16+i*16} Q30,${12+i*16} 50,${16+i*16} Q70,${20+i*16} 92,${16+i*16}" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.45}"/>`
+             ).join('');
+    case 'mexican-avocado-halves':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>` +
+             Array.from({length:6}, (_,i) =>
+               `<ellipse cx="${16+i*14}" cy="${20+i*2}" rx="6" ry="8" fill="${c}" opacity="${o*0.6}"/>` +
+               `<circle cx="${16+i*14}" cy="${20+i*2}" r="2.5" fill="${c}" opacity="${o}"/>`
+             ).join('');
+    case 'mexican-folk-zigzag':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:4}, (_,i) =>
+               `<path d="M4,${18+i*19} L20,${24+i*19} L36,${18+i*19} L52,${24+i*19} L68,${18+i*19} L84,${24+i*19} L96,${18+i*19}" fill="none" stroke="${c}" stroke-width="2" opacity="${o*0.45}"/>`
+             ).join('');
+
+    // ── Middle Eastern Spice Route ──
+    case 'me-pomegranate-scatter':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:12}, (_,i) =>
+               `<circle cx="${12+Math.random()*76}" cy="${12+Math.random()*76}" r="${2+Math.random()*1.5}" fill="${c}" opacity="${o*0.7}"/>`
+             ).join('');
+    case 'me-pistachio-pair':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.24}"/>` +
+             Array.from({length:8}, (_,i) =>
+               `<ellipse cx="${14+i*11}" cy="25" rx="2.5" ry="4" fill="${c}" opacity="${o*0.6}"/>` +
+               `<ellipse cx="${16+i*11}" cy="25" rx="2.5" ry="4" fill="${c}" opacity="${o*0.6}"/>` +
+               `<ellipse cx="${14+i*11}" cy="70" rx="2.5" ry="4" fill="${c}" opacity="${o*0.6}"/>` +
+               `<ellipse cx="${16+i*11}" cy="70" rx="2.5" ry="4" fill="${c}" opacity="${o*0.6}"/>`
+             ).join('');
+    case 'me-zaatar-dust':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:25}, (_,i) =>
+               `<circle cx="${8+Math.random()*84}" cy="${8+Math.random()*84}" r="${0.8+Math.random()*1}" fill="${c}" opacity="${o*0.65}"/>`
+             ).join('');
+    case 'me-date-palm':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+             Array.from({length:5}, (_,i) =>
+               `<path d="M${18+i*15},85 L${20+i*15},40 L${16+i*15},50" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.5}"/>`
+             ).join('');
+    case 'me-arabic-pattern':
+      return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.22}"/>` +
+             Array.from({length:6}, (_,i) =>
+               `<circle cx="${14+i*13}" cy="25" r="2" fill="${c}" opacity="${o*0.5}"/>` +
+               `<circle cx="${14+i*13}" cy="50" r="2" fill="${c}" opacity="${o*0.5}"/>` +
+               `<circle cx="${14+i*13}" cy="75" r="2" fill="${c}" opacity="${o*0.5}"/>`
+             ).join('');
+
     default: return '';
   }
 }
@@ -4252,6 +4399,70 @@ function renderRing(attr) {
       return `<rect x="8" y="8" width="88" height="88" rx="9" fill="none" stroke="#172033" stroke-width="7" opacity="0.9"/>` +
         `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="#fff4d6" stroke-width="8" opacity="0.96"/>` +
         `<rect x="4" y="4" width="92" height="92" rx="9" fill="none" stroke="${c}" stroke-width="4" stroke-dasharray="9 5" opacity="0.96"/>`;
+
+    // ── Italian Dolce Vita ──
+    case 'italian-olive-rim':
+      return `<rect x="8" y="8" width="84" height="84" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<circle cx="50" cy="50" r="42" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'italian-vine-spiral':
+      return `<path d="M12,50 Q30,20 50,12 Q70,20 88,50 Q70,80 50,88 Q30,80 12,50" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<path d="M16,50 Q32,28 50,22 Q68,28 84,50 Q68,72 50,78 Q32,72 16,50" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'italian-pasta-loop':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+             `<path d="M50,10 A40,40 0 0,1 50,90 A40,40 0 0,1 50,10" fill="none" stroke="${c}" stroke-width="1.2" stroke-dasharray="5 8" opacity="0.45"/>`;
+
+    // ── Indian Masala Magic ──
+    case 'indian-chai-rim':
+      return `<path d="M18,50 Q18,20 50,12 Q82,20 82,50 Q82,80 50,88 Q18,80 18,50" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+             `<circle cx="50" cy="50" r="35" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'indian-spice-border':
+      return `<rect x="10" y="10" width="80" height="80" rx="8" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             Array.from({length:16}, (_,i) =>
+               `<circle cx="${14+i*5}" cy="50" r="1.5" fill="${c}" opacity="${0.6}"/>`
+             ).join('');
+    case 'indian-mandala-frame':
+      return `<circle cx="50" cy="50" r="42" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<circle cx="50" cy="50" r="38" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.45"/>` +
+             Array.from({length:12}, (_,i) =>
+               `<circle cx="${50+Math.cos((i/12)*Math.PI*2)*40}" cy="${50+Math.sin((i/12)*Math.PI*2)*40}" r="1.5" fill="${c}" opacity="0.6"/>`
+             ).join('');
+
+    // ── Mediterranean Grace ──
+    case 'med-olive-rim':
+      return `<ellipse cx="50" cy="50" rx="42" ry="40" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<circle cx="50" cy="50" r="35" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'med-lemon-border':
+      return `<rect x="8" y="8" width="84" height="84" rx="12" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+             `<path d="M50,8 Q60,15 65,25 Q70,40 68,50 Q70,60 65,75 Q60,85 50,92" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'med-wave-spiral':
+      return `<path d="M12,30 Q30,15 50,10 Q70,15 88,30 Q80,50 88,70 Q70,85 50,90 Q30,85 12,70 Q20,50 12,30" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<path d="M50,20 Q65,22 75,35 Q78,50 75,65 Q65,78 50,80 Q35,78 25,65 Q22,50 25,35 Q35,22 50,20" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+
+    // ── Mexican Fiesta ──
+    case 'mexican-chili-rim':
+      return `<rect x="10" y="10" width="80" height="80" rx="10" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.76"/>` +
+             `<rect x="16" y="16" width="68" height="68" rx="6" fill="none" stroke="${c}" stroke-width="1.2" opacity="0.45"/>`;
+    case 'mexican-lime-border':
+      return `<circle cx="50" cy="50" r="40" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             Array.from({length:8}, (_,i) =>
+               `<line x1="${50+Math.cos((i/8)*Math.PI*2)*40}" y1="${50+Math.sin((i/8)*Math.PI*2)*40}" x2="${50+Math.cos((i/8)*Math.PI*2)*38}" y2="${50+Math.sin((i/8)*Math.PI*2)*38}" stroke="${c}" stroke-width="2" opacity="0.6"/>`
+             ).join('');
+    case 'mexican-tile-spiral':
+      return `<path d="M12,50 L50,12 L88,50 L50,88 Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<path d="M35,50 L50,35 L65,50 L50,65 Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+
+    // ── Middle Eastern Spice Route ──
+    case 'me-pomegranate-rim':
+      return `<circle cx="50" cy="50" r="42" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<path d="M50,8 L58,32 L82,32 L62,48 L70,72 L50,56 L30,72 L38,48 L18,32 L42,32 Z" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+    case 'me-pistachio-border':
+      return `<rect x="12" y="12" width="76" height="76" rx="8" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             Array.from({length:6}, (_,i) =>
+               `<ellipse cx="${18+i*13}" cy="50" rx="2.5" ry="4" fill="${c}" opacity="0.45"/>`
+             ).join('');
+    case 'me-arabesque-spiral':
+      return `<path d="M15,50 Q30,25 50,20 Q70,25 85,50 Q70,75 50,80 Q30,75 15,50" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
+             `<circle cx="50" cy="50" r="22" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
 
     default: return '';
   }
@@ -5790,6 +6001,85 @@ function renderShape(attr) {
         `<path d="M43,50 H57 M43,62 H57" fill="none" stroke="#172033" stroke-width="2.4"/>` +
         `</g>`;
 
+    // ── Italian Dolce Vita ──
+    case 'italian-wine-glass':
+      return `<path d="M38,30 L42,55 L50,65 L58,55 L62,30 Z M40,30 H60 M45,35 H55" fill="${c}" opacity="${o}" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>`;
+    case 'italian-pasta-fork':
+      return `<path d="M48,28 V70 M45,55 L48,60 L51,55 M42,50 L48,62 L54,50 M38,45 L48,65 L58,45" fill="${c}" opacity="${o}" stroke="white" stroke-width="1.2" stroke-linecap="round"/>`;
+    case 'italian-tomato-slice':
+      return `<circle cx="50" cy="50" r="20" fill="${c}" opacity="${o}"/>` +
+            `<circle cx="50" cy="50" r="18" fill="none" stroke="white" stroke-width="1.5" opacity="0.55"/>` +
+            Array.from({length:6}, (_,i) => `<line x1="50" y1="50" x2="${50+Math.cos((i/6)*Math.PI*2)*16}" y2="${50+Math.sin((i/6)*Math.PI*2)*16}" stroke="white" stroke-width="1" opacity="0.45"/>`).join('');
+    case 'italian-olive-spray':
+      return `<circle cx="50" cy="50" r="8" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:8}, (_,i) => `<circle cx="${50+Math.cos((i/8)*Math.PI*2)*16}" cy="${50+Math.sin((i/8)*Math.PI*2)*16}" r="4" fill="${c}" opacity="${o*0.8}"/>`).join('') +
+            `<path d="M50,42 Q45,38 42,35" fill="none" stroke="${c}" stroke-width="1.5" opacity="${o*0.7}"/>`;
+
+    // ── Indian Masala Magic ──
+    case 'indian-chai-cup':
+      return `<path d="M35,35 L38,65 Q38,70 43,72 H57 Q62,70 62,65 L65,35 Z" fill="${c}" opacity="${o}"/>` +
+            `<path d="M45,45 L60,45" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.55"/>` +
+            `<path d="M58,55 Q70,52 72,60" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.8}"/>`;
+    case 'indian-naan-tear':
+      return `<path d="M35,30 Q50,25 65,30 Q68,50 60,70 Q50,78 40,70 Q32,50 35,30 Z" fill="${c}" opacity="${o}"/>` +
+            `<path d="M45,40 Q50,36 55,40 Q58,50 52,65" fill="none" stroke="white" stroke-width="1.5" opacity="0.55"/>`;
+    case 'indian-spice-burst':
+      return `<circle cx="50" cy="50" r="12" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:12}, (_,i) => `<line x1="50" y1="50" x2="${50+Math.cos((i/12)*Math.PI*2)*22}" y2="${50+Math.sin((i/12)*Math.PI*2)*22}" stroke="${c}" stroke-width="2.5" stroke-linecap="round" opacity="${o*0.7}"/>`).join('');
+    case 'indian-cardamom-cluster':
+      return `<circle cx="50" cy="50" r="6" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:6}, (_,i) => `<ellipse cx="${50+Math.cos((i/6)*Math.PI*2)*14}" cy="${50+Math.sin((i/6)*Math.PI*2)*14}" rx="3" ry="5" fill="${c}" opacity="${o*0.8}" transform="rotate(${(i/6)*60} ${50+Math.cos((i/6)*Math.PI*2)*14} ${50+Math.sin((i/6)*Math.PI*2)*14})"/>`).join('');
+
+    // ── Mediterranean Grace ──
+    case 'med-olive-oil-bottle':
+      return `<path d="M48,30 V50 L40,65 Q40,72 50,75 Q60,72 60,65 L52,50 V30 Q50,28 48,30 Z" fill="${c}" opacity="${o}"/>` +
+            `<rect x="46" y="25" width="8" height="7" rx="1" fill="${c}" opacity="${o}"/>` +
+            `<line x1="48" y1="50" x2="52" y2="50" stroke="white" stroke-width="1.5" opacity="0.45"/>`;
+    case 'med-lemon-slice':
+      return `<circle cx="50" cy="50" r="18" fill="${c}" opacity="${o}"/>` +
+            `<circle cx="50" cy="50" r="14" fill="white" opacity="0.35"/>` +
+            Array.from({length:8}, (_,i) => `<line x1="50" y1="32" x2="50" y2="68" stroke="white" stroke-width="1.2" opacity="0.45" transform="rotate(${(i/8)*45} 50 50)"/>`).join('');
+    case 'med-feta-cube':
+      return `<path d="M38,40 L42,38 L58,38 L62,40 L62,56 L58,58 L42,58 L38,56 Z" fill="${c}" opacity="${o}"/>` +
+            `<path d="M42,38 L42,58 M58,38 L58,58 M38,48 L62,48" stroke="white" stroke-width="1" opacity="0.45"/>`;
+    case 'med-octopus-tentacle':
+      return `<path d="M50,28 Q45,40 48,55 Q45,65 50,72" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"/>` +
+            Array.from({length:3}, (_,i) => `<circle cx="${48+i*3}" cy="${55+i*4}" r="2" fill="${c}" opacity="${o*0.8}"/>`).join('') +
+            `<path d="M50,28 Q50,35 55,45" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o*0.7}"/>`;
+
+    // ── Mexican Fiesta ──
+    case 'mexican-chili-pepper':
+      return `<path d="M50,28 L56,50 Q58,60 55,68 Q50,72 45,68 Q42,60 44,50 Z" fill="${c}" opacity="${o}"/>` +
+            `<path d="M50,28 Q50,20 52,15" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.8}"/>` +
+            `<path d="M50,68 Q48,75 50,80" fill="none" stroke="white" stroke-width="1" opacity="0.45"/>`;
+    case 'mexican-lime-splash':
+      return `<circle cx="50" cy="50" r="16" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:8}, (_,i) => `<path d="M${50+Math.cos((i/8)*Math.PI*2)*16} ${50+Math.sin((i/8)*Math.PI*2)*16} L${50+Math.cos((i/8)*Math.PI*2)*24} ${50+Math.sin((i/8)*Math.PI*2)*24}" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.7}"/>`).join('');
+    case 'mexican-cilantro-bunch':
+      return `<circle cx="50" cy="55" r="8" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:7}, (_,i) => `<path d="M50,55 Q${50+Math.cos((i/7)*Math.PI*2)*12} ${55+Math.sin((i/7)*Math.PI*2)*12} ${50+Math.cos((i/7)*Math.PI*2)*18} ${55+Math.sin((i/7)*Math.PI*2)*18}" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="${o*0.8}"/>`).join('');
+    case 'mexican-avocado-half':
+      return `<ellipse cx="50" cy="50" rx="18" ry="20" fill="${c}" opacity="${o}"/>` +
+            `<circle cx="50" cy="50" r="8" fill="white" opacity="0.35"/>` +
+            `<path d="M50,30 Q48,45 50,70" fill="none" stroke="white" stroke-width="1.5" opacity="0.45"/>`;
+
+    // ── Middle Eastern Spice Route ──
+    case 'me-pomegranate-arils':
+      return `<circle cx="50" cy="50" r="18" fill="${c}" opacity="${o*0.3}"/>` +
+            Array.from({length:12}, (_,i) => `<circle cx="${50+Math.cos((i/12)*Math.PI*2)*12}" cy="${50+Math.sin((i/12)*Math.PI*2)*12}" r="3.5" fill="${c}" opacity="${o}"/>`).join('');
+    case 'me-pistachio-pair':
+      return `<ellipse cx="42" cy="50" rx="4" ry="7" fill="${c}" opacity="${o}"/>` +
+            `<ellipse cx="58" cy="50" rx="4" ry="7" fill="${c}" opacity="${o}"/>` +
+            `<line x1="42" y1="57" x2="42" y2="65" stroke="white" stroke-width="1.5" opacity="0.45"/>` +
+            `<line x1="58" y1="57" x2="58" y2="65" stroke="white" stroke-width="1.5" opacity="0.45"/>`;
+    case 'me-zaatar-burst':
+      return `<circle cx="50" cy="50" r="8" fill="${c}" opacity="${o}"/>` +
+            Array.from({length:10}, (_,i) => `<circle cx="${50+Math.cos((i/10)*Math.PI*2)*14}" cy="${50+Math.sin((i/10)*Math.PI*2)*14}" r="2" fill="${c}" opacity="${o*0.7}"/>`).join('');
+    case 'me-date-pit':
+      return `<ellipse cx="50" cy="50" rx="6" ry="12" fill="${c}" opacity="${o}"/>` +
+            `<path d="M48,38 L52,62" fill="none" stroke="white" stroke-width="1" opacity="0.45"/>` +
+            `<path d="M50,38 L45,48 M50,38 L55,48" fill="none" stroke="white" stroke-width="1" opacity="0.35"/>`;
+
     default: return '';
   }
 }
@@ -6960,6 +7250,56 @@ function renderAccent(attr) {
       case 'fbday-candle-badges':
         out += `<rect x="${cx-2+2.5}" y="${cy-5+3}" width="4" height="10" rx="1" fill="#172033" opacity="0.9"/><path d="M${cx+2.5},${cy-5+3} C${cx-1+2.5},${cy-8+3} ${cx-1+2.5},${cy-11+3} ${cx+2.5},${cy-13+3} C${cx+1+2.5},${cy-11+3} ${cx+1+2.5},${cy-8+3} ${cx+2.5},${cy-5+3}Z" fill="#172033" opacity="0.9"/>` +
                `<rect x="${cx-2}" y="${cy-5}" width="4" height="10" rx="1" fill="${c}" stroke="#fff4d6" stroke-width="1.6" paint-order="stroke" opacity="0.92"/><path d="M${cx},${cy-5} C${cx-1},${cy-8} ${cx-1},${cy-11} ${cx},${cy-13} C${cx+1},${cy-11} ${cx+1},${cy-8} ${cx},${cy-5}Z" fill="${c}" stroke="#fff4d6" stroke-width="1.4" paint-order="stroke" opacity="0.9"/>`; break;
+
+      // ── Italian Dolce Vita ──
+      case 'italian-basil-leaf':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="3" ry="5" fill="${c}" opacity="0.8"/><path d="M${cx-1},${cy-2} L${cx+1},${cy+2}" stroke="white" stroke-width="1" opacity="0.5"/>`; break;
+      case 'italian-wine-drop':
+        out += `<path d="M${cx},${cy-4} L${cx-2},${cy+2} Q${cx},${cy+4} ${cx+2},${cy+2} Z" fill="${c}" opacity="0.8"/>`; break;
+      case 'italian-olive-cluster':
+        out += `<circle cx="${cx-2.5}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.8"/><circle cx="${cx+2.5}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.8"/><circle cx="${cx}" cy="${cy+3}" r="2.5" fill="${c}" opacity="0.8"/>`; break;
+      case 'italian-pasta-dot':
+        out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.7"/><circle cx="${cx}" cy="${cy}" r="1.5" fill="white" opacity="0.4"/>`; break;
+
+      // ── Indian Masala Magic ──
+      case 'indian-cardamom-seed':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="2.5" ry="4" fill="${c}" opacity="0.8"/><path d="M${cx},${cy-2} L${cx},${cy+3}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
+      case 'indian-chai-drop':
+        out += `<path d="M${cx},${cy-3.5} L${cx-2},${cy+1.5} Q${cx},${cy+3.5} ${cx+2},${cy+1.5} Z" fill="${c}" opacity="0.8"/>`; break;
+      case 'indian-saffron-strand':
+        out += `<path d="M${cx-4},${cy} L${cx+4},${cy}" stroke="${c}" stroke-width="2" opacity="0.6"/><line x1="${cx-4}" y1="${cy-2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
+      case 'indian-spice-dot':
+        out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.8"/>`; break;
+
+      // ── Mediterranean Grace ──
+      case 'med-olive-berry':
+        out += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${c}" opacity="0.8"/><circle cx="${cx}" cy="${cy}" r="2" fill="white" opacity="0.3"/>`; break;
+      case 'med-lemon-drop':
+        out += `<circle cx="${cx}" cy="${cy-2}" r="3" fill="${c}" opacity="0.8"/><path d="M${cx},${cy+1} L${cx},${cy+5}" stroke="${c}" stroke-width="1.5" opacity="0.6"/>`; break;
+      case 'med-feta-speck':
+        out += `<rect x="${cx-2}" y="${cy-1.5}" width="4" height="3" fill="${c}" opacity="0.7"/><rect x="${cx-1}" y="${cy+1.5}" width="2" height="2" fill="${c}" opacity="0.7"/>`; break;
+      case 'med-branch-leaf':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="2.5" ry="4" fill="${c}" opacity="0.7" transform="rotate(35 ${cx} ${cy})"/><path d="M${cx-1},${cy-3} L${cx+1},${cy+3}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
+
+      // ── Mexican Fiesta ──
+      case 'mexican-chili-seed':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="1.5" ry="2.5" fill="${c}" opacity="0.7"/><circle cx="${cx}" cy="${cy}" r="1" fill="white" opacity="0.3"/>`; break;
+      case 'mexican-lime-drop':
+        out += `<circle cx="${cx}" cy="${cy-2}" r="2.5" fill="${c}" opacity="0.8"/><path d="M${cx},${cy+1} L${cx},${cy+4}" stroke="white" stroke-width="1" opacity="0.45"/>`; break;
+      case 'mexican-cilantro-sprig':
+        out += `<path d="M${cx},${cy+2} L${cx-2},${cy-2} M${cx},${cy+2} L${cx+2},${cy-2} M${cx},${cy+2} L${cx},${cy-3}" stroke="${c}" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>`; break;
+      case 'mexican-avocado-pit':
+        out += `<circle cx="${cx}" cy="${cy}" r="3" fill="${c}" opacity="0.8"/><circle cx="${cx}" cy="${cy}" r="1.5" fill="white" opacity="0.35"/>`; break;
+
+      // ── Middle Eastern Spice Route ──
+      case 'me-pomegranate-seed':
+        out += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${c}" opacity="0.8"/><path d="M${cx-1.5},${cy} H${cx+1.5}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
+      case 'me-pistachio-shell':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="2.5" ry="4" fill="${c}" opacity="0.8"/><path d="M${cx-1.5},${cy} L${cx+1.5},${cy}" stroke="white" stroke-width="1" opacity="0.4"/>`; break;
+      case 'me-zaatar-speck':
+        out += `<circle cx="${cx}" cy="${cy}" r="1.5" fill="${c}" opacity="0.7"/>`; break;
+      case 'me-date-drop':
+        out += `<ellipse cx="${cx}" cy="${cy}" rx="2" ry="3.5" fill="${c}" opacity="0.8"/><path d="M${cx},${cy-2} L${cx},${cy+2}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
 
     }
   }
