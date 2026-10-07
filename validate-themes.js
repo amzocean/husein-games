@@ -445,6 +445,7 @@ console.log(`\n${BOLD}CHECK 8: Palette color distinctness${RESET}`);
 if (THEMES) {
   let anyDup = false;
   let anyTooClose = false;
+  let anyPoorContrast = false;
   const paletteGroups = ['bg', 'ring', 'shape', 'accent'];
   const matchableGroups = ['ring', 'shape', 'accent'];
   const activeThemes = THEMES.slice(0, THEMES.length - BIRTHDAY_THEME_COUNT);
@@ -469,6 +470,17 @@ if (THEMES) {
     const a = hexToLab(first);
     const b = hexToLab(second);
     return Math.sqrt(a.reduce((sum, value, index) => sum + (value - b[index]) ** 2, 0));
+  }
+
+  function rgb(hex) {
+    return [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16));
+  }
+
+  function luminance(channels) {
+    return channels.map(value => {
+      const channel = value / 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
   }
 
   for (const theme of THEMES) {
@@ -506,10 +518,35 @@ if (THEMES) {
         }
       }
     }
+    if (theme.highContrast === true) {
+      const backgrounds = theme.palette.bg;
+      for (let i = 0; i < backgrounds.length; i++) {
+        for (let j = i + 1; j < backgrounds.length; j++) {
+          if (colorDistance(backgrounds[i], backgrounds[j]) < 20) {
+            check(false, '', `${theme.name}: high-contrast backgrounds ${backgrounds[i]} and ${backgrounds[j]} need Lab distance >= 20`);
+            anyPoorContrast = true;
+          }
+        }
+      }
+      for (const background of backgrounds) {
+        // Bound texture darkening at the full 8% wrapper opacity and foreground at 70%.
+        const bg = rgb(background).map((value, index) => value * 0.92 + rgb(theme.boardBg.color)[index] * 0.08);
+        for (const group of matchableGroups) {
+          for (const color of theme.palette[group]) {
+            const foreground = rgb(color).map((value, index) => value * 0.7 + bg[index] * 0.3);
+            const ratio = (luminance(bg) + 0.05) / (luminance(foreground) + 0.05);
+            if (ratio < 3) {
+              check(false, '', `${theme.name}: ${group} color ${color} on ${background} has rendered contrast ${ratio.toFixed(2)}:1 (minimum 3:1)`);
+              anyPoorContrast = true;
+            }
+          }
+        }
+      }
+    }
   }
 
-  if (!anyDup && !anyTooClose) {
-    check(true, `All ${THEMES.length} themes have unique palette colors, and all ${activeThemes.length} active themes have clearly separated match colors`, '');
+  if (!anyDup && !anyTooClose && !anyPoorContrast) {
+    check(true, `All ${THEMES.length} themes have unique palette colors, all ${activeThemes.length} active themes have separated match colors, and high-contrast themes pass background/foreground contrast`, '');
   }
 } else {
   check(false, '', 'Skipped — could not parse THEMES');

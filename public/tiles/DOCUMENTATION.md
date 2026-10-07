@@ -455,6 +455,8 @@ function renderShape(attr) {
 
 For `cute-light`, remember that `createTileSVG()` applies `translate(11 11) scale(0.78)`. Design the source artwork around the full 100×100 coordinate system, then inspect its rendered size. Avoid tiny internal details that disappear after scaling.
 
+The active cuisine collection additionally sets `highContrast: true`. This opt-in uses opaque peach, lavender, and sky backgrounds, reduces background texture opacity to 8%, and removes the extra foreground fade. Shapes scale to 1.15 around (50,50); accents scale to 1.6 around their own corners so they grow without drifting. Rings retain 0.92 scale. It omits the extra Cute Light monogram flourishes to keep matchable elements uncluttered. Other collections retain their existing rendering.
+
 **Template — simple filled shape:**
 ```javascript
     // ── MyTheme ──
@@ -556,7 +558,7 @@ node validate-themes.js
 | Engine→Renderer coverage | Pattern defined in engine.js but no case in renderer.js | Add the missing case block in the right function |
 | Duplicate cases | Same label twice in one function | Search for the label, remove the duplicate |
 | Function dependencies | Calling undefined functions | If using `mulberry32`, it's at the top of renderer.js — already defined |
-| Color distinctness | Duplicate colors, or active match colors with CIE Lab distance below 45 | Replace near-neighbor shades with clearly separated hue families; do not merely adjust lightness |
+| Color distinctness | Duplicate colors, or active match colors with CIE Lab distance below 45; opt-in high-contrast backgrounds below Lab distance 20 or foreground/background contrast below 3:1 | Replace near-neighbor shades; check every foreground/background pairing, accounting for opacity |
 | Bg hue diversity | All 3 bg colors same hue (needs 40°+ spread) | Replace one bg color with a different hue family. Warm tones (~15°) are close to each other — pair with a cool tone (180°+). |
 | boardBg validation | Missing boardBg property | Add `boardBg: { pattern: 'solid', color: '#hex' }` |
 | Orphan cases | Cases in renderer with no theme using them | Warning only — OK for archived themes. Ignore. |

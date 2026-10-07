@@ -6086,7 +6086,7 @@ function renderShape(attr) {
 
 const CORNERS = [[16, 16], [84, 16], [16, 84], [84, 84]];
 
-function renderAccent(attr) {
+function renderAccent(attr, motifScale = 1) {
   const c = attr.color;
 
   // Graphic-composition motifs occupy the full tile instead of the legacy corners.
@@ -6233,6 +6233,9 @@ function renderAccent(attr) {
 
   let out = '';
   for (const [cx, cy] of CORNERS) {
+    if (motifScale !== 1) {
+      out += `<g transform="translate(${cx} ${cy}) scale(${motifScale}) translate(${-cx} ${-cy})">`;
+    }
     switch (attr.accentShape) {
       // ── Azulejo ──
       case 'circles':
@@ -7267,7 +7270,7 @@ function renderAccent(attr) {
       case 'indian-chai-drop':
         out += `<path d="M${cx},${cy-3.5} L${cx-2},${cy+1.5} Q${cx},${cy+3.5} ${cx+2},${cy+1.5} Z" fill="${c}" opacity="0.8"/>`; break;
       case 'indian-saffron-strand':
-        out += `<path d="M${cx-4},${cy} L${cx+4},${cy}" stroke="${c}" stroke-width="2" opacity="0.6"/><line x1="${cx-4}" y1="${cy-2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
+        out += `<path d="M${cx-4},${cy} L${cx+4},${cy}" stroke="${c}" stroke-width="2.5" opacity="0.8"/><line x1="${cx-4}" y1="${cy-2}" x2="${cx+4}" y2="${cy-2}" stroke="${c}" stroke-width="1" opacity="0.4"/>`; break;
       case 'indian-spice-dot':
         out += `<circle cx="${cx}" cy="${cy}" r="2" fill="${c}" opacity="0.8"/>`; break;
 
@@ -7302,18 +7305,19 @@ function renderAccent(attr) {
         out += `<ellipse cx="${cx}" cy="${cy}" rx="2" ry="3.5" fill="${c}" opacity="0.8"/><path d="M${cx},${cy-2} L${cx},${cy+2}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
 
     }
+    if (motifScale !== 1) out += '</g>';
   }
   return out;
 }
 
 // ── Attribute dispatcher ──
 
-function renderAttributeInner(attr) {
+function renderAttributeInner(attr, theme) {
   switch (attr.type) {
     case 'bg':     return renderBg(attr);
     case 'ring':   return renderRing(attr);
     case 'shape':  return renderShape(attr);
-    case 'accent': return renderAccent(attr);
+    case 'accent': return renderAccent(attr, theme && theme.highContrast === true ? 1.6 : 1);
     default:       return '';
   }
 }
@@ -7336,11 +7340,12 @@ function createTileSVG(tile, theme) {
   // Board-level background layer (not matchable, not removable)
   // White base + per-tile color tint = opaque backing; photo only shows when tile cleared
   let html = '';
+  const highContrast = theme && theme.highContrast === true;
   const tintColor = tile.bgColor || (theme && theme.boardBg ? theme.boardBg.color : '#cccccc');
   html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
-  html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${tintColor}" opacity="0.22"/>`;
+  html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${tintColor}" opacity="${highContrast ? 1 : 0.22}"/>`;
   if (theme && theme.boardBg && theme.boardBg.pattern !== 'solid') {
-    html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
+    html += `<g class="board-bg-layer" opacity="${highContrast ? 0.08 : 1}">${renderBg(theme.boardBg)}</g>`;
   }
 
   // Matchable attribute layers (ring, shape, accent only — no bg)
@@ -7348,8 +7353,12 @@ function createTileSVG(tile, theme) {
     ? [...tile.attributes.values()].sort((a, b) => ({ ring: 0, shape: 1, accent: 2 }[a.type] - { ring: 0, shape: 1, accent: 2 }[b.type]))
     : sortAttributes([...tile.attributes.values()]);
   for (const attr of attrs) {
-    let rendered = renderAttributeInner(attr);
-    if (theme && theme.style === 'cute-light') {
+    let rendered = renderAttributeInner(attr, theme);
+    if (highContrast) {
+      // Scale around the tile center, rather than pushing artwork down and right.
+      const scale = attr.type === 'ring' ? 0.92 : attr.type === 'accent' ? 1 : 1.15;
+      rendered = `<g transform="translate(50 50) scale(${scale}) translate(-50 -50)">${rendered}</g>`;
+    } else if (theme && theme.style === 'cute-light') {
       if (attr.type === 'shape') {
         rendered = `<g transform="translate(11 11) scale(1.1)">${rendered}</g>` +
           `<text x="85" y="24" text-anchor="middle" font-size="7" font-weight="800" fill="${attr.color}" opacity="0.42">H/F</text>` +
@@ -7376,9 +7385,11 @@ function createCenterHeartSVG(theme) {
   let html = '';
   if (theme && theme.boardBg) {
     html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="white"/>`;
-    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${theme.boardBg.color}" opacity="0.12"/>`;
+    const highContrast = theme.highContrast === true;
+    const centerBg = highContrast ? theme.palette.bg[0] : theme.boardBg.color;
+    html += `<rect x="0" y="0" width="100" height="100" rx="8" fill="${centerBg}" opacity="${highContrast ? 1 : 0.12}"/>`;
     if (theme.boardBg.pattern !== 'solid') {
-      html += `<g class="board-bg-layer">${renderBg(theme.boardBg)}</g>`;
+      html += `<g class="board-bg-layer" opacity="${highContrast ? 0.08 : 1}">${renderBg(theme.boardBg)}</g>`;
     }
   }
 
