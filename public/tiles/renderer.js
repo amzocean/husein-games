@@ -7351,13 +7351,13 @@ function createTileSVG(tile, theme) {
     let rendered = renderAttributeInner(attr);
     if (theme && theme.style === 'cute-light') {
       if (attr.type === 'shape') {
-        rendered = `<g transform="translate(11 11) scale(0.78)">${rendered}</g>` +
+        rendered = `<g transform="translate(11 11) scale(1.1)">${rendered}</g>` +
           `<text x="85" y="24" text-anchor="middle" font-size="7" font-weight="800" fill="${attr.color}" opacity="0.42">H/F</text>` +
           `<circle cx="15" cy="82" r="4" fill="none" stroke="${attr.color}" stroke-width="1.5" opacity="0.38"/><circle cx="20" cy="82" r="4" fill="none" stroke="${attr.color}" stroke-width="1.5" opacity="0.38"/>`;
       } else if (attr.type === 'ring') {
         rendered = `<g transform="translate(4 4) scale(0.92)" opacity="0.68">${rendered}</g>`;
       } else if (attr.type === 'accent') {
-        rendered = `<g transform="translate(7 7) scale(0.86)" opacity="0.76">${rendered}</g>`;
+        rendered = `<g transform="translate(7 7) scale(1.0)" opacity="0.95">${rendered}</g>`;
       }
     }
     html += `<g class="attr-layer" data-attr-id="${attr.id}">${rendered}</g>`;
