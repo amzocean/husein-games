@@ -273,8 +273,8 @@ async function init() {
   if (location.hash) {
     const term = decodeURIComponent(location.hash.slice(1));
     input.value = term;
-    onSearch();
   }
+  onSearch();
 }
 
 function renderSuggestions() {
@@ -299,19 +299,11 @@ function onSearch() {
   const suggestionsEl = document.getElementById('suggestions');
   activeCard = null;
 
-  if (!query) {
-    resultsEl.innerHTML = '';
-    statsEl.textContent = '';
-    emptyEl.style.display = 'none';
-    suggestionsEl.style.display = 'flex';
-    location.hash = '';
-    return;
-  }
-
-  suggestionsEl.style.display = 'none';
+  const showAll = !query || query === '*';
+  suggestionsEl.style.display = showAll ? 'flex' : 'none';
   location.hash = encodeURIComponent(query);
 
-  const words = query.split(/\s+/).filter(Boolean);
+  const words = showAll ? [] : query.split(/\s+/).filter(Boolean);
   const matches = allQuotes
     .map((q, idx) => {
       const text = q.full.toLowerCase();
@@ -322,7 +314,7 @@ function onSearch() {
       }, 0);
       return { quote: q, idx, score };
     })
-    .filter(m => m.score > 0)
+    .filter(m => showAll || m.score > 0)
     .sort((a, b) => b.score - a.score);
 
   if (matches.length === 0) {

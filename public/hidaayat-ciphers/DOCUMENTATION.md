@@ -35,6 +35,7 @@ public/quote-search/
 
 **Hidaayaat Lookup** (`/quote-search/`) shares the same `quotes.json` and page images.
 It provides keyword-based topic search with clickable results that expand to show page images.
+Opening the page, clearing the search, or entering `*` lists all active quotes in dataset order.
 ```
 
 **No build step.** Everything is vanilla JS/CSS served statically by the Express server.
