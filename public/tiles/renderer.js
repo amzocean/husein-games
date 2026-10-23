@@ -1078,6 +1078,27 @@ function renderHandwritten_AccentInner(family, variant, c, cx, cy) {
 
 // ── Background Zone (full tile, 4-96 inset) ──
 
+function renderShowTexture(d, c, o) {
+  return `<rect x="4" y="4" width="92" height="92" rx="6" fill="${c}" opacity="${o*0.25}"/>` +
+    `<path d="${d}" fill="none" stroke="${c}" stroke-width="1" opacity="${o*0.26}"/>`;
+}
+
+function renderShowSticker(d, detail, c, o = 0.85, width = 5) {
+  const offset = width === 5 ? '2 3' : '1 1.5';
+  return `<g opacity="${o}" stroke-linejoin="round" stroke-linecap="round">` +
+    `<path d="${d}" transform="translate(${offset})" fill="#172033" stroke="#172033" stroke-width="${width}" fill-rule="evenodd"/>` +
+    `<path d="${d}" fill="${c}" stroke="#fff4d6" stroke-width="${width}" paint-order="stroke" fill-rule="evenodd"/>` +
+    `<path d="${detail}" fill="none" stroke="#fff4d6" stroke-width="${width === 5 ? 2.5 : 1.5}"/>` +
+    `</g>`;
+}
+
+function renderShowFrame(d, c) {
+  return `<g fill="none" stroke-linejoin="round" stroke-linecap="round">` +
+    `<path d="${d}" transform="translate(1.5 2)" stroke="#172033" stroke-width="7"/>` +
+    `<path d="${d}" stroke="#fff4d6" stroke-width="7"/>` +
+    `<path d="${d}" stroke="${c}" stroke-width="3.5"/></g>`;
+}
+
 function renderBg(attr) {
   const c = attr.color;
   const o = 0.35;
@@ -3433,6 +3454,48 @@ function renderBg(attr) {
                `<circle cx="${14+i*13}" cy="75" r="2" fill="${c}" opacity="${o*0.5}"/>`
              ).join('');
 
+    // ── Entertainment date nights ──
+    case 'hfhouse-scan-lines':
+      return renderShowTexture('M8 30H92 M8 40H92 M8 50H92 M8 60H92 M8 70H92', c, o);
+    case 'hfhouse-stage-rays':
+      return renderShowTexture('M30 8L8 65 M43 8L25 92 M57 8L75 92 M70 8L92 65', c, o);
+    case 'hfhouse-audio-tracks':
+      return renderShowTexture('M8 42H25L29 30L34 63L39 40H60L66 58L71 35L76 42H92 M8 74H92', c, o);
+    case 'hfhouse-wall-panels':
+      return renderShowTexture('M8 32H92 M8 64H92 M32 8V32 M65 32V64 M42 64V92', c, o);
+    case 'hfhouse-signal-hatch':
+      return renderShowTexture('M8 45L45 8 M8 65L65 8 M8 85L85 8 M25 92L92 25 M45 92L92 45', c, o);
+    case 'watchdate-screen-scan':
+      return renderShowTexture('M8 34H92 M8 37H92 M8 49H92 M8 52H92 M8 64H92 M8 67H92', c, o);
+    case 'watchdate-blanket-weave':
+      return renderShowTexture('M8 33Q30 23 50 33T92 33 M8 55Q30 45 50 55T92 55 M8 77Q30 67 50 77T92 77 M33 8V92 M66 8V92', c, o);
+    case 'watchdate-rewind-trails':
+      return renderShowTexture('M40 25L20 40L40 55 M65 25L45 40L65 55 M90 25L70 40L90 55 M24 76H78', c, o);
+    case 'watchdate-credit-lines':
+      return renderShowTexture('M28 24H72 M20 35H80 M32 46H68 M23 57H77 M35 68H65 M28 79H72', c, o);
+    case 'watchdate-cushion-seams':
+      return renderShowTexture('M25 8Q40 50 25 92 M75 8Q60 50 75 92 M8 50Q50 62 92 50', c, o);
+    case 'soapduet-curtain-falls':
+      return renderShowTexture('M25 8Q14 50 27 92 M35 8Q24 50 37 92 M65 8Q76 50 63 92 M75 8Q86 50 73 92', c, o);
+    case 'soapduet-courtyard-tiles':
+      return renderShowTexture('M8 35H92 M8 60H92 M8 85H92 M35 8L20 92 M65 8L80 92', c, o);
+    case 'soapduet-dupatta-weave':
+      return renderShowTexture('M8 28Q50 8 92 28 M8 46Q50 26 92 46 M8 64Q50 44 92 64 M8 82Q50 62 92 82', c, o);
+    case 'soapduet-rain-streaks':
+      return renderShowTexture('M30 10L23 32 M50 18L42 45 M73 10L65 37 M32 53L24 81 M57 55L49 86 M80 47L72 74', c, o);
+    case 'soapduet-script-lines':
+      return renderShowTexture('M24 27H76 M30 37H68 M24 53H76 M30 63H71 M24 79H76', c, o);
+    case 'koffeeduet-upholstery':
+      return renderShowTexture('M8 38Q29 48 50 38T92 38 M8 62Q29 72 50 62T92 62 M30 8Q40 50 30 92 M70 8Q60 50 70 92', c, o);
+    case 'koffeeduet-spotlight-fans':
+      return renderShowTexture('M8 22L92 45 M8 33L92 54 M8 44L92 63 M92 22L8 45 M92 33L8 54', c, o);
+    case 'koffeeduet-cue-lines':
+      return renderShowTexture('M28 24L76 38 M24 38L72 52 M20 52L68 66 M16 66L64 80', c, o);
+    case 'koffeeduet-studio-slats':
+      return renderShowTexture('M27 8V92 M32 8V92 M48 8V92 M53 8V92 M69 8V92 M74 8V92', c, o);
+    case 'koffeeduet-speed-streaks':
+      return renderShowTexture('M8 30H50 M27 38H84 M14 50H68 M35 58H92 M8 70H52', c, o);
+
     default: return '';
   }
 }
@@ -4463,6 +4526,32 @@ function renderRing(attr) {
     case 'me-arabesque-spiral':
       return `<path d="M15,50 Q30,25 50,20 Q70,25 85,50 Q70,75 50,80 Q30,75 15,50" fill="none" stroke="${c}" stroke-width="3" opacity="0.76"/>` +
              `<circle cx="50" cy="50" r="22" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.45"/>`;
+
+    // ── Entertainment date nights ──
+    case 'hfhouse-doorway':
+      return renderShowFrame('M5 80V26L30 5H70L95 26V80 M5 94H95', c);
+    case 'hfhouse-viewfinder':
+      return renderShowFrame('M5 35V5H35 M65 5H95V35 M95 65V95H65 M35 95H5V65', c);
+    case 'hfhouse-stage-marquee':
+      return renderShowFrame('M5 70V30Q5 5 30 5H70Q95 5 95 30V70Q95 95 70 95H30Q5 95 5 70Z M36 5V10 M50 5V10 M64 5V10 M36 95V90 M50 95V90 M64 95V90', c);
+    case 'watchdate-tv-bezel':
+      return renderShowFrame('M5 25Q5 5 25 5H75Q95 5 95 25V72Q95 85 80 85H20Q5 85 5 72Z M33 94H67 M50 85V94', c);
+    case 'watchdate-progress-surround':
+      return renderShowFrame('M5 70V5H95V70 M5 91H95 M5 85V95 M95 85V95 M34 86V95', c);
+    case 'watchdate-blanket-wrap':
+      return renderShowFrame('M5 6L32 11L50 5L69 11L95 6V86L73 95L50 88L27 95L5 86Z M5 52L11 60V76 M95 29L89 37V54', c);
+    case 'soapduet-haveli-arch':
+      return `<path d="M5 94V34Q5 18 27 18Q30 8 50 5Q70 8 73 18Q95 18 95 34V94 M5 94H95 M10 35V82 M90 35V82" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round"/>`;
+    case 'soapduet-parted-curtains':
+      return `<path d="M5 5H95 M5 5Q38 22 8 56L5 95 M95 5Q62 22 92 56L95 95 M8 56L17 90 M92 56L83 90 M32 5Q50 21 68 5" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+    case 'soapduet-split-screen':
+      return `<path d="M5 33V5H42 M58 5H95V33 M95 67V95H58 M42 95H5V67 M50 5V22 M50 78V95" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+    case 'koffeeduet-studio-arch':
+      return renderShowFrame('M5 95V48A45 43 0 0 1 95 48V95 M5 95H29 M71 95H95', c);
+    case 'koffeeduet-spotlight-wings':
+      return renderShowFrame('M5 38V5H34L20 32 M95 38V5H66L80 32 M5 60L13 95H34 M95 60L87 95H66 M35 95H65', c);
+    case 'koffeeduet-couch-outline':
+      return renderShowFrame('M5 58V42Q5 34 13 34H21V20Q21 5 36 5H64Q79 5 79 20V34H87Q95 34 95 42V83H5Z M13 83V95 M87 83V95 M24 91H76', c);
 
     default: return '';
   }
@@ -6080,6 +6169,52 @@ function renderShape(attr) {
             `<path d="M48,38 L52,62" fill="none" stroke="white" stroke-width="1" opacity="0.45"/>` +
             `<path d="M50,38 L45,48 M50,38 L55,48" fill="none" stroke="white" stroke-width="1" opacity="0.35"/>`;
 
+    // ── Entertainment date nights ──
+    case 'hfhouse-confession-chair':
+      return renderShowSticker('M34 55V33Q34 26 42 26H58Q66 26 66 33V55H71V68H29V55Z M34 68H40V74H34Z M60 68H66V74H60Z',
+        'M39 38H61 M39 47H61 M34 56H66 M44 33V49 M56 33V49', c, o);
+    case 'hfhouse-camera':
+      return renderShowSticker('M29 36H59V61H29Z M59 42L72 35V64L59 56Z M41 61H48V71H41Z M34 71H57V74H34Z',
+        'M35 43H51 M35 50H45', c, o);
+    case 'hfhouse-buzzer':
+      return renderShowSticker('M32 53V49Q32 32 50 32Q68 32 68 49V53H72V65H28V53Z M36 65H64V71H36Z',
+        'M32 53H68 M42 43Q50 37 58 43 M37 27L33 22 M63 27L67 22', c, o);
+    case 'hfhouse-trophy':
+      return renderShowSticker('M36 28H64V41Q64 54 54 57V66H63V73H37V66H46V57Q36 54 36 41Z M36 33H28V41Q28 51 40 51V45Q34 45 34 39H36Z M64 33H72V41Q72 51 60 51V45Q66 45 66 39H64Z',
+        'M44 34V46 M44 40H55 M55 34V46 M45 68H55', c, o);
+    case 'watchdate-two-profiles':
+      return renderShowSticker('M27 30H73V64H27Z M45 64H55V69H64V73H36V69H45Z',
+        'M33 38V54 M33 46H43 M43 38V54 M56 54V38H66 M56 45H64 M32 59H68', c, o);
+    case 'watchdate-popcorn':
+      return renderShowSticker('M32 42Q25 34 33 29Q37 21 44 28Q50 20 56 28Q65 22 68 31Q77 36 68 43L64 72H36Z',
+        'M33 43H67 M41 47L44 66 M50 47V66 M59 47L56 66 M39 34L43 37 M55 33L60 36', c, o);
+    case 'watchdate-remote':
+      return renderShowSticker('M40 26H59Q65 26 65 33L61 69Q61 74 55 74H36Q31 74 32 68L35 32Q35 26 40 26Z',
+        'M43 33H55 M42 42H47 M53 42H57 M41 49H46 M52 49H56 M44 56L53 61L43 66Z', c, o);
+    case 'watchdate-shared-blanket':
+      return renderShowSticker('M31 44V37Q31 28 40 28Q49 28 49 37V43H52V37Q52 28 61 28Q70 28 70 37V44L74 70H26Z',
+        'M37 38H42 M58 38H63 M32 47Q50 55 68 47 M37 56L41 65 M50 56V66 M63 56L59 65', c, o);
+    case 'soapduet-tearful-heroine':
+      return `<g opacity="${o}"><path d="M27 72L30 44Q27 25 49 25Q69 25 70 44L74 72L59 65H40Z" fill="${c}"/><path d="M39 37Q50 29 61 37V46Q61 60 50 61Q39 59 39 46Z" fill="#fff4d6"/><path d="M43 43H46 M54 43H57 M47 54Q50 51 54 54" fill="none" stroke="${c}" stroke-width="2.5"/><path d="M58 46Q65 56 58 56Q52 56 58 46Z M34 64Q50 73 66 64" fill="${c}" stroke="#fff4d6" stroke-width="2"/></g>`;
+    case 'soapduet-shocked-hero':
+      return `<g opacity="${o}"><path d="M28 74V67Q28 56 42 55V48H58V55Q72 56 72 67V74Z M35 35Q32 24 48 25Q65 23 66 36L62 51H39Z" fill="${c}"/><path d="M40 36L49 39L60 35V46Q60 56 50 57Q40 54 40 46Z" fill="#fff4d6"/><path d="M43 42H46 M54 42H57 M47 47H53V53H47Z M46 64L50 69L54 64" fill="none" stroke="${c}" stroke-width="2.5"/></g>`;
+    case 'soapduet-mansion-door':
+      return `<g opacity="${o}"><path d="M29 74V43Q29 31 40 31Q43 25 50 24Q57 25 60 31Q71 31 71 43V74Z" fill="${c}"/><path d="M36 69V43Q36 35 50 32Q64 35 64 43V69Z" fill="none" stroke="#fff4d6" stroke-width="3"/><path d="M50 34V70 M42 48V57 M58 48V57" stroke="#fff4d6" stroke-width="3"/></g>`;
+    case 'soapduet-abandoned-phone':
+      return `<g opacity="${o}"><path d="M37 27H63Q68 27 68 32V66Q68 72 62 72H37Q32 72 32 67V32Q32 27 37 27Z" fill="${c}"/><path d="M38 35H62V60H38Z" fill="#fff4d6"/><path d="M44 41Q43 51 55 53L58 48L53 46L50 48L48 45L49 42Z" fill="${c}"/><path d="M46 66H54 M26 35L23 42 M74 35L77 42" stroke="${c}" stroke-width="3" stroke-linecap="round"/></g>`;
+    case 'koffeeduet-couch-for-two':
+      return renderShowSticker('M33 46V37Q33 30 40 30H60Q67 30 67 37V46H73V66H27V46Z M33 66H39V73H33Z M61 66H67V73H61Z',
+        'M34 47H66 M50 35V60 M34 60H66 M38 37V43 M43 37V43 M38 40H43 M57 43V37H63 M57 40H62', c, o);
+    case 'koffeeduet-rapid-buzzer':
+      return renderShowSticker('M29 60H71V72H29Z M35 59V52Q35 39 50 39Q65 39 65 52V59Z M49 25H59L52 33H59L44 43L47 34H40Z',
+        'M35 60H65 M39 66H61', c, o);
+    case 'koffeeduet-prize-hamper':
+      return renderShowSticker('M28 47H72L67 72H33Z M32 47V37H43V47Z M46 47V29H58V47Z M61 47V35H69V47Z M35 35Q50 20 65 35L62 39Q50 27 38 39Z',
+        'M31 53H69 M40 57L42 67 M50 57V67 M60 57L58 67 M50 33H54', c, o);
+    case 'koffeeduet-cue-card-fan':
+      return renderShowSticker('M28 39L48 29L67 65L47 75Z M40 30L63 27L70 68L47 71Z M48 32H72V71H48Z',
+        'M54 41H66 M54 49H65 M54 57H62 M34 43L39 41 M39 51L43 49', c, o);
+
     default: return '';
   }
 }
@@ -7303,6 +7438,40 @@ function renderAccent(attr, motifScale = 1) {
         out += `<circle cx="${cx}" cy="${cy}" r="1.5" fill="${c}" opacity="0.7"/>`; break;
       case 'me-date-drop':
         out += `<ellipse cx="${cx}" cy="${cy}" rx="2" ry="3.5" fill="${c}" opacity="0.8"/><path d="M${cx},${cy-2} L${cx},${cy+2}" stroke="white" stroke-width="0.8" opacity="0.4"/>`; break;
+
+      // ── Entertainment date nights ──
+      case 'hfhouse-microphone':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-2-4Q0-5 2-4V0Q0 2-2 0Z M-1 1H1V4H-1Z', 'M-2-2H2', c, 1, 1.6)}</g>`; break;
+      case 'hfhouse-vote-slip':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-4H3V4H-3Z', 'M-1-1L0 1L2-2', c, 1, 1.6)}</g>`; break;
+      case 'hfhouse-key':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-4H1V0H-1V4H-3Z M-1 2H2V4H-1Z', 'M-1-2H0', c, 1, 1.6)}</g>`; break;
+      case 'hfhouse-warning-bolt':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M0-4H3L1-1H3L-2 4L-1 1H-3Z', '', c, 1, 1.6)}</g>`; break;
+      case 'watchdate-play':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-4L4 0L-3 4Z', '', c, 1, 1.6)}</g>`; break;
+      case 'watchdate-pause':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-4H-1V4H-3Z M1-4H3V4H1Z', '', c, 1, 1.6)}</g>`; break;
+      case 'watchdate-kernel':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3 1Q-5-2-2-3Q0-6 2-3Q5-3 4 0L2 4H-2Z', 'M-1 1L1 2', c, 1, 1.6)}</g>`; break;
+      case 'watchdate-episode-ticket':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-4-3H4V-1Q1 0 4 1V3H-4V1Q-1 0-4-1Z', 'M0-1V1', c, 1, 1.6)}</g>`; break;
+      case 'soapduet-teardrop':
+        out += `<path d="M${cx} ${cy-4}Q${cx+6} ${cy+4} ${cx} ${cy+4}Q${cx-6} ${cy+4} ${cx} ${cy-4}Z" fill="${c}"/>`; break;
+      case 'soapduet-broken-dialogue':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-3H4V2H1L-2 4V2H-4Z" fill="${c}"/><path d="M0-3L-1-1L1 0L0 2" fill="none" stroke="#fff4d6" stroke-width="1.5"/></g>`; break;
+      case 'soapduet-phone-ring':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-2-4H2V4H-2Z" fill="${c}"/><path d="M-5-2L-6 0L-5 2 M5-2L6 0L5 2" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round"/></g>`; break;
+      case 'soapduet-exclamation':
+        out += `<g transform="translate(${cx} ${cy})" fill="${c}"><path d="M-1.5-5H1.5L1-1H-1Z"/><circle cy="3" r="2.5"/></g>`; break;
+      case 'koffeeduet-quotation':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-4-3H-1V1L-4 4V2L-3 1H-4Z M1-3H4V1L1 4V2L2 1H1Z', '', c, 1, 1.6)}</g>`; break;
+      case 'koffeeduet-rating-paddle':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-4H3V1H1V4H-1V1H-3Z', 'M-1-2L1-2', c, 1, 1.6)}</g>`; break;
+      case 'koffeeduet-mic-head':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M-3-3Q0-6 3-3V1H1V4H-1V1H-3Z', 'M-2-2L2 0 M-2 0L1-3', c, 1, 1.6)}</g>`; break;
+      case 'koffeeduet-gossip-burst':
+        out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M0-4L1-2L4-3L3 0L4 3L1 2L0 4L-1 2L-4 3L-3 0L-4-3L-1-2Z', '', c, 1, 1.6)}</g>`; break;
 
     }
     if (motifScale !== 1) out += '</g>';

@@ -123,6 +123,21 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
+### Current Entertainment Collection
+
+This rotation intentionally contains four requested themes:
+
+| Theme | Rendering style | Main visual vocabulary |
+|-------|-----------------|------------------------|
+| Bigg Boss: H/F House | Bold Sticker | Confession chair, camera, nomination buzzer, trophy |
+| Netflix & Never Leave | Bold Sticker | H/F profiles, popcorn, remote, shared blanket |
+| Pakistani Drama: Bas Ek Aur Episode | Standard | Expressive leads, haveli doorway, abandoned phone |
+| Koffee, Controversy & Us | Bold Sticker | Couch for two, rapid-fire buzzer, prize hamper, cue cards |
+
+All four opt into `highContrast: true` for opaque, separated backgrounds, centered large shapes, and enlarged corner accents. Each has its own background triad and subject-specific frame geometry. The shared `renderShowTexture`, `renderShowSticker`, and `renderShowFrame` helpers provide only rendering treatments; the individual cases supply the artwork. Streaming and show motifs use original SVG illustrations, not copied logos or screenshots.
+
+The five cuisine themes are preserved unchanged in `ARCHIVED_THEMES`, along with their renderer cases. Scheduled birthday themes remain separate and unchanged.
+
 ### Non-Negotiable Quality Gates
 
 Every new collection must satisfy all of these before it is considered complete:

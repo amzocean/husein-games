@@ -116,10 +116,6 @@ const ARCHIVED_THEMES = [
     accentShapes: ['handwritten-ink-dots', 'handwritten-mini-hearts', 'handwritten-pen-flicks', 'handwritten-comma-curls'],
     boardBg:      { pattern: 'handwritten-paper-lines', color: '#DA5A8A' },
   },
-];
-
-const THEMES = [
-
   {
     name: 'Italian Dolce Vita', emoji: '🍝',
     style: 'cute-light',
@@ -203,6 +199,72 @@ const THEMES = [
     shapeNames:   ['me-pomegranate-arils', 'me-pistachio-pair', 'me-zaatar-burst', 'me-date-pit'],
     accentShapes: ['me-pomegranate-seed', 'me-pistachio-shell', 'me-zaatar-speck', 'me-date-drop'],
     boardBg:      { pattern: 'me-pomegranate-scatter', color: '#8A4A2A' },
+  },
+];
+
+const THEMES = [
+  {
+    name: 'Bigg Boss: H/F House', emoji: '👁️',
+    style: 'bold-sticker',
+    highContrast: true,
+    palette: {
+      bg:     ['#EBCCFF', '#FFD080', '#99ECF0'],
+      ring:   ['#A40B42', '#075B25', '#1646B0', '#614000'],
+      shape:  ['#A40B42', '#075B25', '#1646B0'],
+      accent: ['#A40B42', '#075B25', '#614000'],
+    },
+    bgPatterns:   ['hfhouse-scan-lines', 'hfhouse-stage-rays', 'hfhouse-audio-tracks', 'hfhouse-wall-panels', 'hfhouse-signal-hatch'],
+    ringStyles:   ['hfhouse-doorway', 'hfhouse-viewfinder', 'hfhouse-stage-marquee'],
+    shapeNames:   ['hfhouse-confession-chair', 'hfhouse-camera', 'hfhouse-buzzer', 'hfhouse-trophy'],
+    accentShapes: ['hfhouse-microphone', 'hfhouse-vote-slip', 'hfhouse-key', 'hfhouse-warning-bolt'],
+    boardBg:      { pattern: 'hfhouse-scan-lines', color: '#8319C6' },
+  },
+  {
+    name: 'Netflix & Never Leave', emoji: '📺',
+    style: 'bold-sticker',
+    highContrast: true,
+    palette: {
+      bg:     ['#FFD3DA', '#BCDCFF', '#FFE578'],
+      ring:   ['#B01820', '#075B25', '#1646B0', '#604000'],
+      shape:  ['#B01820', '#075B25', '#1646B0'],
+      accent: ['#B01820', '#1646B0', '#604000'],
+    },
+    bgPatterns:   ['watchdate-screen-scan', 'watchdate-blanket-weave', 'watchdate-rewind-trails', 'watchdate-credit-lines', 'watchdate-cushion-seams'],
+    ringStyles:   ['watchdate-tv-bezel', 'watchdate-progress-surround', 'watchdate-blanket-wrap'],
+    shapeNames:   ['watchdate-two-profiles', 'watchdate-popcorn', 'watchdate-remote', 'watchdate-shared-blanket'],
+    accentShapes: ['watchdate-play', 'watchdate-pause', 'watchdate-kernel', 'watchdate-episode-ticket'],
+    boardBg:      { pattern: 'watchdate-screen-scan', color: '#CE2346' },
+  },
+  {
+    name: 'Pakistani Drama: Bas Ek Aur Episode', emoji: '😭',
+    highContrast: true,
+    palette: {
+      bg:     ['#CDF2EA', '#FFE0C5', '#EFE2FF'],
+      ring:   ['#9D164D', '#006450', '#4334A8', '#6B4100'],
+      shape:  ['#9D164D', '#006450', '#4334A8'],
+      accent: ['#9D164D', '#4334A8', '#6B4100'],
+    },
+    bgPatterns:   ['soapduet-curtain-falls', 'soapduet-courtyard-tiles', 'soapduet-dupatta-weave', 'soapduet-rain-streaks', 'soapduet-script-lines'],
+    ringStyles:   ['soapduet-haveli-arch', 'soapduet-parted-curtains', 'soapduet-split-screen'],
+    shapeNames:   ['soapduet-tearful-heroine', 'soapduet-shocked-hero', 'soapduet-mansion-door', 'soapduet-abandoned-phone'],
+    accentShapes: ['soapduet-teardrop', 'soapduet-broken-dialogue', 'soapduet-phone-ring', 'soapduet-exclamation'],
+    boardBg:      { pattern: 'soapduet-curtain-falls', color: '#137A73' },
+  },
+  {
+    name: 'Koffee, Controversy & Us', emoji: '☕',
+    style: 'bold-sticker',
+    highContrast: true,
+    palette: {
+      bg:     ['#FFC0E9', '#AEEDC4', '#FFD36B'],
+      ring:   ['#9C124E', '#075B35', '#1646B0', '#684000'],
+      shape:  ['#9C124E', '#075B35', '#1646B0'],
+      accent: ['#9C124E', '#1646B0', '#684000'],
+    },
+    bgPatterns:   ['koffeeduet-upholstery', 'koffeeduet-spotlight-fans', 'koffeeduet-cue-lines', 'koffeeduet-studio-slats', 'koffeeduet-speed-streaks'],
+    ringStyles:   ['koffeeduet-studio-arch', 'koffeeduet-spotlight-wings', 'koffeeduet-couch-outline'],
+    shapeNames:   ['koffeeduet-couch-for-two', 'koffeeduet-rapid-buzzer', 'koffeeduet-prize-hamper', 'koffeeduet-cue-card-fan'],
+    accentShapes: ['koffeeduet-quotation', 'koffeeduet-rating-paddle', 'koffeeduet-mic-head', 'koffeeduet-gossip-burst'],
+    boardBg:      { pattern: 'koffeeduet-upholstery', color: '#B91B82' },
   },
 ];
 
