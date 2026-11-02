@@ -3547,16 +3547,16 @@ function renderBg(attr) {
       return renderShowTexture('M31 8L55 92 M39 8L63 92 M61 8L85 92 M69 8L93 92', c, o);
     case 'den-woven-selvedge':
       return renderShowTexture('M26 8V92 M31 8V92 M26 30L36 35L26 40 M26 56L36 61L26 66 M69 8V92 M74 8V92 M74 30L64 35L74 40 M74 56L64 61L74 66', c, o);
-    case 'ournights-cushion-tufts':
-      return renderShowTexture('M8 35Q29 20 50 35T92 35 M8 65Q29 80 50 65T92 65 M35 8Q20 29 35 50T35 92 M65 8Q80 29 65 50T65 92', c, o);
-    case 'ournights-tray-grain':
-      return renderShowTexture('M8 31Q38 22 92 34 M8 45Q55 34 92 48 M8 59Q38 50 92 62 M8 73Q55 62 92 76', c, o);
-    case 'ournights-episode-rows':
-      return renderShowTexture('M27 26H73 M27 32H61 M27 48H73 M27 54H66 M27 70H73 M27 76H57', c, o);
-    case 'ournights-knit-strokes':
-      return renderShowTexture('M25 25L31 31L37 25 M49 25L55 31L61 25 M37 45L43 51L49 45 M61 45L67 51L73 45 M25 65L31 71L37 65 M49 65L55 71L61 65', c, o);
-    case 'ournights-lamplight':
-      return renderShowTexture('M35 8L8 75 M43 8L27 92 M57 8L73 92 M65 8L92 75', c, o);
+    case 'gamedates-word-trails':
+      return renderShowTexture('M12 30Q28 10 43 29T75 30Q91 47 74 61T43 65Q25 84 10 67 M24 26H29 M41 31H46 M72 30H77 M71 62H76 M40 66H45', c, o);
+    case 'gamedates-guess-rows':
+      return renderShowTexture('M12 27H24V39H12Z M28 27H40V39H28Z M44 27H56V39H44Z M60 27H72V39H60Z M76 27H88V39H76Z M12 61H24V73H12Z M28 61H40V73H28Z M44 61H56V73H44Z M60 61H72V73H60Z M76 61H88V73H76Z', c, o);
+    case 'gamedates-four-groups':
+      return renderShowTexture('M17 24H83 M17 40H83 M17 60H83 M17 76H83 M31 21V27 M49 21V27 M67 21V27 M31 37V43 M49 37V43 M67 37V43 M31 57V63 M49 57V63 M67 57V63 M31 73V79 M49 73V79 M67 73V79', c, o);
+    case 'gamedates-domino-trails':
+      return renderShowTexture('M18 16L38 23L28 53L8 46Z M13 31L33 38 M66 44L88 36L99 68L77 76Z M72 60L94 52 M44 62L59 67L51 91L36 86Z M40 74L55 79', c, o);
+    case 'gamedates-photo-grid':
+      return renderShowTexture('M10 31V12H29 M39 12H58V31 M10 41V60H29 M39 60H58V41 M65 53V34H84 M65 63V82H84 M23 23L44 49 M72 45L87 70', c, o);
 
     default: return '';
   }
@@ -4640,12 +4640,12 @@ function renderRing(attr) {
       return renderDramaFrame('M28 7H72Q84 7 84 19V81Q84 93 72 93H28Q16 93 16 81V19Q16 7 28 7Z M39 13H61 M42 87H58', c);
     case 'den-woven-cloth-edge':
       return renderDramaFrame('M7 29Q7 7 29 7 M71 7Q93 7 93 29 M7 71Q7 93 29 93 M71 93Q93 93 93 71 M36 8Q43 17 50 8Q57 17 64 8 M36 92Q43 83 50 92Q57 83 64 92 M8 38V62 M92 38V62', c);
-    case 'ournights-paired-seats':
-      return renderDramaFrame('M7 66V40Q7 33 14 33H21V19Q21 7 33 7H40 M60 7H67Q79 7 79 19V33H86Q93 33 93 40V66 M7 66V86H34 M66 86H93V66 M16 86V94 M84 86V94', c);
-    case 'ournights-serving-tray':
-      return renderDramaFrame('M22 13H78Q87 13 87 22V78Q87 87 78 87H22Q13 87 13 78V22Q13 13 22 13Z M13 35H6V65H13 M87 35H94V65H87', c);
-    case 'ournights-episode-tabs':
-      return renderDramaFrame('M8 28V14Q8 8 14 8H86Q92 8 92 14V28 M8 40V60 M92 40V60 M8 72V86Q8 92 14 92H86Q92 92 92 86V72 M33 8V15 M66 8V15 M33 85V92 M66 85V92', c);
+    case 'gamedates-photo-corners':
+      return renderDramaFrame('M7 29V7H29L7 29 M71 7H93V29L71 7 M7 71V93H29L7 71 M71 93H93V71L71 93 M35 8H65 M35 92H65 M8 35V65 M92 35V65', c);
+    case 'gamedates-halfway-letters':
+      return renderDramaFrame('M23 7H77V17H23Z M34 7V17 M45 7V17 M56 7V17 M67 7V17 M23 83H77V93H23Z M34 83V93 M45 83V93 M56 83V93 M67 83V93 M15 8H8V36 M8 64V92H15 M85 8H92V36 M92 64V92H85', c);
+    case 'gamedates-distance-link':
+      return renderDramaFrame('M34 7H19Q8 7 8 18V82Q8 93 19 93H34 M66 7H81Q92 7 92 18V82Q92 93 81 93H66 M43 9C39 2 47 1 50 6C53 1 61 2 57 9L50 16Z M43 92H47 M53 92H57', c);
 
     default: return '';
   }
@@ -6357,18 +6357,22 @@ function renderShape(attr) {
     case 'den-kind-hands':
       return renderDramaIllustration('M22 48Q24 43 28 47L37 58L44 59L36 51Q33 47 37 45Q39 44 42 47L51 57Q55 63 49 69Q44 75 37 72L27 66Z M78 48Q76 43 72 47L63 58L56 59L64 51Q67 47 63 45Q61 44 58 47L49 57Q45 63 51 69Q56 75 63 72L73 66Z M50 43C31 33 39 22 47 29L50 32L53 29C61 22 69 33 50 43Z',
         'M26 51L33 62Q39 67 45 65 M74 51L67 62Q61 67 55 65 M36 51L44 60 M64 51L56 60', c, o);
-    case 'ournights-favourite-seats':
-      return renderDramaIllustration('M26 37Q26 30 33 30H39Q46 30 46 37V49H49V69H23V49H26Z M54 37Q54 30 61 30H67Q74 30 74 37V49H77V69H51V49H54Z M27 69H32V76H27Z M67 69H72V76H67Z',
-        'M28 54H43 M57 54H72 M29 62H43 M57 62H71 M34 37H39 M62 37H67', c, o);
-    case 'ournights-snack-tray':
-      return renderDramaIllustration('M23 58H77V69H23Z M29 69H34V75H29Z M66 69H71V75H66Z M28 42H45L43 56H30Z M53 46Q63 37 73 46L70 56H56Z M30 32H42V40H30Z',
-        'M28 63H72 M32 46H41 M59 47H68 M34 33V38 M62 42V53 M55 52H71', c, o);
-    case 'ournights-shared-remote':
-      return renderDramaIllustration('M43 23H59Q66 23 65 30L59 73Q58 78 52 78H36Q30 78 31 71L37 30Q38 23 43 23Z',
-        'M46 31H55 M43 41H48 M53 41H58 M42 49H47 M52 49H57 M43 61L51 66L42 70Z M40 55H56', c, o);
-    case 'ournights-watchlist':
-      return renderDramaIllustration('M27 27H73Q77 27 77 31V68H23V31Q23 27 27 27Z M46 68H54V73H64V78H36V73H46Z',
-        'M30 35H40V41H30Z M46 36H68 M46 40H62 M30 47H40V53H30Z M46 48H68 M46 52H60 M30 59H40 M46 60H66', c, o);
+    case 'gamedates-five-letter-guess':
+      return `<g opacity="${o}" transform="rotate(-6 50 50)">` +
+        `<path d="M19 36H30V50H19Z M32 36H43V50H32Z M45 36H56V50H45Z M58 36H69V50H58Z M71 36H82V50H71Z M19 54H30V70H19Z M32 54H43V70H32Z M45 54H56V70H45Z M58 54H69V70H58Z M71 54H82V70H71Z" fill="${c}"/>` +
+        `<path d="M23 43H26 M36 43H39 M49 43H52 M62 43H65 M75 43H78" stroke="#fffaf4" stroke-width="2"/>` +
+        `<text x="24.5 37.5 50.5 63.5 76.5" y="65" text-anchor="middle" fill="#fffaf4" font-family="Arial, sans-serif" font-size="9" font-weight="700">HEART</text></g>`;
+    case 'gamedates-winding-word':
+      return `<g opacity="${o}"><path d="M28 30Q39 16 51 31T70 48Q72 67 50 67T28 68" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>` +
+        `<g fill="${c}"><circle cx="28" cy="30" r="8"/><circle cx="51" cy="31" r="8"/><circle cx="70" cy="48" r="8"/><circle cx="50" cy="67" r="8"/><circle cx="28" cy="68" r="8"/></g>` +
+        `<g fill="#fffaf4" font-family="Arial, sans-serif" font-size="9" font-weight="700" text-anchor="middle"><text x="28" y="33">H</text><text x="51" y="34">E</text><text x="70" y="51">A</text><text x="50" y="70">R</text><text x="28" y="71">T</text></g></g>`;
+    case 'gamedates-connected-groups':
+      return `<g transform="rotate(8 50 50)">${renderDramaIllustration('M25 25H43Q47 25 47 29V43Q47 47 43 47H25Q21 47 21 43V29Q21 25 25 25Z M57 25H75Q79 25 79 29V43Q79 47 75 47H57Q53 47 53 43V29Q53 25 57 25Z M25 53H43Q47 53 47 57V71Q47 75 43 75H25Q21 75 21 71V57Q21 53 25 53Z M57 53H75Q79 53 79 57V71Q79 75 75 75H57Q53 75 53 71V57Q53 53 57 53Z',
+        'M29 32H32 M38 32H41 M29 40H32 M38 40H41 M61 32H64 M70 32H73 M61 40H64 M70 40H73 M29 60H32 M38 60H41 M29 68H32 M38 68H41 M61 60H64 M70 60H73 M61 68H64 M70 68H73', c, o)}</g>`;
+    case 'gamedates-domino-pair':
+      return `<g opacity="${o}" fill="${c}" stroke="#fffaf4" stroke-width="2">` +
+        `<g transform="rotate(-18 36 45)"><rect x="25" y="23" width="22" height="44" rx="4" stroke="none"/><path d="M28 45H44"/><g fill="#fffaf4" stroke="none"><circle cx="36" cy="34" r="2"/><circle cx="31" cy="51" r="2"/><circle cx="36" cy="56" r="2"/><circle cx="41" cy="61" r="2"/></g></g>` +
+        `<g transform="rotate(14 65 59)"><rect x="54" y="37" width="22" height="44" rx="4" stroke="none"/><path d="M57 59H73"/><g fill="#fffaf4" stroke="none"><circle cx="61" cy="44" r="2"/><circle cx="69" cy="52" r="2"/><circle cx="61" cy="65" r="2"/><circle cx="69" cy="65" r="2"/><circle cx="61" cy="75" r="2"/><circle cx="69" cy="75" r="2"/></g></g></g>`;
 
     default: return '';
   }
@@ -7660,14 +7664,14 @@ function renderAccent(attr, motifScale = 1) {
         out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M-3 2Q-4-3 0-4Q4-3 3 2Z M-1 5H1 M-6-2L-5-1 M6-2L5-1"/></g>`; break;
       case 'den-cuff':
         out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4H5L3 4H-3Z" fill="${c}"/><path d="M-3 0H3 M0 2H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
-      case 'ournights-cushion':
-        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4Q0-2 5-4Q3 0 5 4Q0 2-5 4Q-3 0-5-4Z" fill="${c}"/><path d="M-1 0H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
-      case 'ournights-snack-bite':
-        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-4H4V-1Q0-1 1 3L-2 5L-5 1Z" fill="${c}"/><path d="M-3-1H-1 M-2 2H0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
-      case 'ournights-remote-pad':
-        out += `<g transform="translate(${cx} ${cy})"><rect x="-3" y="-5" width="6" height="10" rx="2" fill="${c}"/><path d="M-1-2H1 M-1 1H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
-      case 'ournights-episode-tab':
-        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4H5V4H-5Z" fill="${c}"/><path d="M-2-1L1 1L-2 3Z" fill="#fffaf4"/><path d="M2-2H4" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'gamedates-photo-pair':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-5H2V2H-5Z M-1-1H6V6H-1Z" fill="${c}"/><path d="M-3-3H0V0 M1 1H4V4" fill="none" stroke="#fffaf4" stroke-width="1.3"/></g>`; break;
+      case 'gamedates-halfway-heart':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M0 5C-10-1-5-8 0-3C5-8 10-1 0 5Z" fill="${c}"/><path d="M0-3V4" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'gamedates-ludo-pawn':
+        out += `<g transform="translate(${cx} ${cy})" fill="${c}"><circle cy="-3" r="2.7"/><path d="M-2-1H2L3 3Q5 3 5 5H-5Q-5 3-3 3Z"/></g>`; break;
+      case 'gamedates-cipher-letters':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6 4L-3-4L0 4 M-5 1H-1 M2-4V4 M6-4V4 M2 0H6" fill="none" stroke="${c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>`; break;
 
     }
     if (motifScale !== 1) out += '</g>';

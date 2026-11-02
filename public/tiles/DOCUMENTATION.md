@@ -133,9 +133,9 @@ Previews use `createTileSVG()` with one real board attribute at a time, or `crea
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Current Shared-Watchlist Collection
+### Current Drama & Game-Date Collection
 
-This rotation contains five soft, non-sticker themes inspired by the shared watchlist:
+This rotation contains four soft, non-sticker drama themes and one game-date theme:
 
 | Theme | Rendering style | Main visual vocabulary |
 |-------|-----------------|------------------------|
@@ -143,7 +143,9 @@ This rotation contains five soft, non-sticker themes inspired by the shared watc
 | Meri Zindagi Hai Tu | Cute Light | Ayra's stethoscope and coat, Kamyar's car and keys |
 | Tere Bin | Standard | Draped shawl, curled contract with diagonal pen, open pool ladder and ripples, haveli doorway |
 | Dar-e-Nijaat | Standard | Tilted phone with message bubble, flowing chadar, reading lamp, cupped hands and heart |
-| Our Drama Nights | Standard | Paired favourite seats, snack tray, remote, episode watchlist |
+| Our Little Game Dates | Standard | Wordle-inspired letter rows, Strands-inspired word trail, Connections-inspired groups, Pips-inspired dominoes |
+
+**Game-date theme:** Our Little Game Dates replaces Our Drama Nights. Its centers refer to Wordle, Strands, Connections, and Pips through original illustrations, not copied NYT interfaces, logos, or daily answers. Frames and corners bring in huseinlovesyou.com's Photo Tiles, Hidaayat Ciphers, Ludo, and Better Half, with a heart linking two separated frame edges. Keep this theme about connection through games from different places; do not reintroduce shared sofas, snack trays, remotes, or assumptions about watching TV together. Do not substitute H/F Deal for these game references. Its blush/periwinkle/pale-green palette and soft rendering are retained, and all four drama themes are unchanged.
 
 **Design reference:** the non-sticker birthday-era themes, especially September Sparkle, Wrapped With Love, and Birthday Eve Wishes: clean palette-colored silhouettes, slim decorative frames, light backgrounds, and playful corner motifs. The new collection does not use cream sticker keylines, dark offset shadows, or the Bold Sticker helpers. The two Cute Light themes retain their declared style, but `highContrast: true` takes precedence over the legacy Cute Light transforms.
 

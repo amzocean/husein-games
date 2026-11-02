@@ -334,7 +334,7 @@ const THEMES = [
     boardBg:      { pattern: 'den-linen-strands', color: '#607A6A' },
   },
   {
-    name: 'Our Drama Nights', emoji: '🛋️',
+    name: 'Our Little Game Dates', emoji: '🧩',
     highContrast: true,
     softIllustration: true,
     palette: {
@@ -343,11 +343,11 @@ const THEMES = [
       shape:  ['#A40B42', '#035020', '#123E9C'],
       accent: ['#A40B42', '#123E9C', '#614000'],
     },
-    bgPatterns:   ['ournights-cushion-tufts', 'ournights-tray-grain', 'ournights-episode-rows', 'ournights-knit-strokes', 'ournights-lamplight'],
-    ringStyles:   ['ournights-paired-seats', 'ournights-serving-tray', 'ournights-episode-tabs'],
-    shapeNames:   ['ournights-favourite-seats', 'ournights-snack-tray', 'ournights-shared-remote', 'ournights-watchlist'],
-    accentShapes: ['ournights-cushion', 'ournights-snack-bite', 'ournights-remote-pad', 'ournights-episode-tab'],
-    boardBg:      { pattern: 'ournights-cushion-tufts', color: '#A64E76' },
+    bgPatterns:   ['gamedates-word-trails', 'gamedates-guess-rows', 'gamedates-four-groups', 'gamedates-domino-trails', 'gamedates-photo-grid'],
+    ringStyles:   ['gamedates-photo-corners', 'gamedates-halfway-letters', 'gamedates-distance-link'],
+    shapeNames:   ['gamedates-five-letter-guess', 'gamedates-winding-word', 'gamedates-connected-groups', 'gamedates-domino-pair'],
+    accentShapes: ['gamedates-photo-pair', 'gamedates-halfway-heart', 'gamedates-ludo-pawn', 'gamedates-cipher-letters'],
+    boardBg:      { pattern: 'gamedates-word-trails', color: '#A64E76' },
   },
 ];
 
