@@ -281,7 +281,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 
 **Trigger**: User says "let's do [theme names]", "implement these themes", etc.
 
-**This is a 6-step procedure. Do ALL steps for EACH theme.**
+**This is a 7-step procedure. Do ALL steps for EACH theme, including its illustrated guide.**
 
 #### Step 1: Plan Color Identity (BEFORE any code)
 
@@ -574,7 +574,28 @@ function renderAccent(attr) {
           stroke="${c}" stroke-width="2" opacity="0.7"/>`; break;
 ```
 
-#### Step 4: Validate
+#### Step 4: Add the Illustrated Theme Guide (theme-guide.js)
+
+Every new theme must ship with a complete **Behind the tiles** guide, not just artwork. Add an entry to `GUIDES` keyed by the exact `theme.name`:
+
+```javascript
+  'ThemeName': {
+    intro: 'Describe the theme story and how its objects fit together.',
+    background: 'Explain the background texture, palette, and their references.',
+    elements: {
+      'themename-shape1': ['Human-readable title', 'Explain what this object refers to and why it was drawn this way.'],
+      // Add all remaining shapeNames, ringStyles, and accentShapes.
+    },
+  },
+```
+
+1. Supply a specific `[title, description]` for **every** identifier in `shapeNames` (4), `ringStyles` (3), and `accentShapes` (4): exactly **11 entries**, with no stale or misspelled keys.
+2. Explain the references and design choices in reader-friendly language. For drama themes, distinguish recognizable series references from original supporting symbols; respect the user's viewing progress and avoid spoilers or invented scene claims.
+3. Explain the background treatment in `background`. The guide automatically adds the shared H/F heart explanation, giving **13 illustrated cards** in total. Do not add a heart identifier to `elements`.
+4. Reuse the existing guide renderer: it displays the actual board SVGs through `createTileSVG()` and `createCenterHeartSVG()`, including the current palette and scaling. Do not create separate icons, emoji substitutes, or copied SVG paths for the descriptions.
+5. Keep descriptions synchronized whenever a motif is renamed or redesigned. Generic fallback descriptions support older/scheduled themes but are **not a substitute for authored explanations in a new theme**.
+
+#### Step 5: Validate
 
 ```bash
 node validate-themes.js
@@ -596,7 +617,9 @@ node --test tools/tiles-renderer.test.js
 | boardBg validation | Missing boardBg property | Add `boardBg: { pattern: 'solid', color: '#hex' }` |
 | Orphan cases | Cases in renderer with no theme using them | Warning only — OK for archived themes. Ignore. |
 
-#### Step 5: Manual Verification (IMPORTANT — validator cannot judge the full board)
+**The renderer regression tests must also pass.** Their guide-coverage test checks that every active theme has its own guide and that its explanation keys exactly match all 11 motif identifiers, without missing or stale entries.
+
+#### Step 6: Manual Verification (IMPORTANT — validator cannot judge the full board)
 
 The validator catches structural errors and minimum match-color distance, but it cannot decide whether a board is effortless to read, emotionally coherent, or visually original. Check these manually:
 
@@ -618,10 +641,12 @@ The validator catches structural errors and minimum match-color distance, but it
 
 9. **Center scale** — centers should be recognizable immediately and visually balanced with the rings. Check the renderer branch: high-contrast shapes normally use centered 1.15 scaling, or scale 1 with `softIllustration`; legacy Cute Light uses a different transform. Increase source geometry rather than adding fragile tiny details.
 
-#### Step 6: Commit & Deploy
+10. **Illustrated guide** — scroll below the board and use **Explore this theme** / **Back to game** on mobile and desktop. Confirm all 13 cards appear, the 11 motif previews use the exact corresponding board artwork, and descriptions match the visible designs. Start a new game to check that the guide switches themes. Clear matches and complete a win/reset to confirm guide previews remain intact and gameplay still works. Check for horizontal overflow and browser errors.
 
-```bash
-git add public/tiles/engine.js public/tiles/renderer.js
+#### Step 7: Commit & Deploy
+
+```powershell
+git add public\tiles\engine.js public\tiles\renderer.js public\tiles\theme-guide.js
 git commit -m "Add [ThemeName] theme to Photo Tiles
 
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
@@ -630,7 +655,7 @@ git push
 
 Auto-deploys to Render.com (~2 min). Hard-refresh (Ctrl+Shift+R) to bypass cache.
 
-**If implementing multiple themes at once**: Add all theme objects to engine.js and all renderer cases to renderer.js, then run the validator once and commit once. Don't do one theme at a time.
+**If implementing multiple themes at once**: Add all theme objects to engine.js, all renderer cases to renderer.js, and all guide entries to theme-guide.js. Run both validation commands, complete the browser checks, and commit the collection together. Don't do one theme at a time.
 
 ---
 
