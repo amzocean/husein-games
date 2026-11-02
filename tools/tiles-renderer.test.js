@@ -7,6 +7,7 @@ const vm = require('node:vm');
 const tilesDir = path.join(__dirname, '..', 'public', 'tiles');
 const load = (file, names, globals = {}) => {
   const source = fs.readFileSync(path.join(tilesDir, file), 'utf8')
+    .replace(/^import .+;$/gm, '')
     .replace(/export\s*\{[^}]*\};?/g, '');
   return vm.runInNewContext(`${source}\n;({ ${names.join(', ')} });`, globals);
 };
@@ -66,5 +67,19 @@ test('every active and scheduled foreground renders on all three backgrounds', (
       const svg = renderer.renderBg({ pattern, color: theme.boardBg.color });
       assert.match(svg, /<(?:path|rect|line)\b/, `${theme.name}: blank background ${pattern}`);
     }
+  }
+});
+
+test('every current motif has its own guide explanation', () => {
+  const { GUIDES } = load('theme-guide.js', ['GUIDES']);
+  for (const theme of engine.THEMES) {
+    const guide = GUIDES[theme.name];
+    assert.ok(guide?.intro && guide.background, `${theme.name}: missing theme introduction`);
+    const identifiers = [...theme.shapeNames, ...theme.ringStyles, ...theme.accentShapes];
+    for (const identifier of identifiers) {
+      const entry = guide.elements[identifier];
+      assert.ok(entry?.[0] && entry[1], `${theme.name}: unexplained motif ${identifier}`);
+    }
+    assert.deepEqual(Object.keys(guide.elements).sort(), [...identifiers].sort(), `${theme.name}: stale guide motif`);
   }
 });

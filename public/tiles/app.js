@@ -3,6 +3,7 @@
 import { GameState } from './engine.js';
 import { renderBoard, updateTileSVG } from './renderer.js';
 import { getDailyPhotoURL, getPhotoStats } from './photos.js';
+import { renderThemeGuide } from './theme-guide.js';
 
 // Expose stats to browser console: await photoStats()
 window.photoStats = async () => {
@@ -21,6 +22,8 @@ const clearedEl = document.getElementById('tiles-cleared');
 const winBanner = document.getElementById('win-banner');
 const btnNewGame = document.getElementById('btn-new-game');
 const themeToast = document.getElementById('theme-toast');
+const themeGuide = document.getElementById('theme-guide');
+const themeGuideLink = document.getElementById('theme-guide-link');
 
 // Game state
 const game = new GameState();
@@ -46,6 +49,8 @@ async function startNewGame() {
   // Generate and render new board
   const board = game.newGame();
   renderBoard(board, boardEl);
+  renderThemeGuide(board, themeGuide);
+  themeGuideLink.hidden = false;
 
   // Show theme name briefly (scheduled birthday themes also show a countdown line)
   if (board.theme) {

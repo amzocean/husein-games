@@ -27,16 +27,16 @@
 }
 
 html {
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
-  height: 100%;
-  overflow: hidden;
+  min-height: 100svh;
+  overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
@@ -45,7 +45,8 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100svh;
+  min-height: 320px;
   max-width: 500px;
   margin: 0 auto;
   position: relative;
@@ -172,7 +173,7 @@ body {
   grid-template-columns: repeat(var(--cols, 5), 1fr);
   grid-template-rows: repeat(var(--rows, 5), 1fr);
   gap: var(--tile-gap);
-  width: 100%;
+  width: min(100%, calc(100svh - 150px));
   max-width: min(95vw, 500px);
   aspect-ratio: 1 / 1;
   position: relative;
@@ -184,6 +185,141 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-color: var(--color-surface);
+}
+
+/* ============ Illustrated Theme Guide ============ */
+.theme-guide-link {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 10px 16px 18px;
+  color: var(--color-brand);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.theme-guide-link span {
+  margin-left: 5px;
+}
+
+.theme-guide {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 28px 18px 40px;
+  border-top: 1px solid rgba(196, 69, 105, 0.15);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.theme-guide[hidden],
+.theme-guide-link[hidden] {
+  display: none;
+}
+
+.theme-guide:focus {
+  outline: none;
+}
+
+.theme-guide-eyebrow {
+  margin-bottom: 8px;
+  color: var(--color-brand);
+  font-size: 0.68rem;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.theme-guide h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.theme-guide-intro {
+  margin-top: 14px;
+  color: #62626b;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.theme-guide-rule {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: #fff7f9;
+  color: #81465a;
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.theme-guide-group {
+  margin-top: 28px;
+}
+
+.theme-guide-group h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.theme-guide-colors {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: #62626b;
+  font-size: 0.7rem;
+}
+
+.theme-guide-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.theme-guide-group ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.theme-guide-item {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-md);
+}
+
+.theme-guide-preview {
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-sm);
+}
+
+.theme-guide-item h4 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.theme-guide-item p {
+  margin-top: 5px;
+  color: #62626b;
+  font-size: 0.74rem;
+  line-height: 1.65;
+}
+
+.theme-guide-back {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--color-brand);
+  font-size: 0.8rem;
+  text-underline-offset: 4px;
 }
 
 /* ============ Tiles ============ */

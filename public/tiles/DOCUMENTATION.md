@@ -46,10 +46,11 @@ A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center
   - `createTileSVG()` — assembles tile with white base + tint + board bg + matchable layers
   - `createCenterHeartSVG()` — renders the h❤f monogram center tile
 - `photos.js` — Daily photo selection from `photos/manifest.json` (one photo per calendar day, sequential, no skips)
+- `theme-guide.js` — Illustrated scroll-down guide: theme-specific reference descriptions, exact renderer previews, and a generic fallback for scheduled/older themes
 - `photos/` — Personal photos revealed as tiles are cleared (62 photos, named `photo-01.jpg` through `photo-62.jpg`)
 - `update-photos.ps1` — PowerShell script to regenerate `photos/manifest.json` from image files in `photos/`
 - `validate-themes.js` — Pre-commit theme validator (10 checks, all must pass)
-- `../../tools/tiles-renderer.test.js` — Dependency-free renderer regression tests: soft/legacy sizing, runtime foreground/background coverage, distinct variants, and no sticker styling in the soft collection
+- `../../tools/tiles-renderer.test.js` — Dependency-free regression tests: soft/legacy sizing, runtime rendering coverage, distinct variants, no sticker styling, and complete current-theme explanations
 
 ## Tile SVG Layer Stack (back-to-front)
 
@@ -115,6 +116,14 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 6. Romantic jigsaw cascade — photo pieces fly in from random positions and assemble the full photo
 7. "✨ New" button starts a fresh board with a new random theme + random photo
 
+### Illustrated Theme Guide
+
+The game occupies the first viewport. Scroll below it, or use **Explore this theme**, to read **Behind the tiles** for the current board. The guide updates on every new game and contains 4 center illustrations, 3 frames, 4 corner motifs, the background, and the H/F monogram.
+
+Previews use `createTileSVG()` with one real board attribute at a time, or `createCenterHeartSVG()` for the monogram. They retain the actual paths, colors, scale, texture, and background treatment; do not substitute emoji, screenshots, or independently redrawn icons. Guide SVGs are decorative beside descriptive text and are not playable tiles. Matching/removal selectors remain scoped to `#board`, so clearing an attribute never removes its guide example.
+
+`GUIDES` in `theme-guide.js` maps each current theme name to an introduction, background explanation, and `[title, description]` entries keyed by all 11 motif identifiers. Keep those keys consistent with `shapeNames`, `ringStyles`, and `accentShapes` when artwork changes. Explain both the reference and the illustration choice; distinguish actual series references from original supporting motifs. Dar-e-Nijaat copy must respect the episode-15 boundary. Scheduled/older themes without metadata get readable motif names and generic descriptions automatically.
+
 ### Score Display
 - Current combo, best combo, tiles cleared (X/24)
 
@@ -162,7 +171,7 @@ Every new collection must satisfy all of these before it is considered complete:
 | # | Workflow | When | Files Modified |
 |---|---------|------|---------------|
 | 1 | [Brainstorm New Themes](#workflow-1-brainstorm-new-themes) | User asks for theme ideas | None (ideas only) |
-| 2 | [Implement New Themes](#workflow-2-implement-new-themes) | User picks themes to build | `engine.js`, `renderer.js` |
+| 2 | [Implement New Themes](#workflow-2-implement-new-themes) | User picks themes to build | `engine.js`, `renderer.js`, `theme-guide.js` |
 | 2B | [Implement Bold Sticker Themes](#workflow-2b-implement-bold-sticker-themes) | User requests the Bold Sticker look | `engine.js`, `renderer.js` |
 | 3 | [Archive / Reactivate Themes](#workflow-3-archive--reactivate-themes) | User wants to rotate themes | `engine.js` only |
 | 4 | [Scheduled Birthday Themes](#workflow-4-scheduled-birthday-themes) | Date-locked special-occasion themes | `engine.js`, `renderer.js`, `app.js` |
