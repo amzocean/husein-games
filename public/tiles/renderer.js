@@ -1099,6 +1099,16 @@ function renderShowFrame(d, c) {
     `<path d="${d}" stroke="${c}" stroke-width="3.5"/></g>`;
 }
 
+function renderDramaFrame(d, c) {
+  return `<path d="${d}" fill="none" stroke="${c}" stroke-width="3" opacity="0.92" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function renderDramaIllustration(d, detail, c, o) {
+  return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round">` +
+    `<path d="${d}" fill="${c}" fill-rule="evenodd"/>` +
+    `<path d="${detail}" fill="none" stroke="#fffaf4" stroke-width="2.4"/></g>`;
+}
+
 function renderBg(attr) {
   const c = attr.color;
   const o = 0.35;
@@ -3496,6 +3506,58 @@ function renderBg(attr) {
     case 'koffeeduet-speed-streaks':
       return renderShowTexture('M8 30H50 M27 38H84 M14 50H68 M35 58H92 M8 70H52', c, o);
 
+    // Shared watchlist: quiet, subject-specific textures, without sticker treatments.
+    case 'kmkt-road-sweeps':
+      return renderShowTexture('M8 38C30 13 65 67 92 42 M8 60C35 35 65 89 92 64', c, o);
+    case 'kmkt-book-lines':
+      return renderShowTexture('M25 29Q37 25 46 30 M54 30Q65 25 77 29 M25 43Q37 39 46 44 M54 44Q65 39 77 43 M25 57Q37 53 46 58 M54 58Q65 53 77 57 M25 71Q37 67 46 72 M54 72Q65 67 77 71', c, o);
+    case 'kmkt-game-traces':
+      return renderShowTexture('M8 32H35V42H68V29H92 M8 61H27V73H61V55H92', c, o);
+    case 'kmkt-denim-seams':
+      return renderShowTexture('M28 8L43 92 M33 8L48 92 M64 8L79 92 M69 8L84 92', c, o);
+    case 'kmkt-keyboard-rows':
+      return renderShowTexture('M25 30H75 M25 35H75 M30 48H70 M30 53H70 M35 66H65 M35 71H65', c, o);
+    case 'mzht-pulse-lines':
+      return renderShowTexture('M8 39H34L39 35L44 46L49 30L54 39H92 M8 65H51L56 61L61 71L66 56L71 65H92', c, o);
+    case 'mzht-coat-weave':
+      return renderShowTexture('M8 30L92 42 M8 50L92 62 M8 70L92 82 M33 8L21 92 M57 8L45 92 M81 8L69 92', c, o);
+    case 'mzht-chart-rules':
+      return renderShowTexture('M30 25H75 M30 39H69 M30 53H75 M30 67H65 M30 81H72 M24 25V81', c, o);
+    case 'mzht-window-reflections':
+      return renderShowTexture('M28 23L52 47 M39 23L63 47 M47 56L72 81 M58 56L83 81', c, o);
+    case 'mzht-key-trails':
+      return renderShowTexture('M8 35H39Q47 35 47 43V49 M92 67H63Q55 67 55 59V53 M8 74H33 M69 26H92', c, o);
+    case 'terebin-shawl-weave':
+      return renderShowTexture('M8 29L92 47 M8 47L92 65 M8 65L92 83 M28 8L46 92 M53 8L71 92', c, o);
+    case 'terebin-pool-caustics':
+      return renderShowTexture('M8 33Q26 23 43 33T77 33T92 33 M8 50Q26 60 43 50T77 50T92 50 M8 70Q26 60 43 70T77 70T92 70', c, o);
+    case 'terebin-contract-lines':
+      return renderShowTexture('M27 27H73 M27 37H63 M27 47H73 M27 57H67 M27 67H58 M50 79Q57 69 63 77T78 74', c, o);
+    case 'terebin-stone-joints':
+      return renderShowTexture('M8 28H92 M8 51H92 M8 74H92 M34 8V28 M65 28V51 M37 51V74 M67 74V92', c, o);
+    case 'terebin-fringe-trails':
+      return renderShowTexture('M8 31Q50 44 92 31 M25 35L23 47 M42 38L41 50 M59 38L60 50 M76 35L78 47 M8 65Q50 78 92 65 M25 69L23 81 M42 72L41 84 M59 72L60 84 M76 69L78 81', c, o);
+    case 'den-linen-strands':
+      return renderShowTexture('M28 8Q34 50 28 92 M40 8Q46 50 40 92 M60 8Q54 50 60 92 M72 8Q66 50 72 92', c, o);
+    case 'den-folded-cloth':
+      return renderShowTexture('M8 27Q50 48 92 27 M8 49Q50 70 92 49 M8 71Q50 92 92 71', c, o);
+    case 'den-message-lines':
+      return renderShowTexture('M25 28H64 M25 37H54 M39 53H77 M49 62H77 M25 78H63', c, o);
+    case 'den-window-light':
+      return renderShowTexture('M31 8L55 92 M39 8L63 92 M61 8L85 92 M69 8L93 92', c, o);
+    case 'den-woven-selvedge':
+      return renderShowTexture('M26 8V92 M31 8V92 M26 30L36 35L26 40 M26 56L36 61L26 66 M69 8V92 M74 8V92 M74 30L64 35L74 40 M74 56L64 61L74 66', c, o);
+    case 'ournights-cushion-tufts':
+      return renderShowTexture('M8 35Q29 20 50 35T92 35 M8 65Q29 80 50 65T92 65 M35 8Q20 29 35 50T35 92 M65 8Q80 29 65 50T65 92', c, o);
+    case 'ournights-tray-grain':
+      return renderShowTexture('M8 31Q38 22 92 34 M8 45Q55 34 92 48 M8 59Q38 50 92 62 M8 73Q55 62 92 76', c, o);
+    case 'ournights-episode-rows':
+      return renderShowTexture('M27 26H73 M27 32H61 M27 48H73 M27 54H66 M27 70H73 M27 76H57', c, o);
+    case 'ournights-knit-strokes':
+      return renderShowTexture('M25 25L31 31L37 25 M49 25L55 31L61 25 M37 45L43 51L49 45 M61 45L67 51L73 45 M25 65L31 71L37 65 M49 65L55 71L61 65', c, o);
+    case 'ournights-lamplight':
+      return renderShowTexture('M35 8L8 75 M43 8L27 92 M57 8L73 92 M65 8L92 75', c, o);
+
     default: return '';
   }
 }
@@ -4552,6 +4614,38 @@ function renderRing(attr) {
       return renderShowFrame('M5 38V5H34L20 32 M95 38V5H66L80 32 M5 60L13 95H34 M95 60L87 95H66 M35 95H65', c);
     case 'koffeeduet-couch-outline':
       return renderShowFrame('M5 58V42Q5 34 13 34H21V20Q21 5 36 5H64Q79 5 79 20V34H87Q95 34 95 42V83H5Z M13 83V95 M87 83V95 M24 91H76', c);
+
+    case 'kmkt-game-bezel':
+      return renderDramaFrame('M7 25Q7 7 25 7H75Q93 7 93 25V73Q93 85 80 85H20Q7 85 7 73Z M36 94H64 M50 85V94', c);
+    case 'kmkt-open-book':
+      return renderDramaFrame('M7 12Q28 3 50 12Q72 3 93 12V89Q71 82 50 92Q29 82 7 89Z M50 12V20 M50 82V92 M12 24V78 M88 24V78', c);
+    case 'kmkt-road-bends':
+      return renderDramaFrame('M29 6Q6 10 8 36V68Q7 91 30 94 M71 6Q94 10 92 36V68Q93 91 70 94 M40 7H60 M40 93H60', c);
+    case 'mzht-stethoscope-loop':
+      return renderDramaFrame('M9 33V14Q9 7 17 7H29 M91 33V14Q91 7 83 7H71 M9 33V55Q9 89 43 89H59Q86 89 86 65 M24 7H31 M69 7H76', c) +
+        `<circle cx="86" cy="61" r="5" fill="${c}"/>`;
+    case 'mzht-car-window':
+      return renderDramaFrame('M7 79L14 30Q16 22 28 19L72 8Q85 5 88 20L93 79Q93 89 83 89H17Q7 89 7 79Z M15 79H85', c);
+    case 'mzht-chart-clip':
+      return renderDramaFrame('M32 9H16Q8 9 8 17V85Q8 93 16 93H84Q92 93 92 85V17Q92 9 84 9H68 M32 7H68V17H32Z M34 87H66', c);
+    case 'terebin-draped-shawl':
+      return renderDramaFrame('M8 7Q50 27 92 7L87 87Q50 72 13 87Z M15 88L14 94 M28 85V92 M41 83V90 M59 83V90 M72 85V92 M85 88L86 94', c);
+    case 'terebin-pool-edge':
+      return renderDramaFrame('M7 30V12Q7 7 12 7H33 M67 7H88Q93 7 93 12V30 M7 39V71 M93 39V71 M7 80V90 M93 80V90 M7 88Q18 81 29 88T51 88T73 88T93 88 M34 7V19 M45 7V19 M34 13H45', c);
+    case 'terebin-carved-arch':
+      return renderDramaFrame('M8 94V38Q8 23 25 20Q33 6 50 6Q67 6 75 20Q92 23 92 38V94 M8 94H92 M14 40V78 M86 40V78 M38 12Q50 24 62 12', c);
+    case 'den-chadar-drape':
+      return renderDramaFrame('M8 8Q23 19 29 8Q50 22 71 8Q77 19 92 8L89 91Q72 80 64 92Q50 82 36 92Q28 80 11 91Z', c);
+    case 'den-phone-surround':
+      return renderDramaFrame('M28 7H72Q84 7 84 19V81Q84 93 72 93H28Q16 93 16 81V19Q16 7 28 7Z M39 13H61 M42 87H58', c);
+    case 'den-woven-cloth-edge':
+      return renderDramaFrame('M7 29Q7 7 29 7 M71 7Q93 7 93 29 M7 71Q7 93 29 93 M71 93Q93 93 93 71 M36 8Q43 17 50 8Q57 17 64 8 M36 92Q43 83 50 92Q57 83 64 92 M8 38V62 M92 38V62', c);
+    case 'ournights-paired-seats':
+      return renderDramaFrame('M7 66V40Q7 33 14 33H21V19Q21 7 33 7H40 M60 7H67Q79 7 79 19V33H86Q93 33 93 40V66 M7 66V86H34 M66 86H93V66 M16 86V94 M84 86V94', c);
+    case 'ournights-serving-tray':
+      return renderDramaFrame('M22 13H78Q87 13 87 22V78Q87 87 78 87H22Q13 87 13 78V22Q13 13 22 13Z M13 35H6V65H13 M87 35H94V65H87', c);
+    case 'ournights-episode-tabs':
+      return renderDramaFrame('M8 28V14Q8 8 14 8H86Q92 8 92 14V28 M8 40V60 M92 40V60 M8 72V86Q8 92 14 92H86Q92 92 92 86V72 M33 8V15 M66 8V15 M33 85V92 M66 85V92', c);
 
     default: return '';
   }
@@ -6215,6 +6309,67 @@ function renderShape(attr) {
       return renderShowSticker('M28 39L48 29L67 65L47 75Z M40 30L63 27L70 68L47 71Z M48 32H72V71H48Z',
         'M54 41H66 M54 49H65 M54 57H62 M34 43L39 41 M39 51L43 49', c, o);
 
+    case 'kmkt-motorcycle':
+      return renderDramaIllustration('M38 61A10 10 0 1 1 18 61A10 10 0 1 1 38 61Z M82 61A10 10 0 1 1 62 61A10 10 0 1 1 82 61Z M31 51L39 41H54L62 50H48L41 62H30Z M53 30H65L74 58L68 60L59 36H53Z M33 36H51Q54 36 54 41H33Z',
+        'M33 61A5 5 0 1 1 23 61A5 5 0 1 1 33 61 M77 61A5 5 0 1 1 67 61A5 5 0 1 1 77 61 M39 47H50 M60 33H65', c, o);
+    case 'kmkt-controller':
+      return renderDramaIllustration('M36 35H64Q73 35 76 48L80 62Q82 74 73 73L60 63H40L27 73Q18 74 20 62L24 48Q27 35 36 35Z',
+        'M35 43V57 M28 50H42 M60 45H62 M68 52H70 M44 59H55', c, o);
+    case 'kmkt-sharjeena-books':
+      return renderDramaIllustration('M29 27Q40 23 50 30Q60 23 71 27V55Q60 52 50 59Q40 52 29 55Z M25 62H75V68H25Z M30 72H71V78H30Z',
+        'M50 31V53 M34 34Q40 31 45 35 M55 35Q61 31 66 34 M34 42H44 M56 42H66 M32 65H70 M36 75H65', c, o);
+    case 'kmkt-gaming-desk':
+      return renderDramaIllustration('M28 26H72Q75 26 75 29V53H25V29Q25 26 28 26Z M47 53H53V59H60V63H40V59H47Z M23 67H77V72H72V80H67V72H33V80H28V72H23Z',
+        'M31 32H69V47H31Z M42 55H58 M39 69H61 M37 39H44 M53 39H61', c, o);
+    case 'mzht-stethoscope':
+      return `<g fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="${o}"><path d="M32 29V42Q32 57 45 57Q58 57 58 42V29 M45 57V64Q45 76 58 76Q71 76 71 62V55"/><path d="M30 29H35 M55 29H60"/><circle cx="71" cy="49" r="7" fill="${c}"/></g>`;
+    case 'mzht-car-keys':
+      return renderDramaIllustration('M47 36A13 13 0 1 1 21 36A13 13 0 1 1 47 36Z M34 29A7 7 0 1 0 34 43A7 7 0 1 0 34 29Z M38 46L44 40L68 64L61 71L56 66L61 61L56 56L51 61Z M57 30H70Q75 30 75 35V48Q75 53 70 53H57Q52 53 52 48V35Q52 30 57 30Z',
+        'M59 38H68 M59 45H66 M42 45L47 40', c, o);
+    case 'mzht-kamyar-car':
+      return renderDramaIllustration('M24 49L30 35Q32 31 38 31H62Q68 31 70 35L76 49V67H24Z M29 67H37V73H29Z M63 67H71V73H63Z',
+        'M32 47L37 37H63L68 47Z M30 55H37 M63 55H70 M41 62H59', c, o);
+    case 'mzht-ayra-coat':
+      return renderDramaIllustration('M38 26L50 32L62 26L74 39L66 47L63 41L67 76H33L37 41L34 47L26 39Z',
+        'M38 29L44 44L50 36L56 44L62 29 M50 37V72 M37 53H44V60H37Z M56 53H63V60H56Z M53 49H54 M53 59H54', c, o);
+    case 'terebin-murtasim-shawl':
+      return renderDramaIllustration('M31 26Q50 38 69 26L75 37Q68 47 60 49L66 72L53 77L44 50L33 70L23 64L34 43L26 36Z M24 64L28 66L25 73L21 71Z M30 67L34 69L31 76L27 74Z M53 76L57 75L59 81L55 82Z M61 73L65 72L67 78L63 79Z',
+        'M33 33Q50 45 68 33 M35 42Q47 53 60 43 M38 48L29 64 M50 52L57 71 M26 62L33 66 M54 71L63 68', c, o);
+    case 'terebin-meerab-contract':
+      return renderDramaIllustration('M32 30Q44 26 60 32L68 65Q54 60 39 68Q30 72 28 62L23 42Q21 34 32 30Z M69 25L77 29L60 72L51 78L51 68Z',
+        'M28 37Q33 30 39 34 M33 41Q44 37 55 41 M35 49Q47 45 58 49 M38 58Q43 51 47 58T59 56 M55 67L61 70 M71 29L73 30', c, o);
+    case 'terebin-swimming-pool':
+      return `<g fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="${o}"><path d="M32 58V34Q32 26 39 26Q46 26 46 34 M56 58V34Q56 26 63 26Q70 26 70 34 M32 40H56 M32 49H56"/><path d="M24 64Q31 57 39 64T55 64T71 64 M30 75Q37 68 45 75T61 75T77 75" stroke-width="3.5"/></g>`;
+    case 'terebin-haveli-door':
+      return renderDramaIllustration('M28 76V45Q28 32 39 32Q42 23 50 22Q58 23 61 32Q72 32 72 45V76Z',
+        'M35 71V45Q35 38 43 38Q46 31 50 30Q54 31 57 38Q65 38 65 45V71Z M50 32V71 M43 51V59 M57 51V59 M33 76H67', c, o);
+    case 'den-everyday-phone':
+      return `<g transform="rotate(-12 44 51)">${renderDramaIllustration('M32 25H55Q61 25 61 31V72Q61 78 55 78H32Q26 78 26 72V31Q26 25 32 25Z',
+        'M38 31H49 M32 39H55V63H32Z M38 71H49', c, o)}</g>` +
+        renderDramaIllustration('M60 32H74Q79 32 79 37V47Q79 52 74 52H69L61 58V52H60Q55 52 55 47V37Q55 32 60 32Z',
+          'M61 39H73 M61 45H69', c, o);
+    case 'den-flowing-chadar':
+      return renderDramaIllustration('M24 38Q39 42 46 26Q48 21 54 25L69 38Q62 48 67 60L77 72Q64 82 51 69L38 55Q29 61 23 55Q33 49 24 38Z',
+        'M31 43Q46 47 51 31 M39 52Q49 47 55 37 M46 53Q51 65 64 70 M57 43Q55 54 70 68 M55 72L58 77 M63 75L65 80 M71 75L74 79', c, o);
+    case 'den-reading-lamp':
+      return renderDramaIllustration('M36 27Q50 22 64 27L73 50Q50 58 27 50Z M47 54H53V71H63Q68 71 68 77H32Q32 71 37 71H47Z',
+        'M35 46Q50 51 65 46 M43 29L39 45 M50 56V68 M39 75H61', c, o);
+    case 'den-kind-hands':
+      return renderDramaIllustration('M22 48Q24 43 28 47L37 58L44 59L36 51Q33 47 37 45Q39 44 42 47L51 57Q55 63 49 69Q44 75 37 72L27 66Z M78 48Q76 43 72 47L63 58L56 59L64 51Q67 47 63 45Q61 44 58 47L49 57Q45 63 51 69Q56 75 63 72L73 66Z M50 43C31 33 39 22 47 29L50 32L53 29C61 22 69 33 50 43Z',
+        'M26 51L33 62Q39 67 45 65 M74 51L67 62Q61 67 55 65 M36 51L44 60 M64 51L56 60', c, o);
+    case 'ournights-favourite-seats':
+      return renderDramaIllustration('M26 37Q26 30 33 30H39Q46 30 46 37V49H49V69H23V49H26Z M54 37Q54 30 61 30H67Q74 30 74 37V49H77V69H51V49H54Z M27 69H32V76H27Z M67 69H72V76H67Z',
+        'M28 54H43 M57 54H72 M29 62H43 M57 62H71 M34 37H39 M62 37H67', c, o);
+    case 'ournights-snack-tray':
+      return renderDramaIllustration('M23 58H77V69H23Z M29 69H34V75H29Z M66 69H71V75H66Z M28 42H45L43 56H30Z M53 46Q63 37 73 46L70 56H56Z M30 32H42V40H30Z',
+        'M28 63H72 M32 46H41 M59 47H68 M34 33V38 M62 42V53 M55 52H71', c, o);
+    case 'ournights-shared-remote':
+      return renderDramaIllustration('M43 23H59Q66 23 65 30L59 73Q58 78 52 78H36Q30 78 31 71L37 30Q38 23 43 23Z',
+        'M46 31H55 M43 41H48 M53 41H58 M42 49H47 M52 49H57 M43 61L51 66L42 70Z M40 55H56', c, o);
+    case 'ournights-watchlist':
+      return renderDramaIllustration('M27 27H73Q77 27 77 31V68H23V31Q23 27 27 27Z M46 68H54V73H64V78H36V73H46Z',
+        'M30 35H40V41H30Z M46 36H68 M46 40H62 M30 47H40V53H30Z M46 48H68 M46 52H60 M30 59H40 M46 60H66', c, o);
+
     default: return '';
   }
 }
@@ -7473,6 +7628,47 @@ function renderAccent(attr, motifScale = 1) {
       case 'koffeeduet-gossip-burst':
         out += `<g transform="translate(${cx} ${cy})">${renderShowSticker('M0-4L1-2L4-3L3 0L4 3L1 2L0 4L-1 2L-4 3L-3 0L-4-3L-1-2Z', '', c, 1, 1.6)}</g>`; break;
 
+      case 'kmkt-bike-key':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"><circle cx="-2" cy="-2" r="2.7"/><path d="M0 0L4 4 M2 2L4 0"/></g>`; break;
+      case 'kmkt-wheel':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.6"><circle r="4.3"/><path d="M-3-3L3 3 M3-3L-3 3 M0-4V4 M-4 0H4"/></g>`; break;
+      case 'kmkt-game-buttons':
+        out += `<g transform="translate(${cx} ${cy})" fill="${c}"><rect x="-1.7" y="-5" width="3.4" height="10" rx="1"/><rect x="-5" y="-1.7" width="10" height="3.4" rx="1"/></g>`; break;
+      case 'kmkt-bookmark':
+        out += `<path d="M${cx-3} ${cy-5}H${cx+3}V${cy+5}L${cx} ${cy+2}L${cx-3} ${cy+5}Z" fill="${c}"/>`; break;
+      case 'mzht-key-fob':
+        out += `<g transform="translate(${cx} ${cy})"><rect x="-3" y="-4" width="6" height="8" rx="2" fill="${c}"/><path d="M-1-1H1 M0 4V6" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'mzht-pulse':
+        out += `<path d="M${cx-5} ${cy}H${cx-2}L${cx-1} ${cy-4}L${cx+1} ${cy+4}L${cx+2} ${cy}H${cx+5}" fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/>`; break;
+      case 'mzht-coat-button':
+        out += `<g transform="translate(${cx} ${cy})"><circle r="4" fill="${c}"/><path d="M-1.5-1.5L1.5 1.5 M1.5-1.5L-1.5 1.5" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'mzht-medical-cross':
+        out += `<path d="M${cx-2} ${cy-5}H${cx+2}V${cy-2}H${cx+5}V${cy+2}H${cx+2}V${cy+5}H${cx-2}V${cy+2}H${cx-5}V${cy-2}H${cx-2}Z" fill="${c}"/>`; break;
+      case 'terebin-tassel':
+        out += `<g transform="translate(${cx} ${cy})" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M0-5V-2 M-2 0L-3 5 M0 0V5 M2 0L3 5"/><path d="M-3-2H3V1H-3Z" fill="${c}"/></g>`; break;
+      case 'terebin-pen-nib':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M0-5L4 1L0 5L-4 1Z" fill="${c}"/><path d="M0-3V2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'terebin-pool-ripple':
+        out += `<path d="M${cx-5} ${cy-2}Q${cx-2} ${cy-5} ${cx+1} ${cy-2}T${cx+5} ${cy-2} M${cx-5} ${cy+3}Q${cx-2} ${cy} ${cx+1} ${cy+3}T${cx+5} ${cy+3}" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/>`; break;
+      case 'terebin-carving':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7"><path d="M-4 4V-1Q-4-4 0-5Q4-4 4-1V4Z M0-3V3"/></g>`; break;
+      case 'den-message-bubble':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4H5V2H0L-3 5V2H-5Z" fill="${c}"/><path d="M-2-1H2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'den-cloth-fringe':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M-4-3Q0-1 4-3 M-3-2L-4 4 M0-1V5 M3-2L4 4"/></g>`; break;
+      case 'den-lamp-glow':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M-3 2Q-4-3 0-4Q4-3 3 2Z M-1 5H1 M-6-2L-5-1 M6-2L5-1"/></g>`; break;
+      case 'den-cuff':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4H5L3 4H-3Z" fill="${c}"/><path d="M-3 0H3 M0 2H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'ournights-cushion':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4Q0-2 5-4Q3 0 5 4Q0 2-5 4Q-3 0-5-4Z" fill="${c}"/><path d="M-1 0H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'ournights-snack-bite':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-4H4V-1Q0-1 1 3L-2 5L-5 1Z" fill="${c}"/><path d="M-3-1H-1 M-2 2H0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'ournights-remote-pad':
+        out += `<g transform="translate(${cx} ${cy})"><rect x="-3" y="-5" width="6" height="10" rx="2" fill="${c}"/><path d="M-1-2H1 M-1 1H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'ournights-episode-tab':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-4H5V4H-5Z" fill="${c}"/><path d="M-2-1L1 1L-2 3Z" fill="#fffaf4"/><path d="M2-2H4" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+
     }
     if (motifScale !== 1) out += '</g>';
   }
@@ -7486,7 +7682,7 @@ function renderAttributeInner(attr, theme) {
     case 'bg':     return renderBg(attr);
     case 'ring':   return renderRing(attr);
     case 'shape':  return renderShape(attr);
-    case 'accent': return renderAccent(attr, theme && theme.highContrast === true ? 1.6 : 1);
+    case 'accent': return renderAccent(attr, theme && theme.highContrast === true ? (theme.softIllustration ? 1.25 : 1.6) : 1);
     default:       return '';
   }
 }
@@ -7525,7 +7721,7 @@ function createTileSVG(tile, theme) {
     let rendered = renderAttributeInner(attr, theme);
     if (highContrast) {
       // Scale around the tile center, rather than pushing artwork down and right.
-      const scale = attr.type === 'ring' ? 0.92 : attr.type === 'accent' ? 1 : 1.15;
+      const scale = theme.softIllustration ? 1 : attr.type === 'ring' ? 0.92 : attr.type === 'accent' ? 1 : 1.15;
       rendered = `<g transform="translate(50 50) scale(${scale}) translate(-50 -50)">${rendered}</g>`;
     } else if (theme && theme.style === 'cute-light') {
       if (attr.type === 'shape') {

@@ -49,6 +49,7 @@ A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center
 - `photos/` — Personal photos revealed as tiles are cleared (62 photos, named `photo-01.jpg` through `photo-62.jpg`)
 - `update-photos.ps1` — PowerShell script to regenerate `photos/manifest.json` from image files in `photos/`
 - `validate-themes.js` — Pre-commit theme validator (10 checks, all must pass)
+- `../../tools/tiles-renderer.test.js` — Dependency-free renderer regression tests: soft/legacy sizing, runtime foreground/background coverage, distinct variants, and no sticker styling in the soft collection
 
 ## Tile SVG Layer Stack (back-to-front)
 
@@ -123,20 +124,27 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Current Entertainment Collection
+### Current Shared-Watchlist Collection
 
-This rotation intentionally contains four requested themes:
+This rotation contains five soft, non-sticker themes inspired by the shared watchlist:
 
 | Theme | Rendering style | Main visual vocabulary |
 |-------|-----------------|------------------------|
-| Bigg Boss: H/F House | Bold Sticker | Confession chair, camera, nomination buzzer, trophy |
-| Netflix & Never Leave | Bold Sticker | H/F profiles, popcorn, remote, shared blanket |
-| Pakistani Drama: Bas Ek Aur Episode | Standard | Expressive leads, haveli doorway, abandoned phone |
-| Koffee, Controversy & Us | Bold Sticker | Couch for two, rapid-fire buzzer, prize hamper, cue cards |
+| Kabhi Main Kabhi Tum | Cute Light | Mustafa's motorcycle and gaming setup, Sharjeena's books |
+| Meri Zindagi Hai Tu | Cute Light | Ayra's stethoscope and coat, Kamyar's car and keys |
+| Tere Bin | Standard | Draped shawl, curled contract with diagonal pen, open pool ladder and ripples, haveli doorway |
+| Dar-e-Nijaat | Standard | Tilted phone with message bubble, flowing chadar, reading lamp, cupped hands and heart |
+| Our Drama Nights | Standard | Paired favourite seats, snack tray, remote, episode watchlist |
 
-All four opt into `highContrast: true` for opaque, separated backgrounds, centered large shapes, and enlarged corner accents. Each has its own background triad and subject-specific frame geometry. The shared `renderShowTexture`, `renderShowSticker`, and `renderShowFrame` helpers provide only rendering treatments; the individual cases supply the artwork. Streaming and show motifs use original SVG illustrations, not copied logos or screenshots.
+**Design reference:** the non-sticker birthday-era themes, especially September Sparkle, Wrapped With Love, and Birthday Eve Wishes: clean palette-colored silhouettes, slim decorative frames, light backgrounds, and playful corner motifs. The new collection does not use cream sticker keylines, dark offset shadows, or the Bold Sticker helpers. The two Cute Light themes retain their declared style, but `highContrast: true` takes precedence over the legacy Cute Light transforms.
 
-The five cuisine themes are preserved unchanged in `ARCHIVED_THEMES`, along with their renderer cases. Scheduled birthday themes remain separate and unchanged.
+All five opt into `highContrast: true` for opaque, separated pastel backgrounds and `softIllustration: true` for birthday-reference spacing: centers and frames stay at their authored scale, while corner accents scale to 1.25 around their own corners instead of 1.6. This preserves substantial center silhouettes without the dense 1.15-scale treatment of the previous collection. The flags do not affect matching. Softness comes from the original rounded artwork, generous spacing, and restrained 3px frames, not fading matchable elements. Each theme has three different background tones and custom frame geometry. `renderShowTexture` supplies only a quiet texture treatment; `renderDramaFrame` and `renderDramaIllustration` supply plain strokes and filled silhouettes with pale internal details. Each case supplies its own subject-specific paths.
+
+**Silhouette variety:** Tere Bin deliberately mixes flowing cloth, a curled diagonal document, open water/ladder linework, and an architectural arch. Dar-e-Nijaat mixes an angled phone, asymmetric flowing cloth, a flared lampshade on a stem, and rounded cupped hands. Avoid turning these back into four upright rectangular centers; artwork must remain distinguishable without relying on interior details or color.
+
+**Dar-e-Nijaat spoiler boundary: episode 15.** This theme uses neutral, character-inspired objects and gestures, not a reconstruction of later scenes. The phone is not the later gifted phone; the chadar is a plain flowing textile with no wedding styling. The reading lamp and kind hands are original supporting illustrations, not claims about iconic scenes. Do not introduce later gifts, wedding outfits, plot outcomes, or quotations without checking the viewer's progress.
+
+The four previous entertainment themes are preserved unchanged in `ARCHIVED_THEMES`, alongside the twelve earlier archived themes and all retained renderer cases. Scheduled birthday themes remain separate and unchanged. All artwork is original SVG, not copied promotional images, logos, actor portraits, or screenshots.
 
 ### Non-Negotiable Quality Gates
 
@@ -195,7 +203,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 | Style | Theme property | Rendering approach |
 |-------|----------------|--------------------|
 | Standard | Omit `style` | Direct palette-colored SVG with normal opacity and stroke minimums |
-| Cute Light | `style: 'cute-light'` | Bright romantic SVG motifs rendered at 0.78 scale, with airy ring/accent treatment and small decorative flourishes |
+| Cute Light | `style: 'cute-light'` | Rounded romantic SVG with airy ring/accent treatment; sizing depends on the high-contrast and soft-illustration flags described below |
 | Bold Sticker | `style: 'bold-sticker'` | Chunky colored SVG layered over a cream keyline and dark offset shadow |
 
 `style` selects a renderer convention only; it never changes the theme schema, matching rules, or validator requirements. Cute Light receives the shared airy treatment in `renderer.js`, while Bold Sticker cases provide their own keyline and shadow layers. Each theme still requires the standard palette counts, pool math, globally unique identifiers, renderer coverage, and contrast checks. (Board *selection* can branch on other metadata — see Workflow 4 for date-scheduled themes — but that only affects which theme object is chosen, never how its 16 cases are matched.)
@@ -468,9 +476,9 @@ function renderShape(attr) {
 
 **Rules**: Shapes render in the CENTER of the tile (~50,50). Keep within roughly x:25-75, y:25-75 to avoid overlap with ring borders and corner accents.
 
-For `cute-light`, remember that `createTileSVG()` applies `translate(11 11) scale(0.78)`. Design the source artwork around the full 100×100 coordinate system, then inspect its rendered size. Avoid tiny internal details that disappear after scaling.
+For legacy `cute-light` without `highContrast`, `createTileSVG()` currently applies `translate(11 11) scale(1.1)` to shapes, plus decorative H/F flourishes. This is not a centered transform. Inspect the actual rendering path rather than relying on the historical 0.78-scale description; avoid tiny internal details.
 
-The active cuisine collection additionally sets `highContrast: true`. This opt-in uses opaque peach, lavender, and sky backgrounds, reduces background texture opacity to 8%, and removes the extra foreground fade. Shapes scale to 1.15 around (50,50); accents scale to 1.6 around their own corners so they grow without drifting. Rings retain 0.92 scale. It omits the extra Cute Light monogram flourishes to keep matchable elements uncluttered. Other collections retain their existing rendering.
+The active shared-watchlist collection sets `highContrast: true`. This opt-in uses each theme's opaque pastel background triad, reduces background texture opacity to 8%, and removes the extra foreground fade. By default, shapes scale to 1.15 around (50,50), accents scale to 1.6 around their own corners, and rings retain 0.92 scale. The new collection also sets `softIllustration: true`, which leaves centers and rings at scale 1 and uses 1.25-scale accents for more breathing room. Both paths omit the extra Cute Light monogram flourishes. These flags control legibility and spacing, not sticker styling; the new themes use plain SVG artwork. Other collections retain their existing rendering.
 
 **Template — simple filled shape:**
 ```javascript
@@ -561,6 +569,7 @@ function renderAccent(attr) {
 
 ```bash
 node validate-themes.js
+node --test tools/tiles-renderer.test.js
 ```
 
 **All 10 checks must be green ✅ before committing.** If any fail:
@@ -598,7 +607,7 @@ The validator catches structural errors and minimum match-color distance, but it
 
 8. **Romantic/cute intent** — after improving contrast and novelty, verify the theme still feels affectionate and playful. High-separation colors should support the art, not turn the collection harsh. Keep soft backgrounds, rounded geometry, paired H/F details, and a clear romantic interaction.
 
-9. **Center scale** — centers should be recognizable immediately and visually balanced with the rings. For Cute Light, the current target is 0.78 scale; increase source geometry rather than adding fragile tiny details.
+9. **Center scale** — centers should be recognizable immediately and visually balanced with the rings. Check the renderer branch: high-contrast shapes normally use centered 1.15 scaling, or scale 1 with `softIllustration`; legacy Cute Light uses a different transform. Increase source geometry rather than adding fragile tiny details.
 
 #### Step 6: Commit & Deploy
 

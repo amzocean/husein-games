@@ -200,9 +200,6 @@ const ARCHIVED_THEMES = [
     accentShapes: ['me-pomegranate-seed', 'me-pistachio-shell', 'me-zaatar-speck', 'me-date-drop'],
     boardBg:      { pattern: 'me-pomegranate-scatter', color: '#8A4A2A' },
   },
-];
-
-const THEMES = [
   {
     name: 'Bigg Boss: H/F House', emoji: '👁️',
     style: 'bold-sticker',
@@ -265,6 +262,92 @@ const THEMES = [
     shapeNames:   ['koffeeduet-couch-for-two', 'koffeeduet-rapid-buzzer', 'koffeeduet-prize-hamper', 'koffeeduet-cue-card-fan'],
     accentShapes: ['koffeeduet-quotation', 'koffeeduet-rating-paddle', 'koffeeduet-mic-head', 'koffeeduet-gossip-burst'],
     boardBg:      { pattern: 'koffeeduet-upholstery', color: '#B91B82' },
+  },
+];
+
+const THEMES = [
+  {
+    name: 'Kabhi Main Kabhi Tum', emoji: '🏍️',
+    style: 'cute-light',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#BED6F0', '#FFE0C9', '#FFF0AD'],
+      ring:   ['#A40B42', '#035020', '#1646B0', '#614000'],
+      shape:  ['#A40B42', '#035020', '#1646B0'],
+      accent: ['#A40B42', '#1646B0', '#614000'],
+    },
+    bgPatterns:   ['kmkt-road-sweeps', 'kmkt-book-lines', 'kmkt-game-traces', 'kmkt-denim-seams', 'kmkt-keyboard-rows'],
+    ringStyles:   ['kmkt-game-bezel', 'kmkt-open-book', 'kmkt-road-bends'],
+    shapeNames:   ['kmkt-motorcycle', 'kmkt-controller', 'kmkt-sharjeena-books', 'kmkt-gaming-desk'],
+    accentShapes: ['kmkt-bike-key', 'kmkt-wheel', 'kmkt-game-buttons', 'kmkt-bookmark'],
+    boardBg:      { pattern: 'kmkt-road-sweeps', color: '#426894' },
+  },
+  {
+    name: 'Meri Zindagi Hai Tu', emoji: '🩺',
+    style: 'cute-light',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#BFE9E5', '#FAD3DE', '#D6CEFA'],
+      ring:   ['#9D164D', '#00513D', '#4334A8', '#6B4100'],
+      shape:  ['#9D164D', '#00513D', '#4334A8'],
+      accent: ['#9D164D', '#4334A8', '#6B4100'],
+    },
+    bgPatterns:   ['mzht-pulse-lines', 'mzht-coat-weave', 'mzht-chart-rules', 'mzht-window-reflections', 'mzht-key-trails'],
+    ringStyles:   ['mzht-stethoscope-loop', 'mzht-car-window', 'mzht-chart-clip'],
+    shapeNames:   ['mzht-stethoscope', 'mzht-car-keys', 'mzht-kamyar-car', 'mzht-ayra-coat'],
+    accentShapes: ['mzht-key-fob', 'mzht-pulse', 'mzht-coat-button', 'mzht-medical-cross'],
+    boardBg:      { pattern: 'mzht-coat-weave', color: '#317D78' },
+  },
+  {
+    name: 'Tere Bin', emoji: '🧣',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#C7E4D2', '#FFF0C2', '#F2C6D5'],
+      ring:   ['#9C1420', '#075B25', '#1646B0', '#604000'],
+      shape:  ['#9C1420', '#075B25', '#1646B0'],
+      accent: ['#9C1420', '#1646B0', '#604000'],
+    },
+    bgPatterns:   ['terebin-shawl-weave', 'terebin-pool-caustics', 'terebin-contract-lines', 'terebin-stone-joints', 'terebin-fringe-trails'],
+    ringStyles:   ['terebin-draped-shawl', 'terebin-pool-edge', 'terebin-carved-arch'],
+    shapeNames:   ['terebin-murtasim-shawl', 'terebin-meerab-contract', 'terebin-swimming-pool', 'terebin-haveli-door'],
+    accentShapes: ['terebin-tassel', 'terebin-pen-nib', 'terebin-pool-ripple', 'terebin-carving'],
+    boardBg:      { pattern: 'terebin-shawl-weave', color: '#65804E' },
+  },
+  {
+    name: 'Dar-e-Nijaat', emoji: '📱',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#C6DCCF', '#E0D2F5', '#F0D1AF'],
+      ring:   ['#9C124E', '#075B35', '#1646B0', '#684000'],
+      shape:  ['#9C124E', '#075B35', '#1646B0'],
+      accent: ['#9C124E', '#1646B0', '#684000'],
+    },
+    // Episode-15-safe, character-inspired objects; no later gifts or wedding imagery.
+    bgPatterns:   ['den-linen-strands', 'den-folded-cloth', 'den-message-lines', 'den-window-light', 'den-woven-selvedge'],
+    ringStyles:   ['den-chadar-drape', 'den-phone-surround', 'den-woven-cloth-edge'],
+    shapeNames:   ['den-everyday-phone', 'den-flowing-chadar', 'den-reading-lamp', 'den-kind-hands'],
+    accentShapes: ['den-message-bubble', 'den-cloth-fringe', 'den-lamp-glow', 'den-cuff'],
+    boardBg:      { pattern: 'den-linen-strands', color: '#607A6A' },
+  },
+  {
+    name: 'Our Drama Nights', emoji: '🛋️',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#F5BFD6', '#C7D1F3', '#D8EDC7'],
+      ring:   ['#A40B42', '#035020', '#123E9C', '#614000'],
+      shape:  ['#A40B42', '#035020', '#123E9C'],
+      accent: ['#A40B42', '#123E9C', '#614000'],
+    },
+    bgPatterns:   ['ournights-cushion-tufts', 'ournights-tray-grain', 'ournights-episode-rows', 'ournights-knit-strokes', 'ournights-lamplight'],
+    ringStyles:   ['ournights-paired-seats', 'ournights-serving-tray', 'ournights-episode-tabs'],
+    shapeNames:   ['ournights-favourite-seats', 'ournights-snack-tray', 'ournights-shared-remote', 'ournights-watchlist'],
+    accentShapes: ['ournights-cushion', 'ournights-snack-bite', 'ournights-remote-pad', 'ournights-episode-tab'],
+    boardBg:      { pattern: 'ournights-cushion-tufts', color: '#A64E76' },
   },
 ];
 
