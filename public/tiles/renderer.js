@@ -3558,6 +3558,58 @@ function renderBg(attr) {
     case 'gamedates-photo-grid':
       return renderShowTexture('M10 31V12H29 M39 12H58V31 M10 41V60H29 M39 60H58V41 M65 53V34H84 M65 63V82H84 M23 23L44 49 M72 45L87 70', c, o);
 
+    // Date nights: quiet textures stay behind the three matchable layers.
+    case 'cinemadate-projector-rays':
+      return renderShowTexture('M12 47L88 26 M12 50L88 44 M12 53L88 62 M12 56L88 80', c, o);
+    case 'cinemadate-screen-folds':
+      return renderShowTexture('M25 10Q19 50 25 90 M35 10Q29 50 35 90 M65 10Q71 50 65 90 M75 10Q81 50 75 90', c, o);
+    case 'cinemadate-credit-lines':
+      return renderShowTexture('M30 22H70 M36 32H64 M24 45H76 M34 55H66 M28 68H72 M38 78H62', c, o);
+    case 'cinemadate-film-trails':
+      return renderShowTexture('M10 31C35 9 61 63 90 40 M10 38C35 16 61 70 90 47 M10 64C39 42 60 96 90 73 M10 71C39 49 60 103 90 80', c, o);
+    case 'cinemadate-velvet-nap':
+      return renderShowTexture('M26 23L33 32 M39 23L46 32 M52 23L59 32 M65 23L72 32 M30 48L37 57 M43 48L50 57 M56 48L63 57 M69 48L76 57 M26 73L33 82 M39 73L46 82 M52 73L59 82 M65 73L72 82', c, o);
+    case 'bistrodate-table-linen':
+      return renderShowTexture('M10 34H90 M10 39H90 M10 64H90 M10 69H90 M34 10V90 M39 10V90 M64 10V90 M69 10V90', c, o);
+    case 'bistrodate-awning-stripes':
+      return renderShowTexture('M22 10L32 90 M38 10L48 90 M54 10L64 90 M70 10L80 90', c, o);
+    case 'bistrodate-menu-rules':
+      return renderShowTexture('M27 27H55 M67 27H74 M27 39H61 M67 39H74 M27 51H52 M67 51H74 M27 63H58 M67 63H74 M27 75H49 M67 75H74', c, o);
+    case 'bistrodate-pasta-curls':
+      return renderShowTexture('M22 30C22 14 42 16 38 29S25 39 36 44 M62 25C62 9 82 11 78 24S65 34 76 39 M28 68C28 52 48 54 44 67S31 77 42 82 M62 64C62 48 82 50 78 63S65 73 76 78', c, o);
+    case 'bistrodate-candle-drift':
+      return renderShowTexture('M32 88C55 68 19 51 39 30 M49 84C71 64 37 47 57 26 M67 80C89 60 55 43 75 22', c, o);
+    case 'parkdate-winding-path':
+      return renderShowTexture('M21 10C80 28 17 56 74 90 M30 10C89 28 26 56 83 90', c, o);
+    case 'parkdate-grass-hatching':
+      return renderShowTexture('M24 37L21 28 M24 37L29 25 M43 29L40 20 M43 29L48 17 M64 40L61 31 M64 40L69 28 M32 72L29 63 M32 72L37 60 M55 77L52 68 M55 77L60 65 M76 67L73 58 M76 67L81 55', c, o);
+    case 'parkdate-breeze-trails':
+      return renderShowTexture('M10 30Q36 17 62 30T90 30 M18 48Q40 35 64 48 M10 71Q36 58 62 71T90 71', c, o);
+    case 'parkdate-sandy-rake':
+      return renderShowTexture('M13 25Q50 42 87 25 M13 32Q50 49 87 32 M13 39Q50 56 87 39 M13 64Q50 81 87 64 M13 71Q50 88 87 71', c, o);
+    case 'parkdate-kite-streams':
+      return renderShowTexture('M31 12C15 35 51 48 32 69Q25 78 30 88 M62 12C46 35 82 48 63 69Q56 78 61 88 M36 30L42 34 M32 53L38 57 M67 30L73 34 M63 53L69 57', c, o);
+    case 'fairdate-canopy-fans':
+      return renderShowTexture('M50 10L12 87 M50 10L31 87 M50 10V87 M50 10L69 87 M50 10L88 87', c, o);
+    case 'fairdate-ride-tracks':
+      return renderShowTexture('M10 61C25 13 40 14 55 59S78 85 90 40 M10 68C25 20 40 21 55 66S78 92 90 47 M23 35L27 40 M43 30L47 36 M61 77L63 84 M80 66L84 71', c, o);
+    case 'fairdate-streamer-falls':
+      return renderShowTexture('M25 10C50 30 10 50 35 70Q44 79 35 90 M50 10C75 30 35 50 60 70Q69 79 60 90 M75 10C100 30 60 50 85 70', c, o);
+    case 'fairdate-carousel-flutes':
+      return renderShowTexture('M25 10V90 M31 10V90 M47 10V90 M53 10V90 M69 10V90 M75 10V90 M24 35L32 27 M46 61L54 53 M68 82L76 74', c, o);
+    case 'fairdate-queue-zigzags':
+      return renderShowTexture('M15 25H83L17 44H83L17 63H83L17 82H85', c, o);
+    case 'paintdate-brush-sweeps':
+      return renderShowTexture('M11 33Q45 13 87 26 M13 38Q47 18 89 31 M11 68Q45 48 87 61 M13 73Q47 53 89 66', c, o);
+    case 'paintdate-canvas-weft':
+      return renderShowTexture('M10 27H90 M10 50H90 M10 73H90 M26 10V90 M50 10V90 M74 10V90 M23 24L29 30 M47 47L53 53 M71 70L77 76', c, o);
+    case 'paintdate-palette-scrapes':
+      return renderShowTexture('M20 31L75 20 M20 36L64 27 M26 55L81 44 M26 60L70 51 M18 79L73 68 M18 84L62 75', c, o);
+    case 'paintdate-wet-drags':
+      return renderShowTexture('M28 12V61Q28 68 32 61V36 M48 12V80Q48 88 52 80V52 M68 12V48Q68 56 72 48V25', c, o);
+    case 'paintdate-pencil-hatching':
+      return renderShowTexture('M22 38L42 18 M29 38L49 18 M36 38L56 18 M43 38L63 18 M32 80L64 48 M39 80L71 48 M46 80L78 48 M53 80L85 48', c, o);
+
     default: return '';
   }
 }
@@ -4646,6 +4698,38 @@ function renderRing(attr) {
       return renderDramaFrame('M23 7H77V17H23Z M34 7V17 M45 7V17 M56 7V17 M67 7V17 M23 83H77V93H23Z M34 83V93 M45 83V93 M56 83V93 M67 83V93 M15 8H8V36 M8 64V92H15 M85 8H92V36 M92 64V92H85', c);
     case 'gamedates-distance-link':
       return renderDramaFrame('M34 7H19Q8 7 8 18V82Q8 93 19 93H34 M66 7H81Q92 7 92 18V82Q92 93 81 93H66 M43 9C39 2 47 1 50 6C53 1 61 2 57 9L50 16Z M43 92H47 M53 92H57', c);
+
+    case 'cinemadate-ticket-edge':
+      return renderDramaFrame('M9 8H91V37Q77 50 91 63V92H9V63Q23 50 9 37Z M30 8V17 M50 8V17 M70 8V17 M30 83V92 M50 83V92 M70 83V92', c);
+    case 'cinemadate-filmstrip':
+      return renderDramaFrame('M6 6H21V94H6Z M79 6H94V94H79Z M6 25H21 M6 43H21 M6 61H21 M6 79H21 M79 25H94 M79 43H94 M79 61H94 M79 79H94 M31 7H69 M31 93H69', c);
+    case 'cinemadate-screen-curtains':
+      return renderDramaFrame('M6 8H94V92H78Q89 55 78 13 M22 13Q11 55 22 92H6Z M7 12Q26 26 49 12Q73 26 93 12 M32 93H68 M10 54L19 57 M90 54L81 57', c);
+    case 'bistrodate-scalloped-plate':
+      return renderDramaFrame('M25 8Q34 2 42 8Q50 2 58 8Q66 2 75 8Q91 10 92 25Q98 34 92 42Q98 50 92 58Q98 66 92 75Q90 91 75 92Q66 98 58 92Q50 98 42 92Q34 98 25 92Q9 90 8 75Q2 66 8 58Q2 50 8 42Q2 34 8 25Q10 9 25 8Z', c);
+    case 'bistrodate-awning':
+      return renderDramaFrame('M7 25L16 7H84L93 25Q85 35 78 25Q71 35 64 25Q57 35 50 25Q43 35 36 25Q29 35 22 25Q15 35 7 25Z M32 7L28 25 M50 7V25 M68 7L72 25 M7 40V92H30 M93 40V92H70 M40 93H60', c);
+    case 'bistrodate-place-setting':
+      return renderDramaFrame('M7 7V29Q7 36 15 36Q23 36 23 29V7 M15 7V92 M93 7Q78 20 81 47H90V92 M33 8Q50 3 67 8 M33 92Q50 97 67 92', c);
+    case 'parkdate-swing-set':
+      return renderDramaFrame('M5 93L22 7H78L95 93 M16 32H84 M7 93H19 M81 93H93 M37 8V18 M63 8V18 M33 92Q50 96 67 92', c);
+    case 'parkdate-winding-rails':
+      return renderDramaFrame('M22 6C-6 28 29 63 7 94 M78 6C106 28 71 63 93 94 M10 37L22 35 M78 35L90 37 M12 64L24 62 M76 62L88 64 M36 7H64 M36 93H64', c);
+    case 'parkdate-picket-gate':
+      return renderDramaFrame('M8 92V26L14 17L20 26V92 M80 92V26L86 17L92 26V92 M8 43H20 M8 73H20 M80 43H92 M80 73H92 M20 92H80 M29 10Q50 2 71 10', c);
+    case 'fairdate-striped-canopy':
+      return renderDramaFrame('M6 27L50 5L94 27 M6 27Q17 41 28 27Q39 41 50 27Q61 41 72 27Q83 41 94 27 M50 5L28 27 M50 5V27 M50 5L72 27 M7 44V93H28 M93 44V93H72 M37 93H63', c);
+    case 'fairdate-coaster-track':
+      return renderDramaFrame('M7 94V46C7 6 36 3 50 12C75 28 93 9 93 42V94 M13 94V46C13 13 36 10 48 18C74 34 87 15 87 42V94 M7 49H13 M7 72H13 M87 49H93 M87 72H93 M23 14L27 20 M69 18L69 25 M32 94H68', c);
+    case 'fairdate-ferris-supports':
+      return renderDramaFrame('M5 93L42 8H58L95 93 M5 93H26 M74 93H95 M17 68H27 M73 68H83 M28 43H38 M62 43H72 M39 18H61 M38 94H62', c);
+    case 'paintdate-brushstroke':
+      return renderDramaFrame('M8 32L6 12L29 8 M39 7L67 9L88 6L93 30 M94 40L91 66L94 88L72 94 M61 92L33 94L9 89L6 68 M8 58L9 42', c) +
+        `<path d="M25 7L48 6 M93 51L95 72 M47 93L23 95" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+    case 'paintdate-canvas-stretchers':
+      return renderDramaFrame('M8 17L83 6L94 83L17 94Z M8 17L17 24L24 91 M83 6L77 17L91 82 M17 24L77 17 M22 84L88 75', c);
+    case 'paintdate-taped-paper':
+      return renderDramaFrame('M28 9H72 M91 28V72 M72 91H28 M9 72V28 M4 17L18 3L29 14L15 28Z M71 14L82 3L96 17L85 28Z M4 83L15 72L29 86L18 97Z M71 86L85 72L96 83L82 97Z', c);
 
     default: return '';
   }
@@ -6374,6 +6458,60 @@ function renderShape(attr) {
         `<g transform="rotate(-18 36 45)"><rect x="25" y="23" width="22" height="44" rx="4" stroke="none"/><path d="M28 45H44"/><g fill="#fffaf4" stroke="none"><circle cx="36" cy="34" r="2"/><circle cx="31" cy="51" r="2"/><circle cx="36" cy="56" r="2"/><circle cx="41" cy="61" r="2"/></g></g>` +
         `<g transform="rotate(14 65 59)"><rect x="54" y="37" width="22" height="44" rx="4" stroke="none"/><path d="M57 59H73"/><g fill="#fffaf4" stroke="none"><circle cx="61" cy="44" r="2"/><circle cx="69" cy="52" r="2"/><circle cx="61" cy="65" r="2"/><circle cx="69" cy="65" r="2"/><circle cx="61" cy="75" r="2"/><circle cx="69" cy="75" r="2"/></g></g></g>`;
 
+    case 'cinemadate-popcorn':
+      return renderDramaIllustration('M28 43Q19 34 28 29Q27 18 38 23Q44 14 51 23Q62 14 66 26Q79 24 76 35Q84 44 73 47L68 78H32Z',
+        'M29 45H72 M37 51L40 72 M50 51V73 M63 51L60 72 M34 31Q39 27 42 32 M55 29Q60 25 64 31', c, o);
+    case 'cinemadate-clapperboard':
+      return `<g transform="rotate(-9 50 50)">${renderDramaIllustration('M24 43H76V73Q76 77 72 77H28Q24 77 24 73Z M24 37L21 25L72 15L75 27Z',
+        'M30 24L38 33 M44 21L52 30 M58 18L66 27 M25 48H75 M33 58H67 M33 68H53', c, o)}</g>`;
+    case 'cinemadate-seat-pair':
+      return renderDramaIllustration('M24 30Q24 24 30 24H40Q46 24 46 30V53H49V70H21V53H24Z M54 30Q54 24 60 24H70Q76 24 76 30V53H79V70H51V53H54Z M26 70H32V78H26Z M38 70H44V78H38Z M56 70H62V78H56Z M68 70H74V78H68Z',
+        'M28 54H42 M58 54H72 M27 61H43 M57 61H73 M31 33V43 M39 33V43 M31 38H39 M62 43V33H69 M62 38H67', c, o);
+    case 'cinemadate-film-reel':
+      return `<g opacity="${o}" fill="${c}"><path fill-rule="evenodd" d="M73 46A25 25 0 1 1 23 46A25 25 0 1 1 73 46Z M44 32A6 6 0 1 0 32 32A6 6 0 1 0 44 32Z M64 37A6 6 0 1 0 52 37A6 6 0 1 0 64 37Z M43 58A6 6 0 1 0 31 58A6 6 0 1 0 43 58Z M64 59A6 6 0 1 0 52 59A6 6 0 1 0 64 59Z"/><path d="M55 69Q71 84 80 67" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="46" r="3" fill="#fffaf4"/></g>`;
+    case 'bistrodate-spaghetti-fork':
+      return `<g transform="rotate(18 50 50)" opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M50 23V50 M39 23V35Q39 47 50 47Q61 47 61 35V23" fill="none" stroke="${c}" stroke-width="4"/><path d="M46 47H54V78Q50 82 46 78Z" fill="${c}"/><path d="M31 43C24 29 45 27 43 38S62 50 67 40C77 24 52 26 55 38 M31 47C24 57 38 64 41 53 M65 46Q76 56 68 66" fill="none" stroke="${c}" stroke-width="4"/><path d="M48 54V73" stroke="#fffaf4" stroke-width="2.4"/></g>`;
+    case 'bistrodate-cloche':
+      return renderDramaIllustration('M24 61Q25 37 46 34V29H54V34Q75 37 76 61Z M20 66H80L74 74H26Z',
+        'M32 55Q35 43 45 41 M26 61H74 M28 70H72 M42 47V56 M48 47V56 M42 51H48 M55 56V47H62 M55 51H60', c, o);
+    case 'bistrodate-bottle-candle':
+      return renderDramaIllustration('M44 52H56V59Q67 62 67 70V79H33V70Q33 62 44 59Z M43 35H57V53H43Z M50 31Q37 24 51 16Q60 25 50 31Z',
+        'M46 39V46 M44 66H56V74H44Z M39 66V74 M50 55V59', c, o);
+    case 'bistrodate-sundae':
+      return renderDramaIllustration('M26 48H74Q73 64 55 68V75H66V80H34V75H45V68Q27 64 26 48Z M28 44Q21 31 35 29Q36 16 49 24Q61 14 67 29Q80 30 73 44Z',
+        'M30 51H70 M36 58Q50 67 64 58 M36 34Q42 29 47 34 M55 31Q63 27 66 35 M48 24Q45 17 52 13', c, o);
+    case 'parkdate-swing':
+      return `<g opacity="${o}" stroke="${c}" stroke-linecap="round" stroke-linejoin="round"><path d="M29 23L34 64 M71 23L66 64" fill="none" stroke-width="3.5"/><path d="M25 63Q50 70 75 63L71 74Q50 81 29 74Z" fill="${c}" stroke-width="1.5"/><path d="M33 69Q50 74 67 69" fill="none" stroke="#fffaf4" stroke-width="2.4"/><path d="M27 23H32 M68 23H73" stroke-width="4"/></g>`;
+    case 'parkdate-slide':
+      return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M29 76V28H46 M30 42H42 M30 56H42 M30 69H42 M42 28V77" fill="none" stroke="${c}" stroke-width="4"/><path d="M39 25H51Q55 25 55 31V41Q55 55 76 66L80 77H68Q45 65 45 46V33H39Z" fill="${c}"/><path d="M51 34V44Q51 57 72 70" fill="none" stroke="#fffaf4" stroke-width="2.4"/></g>`;
+    case 'parkdate-seesaw':
+      return `<g transform="rotate(-12 50 50)" opacity="${o}" stroke-linecap="round"><path d="M21 45H79V53H21Z M50 53L64 76H36Z" fill="${c}"/><path d="M29 45V33H35 M71 45V33H65" fill="none" stroke="${c}" stroke-width="4"/><path d="M28 49H72" stroke="#fffaf4" stroke-width="2.4"/><text x="50" y="72" text-anchor="middle" fill="#fffaf4" font-family="Arial, sans-serif" font-size="9" font-weight="700">H/F</text></g>`;
+    case 'parkdate-duck':
+      return renderDramaIllustration('M26 47L37 51Q37 63 52 62Q64 62 64 52V42Q56 41 56 32Q56 22 66 22Q77 22 77 33L84 38L75 43V55Q75 78 48 78Q25 78 23 61Z',
+        'M33 58Q37 71 52 70Q62 70 65 64 M64 31H65 M74 37L77 38 M42 63Q49 59 56 63', c, o);
+    case 'fairdate-ferris-wheel':
+      return `<g opacity="${o}" stroke="${c}" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="43" r="24" fill="none" stroke-width="3.5"/><path d="M50 19V67 M26 43H74 M33 26L67 60 M33 60L67 26 M50 43L33 80 M50 43L67 80 M28 80H72" fill="none" stroke-width="3"/><g fill="${c}" stroke="none"><rect x="44" y="16" width="12" height="9" rx="3"/><rect x="20" y="39" width="12" height="9" rx="3"/><rect x="68" y="39" width="12" height="9" rx="3"/><rect x="44" y="63" width="12" height="9" rx="3"/></g><circle cx="50" cy="43" r="5" fill="#fffaf4" stroke-width="2.5"/></g>`;
+    case 'fairdate-carousel-horse':
+      return `<path d="M53 19V81" fill="none" stroke="${c}" stroke-width="3" opacity="${o}"/>` +
+        renderDramaIllustration('M31 47L27 37L34 31L45 40L53 38L58 29L57 22L65 26L75 36L70 43L63 40L61 53L70 66L64 74L56 60H45L37 73L28 71L36 54Z M30 42Q18 40 21 56L29 52Z',
+          'M40 43Q48 51 57 43 M61 30L65 34 M39 56H54 M32 65L36 60', c, o);
+    case 'fairdate-bumper-car':
+      return renderDramaIllustration('M24 50H30L35 35H58L66 50H74Q80 50 80 58V70H20V58Q20 50 24 50Z M23 73H77V79H23Z',
+        'M34 49L39 40H54L60 49 M65 48V21 M61 21H69 M30 74H70', c, o) +
+        `<text x="50" y="64" text-anchor="middle" fill="#fffaf4" opacity="${o}" font-family="Arial, sans-serif" font-size="12" font-weight="700">H+F</text>`;
+    case 'fairdate-cotton-candy':
+      return renderDramaIllustration('M32 57Q19 54 23 42Q17 31 30 27Q30 15 43 19Q53 9 62 22Q77 18 77 32Q90 42 78 52Q79 64 65 64H38Z M39 68H64L52 85Z',
+        'M31 36Q34 26 43 29 M49 23Q58 20 62 29 M66 36Q76 35 74 44 M32 48Q36 57 46 53 M45 71L52 78', c, o);
+    case 'paintdate-palette':
+      return `<g opacity="${o}" fill="${c}"><path fill-rule="evenodd" d="M76 40C67 15 31 18 23 42C12 72 43 85 58 73C64 68 53 62 60 56C65 52 83 56 76 40Z M65 38A5 5 0 1 0 55 38A5 5 0 1 0 65 38Z"/><g fill="#fffaf4"><circle cx="36" cy="37" r="4"/><circle cx="29" cy="51" r="4"/><circle cx="35" cy="66" r="4"/><circle cx="48" cy="69" r="4"/></g></g>`;
+    case 'paintdate-easel':
+      return `<g opacity="${o}" stroke="${c}" stroke-linecap="round" stroke-linejoin="round"><path d="M50 18V24 M36 60L27 81 M64 60L73 81 M50 65V79" fill="none" stroke-width="4"/><path d="M28 25H72V61H28Z M23 63H77V69H23Z" fill="${c}" stroke="none"/><path d="M34 31H66V55H34Z M39 38V49 M45 38V49 M39 43H45 M55 49V38H62 M55 43H60" fill="none" stroke="#fffaf4" stroke-width="2"/><path d="M50 48C42 43 47 39 50 43C53 39 58 43 50 48Z" fill="#fffaf4" stroke="none"/></g>`;
+    case 'paintdate-swoosh-brush':
+      return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M25 65Q37 80 58 70T79 54" fill="none" stroke="${c}" stroke-width="7"/><path d="M29 49L62 22Q67 18 70 22Q73 25 69 29L41 58Z M27 49L41 59Q35 70 21 65Q28 59 23 56Z" fill="${c}"/><path d="M30 48L42 58 M29 55L34 60 M51 36L64 25" fill="none" stroke="#fffaf4" stroke-width="2.4"/></g>`;
+    case 'paintdate-paint-tube':
+      return `<g transform="rotate(24 50 50)">${renderDramaIllustration('M37 24H63L61 36L64 57Q64 63 56 67V74H44V67Q36 63 36 57L39 36Z M43 76H57V83H43Z',
+        'M41 29H59 M41 35H59 M43 43H57V55H43Z M45 61H55 M47 78V81 M53 78V81', c, o)}</g>`;
+
     default: return '';
   }
 }
@@ -7673,6 +7811,47 @@ function renderAccent(attr, motifScale = 1) {
       case 'gamedates-cipher-letters':
         out += `<g transform="translate(${cx} ${cy})"><path d="M-6 4L-3-4L0 4 M-5 1H-1 M2-4V4 M6-4V4 M2 0H6" fill="none" stroke="${c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>`; break;
 
+      case 'cinemadate-glasses':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"><path d="M-6-2H-1V3H-6Z M1-2H6V3H1Z M-1 0H1 M-6-2L-7-4 M6-2L7-4"/></g>`; break;
+      case 'cinemadate-kernel':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4 4Q-7 0-3-2Q-4-7 0-4Q5-7 5-2Q8 2 4 4Z" fill="${c}"/><path d="M-2 2L0-1L2 2" fill="none" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'cinemadate-ticket-stub':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-18)"><path d="M-6-4H6V-1Q2 0 6 1V4H-6V1Q-2 0-6-1Z" fill="${c}"/><path d="M1-2V2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'cinemadate-projector':
+        out += `<g transform="translate(${cx} ${cy})" fill="${c}"><circle cx="-3" cy="-3" r="2.5"/><circle cx="3" cy="-3" r="2.5"/><path d="M-5-1H4V5H-5Z M4 0L7-2V5L4 3Z"/></g>`; break;
+      case 'bistrodate-fork':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M-3-5V-1Q-3 2 0 2Q3 2 3-1V-5 M0-5V6"/></g>`; break;
+      case 'bistrodate-napkin':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6 4L0-6L6 4Z" fill="${c}"/><path d="M0-2L-1 2H3" fill="none" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'bistrodate-menu':
+        out += `<g transform="translate(${cx} ${cy}) rotate(10)"><rect x="-4" y="-6" width="8" height="12" rx="1" fill="${c}"/><path d="M-2-2H2 M-2 1H2 M-2 4H0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'bistrodate-spoon':
+        out += `<g transform="translate(${cx} ${cy}) rotate(25)" fill="${c}"><ellipse cy="-3" rx="3" ry="4"/><rect x="-1" y="0" width="2" height="7" rx="1"/></g>`; break;
+      case 'parkdate-footprints':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-15)" fill="${c}"><ellipse cx="-3" cy="-2" rx="2.5" ry="4"/><ellipse cx="3" cy="2" rx="2.5" ry="4"/></g>`; break;
+      case 'parkdate-acorn':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-1H4Q4 4 0 6Q-4 4-4-1Z M-5-1Q-5-5 0-5Q5-5 5-1Z" fill="${c}"/><path d="M0-5L2-7 M-3-1H3" stroke="${c}" stroke-width="1.7"/><path d="M-3-1H3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'parkdate-kite-tail':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M0-6Q-4-2 0 1T0 6 M-4-4L2-2 M-2 2L4 4"/></g>`; break;
+      case 'parkdate-leaf':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5 5Q-7-5 5-6Q8 4-5 5Z" fill="${c}"/><path d="M-3 3L3-3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'fairdate-wristband':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-25)"><path d="M-7-3H2V-4H6V4H2V3H-7Z" fill="${c}"/><path d="M2-2V2 M-4 0H-1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'fairdate-pennant':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-5L6-2L-4 2Z" fill="${c}"/><path d="M-4-6V6" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></g>`; break;
+      case 'fairdate-admit-ticket':
+        out += `<g transform="translate(${cx} ${cy}) rotate(18)"><path d="M-5-5H5L4-2L5 0L4 2L5 5H-5L-4 2L-5 0L-4-2Z" fill="${c}"/><path d="M-2-2H2 M-2 2H2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'fairdate-carousel-pole':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-2-6H2V6H-2Z" fill="${c}"/><path d="M-2-3L2-5 M-2 2L2 0 M-2 6L2 4" stroke="#fffaf4" stroke-width="1.5"/><path d="M-4 6H4" stroke="${c}" stroke-width="1.8"/></g>`; break;
+      case 'paintdate-paint-blob':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-1Q-7-6-2-4Q1-8 3-3Q8-4 5 1Q8 5 2 4Q0 8-2 4Q-7 6-5-1Z" fill="${c}"/></g>`; break;
+      case 'paintdate-tape-tab':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-25)"><path d="M-6-4L-4-3L-2-4L0-3L2-4L4-3L6-4V4L4 3L2 4L0 3L-2 4L-4 3L-6 4Z" fill="${c}"/><path d="M-3 0H3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'paintdate-pencil':
+        out += `<g transform="translate(${cx} ${cy}) rotate(35)"><path d="M-2-6H2V3L0 7L-2 3Z" fill="${c}"/><path d="M-2-3H2 M0-1V3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'paintdate-bristle-fan':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6-5L-3 2H3L6-5Z M-2 2H2V6H-2Z" fill="${c}"/><path d="M-2-3L-1 0 M2-3L1 0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+
     }
     if (motifScale !== 1) out += '</g>';
   }
@@ -7771,6 +7950,11 @@ function createCenterHeartSVG(theme) {
   html += `<text x="20" y="62" ${font} font-size="36" font-weight="bold" fill="${c1}" opacity="0.9" text-anchor="middle">h</text>`;
   html += `<g class="center-heart" transform="translate(52,46) scale(0.22)"><path d="${heartPath}" fill="${heartColor}" opacity="0.85" stroke="white" stroke-width="3"/></g>`;
   html += `<text x="80" y="62" ${font} font-size="36" font-weight="bold" fill="${c2}" opacity="0.9" text-anchor="middle">f</text>`;
+
+  if (theme.showCoupleNames) {
+    html += `<g font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="bold" text-anchor="middle"><text x="50" y="21" fill="${c1}">Husein</text><text x="50" y="86" fill="${c2}">Fatema</text></g>`;
+    svg.setAttribute('aria-label', 'Husein and Fatema');
+  }
 
   svg.innerHTML = html;
   return svg;

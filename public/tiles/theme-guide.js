@@ -1,6 +1,91 @@
 import { createTileSVG, createCenterHeartSVG } from './renderer.js';
 
 const GUIDES = {
+  'Now Showing: Husein & Fatema': {
+    intro: 'Tonight\'s leading pair: Husein and Fatema. A little movie-date invitation with two reserved seats and a film we will probably spend half the time talking over. Original illustrations, not a real film or a claim about a shared outing.',
+    background: 'Faint projector rays cross cherry-blush, butter-yellow, and sky-blue tiles. The light stays behind the matchable artwork, like a quiet beam across a cinema.',
+    elements: {
+      'cinemadate-popcorn': ['The essential popcorn', 'A puffy, overflowing striped tub makes the snack recognizable from its outline. Sharing is encouraged; counting who ate more is not.'],
+      'cinemadate-clapperboard': ['Our opening scene', 'The lifted, tilted clapstick makes a diagonal silhouette, ready to announce the beginning of a little movie date.'],
+      'cinemadate-seat-pair': ['Reserved for Husein and Fatema', 'Two rounded cinema seats carry H and F marks: a seat for each of the stars of this imagined movie date.'],
+      'cinemadate-film-reel': ['Just one more scene', 'A round reel with four open holes and a curling film tail contrasts with the tall popcorn and angular clapperboard.'],
+      'cinemadate-ticket-edge': ['Admit two', 'Scooped sides and short perforation marks turn a cinema ticket into the outside frame.'],
+      'cinemadate-filmstrip': ['Along the filmstrip', 'Two perforated vertical strips leave the top and bottom open, instead of drawing another closed ticket.'],
+      'cinemadate-screen-curtains': ['The curtains open', 'Draped sides and a soft upper swag frame an imaginary cinema screen.'],
+      'cinemadate-glasses': ['A little extra dimension', 'Two connected square lenses are a miniature pair of cinema glasses, not a second frame to match.'],
+      'cinemadate-kernel': ['One more handful', 'A little popped kernel repeats the puffy popcorn silhouette in the corners.'],
+      'cinemadate-ticket-stub': ['Keep the little stub', 'A tilted, notched ticket is a tiny souvenir from this imagined date.'],
+      'cinemadate-projector': ['Roll the film', 'Two small reels above a box and lens reduce an old-fashioned projector to a readable corner motif.'],
+    },
+  },
+  'Dinner\'s on Husein': {
+    intro: 'A table reserved for Husein and Fatema, with nowhere to rush and dessert absolutely not optional. This playful little bistro is an invitation to a future dinner date.',
+    background: 'Quiet crossed linen threads suggest a restaurant tablecloth. Peach, warm cream, and pistachio make the board feel like a bright little bistro rather than formal fine dining.',
+    elements: {
+      'bistrodate-spaghetti-fork': ['A very twirly bite', 'Curled noodles wrap around a tilted fork. The open linework keeps it different from the solid serving dish.'],
+      'bistrodate-cloche': ['A little H/F dinner service', 'A broad domed serving cover is engraved with H and F for Husein and Fatema. Its low, wide outline stays recognizable even before you notice the initials.'],
+      'bistrodate-bottle-candle': ['A little table light', 'A tall candle in a reused bottle adds a cosy restaurant detail. The flame is decorative, not a separate match.'],
+      'bistrodate-sundae': ['We saved room', 'Rounded scoops sit above a wide dessert glass and a narrow foot: the very important last course.'],
+      'bistrodate-scalloped-plate': ['The pretty plate', 'A softly scalloped plate rim runs around the tile, with a different outline from the canopy and cutlery.'],
+      'bistrodate-awning': ['Our corner bistro', 'A striped top and scalloped valance suggest a small restaurant awning, with airy open sides below.'],
+      'bistrodate-place-setting': ['Ready for two', 'An oversized fork and curved knife become the two sides of an open place-setting frame.'],
+      'bistrodate-fork': ['A tiny fork', 'Three clear tines and a long handle carry the dinner vocabulary into the corners.'],
+      'bistrodate-napkin': ['The folded napkin', 'A triangular fold adds a compact silhouette, separate from the tall menu card.'],
+      'bistrodate-menu': ['What looks good?', 'A little tilted menu has decorative marks, not real dishes, prices, or words to solve.'],
+      'bistrodate-spoon': ['For the last bite', 'A round-bowled spoon is the small companion to the dessert sundae.'],
+    },
+  },
+  'Swings Before Sunset': {
+    intro: 'Husein and Fatema, reporting for a very serious competition over who swings higher. A playful park-date invitation, full of movement and a little duck with somewhere to be.',
+    background: 'A faint double path winds through leaf-green, sunny-peach, and clear-blue tiles. It suggests a walk through the park without adding flowers or extra matchable-looking objects.',
+    elements: {
+      'parkdate-swing': ['Save me a swing', 'Long, open ropes and a curved seat leave plenty of air in the center, just like a swing waiting for its next push.'],
+      'parkdate-slide': ['Your turn first', 'An upright ladder meets a broad curling slide. The asymmetric outline makes this different from the hanging swing.'],
+      'parkdate-seesaw': ['Team Husein and Fatema', 'A tilted plank balances over an H/F-marked triangular support. Two handles and a little give and take make room for both teammates.'],
+      'parkdate-duck': ['The local celebrity', 'A rounded duck, pointed beak, and upturned tail add a cheerful character among the playground equipment.'],
+      'parkdate-swing-set': ['The big swing frame', 'Sloping supports and a high crossbar borrow the shape of playground equipment, not another rectangular border.'],
+      'parkdate-winding-rails': ['Take the scenic route', 'Two curving rails wander down the sides, leaving the center open for the main illustration.'],
+      'parkdate-picket-gate': ['Into the park', 'Pointed gate posts and a low connecting rail suggest the entrance to a little neighbourhood park.'],
+      'parkdate-footprints': ['A little walk', 'Two offset shoe prints leave a tiny trail in each corner.'],
+      'parkdate-acorn': ['A pocket-sized find', 'A round nut, broad cap, and short stem make a tiny acorn from a park walk.'],
+      'parkdate-kite-tail': ['Catch the breeze', 'A curving string and two short ties suggest a kite tail without filling the tile with another large object.'],
+      'parkdate-leaf': ['One little leaf', 'A broad leaf and a single pale vein keep this natural detail simple enough to see at game size.'],
+    },
+  },
+  'Meet Me at the Ferris Wheel': {
+    intro: 'Husein and Fatema, one more ride, and a completely unnecessary amount of candy. A bright little fairground-date invitation, with original rounded rides rather than a particular real amusement park.',
+    background: 'Faint canopy rays spread across raspberry-pink, aqua, and pale-gold tiles. The lively colour story stays soft enough for the deeper match colours to stand out.',
+    elements: {
+      'fairdate-ferris-wheel': ['The view from up there', 'A spoked wheel, four little gondolas, and splayed supports make an airy, round silhouette.'],
+      'fairdate-carousel-horse': ['Pick your favourite horse', 'An original toy-like horse rides a slim pole. Its mane, tail, and bent legs carry the movement without tiny decorative tack.'],
+      'fairdate-bumper-car': ['The H+F joyride', 'Husein and Fatema get their own H+F-marked bumper car. Its broad rubber base and tall contact pole keep the outline different from the open Ferris wheel.'],
+      'fairdate-cotton-candy': ['Cloud on a stick', 'A big, irregular puff sits on a tapered paper cone. The rounded candy adds a soft silhouette among the mechanical rides.'],
+      'fairdate-striped-canopy': ['Under the big canopy', 'A peaked, striped roof and scalloped valance turn a fairground booth into an airy frame.'],
+      'fairdate-coaster-track': ['One more ride', 'Two rails curve over an uneven crest and down the sides, with short cross ties keeping the track readable.'],
+      'fairdate-ferris-supports': ['Feet on the ground', 'Broad sloping supports and short crossbars borrow the structure beneath a Ferris wheel, not its circular center.'],
+      'fairdate-wristband': ['All-day admission', 'A tilted fastening band is the little paper bracelet that says there is time for another ride.'],
+      'fairdate-pennant': ['Follow the flags', 'A triangular flag on a short pole brings a little fairground bustle to the corners.'],
+      'fairdate-admit-ticket': ['Two for the next ride', 'A compact, serrated ticket has decorative admission marks, not real text or a scannable code.'],
+      'fairdate-carousel-pole': ['Around we go', 'A striped vertical pole is a small companion to the carousel horse.'],
+    },
+  },
+  'A Little Paint, A Lot of Us': {
+    intro: 'A little mess, a lot of Husein and Fatema. This painting-date invitation puts H, a heart, and F on the canvas: something made with affection matters more than a perfect result.',
+    background: 'Loose parallel brush sweeps sit behind periwinkle, apricot, and lemon tiles. The texture stays quiet: the paint blobs in the corners are matches, but these background strokes are not.',
+    elements: {
+      'paintdate-palette': ['Pick a happy colour', 'An asymmetric painter\'s palette has a real open thumb hole and pale paint wells, so its curved outline reads without tiny details.'],
+      'paintdate-easel': ['Husein and Fatema, on canvas', 'A canvas rests on a wide ledge and three splayed legs. H and F surround a small painted heart: an original little couple\'s artwork, not another puzzle to solve.'],
+      'paintdate-swoosh-brush': ['Make a little mess', 'A broad diagonal brush leaves one sweeping stroke underneath. Its long, open silhouette contrasts with the solid tube and rounded palette.'],
+      'paintdate-paint-tube': ['Squeeze in some colour', 'A tilted paint tube has a crimped top, a broad label, and a small cap. The label is a decorative panel, not a brand.'],
+      'paintdate-brushstroke': ['Perfectly imperfect', 'Broken, uneven brush marks suggest a hand-painted border rather than a mechanically regular rectangle.'],
+      'paintdate-canvas-stretchers': ['A slightly wonky canvas', 'A tilted canvas outline and visible stretcher edges make the frame feel like something propped in a studio.'],
+      'paintdate-taped-paper': ['Keep it in place', 'Four diagonal strips hold an open paper edge. The tape corners have their own distinct angular outline.'],
+      'paintdate-paint-blob': ['Happy little accident', 'An irregular paint splat is intentionally chunky enough to recognize without delicate droplets.'],
+      'paintdate-tape-tab': ['A torn bit of tape', 'A tilted strip with torn ends repeats the taped-paper vocabulary at corner size.'],
+      'paintdate-pencil': ['Sketch it first', 'A broad pencil and pointed tip make a simple diagonal corner detail.'],
+      'paintdate-bristle-fan': ['One last brushstroke', 'A wide fan of bristles and a short handle echo the painting tools without repeating the full center brush.'],
+    },
+  },
   'Kabhi Main Kabhi Tum': {
     intro: 'Mustafa and Sharjeena, told through everyday things: a motorcycle ride, a game in progress, and a book left open. Two different worlds finding their way together.',
     background: 'Soft road curves nod to the motorcycle rides. Denim blue, apricot, and butter yellow keep the board warm and playful.',
@@ -173,7 +258,11 @@ function renderThemeGuide(board, container) {
   const finishing = document.createElement('ul');
   const background = createTileSVG({ index: -1, bgColor: theme.palette.bg[0], attributes: new Map() }, theme);
   finishing.append(guideItem(background, 'The background', guide?.background || 'A quiet decorative canvas behind the matchable elements. Background colors and textures are not used for matching.'));
-  finishing.append(guideItem(createCenterHeartSVG(theme), 'The H/F heart', 'The little H/F monogram is the board\'s keepsake. It stays in the middle and is not a playable tile.'));
+  finishing.append(guideItem(createCenterHeartSVG(theme),
+    theme.showCoupleNames ? 'Husein and Fatema, at the heart of it' : 'The H/F heart',
+    theme.showCoupleNames
+      ? 'Husein and Fatema frame the little H/F heart in the middle of the board. The names and monogram are a decorative keepsake, not playable matches.'
+      : 'The little H/F monogram is the board\'s keepsake. It stays in the middle and is not a playable tile.'));
   canvas.append(finishing);
   content.append(canvas);
   const back = textElement('a', 'Back to the board', 'theme-guide-back');

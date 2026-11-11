@@ -263,9 +263,6 @@ const ARCHIVED_THEMES = [
     accentShapes: ['koffeeduet-quotation', 'koffeeduet-rating-paddle', 'koffeeduet-mic-head', 'koffeeduet-gossip-burst'],
     boardBg:      { pattern: 'koffeeduet-upholstery', color: '#B91B82' },
   },
-];
-
-const THEMES = [
   {
     name: 'Kabhi Main Kabhi Tum', emoji: '🏍️',
     style: 'cute-light',
@@ -348,6 +345,96 @@ const THEMES = [
     shapeNames:   ['gamedates-five-letter-guess', 'gamedates-winding-word', 'gamedates-connected-groups', 'gamedates-domino-pair'],
     accentShapes: ['gamedates-photo-pair', 'gamedates-halfway-heart', 'gamedates-ludo-pawn', 'gamedates-cipher-letters'],
     boardBg:      { pattern: 'gamedates-word-trails', color: '#A64E76' },
+  },
+];
+
+const THEMES = [
+  {
+    name: 'Now Showing: Husein & Fatema', emoji: '🎬',
+    showCoupleNames: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#FFD0CF', '#FFE7A3', '#C6E2FF'],
+      ring:   ['#A40B42', '#035020', '#1646B0', '#614000'],
+      shape:  ['#A40B42', '#035020', '#1646B0'],
+      accent: ['#A40B42', '#1646B0', '#614000'],
+    },
+    bgPatterns:   ['cinemadate-projector-rays', 'cinemadate-screen-folds', 'cinemadate-credit-lines', 'cinemadate-film-trails', 'cinemadate-velvet-nap'],
+    ringStyles:   ['cinemadate-ticket-edge', 'cinemadate-filmstrip', 'cinemadate-screen-curtains'],
+    shapeNames:   ['cinemadate-popcorn', 'cinemadate-clapperboard', 'cinemadate-seat-pair', 'cinemadate-film-reel'],
+    accentShapes: ['cinemadate-glasses', 'cinemadate-kernel', 'cinemadate-ticket-stub', 'cinemadate-projector'],
+    boardBg:      { pattern: 'cinemadate-projector-rays', color: '#A40B42' },
+  },
+  {
+    name: 'Dinner\'s on Husein', emoji: '🍽️',
+    showCoupleNames: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#FFCAB5', '#FFF0BB', '#BEE4A2'],
+      ring:   ['#9C1420', '#035020', '#1646B0', '#604000'],
+      shape:  ['#9C1420', '#035020', '#1646B0'],
+      accent: ['#9C1420', '#035020', '#604000'],
+    },
+    bgPatterns:   ['bistrodate-table-linen', 'bistrodate-awning-stripes', 'bistrodate-menu-rules', 'bistrodate-pasta-curls', 'bistrodate-candle-drift'],
+    ringStyles:   ['bistrodate-scalloped-plate', 'bistrodate-awning', 'bistrodate-place-setting'],
+    shapeNames:   ['bistrodate-spaghetti-fork', 'bistrodate-cloche', 'bistrodate-bottle-candle', 'bistrodate-sundae'],
+    accentShapes: ['bistrodate-fork', 'bistrodate-napkin', 'bistrodate-menu', 'bistrodate-spoon'],
+    boardBg:      { pattern: 'bistrodate-table-linen', color: '#9C1420' },
+  },
+  {
+    name: 'Swings Before Sunset', emoji: '🛝',
+    showCoupleNames: true,
+    style: 'cute-light',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#CBE8A7', '#FFE5B5', '#C5E5F5'],
+      ring:   ['#9D164D', '#00513D', '#4334A8', '#6B4100'],
+      shape:  ['#9D164D', '#00513D', '#4334A8'],
+      accent: ['#9D164D', '#4334A8', '#6B4100'],
+    },
+    bgPatterns:   ['parkdate-winding-path', 'parkdate-grass-hatching', 'parkdate-breeze-trails', 'parkdate-sandy-rake', 'parkdate-kite-streams'],
+    ringStyles:   ['parkdate-swing-set', 'parkdate-winding-rails', 'parkdate-picket-gate'],
+    shapeNames:   ['parkdate-swing', 'parkdate-slide', 'parkdate-seesaw', 'parkdate-duck'],
+    accentShapes: ['parkdate-footprints', 'parkdate-acorn', 'parkdate-kite-tail', 'parkdate-leaf'],
+    boardBg:      { pattern: 'parkdate-winding-path', color: '#36724A' },
+  },
+  {
+    name: 'Meet Me at the Ferris Wheel', emoji: '🎡',
+    showCoupleNames: true,
+    style: 'cute-light',
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#FBCBE2', '#BDEDEA', '#FFE4A1'],
+      ring:   ['#9C124E', '#075B35', '#1646B0', '#684000'],
+      shape:  ['#9C124E', '#075B35', '#1646B0'],
+      accent: ['#9C124E', '#1646B0', '#684000'],
+    },
+    bgPatterns:   ['fairdate-canopy-fans', 'fairdate-ride-tracks', 'fairdate-streamer-falls', 'fairdate-carousel-flutes', 'fairdate-queue-zigzags'],
+    ringStyles:   ['fairdate-striped-canopy', 'fairdate-coaster-track', 'fairdate-ferris-supports'],
+    shapeNames:   ['fairdate-ferris-wheel', 'fairdate-carousel-horse', 'fairdate-bumper-car', 'fairdate-cotton-candy'],
+    accentShapes: ['fairdate-wristband', 'fairdate-pennant', 'fairdate-admit-ticket', 'fairdate-carousel-pole'],
+    boardBg:      { pattern: 'fairdate-canopy-fans', color: '#A32069' },
+  },
+  {
+    name: 'A Little Paint, A Lot of Us', emoji: '🎨',
+    showCoupleNames: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#DED6FF', '#FFD2B4', '#F3ECA7'],
+      ring:   ['#9C1420', '#075B25', '#1646B0', '#604000'],
+      shape:  ['#9C1420', '#075B25', '#1646B0'],
+      accent: ['#9C1420', '#1646B0', '#604000'],
+    },
+    bgPatterns:   ['paintdate-brush-sweeps', 'paintdate-canvas-weft', 'paintdate-palette-scrapes', 'paintdate-wet-drags', 'paintdate-pencil-hatching'],
+    ringStyles:   ['paintdate-brushstroke', 'paintdate-canvas-stretchers', 'paintdate-taped-paper'],
+    shapeNames:   ['paintdate-palette', 'paintdate-easel', 'paintdate-swoosh-brush', 'paintdate-paint-tube'],
+    accentShapes: ['paintdate-paint-blob', 'paintdate-tape-tab', 'paintdate-pencil', 'paintdate-bristle-fan'],
+    boardBg:      { pattern: 'paintdate-brush-sweeps', color: '#6650A4' },
   },
 ];
 

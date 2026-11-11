@@ -133,29 +133,29 @@ Previews use `createTileSVG()` with one real board attribute at a time, or `crea
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Current Drama & Game-Date Collection
+### Current Date-Ideas Collection
 
-This rotation contains four soft, non-sticker drama themes and one game-date theme:
+The active rotation is five imagined date invitations, not claims about shared past outings:
 
-| Theme | Rendering style | Main visual vocabulary |
-|-------|-----------------|------------------------|
-| Kabhi Main Kabhi Tum | Cute Light | Mustafa's motorcycle and gaming setup, Sharjeena's books |
-| Meri Zindagi Hai Tu | Cute Light | Ayra's stethoscope and coat, Kamyar's car and keys |
-| Tere Bin | Standard | Draped shawl, curled contract with diagonal pen, open pool ladder and ripples, haveli doorway |
-| Dar-e-Nijaat | Standard | Tilted phone with message bubble, flowing chadar, reading lamp, cupped hands and heart |
-| Our Little Game Dates | Standard | Wordle-inspired letter rows, Strands-inspired word trail, Connections-inspired groups, Pips-inspired dominoes |
+| Theme | Rendering style | Background identity | Center illustrations |
+|-------|-----------------|---------------------|----------------------|
+| Now Showing: Husein & Fatema | Standard | Cherry blush, butter, sky | Popcorn tub, lifted clapperboard, H/F cinema seats, open film reel |
+| Dinner's on Husein | Standard | Peach, cream, pistachio | Twirled spaghetti fork, H/F-engraved cloche, bottle candle, sundae |
+| Swings Before Sunset | Cute Light | Leaf green, sunshine, blue | Hanging swing, curling slide, H/F seesaw, duck |
+| Meet Me at the Ferris Wheel | Cute Light | Raspberry pink, aqua, gold | Ferris wheel, carousel horse, H+F bumper car, cotton candy |
+| A Little Paint, A Lot of Us | Standard | Periwinkle, apricot, lemon | Open palette, H/heart/F easel, diagonal brush and swoosh, tilted paint tube |
 
-**Game-date theme:** Our Little Game Dates replaces Our Drama Nights. Its centers refer to Wordle, Strands, Connections, and Pips through original illustrations, not copied NYT interfaces, logos, or daily answers. Frames and corners bring in huseinlovesyou.com's Photo Tiles, Hidaayat Ciphers, Ludo, and Better Half, with a heart linking two separated frame edges. Keep this theme about connection through games from different places; do not reintroduce shared sofas, snack trays, remotes, or assumptions about watching TV together. Do not substitute H/F Deal for these game references. Its blush/periwinkle/pale-green palette and soft rendering are retained, and all four drama themes are unchanged.
+All five opt into `showCoupleNames: true`: the decorative center tile displays Husein and Fatema above and below the existing H/F heart. Full names stay on this non-playable keepsake and in the guides, with selected titles adding a personal nod; small initials personalize selected matchable objects without squeezing long labels into gameplay silhouettes. The guide reuses this same named center SVG. Themes without the flag keep their existing monogram unchanged.
 
-**Design reference:** the non-sticker birthday-era themes, especially September Sparkle, Wrapped With Love, and Birthday Eve Wishes: clean palette-colored silhouettes, slim decorative frames, light backgrounds, and playful corner motifs. The new collection does not use cream sticker keylines, dark offset shadows, or the Bold Sticker helpers. The two Cute Light themes retain their declared style, but `highContrast: true` takes precedence over the legacy Cute Light transforms.
+**Design reference:** retain the clean, non-sticker birthday-era treatment: substantial palette-colored centers, slim subject-specific frames, rounded forms, and readable corner motifs. There are no cream sticker keylines, dark offset shadows, or Bold Sticker helpers. All five set `highContrast: true` and `softIllustration: true`; those flags take precedence over legacy Cute Light transforms. Centers and frames remain at authored scale and accents scale to 1.25 around their corners. Match colors remain deep and separated; softness comes from the backgrounds and artwork, not extra foreground fading.
 
-All five opt into `highContrast: true` for opaque, separated pastel backgrounds and `softIllustration: true` for birthday-reference spacing: centers and frames stay at their authored scale, while corner accents scale to 1.25 around their own corners instead of 1.6. This preserves substantial center silhouettes without the dense 1.15-scale treatment of the previous collection. The flags do not affect matching. Softness comes from the original rounded artwork, generous spacing, and restrained 3px frames, not fading matchable elements. Each theme has three different background tones and custom frame geometry. `renderShowTexture` supplies only a quiet texture treatment; `renderDramaFrame` and `renderDramaIllustration` supply plain strokes and filled silhouettes with pale internal details. Each case supplies its own subject-specific paths.
+Each theme provides 5 quiet texture cases, 3 differently structured frames, 4 distinct center silhouettes, 4 corner motifs, and all 11 authored motif explanations in `theme-guide.js`. The existing guide renders the actual board SVGs, including backgrounds and the shared H/F monogram, for 13 illustrated cards per theme.
 
-**Silhouette variety:** Tere Bin deliberately mixes flowing cloth, a curled diagonal document, open water/ladder linework, and an architectural arch. Dar-e-Nijaat mixes an angled phone, asymmetric flowing cloth, a flared lampshade on a stem, and rounded cupped hands. Avoid turning these back into four upright rectangular centers; artwork must remain distinguishable without relying on interior details or color.
+**Keep the dates distinct:** Cinema uses ticket notches, perforated film rails, and screen curtains rather than remote controls or shared sofas. Dinner has a scalloped plate, bistro awning, and open cutlery setting. Park uses sloping swing supports, wandering rails, and picket posts instead of a generic flower/picnic collection. Fair has a peaked booth canopy, coaster rails, and splayed Ferris supports. Painting has broken brush edges, a tilted canvas stretcher, and taped paper. Do not reduce these to the same rounded rectangle with different dash patterns. Existing `renderShowTexture`, `renderDramaFrame`, and `renderDramaIllustration` helpers apply consistent treatment only; each case supplies its own subject-specific geometry.
 
-**Dar-e-Nijaat spoiler boundary: episode 15.** This theme uses neutral, character-inspired objects and gestures, not a reconstruction of later scenes. The phone is not the later gifted phone; the chadar is a plain flowing textile with no wedding styling. The reading lamp and kind hands are original supporting illustrations, not claims about iconic scenes. Do not introduce later gifts, wedding outfits, plot outcomes, or quotations without checking the viewer's progress.
+The previous five drama/game-date themes are preserved unchanged in `ARCHIVED_THEMES`, bringing the archive to 21 themes; their renderer cases and illustrated guides remain available for reactivation. Scheduled birthday themes are separate and unchanged. All new art is original SVG, with no copied film imagery, brands, or attraction logos.
 
-The four previous entertainment themes are preserved unchanged in `ARCHIVED_THEMES`, alongside the twelve earlier archived themes and all retained renderer cases. Scheduled birthday themes remain separate and unchanged. All artwork is original SVG, not copied promotional images, logos, actor portraits, or screenshots.
+**Archived-theme boundaries still apply:** Our Little Game Dates refers to Photo Tiles, Hidaayat Ciphers, Ludo, Better Half, Wordle, Strands, Connections, and Pips, not H/F Deal or shared-TV assumptions. Dar-e-Nijaat remains episode-15-safe: an ordinary phone, plain non-wedding chadar, and original supporting lamp/hands illustrations, with no later gifts or plot outcomes.
 
 ### Non-Negotiable Quality Gates
 
@@ -489,7 +489,7 @@ function renderShape(attr) {
 
 For legacy `cute-light` without `highContrast`, `createTileSVG()` currently applies `translate(11 11) scale(1.1)` to shapes, plus decorative H/F flourishes. This is not a centered transform. Inspect the actual rendering path rather than relying on the historical 0.78-scale description; avoid tiny internal details.
 
-The active shared-watchlist collection sets `highContrast: true`. This opt-in uses each theme's opaque pastel background triad, reduces background texture opacity to 8%, and removes the extra foreground fade. By default, shapes scale to 1.15 around (50,50), accents scale to 1.6 around their own corners, and rings retain 0.92 scale. The new collection also sets `softIllustration: true`, which leaves centers and rings at scale 1 and uses 1.25-scale accents for more breathing room. Both paths omit the extra Cute Light monogram flourishes. These flags control legibility and spacing, not sticker styling; the new themes use plain SVG artwork. Other collections retain their existing rendering.
+The active date-ideas collection sets `highContrast: true`. This opt-in uses each theme's opaque pastel background triad, reduces background texture opacity to 8%, and removes the extra foreground fade. By default, shapes scale to 1.15 around (50,50), accents scale to 1.6 around their own corners, and rings retain 0.92 scale. The new collection also sets `softIllustration: true`, which leaves centers and rings at scale 1 and uses 1.25-scale accents for more breathing room. Both paths omit the extra Cute Light monogram flourishes. These flags control legibility and spacing, not sticker styling; the new themes use plain SVG artwork. Other collections retain their existing rendering.
 
 **Template — simple filled shape:**
 ```javascript
