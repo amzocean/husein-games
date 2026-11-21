@@ -1,6 +1,91 @@
 import { createTileSVG, createCenterHeartSVG } from './renderer.js';
 
 const GUIDES = {
+  'Auckland: A Chapter of You': {
+    intro: 'New Zealand is a chapter of Fatema\'s story: her time studying in Auckland. Books sit beside original illustrations of the city and its harbour, with Husein and Fatema at the heart of the board. The city symbols do not claim particular excursions or a graduation.',
+    background: 'Gentle harbour currents cross fern-green, glacier-aqua, and apricot tiles. The other textures draw on notebook rules, volcanic contours, ordinary fern veins, and sail stitching, not culturally significant Maori designs.',
+    elements: {
+      'auckland-kiwi': ['A little New Zealand kiwi', 'A rounded body, short legs, and long beak make the bird recognizable without a detailed wildlife portrait. It is a place symbol, not a claim that Fatema saw one.'],
+      'auckland-sky-tower': ['Auckland on the skyline', 'The Sky Tower has a tall shaft and a compact observation deck. Its slender silhouette deliberately differs from Seattle\'s broad Space Needle.'],
+      'auckland-study-books': ['Fatema\'s Auckland chapter', 'An open book above two stacked volumes represents the studying you told us about. The page marks are illustrative, not a university name or a qualification.'],
+      'auckland-sailboat': ['The harbour city', 'Two open sails and a low hull evoke Auckland\'s waterfront. Two small window marks add a quiet paired detail, without inventing a boat trip.'],
+      'auckland-fern-fronds': ['Fern edges', 'Two branching fronds curve along the outside of the tile. This is original botanical linework, not a borrowed cultural pattern.'],
+      'auckland-study-pages': ['An open chapter', 'Curved page edges and a short central fold turn a study book into a frame, leaving room for the center illustration.'],
+      'auckland-harbour-sails': ['Sails at the edges', 'Two tall triangular sails and a low curved hull give this frame a different structure from the book and fern.'],
+      'auckland-pencil': ['Notes from that chapter', 'A diagonal pencil recalls the study theme, with a broad tip and a single readable highlight.'],
+      'auckland-shell': ['A coastal detail', 'A fan-shaped shell connects the corners to New Zealand\'s coast, without claiming a particular beach visit.'],
+      'auckland-bookmark': ['Keep your place', 'A notched bookmark carries the book vocabulary into the small corners.'],
+      'auckland-fern-tip': ['A little fern', 'A short branching stem echoes the large botanical frame without repeating a complete frond.'],
+    },
+  },
+  'Seattle: My Side of the Map': {
+    intro: 'Seattle is Husein\'s side of the map. Rain, the skyline, and waterfront transport make a little portrait of the city, paired with Mumbai in the collection. These are place symbols, not claims about daily routines or trips.',
+    background: 'Fine slanting rain sits on powder-blue, orchid-pink, and butter-yellow tiles. Ferry wakes, flight trails, pier planks, and cloud bands provide four other quiet Seattle textures.',
+    elements: {
+      'seattle-space-needle': ['Husein\'s skyline', 'A broad saucer-shaped deck and three splayed supports make the Space Needle different from Auckland\'s narrower Sky Tower.'],
+      'seattle-ferry': ['Across the water', 'A stepped cabin, tall funnel, and wide hull suggest a Seattle-area ferry. This is an original vessel, not a specific operator or a claimed journey.'],
+      'seattle-umbrella': ['A little shelter', 'A wide scalloped canopy and hooked handle bring a rounded rain-day object into the city theme.'],
+      'seattle-seaplane': ['Waterfront wings', 'An angled plane on long floats represents the seaplanes associated with the Seattle waterfront, without asserting a flight you took.'],
+      'seattle-needle-supports': ['The skyline as a frame', 'A shallow observation-deck outline rests over two widely splayed supports, leaving the center open.'],
+      'seattle-pier-railings': ['By the waterfront', 'Straight posts, short cross rails, and a low deck evoke a pier rather than a closed picture frame.'],
+      'seattle-umbrella-canopy': ['Under the rain canopy', 'A curved, scalloped top contrasts with the angular skyline and railings.'],
+      'seattle-raindrop': ['Seattle weather', 'One broad teardrop and a small highlight keep the rain motif clear at phone size.'],
+      'seattle-boarding-pass': ['A waterfront ticket', 'An original ticket with a short divider suggests transport; it is not a real boarding pass or barcode.'],
+      'seattle-pine': ['Pacific Northwest green', 'A chunky evergreen silhouette adds a regional natural detail without tiny needles.'],
+      'seattle-mooring-cleat': ['Tied to the pier', 'A wide cleat on a short base brings a different, solid waterfront silhouette to the corners.'],
+    },
+  },
+  'Mumbai: Your Side of the Map': {
+    intro: 'Mumbai is Fatema\'s side of the map, a companion to Husein\'s Seattle board. Architecture, transport, sea air, and vada pav represent the city without assuming a particular commute or outing.',
+    background: 'Sea-breeze curves pass through mango, sea-glass mint, and rose tiles. Rail routes, paving joints, folded snack paper, and monsoon streaks keep Mumbai\'s texture vocabulary distinct.',
+    elements: {
+      'mumbai-gateway': ['The Gateway of India', 'A broad central opening, stepped roof, and side turrets suggest the landmark through an original simplified silhouette.'],
+      'mumbai-local-train': ['The city in motion', 'A front-facing local train has two large windows and short rails underneath. It is a Mumbai symbol, not a claim about Fatema\'s commute.'],
+      'mumbai-rickshaw': ['A little city ride', 'An asymmetric cabin, sloping roof, and two broad wheels make the auto-rickshaw different from the upright train.'],
+      'mumbai-vada-pav': ['A Mumbai vada pav', 'A rounded pav bun surrounds a craggy potato vada, with a curved chilli beside it. Broad separated layers keep the snack readable at tile size.'],
+      'mumbai-gateway-arch': ['An architectural welcome', 'A raised arch and stepped outside supports echo the Gateway without duplicating its full center illustration.'],
+      'mumbai-train-handles': ['Hold on, we are moving', 'Two hanging triangular handles and a top rail borrow their shape from public transport.'],
+      'mumbai-seafront-parapet': ['A little sea air', 'Capped side posts and a low balustrade evoke a promenade, rather than claiming a particular walk together.'],
+      'mumbai-train-ticket': ['A city ticket', 'A tall paper ticket with decorative rules supports the local-train motif; it has no real route, price, or code.'],
+      'mumbai-snack-plate': ['A little snack plate', 'A small split bun sits above a broad plate, echoing the vada pav center without any tea glass.'],
+      'mumbai-direction-arrow': ['This way through the city', 'A chunky street-direction arrow introduces a clear angular corner silhouette.'],
+      'mumbai-seagull': ['Above the waterfront', 'Two open wing curves suggest a coastal bird without a detailed animal drawing.'],
+    },
+  },
+  'UK: Remember Us Here?': {
+    intro: 'A keepsake of your recent UK trip together: the bus tour, Harrods, London Bridge, the clock tower and Big Ben, and the Ferris wheel you mentioned. Original London-inspired illustrations carry those references without inventing an itinerary.',
+    background: 'Thames-like flowing lines cross cherry-peach, pale-denim, and butter-yellow tiles. Bus routes, stone courses, clock ticks, and shop-awning stripes round out the London vocabulary.',
+    elements: {
+      'london-tour-bus': ['Our bus-tour chapter', 'Two rows of windows and a broad double-decker body recall the bus tour you mentioned. It is an original bus, with no operator logo or copied livery.'],
+      'london-big-ben': ['The familiar clock tower', 'A pointed roof and square clock face represent Elizabeth Tower, commonly called Big Ben after its bell. The guide groups your clock-tower and Big Ben references rather than treating them as two different landmarks.'],
+      'london-harrods': ['The Harrods stop', 'A tiered shop facade and repeated windows nod to Harrods. It is a simplified architectural reference, with no copied wordmark or assumption about purchases.'],
+      'london-london-bridge': ['London Bridge', 'A low road deck and sturdy piers represent London Bridge, not Tower Bridge: there are deliberately no twin Gothic towers or lifting roadway.'],
+      'london-eye-arc': ['The Ferris-wheel view', 'An open upper wheel arc, radial marks, and lower supports nod to the London Eye. Its airy frame avoids repeating the previous fairground wheel center.'],
+      'london-bridge-spans': ['Along the bridge', 'A straight deck and short open spans turn the bridge reference into an outside frame.'],
+      'london-shopfront': ['A London shopfront', 'A pitched awning, narrow side windows, and open lower edge provide an architectural shopping reference.'],
+      'london-tour-ticket': ['A little tour keepsake', 'A notched paper ticket recalls the bus-tour reference without reproducing a real ticket.'],
+      'london-shopping-bag': ['The shopping stop', 'An unbranded bag connects to Harrods as a place reference, not proof that you bought anything there.'],
+      'london-eye-capsule': ['A tiny wheel capsule', 'A rounded observation capsule brings the Ferris-wheel reference into the corners.'],
+      'london-clock-hands': ['A moment remembered', 'Open hands and a few ticks carry the clock-tower vocabulary without adding another full clock face.'],
+    },
+  },
+  'Egypt: You, Me & Ancient Wonders': {
+    intro: 'A remembrance of your Egypt trip a couple of years ago: pyramids, museums, a river-boat tour, Imam Husain\'s zari mubarak, and Al Jami al-Anwar in Misr. Sacred references use restrained, original architectural details; there are no human depictions, invented inscriptions, or claims about religious rituals.',
+    background: 'Quiet Nile-current lines cross sand-gold, aqua, and sunset-rose tiles. Sand ridges, limestone joints, courtyard paving, and museum linen keep the atmosphere warm and grounded.',
+    elements: {
+      'egypt-pyramids': ['The pyramids', 'Three differently sized triangular masses recall your pyramid reference. Simple edge and stone marks keep the ancient silhouettes readable.'],
+      'egypt-museum': ['The museum chapter', 'A pediment and four columns are an original museum symbol for the museums you visited, not an assertion about a particular building or collection.'],
+      'egypt-river-boat': ['Our river-boat tour', 'A broad hull and shaded passenger deck recall the river-boat tour you mentioned. It is a tour boat rather than an invented felucca sailing trip.'],
+      'egypt-al-jami-anwar': ['Al Jami al-Anwar, Misr', 'The domed courtyard fountain from your reference photos stands on a low stepped base, with arched openings and the surrounding pointed arcade behind it. Original simplified linework recalls the stone pavilion without copying inscriptions or claiming an exact building plan.'],
+      'egypt-zarih-lattice': ['Imam Husain\'s zari mubarak', 'Restrained side latticework and a raised upper rail respectfully recall the sacred enclosure you mentioned. The illustration does not depict Imam Husain, a tomb interior, or sacred writing.'],
+      'egypt-anwar-arcade': ['The mosque arcade', 'Open pointed arches and short side supports extend the Al Jami al-Anwar reference through original architectural linework.'],
+      'egypt-museum-colonnade': ['A museum colonnade', 'A triangular pediment, slim columns, and a broad base turn the museum vocabulary into a distinct frame.'],
+      'egypt-papyrus': ['A Nile-side plant', 'A broad fan over a straight stem is an original papyrus-inspired plant detail, not a copied historical symbol.'],
+      'egypt-museum-label': ['Beside an exhibit', 'A small museum label has decorative lines only, with no invented artifact description or hieroglyphs.'],
+      'egypt-boat-pennant': ['On the river boat', 'An unmarked pennant and short pole repeat the boat-tour vocabulary, without national or religious insignia.'],
+      'egypt-arch-niche': ['An architectural detail', 'A small pointed opening echoes the mosque arcade, with no sacred inscription or figurative decoration.'],
+    },
+  },
   'Now Showing: Husein & Fatema': {
     intro: 'Tonight\'s leading pair: Husein and Fatema. A little movie-date invitation with two reserved seats and a film we will probably spend half the time talking over. Original illustrations, not a real film or a claim about a shared outing.',
     background: 'Faint projector rays cross cherry-blush, butter-yellow, and sky-blue tiles. The light stays behind the matchable artwork, like a quiet beam across a cinema.',
@@ -259,8 +344,10 @@ function renderThemeGuide(board, container) {
   const background = createTileSVG({ index: -1, bgColor: theme.palette.bg[0], attributes: new Map() }, theme);
   finishing.append(guideItem(background, 'The background', guide?.background || 'A quiet decorative canvas behind the matchable elements. Background colors and textures are not used for matching.'));
   finishing.append(guideItem(createCenterHeartSVG(theme),
-    theme.showCoupleNames ? 'Husein and Fatema, at the heart of it' : 'The H/F heart',
-    theme.showCoupleNames
+    theme.showThemeName ? 'This theme, at the heart of it' : theme.showCoupleNames ? 'Husein and Fatema, at the heart of it' : 'The H/F heart',
+    theme.showThemeName
+      ? 'The theme title frames the little H/F heart in the middle of the board. The title and monogram are decorative, not playable matches.'
+      : theme.showCoupleNames
       ? 'Husein and Fatema frame the little H/F heart in the middle of the board. The names and monogram are a decorative keepsake, not playable matches.'
       : 'The little H/F monogram is the board\'s keepsake. It stays in the middle and is not a playable tile.'));
   canvas.append(finishing);

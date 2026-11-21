@@ -6,7 +6,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 
 **The 7 games:**
 - **💌 Valentines** — A love-letter puzzle adventure (single-player, fully static, 6 levels) → [Valentines docs](public/valentines/DOCUMENTATION.md)
-- **🧩 Photo Tiles** — A pattern-matching tile puzzle with 16 procedurally-rendered SVG themes (single-player, no server logic) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
+- **🧩 Photo Tiles** — A pattern-matching tile puzzle with five personalized place themes, plus a separate birthday schedule (single-player, SVG-rendered) → [Photo Tiles docs](public/tiles/DOCUMENTATION.md)
 - **🎲 Ludo** — Classic board game, 2-4 players, real-time multiplayer via Socket.IO with Canvas rendering → [Ludo docs](public/ludo/DOCUMENTATION.md)
 - **🃏 H♥F Deal** — A 2-player card game (simplified Monopoly Deal), collect 3 sets to win, real-time multiplayer via Socket.IO → [H♥F Deal docs](public/cards/DOCUMENTATION.md)
 - **📜 Hidaayat Ciphers** — A substitution cipher puzzle decoding wisdom quotes from Raudat Hidayaat 1, with post-solve book page reveal (single-player, no server logic) → [Hidaayat Ciphers docs](public/hidaayat-ciphers/DOCUMENTATION.md)
@@ -15,7 +15,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 - **📷 Fatema's Photo Studio** — A directly accessible, PIN-protected freeform studio. Fatema describes a scene, generates one guarded medium-quality AI picture, and can repeatedly regenerate it with the same description (`gpt-image-2`) → [Photo Studio docs](public/photo-studio/DOCUMENTATION.md)
 
 **What a new session needs to know immediately:**
-- The Photo Tiles game is the most actively developed — it has 16 visual themes, each requiring ~16 SVG render cases in `renderer.js` (~1870 lines). Theme work is where most bugs have occurred (see [Photo Tiles docs](public/tiles/DOCUMENTATION.md) for the Bug Fixes History and New Theme Creation Guide).
+- Photo Tiles currently rotates Auckland, Seattle, Mumbai, UK, and Egypt place themes. The previous collections are preserved as 26 archived themes; scheduled birthday themes remain separate. Each theme needs 16 SVG renderer cases and 11 authored motif explanations. Read the [current collection and creation playbook](public/tiles/DOCUMENTATION.md#theme-lifecycle--creation-guide) before theme work, including grounded place references, respectful sacred architecture, naming/personalization rules, and rendering flags.
 - Ludo's server logic has **5 separate code paths** that complete a token move. Any change to post-move behavior (extra turns, win checks, captures) MUST be applied to all 5. This is the #1 source of Ludo bugs (see [Ludo docs](public/ludo/DOCUMENTATION.md)).
 - The site runs on Render free tier — no persistent storage, auto-deploys on push to `main`, 30s cold starts.
 - Git pushes use the **browser-based credential manager** (personal GitHub account `amzocean`). The `gh` CLI is linked to a work account — do NOT use it for this repo.
@@ -35,7 +35,7 @@ When updating this documentation: don't just record WHAT changed. Record WHY, wh
 | Document | Location | Covers |
 |----------|----------|--------|
 | This file | `DOCUMENTATION.md` | Project architecture, deployment, shared infrastructure, common tasks |
-| Photo Tiles | `public/tiles/DOCUMENTATION.md` | 16-theme system, SVG rendering, new theme guide, tile bug fixes |
+| Photo Tiles | `public/tiles/DOCUMENTATION.md` | Active place collection, archived/scheduled themes, SVG rendering, naming/personalization, creation and validation playbook |
 | Ludo | `public/ludo/DOCUMENTATION.md` | Multiplayer logic, 5 code paths, Socket.IO events, Ludo bug fixes |
 | H♥F Deal | `public/cards/DOCUMENTATION.md` | Card game rules, pending action state machine, rent payment flow, bug fixes |
 | Valentines | `public/valentines/DOCUMENTATION.md` | Level config, customization |

@@ -11,7 +11,7 @@ const load = (file, names, globals = {}) => {
     .replace(/export\s*\{[^}]*\};?/g, '');
   return vm.runInNewContext(`${source}\n;({ ${names.join(', ')} });`, globals);
 };
-const engine = load('engine.js', ['THEMES', 'BIRTHDAY_THEMES', 'buildPools']);
+const engine = load('engine.js', ['THEMES', 'ARCHIVED_THEMES', 'BIRTHDAY_THEMES', 'buildPools']);
 const renderer = load('renderer.js', ['createTileSVG', 'createCenterHeartSVG', 'renderBg'], {
   document: {
     createElementNS() {
@@ -85,7 +85,7 @@ test('every current motif has its own guide explanation', () => {
 });
 
 test('named center keepsakes are opt-in and retain the original monogram', () => {
-  const theme = engine.THEMES.find(item => item.showCoupleNames);
+  const theme = engine.ARCHIVED_THEMES.find(item => item.showCoupleNames);
   assert.ok(theme);
   const named = renderer.createCenterHeartSVG(theme).innerHTML;
   assert.match(named, />Husein<\/text>/);
@@ -94,6 +94,25 @@ test('named center keepsakes are opt-in and retain the original monogram', () =>
   const legacy = renderer.createCenterHeartSVG({ ...theme, showCoupleNames: false }).innerHTML;
   assert.doesNotMatch(legacy, /Husein|Fatema/);
   assert.match(legacy, /class="center-heart"/);
+});
+
+test('current center titles replace names without changing the H/F heart', () => {
+  for (const theme of engine.THEMES) {
+    const svg = renderer.createCenterHeartSVG(theme).innerHTML;
+    assert.doesNotMatch(svg, />Husein<\/text>|>Fatema<\/text>/);
+    assert.match(svg, />h<\/text>/);
+    assert.match(svg, />f<\/text>/);
+    assert.match(svg, /class="center-heart"/);
+    const labels = [...svg.matchAll(/<text[^>]*>([^<]*)<\/text>/g)]
+      .map(match => match[1].replace(/&amp;/g, '&')).filter(text => text !== 'h' && text !== 'f');
+    assert.equal(labels[0] + ': ' + labels.slice(1).join(' '), theme.name);
+    const legacy = renderer.createCenterHeartSVG({ ...theme, showThemeName: false }).innerHTML;
+    assert.doesNotMatch(legacy, /font-size="14"/);
+    assert.match(legacy, /class="center-heart"/);
+  }
+  const escaped = renderer.createCenterHeartSVG({ ...engine.THEMES[0], name: '<Trip>: You & Me' }).innerHTML;
+  assert.match(escaped, /&lt;Trip&gt;/);
+  assert.match(escaped, /You &amp; Me/);
 });
 
 test('every active theme can be matched through to a complete photo reveal', () => {

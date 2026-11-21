@@ -32,36 +32,38 @@ A pattern-matching tile puzzle (5×5 = 25 tiles, 24 active + 1 decorative center
   - Shows theme name + emoji as a toast on each new game (fades after 2s)
   - Skips center tile clicks (`.tile:not(.center-tile)` selector)
   - Animates center heart out on win, plays romantic jigsaw cascade reveal (`playCascadeReveal()`)
-- `engine.js` — Board generation, game logic & **theme system** (~450+ lines)
+- `engine.js` — Board generation, game logic & **theme system**
   - Constants: `ROWS=5, COLS=5, TILE_COUNT=25, ACTIVE_TILES=24, CENTER_INDEX=12`
   - `THEMES` array — active themes; `ARCHIVED_THEMES` array — retired themes (check code for current counts)
   - `buildPools(theme)` — generates 3 attribute pools of 12 items each from a theme
   - `generateBoard()` — picks random theme from THEMES, builds pools, creates paired 24-tile board + center heart
   - `GameState` class — manages board, matching, scoring; tracks `currentTheme`
-- `renderer.js` — SVG tile rendering (~2500+ lines) — **THE KEY FILE**
+- `renderer.js` — SVG tile rendering — **THE KEY FILE**
   - `renderBg()` — background patterns (board-level, non-matchable)
   - `renderRing()` — ring border styles (3 cases per theme, matchable)
   - `renderShape()` — center shape icons (4 cases per theme, matchable)
   - `renderAccent()` — corner accent decorations (4 cases per theme, matchable)
   - `createTileSVG()` — assembles tile with white base + tint + board bg + matchable layers
-  - `createCenterHeartSVG()` — renders the h❤f monogram center tile
+  - `createCenterHeartSVG()` — renders the h❤f monogram center tile, with optional theme-title or legacy Husein/Fatema labels
 - `photos.js` — Daily photo selection from `photos/manifest.json` (one photo per calendar day, sequential, no skips)
 - `theme-guide.js` — Illustrated scroll-down guide: theme-specific reference descriptions, exact renderer previews, and a generic fallback for scheduled/older themes
 - `photos/` — Personal photos revealed as tiles are cleared (62 photos, named `photo-01.jpg` through `photo-62.jpg`)
 - `update-photos.ps1` — PowerShell script to regenerate `photos/manifest.json` from image files in `photos/`
-- `validate-themes.js` — Pre-commit theme validator (10 checks, all must pass)
-- `../../tools/tiles-renderer.test.js` — Dependency-free regression tests: soft/legacy sizing, runtime rendering coverage, distinct variants, no sticker styling, and complete current-theme explanations
+- `../../validate-themes.js` — Pre-commit theme validator (10 checks, all must pass)
+- `../../tools/tiles-renderer.test.js` — Dependency-free regression tests: soft/legacy sizing, runtime rendering coverage, distinct variants, no sticker styling, complete current-theme explanations, legacy named centers, current theme-title centers, and complete-board matching/reset
 
 ## Tile SVG Layer Stack (back-to-front)
 
-Each active tile SVG (`viewBox 0 0 100 100`) contains:
+Each active tile SVG (`viewBox 0 0 100 100`) in the current high-contrast collection contains:
 
 ```
 Layer 1: <rect fill="white"/>                              ← fully opaque white base (blocks photo)
-Layer 2: <rect fill="${boardBg.color}" opacity="0.12"/>    ← very subtle theme tint
-Layer 3: <g class="board-bg-layer">${renderBg(boardBg)}</g> ← pattern overlay (SKIPPED for 'solid' themes)
+Layer 2: <rect fill="${tile.bgColor}" opacity="1"/>        ← one of the theme's three background colors
+Layer 3: <g class="board-bg-layer" opacity="0.08">...</g>  ← quiet renderBg(boardBg) texture; skipped for 'solid'
 Layer 4: matchable attribute layers (ring, shape, accent)   ← what the player actually matches on
 ```
+
+For themes without `highContrast: true`, playable tile tints use opacity `0.22` and the texture wrapper uses opacity `1`. The legacy decorative center instead uses `boardBg.color` at opacity `0.12`; a high-contrast center uses `palette.bg[0]` at opacity `1`. Keep these paths distinct when adjusting contrast.
 
 When a tile is cleared (matched), the whole tile element goes to `opacity: 0`, revealing the photo CSS `background-image` on the board div underneath — creating a jigsaw reveal effect.
 
@@ -91,6 +93,10 @@ The center tile at grid position [2,2] shows an **h❤f** monogram:
 - The whole tile pulses with a realistic double-pump heartbeat (1.2s cycle)
 - On game win, the center tile animates out (scale down + fade)
 
+`showCoupleNames: true` opts into **Husein** above and **Fatema** below the existing monogram, using the first and second ring colors respectively. The renderer also sets the SVG label to "Husein and Fatema". These are fixed keepsake labels, not configurable text or matchable attributes. The guide reuses the same SVG and adds a personalized explanation. Omit the flag to preserve an older theme's original center; changing a title alone must not enable personalization.
+
+The current place themes instead use `showThemeName: true`: the place appears above the unchanged h❤f monogram and the rest of the theme title below, wrapping at word boundaries. Theme-title labels take precedence over legacy couple-name labels and are decorative, not matchable. The guide previews the same center tile.
+
 ## Board Background System
 
 Each theme defines a `boardBg` property:
@@ -99,17 +105,17 @@ boardBg: { pattern: 'waves', color: '#00bcd4' }
 ```
 
 - **pattern**: name of a case in `renderBg()`, or `'solid'` for no pattern overlay
-- **color**: the theme's primary color, used for the 12% tint layer
+- **color**: ink for the background texture, also used for the legacy center tint and as a fallback when a playable tile has no `bgColor`. Generated playable tiles use `palette.bg`, not this color, for their tint.
 
 **boardBg assignments**: Read `engine.js` `THEMES` array for each theme's `boardBg` property. Each has a `pattern` (name of a `renderBg()` case, or `'solid'`) and a `color` (hex).
 
 > Archived themes retain their boardBg definitions in `ARCHIVED_THEMES`. See engine.js for full list.
 
-**Why most themes use 'solid':** Originally all had decorative patterns, but several caused visual confusion — players mistook bg pattern elements for matchable game elements (e.g., Bollywood's spotlight had concentric circles that looked like ring elements). Solid themes get only the white base + 12% color tint.
+**Why 'solid' remains a safe fallback:** Older decorative backgrounds sometimes looked matchable (e.g., Bollywood's spotlight had concentric circles resembling ring elements). The current place collection uses quiet textures under an 8% opacity wrapper instead. A solid theme skips the texture entirely but retains the white base and its normal per-tile tint.
 
 ## Gameplay
 1. Start: 24 randomly generated tiles on a 5×5 grid (center = decorative h❤f heart) — theme chosen randomly
-2. Theme name + emoji shown briefly as a toast overlay (e.g. "🌙 Celestial")
+2. Theme name + emoji shown briefly as a toast overlay (e.g. "🎬 Now Showing: Husein & Fatema")
 3. Tap two tiles that share at least one visual attribute (ring, shape, or accent) to match them
 4. Matched tiles fade out, revealing a photo underneath (jigsaw reveal)
 5. Track combo streaks and clear all 24 tiles to win
@@ -133,9 +139,31 @@ Previews use `createTileSVG()` with one real board attribute at a time, or `crea
 
 Themes rotate regularly — archive stale ones, add fresh ones. Keep **5–8 active themes** for variety without overwhelm. This section is the **complete operational playbook** — it tells Copilot (or any implementer) exactly what to do for each workflow.
 
-### Current Date-Ideas Collection
+### Current Places-in-Our-Story Collection
 
-The active rotation is five imagined date invitations, not claims about shared past outings:
+The active rotation is five places connected to your story, not a generic country/flag collection:
+
+| Theme | Rendering style | Background identity | Center illustrations |
+|-------|-----------------|---------------------|----------------------|
+| Auckland: A Chapter of You | Cute Light | Fern green, glacier aqua, apricot | Kiwi, Sky Tower, study books, harbour sailboat |
+| Seattle: My Side of the Map | Standard | Powder blue, orchid pink, butter yellow | Space Needle, ferry, umbrella, seaplane |
+| Mumbai: Your Side of the Map | Standard | Mango, sea-glass mint, rose | Gateway of India, local train, auto-rickshaw, vada pav |
+| UK: Remember Us Here? | Standard | Cherry peach, pale denim, butter yellow | Tour bus, Big Ben clock tower, Harrods-inspired facade, London Bridge |
+| Egypt: You, Me & Ancient Wonders | Standard | Sand gold, Nile aqua, sunset rose | Pyramids, museum, river-tour boat, Al Jami al-Anwar courtyard fountain |
+
+All five retain `highContrast: true`, `softIllustration: true`, and use `showThemeName: true` around the unchanged H/F center. There are 80 new renderer cases and 55 authored motif explanations, rendered as 13 guide cards per theme. Backgrounds, frames, centers, and corners have location-specific geometry rather than numeric variations of one generic helper.
+
+The UK guide includes the bus tour, Harrods, London Bridge, clock tower/Big Ben, and Ferris wheel references. The London Eye appears through an airy frame and capsule corners rather than recycling the archived fairground wheel center. London Bridge is drawn as a low deck on piers, not confused with Tower Bridge; Big Ben and the clock tower are one motif, not two landmarks.
+
+Egypt includes a respectful zari mubarak lattice frame and Al Jami al-Anwar arcade alongside a domed courtyard-fountain center based on the supplied reference photos. Sacred references are original, restrained architectural illustrations: no depiction of Imam Husain, tomb interior, invented sacred writing, or invented ritual. The museum is a general museum symbol, not a specific museum facade. The boat depicts the stated river tour, not an assumed sailing excursion.
+
+Keep personal references grounded in supplied details. Auckland represents studying, not an assumed graduation; Seattle and Mumbai are companion home-city themes, not claims about commutes or sightseeing. Guide copy distinguishes place symbols from confirmed shared trips. Harrods has no copied logo, wordmark, or claim about purchases.
+
+The former five date themes below moved unchanged into `ARCHIVED_THEMES`, bringing the archive to 26 themes. Their renderer cases and authored guides remain available; all scheduled birthday themes are unchanged.
+
+### Archived Date-Ideas Collection
+
+The previous rotation was five imagined date invitations, not claims about shared past outings:
 
 | Theme | Rendering style | Background identity | Center illustrations |
 |-------|-----------------|---------------------|----------------------|
@@ -156,6 +184,19 @@ Each theme provides 5 quiet texture cases, 3 differently structured frames, 4 di
 The previous five drama/game-date themes are preserved unchanged in `ARCHIVED_THEMES`, bringing the archive to 21 themes; their renderer cases and illustrated guides remain available for reactivation. Scheduled birthday themes are separate and unchanged. All new art is original SVG, with no copied film imagery, brands, or attraction logos.
 
 **Archived-theme boundaries still apply:** Our Little Game Dates refers to Photo Tiles, Hidaayat Ciphers, Ludo, Better Half, Wordle, Strands, Connections, and Pips, not H/F Deal or shared-TV assumptions. Dar-e-Nijaat remains episode-15-safe: an ordinary phone, plain non-wedding chadar, and original supporting lamp/hands illustrations, with no later gifts or plot outcomes.
+
+### Naming & Personalization Lessons
+
+The date artwork was approved, but repeating "Husein & Fatema" and "Date" in every title made the collection sound interchangeable. The archived date titles deliberately vary their rhythm: a cinema billing, a dinner invitation, a time of day, a fairground meeting point, and a playful painting phrase. Keep the activity recognizable without forcing every title into the same template. Seattle and Mumbai deliberately share a paired naming structure because they represent two sides of the map, not five interchangeable labels.
+
+Use names selectively in titles, and carry the shared identity through the named center, guide stories, and subject-specific initials. Full names on every matchable object would be unreadably small at phone tile size. The cinema's reserved seats, engraved cloche, seesaw support, bumper-car hood, and painted canvas add personal details without changing the objects' silhouettes or matching rules.
+
+**Renaming an existing theme is a label change, not a redesign:**
+
+1. Change `theme.name` in `engine.js` and the corresponding `GUIDES` key in `theme-guide.js` together. They must match exactly, including apostrophes; JavaScript escaping does not change the displayed name.
+2. Update the collection table and any preview/test fixtures that hardcode the old display names.
+3. Keep motif identifiers, palettes, rendering flags, archived themes, and approved artwork unchanged unless the user also requests design changes.
+4. Run `node --test tools\tiles-renderer.test.js`; guide coverage catches a renamed theme whose guide key was missed.
 
 ### Non-Negotiable Quality Gates
 
@@ -186,6 +227,10 @@ engine.js (THEMES array)                     renderer.js (SVG rendering)
 Theme {                                      renderBg(attr)     → switch(attr.pattern)
   name, emoji,                                 attr.color = boardBg.color
   style?,  ← optional rendering convention    const o = 0.35  (global bg opacity)
+  highContrast?,      ← opaque bg + quiet texture
+  softIllustration?,  ← authored-size centers/frames, 1.25 accents with highContrast
+  showCoupleNames?,   ← legacy named decorative center only
+  showThemeName?,     ← theme-title decorative center only
   palette: {
     bg:     [3 colors],  ← per-tile tint       → 5 cases per theme
     ring:   [4 colors],  ← matchable
@@ -332,7 +377,7 @@ The theme schema and matching engine stay the same for every visual style. A sty
 
 **Exact procedure:**
 
-1. Open `engine.js`, find the `THEMES` array (starts at line 13 with `const THEMES = [`).
+1. Open `engine.js`, find the active `const THEMES = [` declaration by symbol, not a remembered line number.
 
 2. Find the closing `];` of the active `THEMES` array immediately before the Birthday Countdown Themes section. Do not add ordinary themes to `BIRTHDAY_THEMES` or `ARCHIVED_THEMES`.
 
@@ -599,9 +644,11 @@ Every new theme must ship with a complete **Behind the tiles** guide, not just a
 
 #### Step 5: Validate
 
-```bash
+Run from the repository root:
+
+```powershell
 node validate-themes.js
-node --test tools/tiles-renderer.test.js
+node --test tools\tiles-renderer.test.js
 ```
 
 **All 10 checks must be green ✅ before committing.** If any fail:
@@ -619,7 +666,9 @@ node --test tools/tiles-renderer.test.js
 | boardBg validation | Missing boardBg property | Add `boardBg: { pattern: 'solid', color: '#hex' }` |
 | Orphan cases | Cases in renderer with no theme using them | Warning only — OK for archived themes. Ignore. |
 
-**The renderer regression tests must also pass.** Their guide-coverage test checks that every active theme has its own guide and that its explanation keys exactly match all 11 motif identifiers, without missing or stale entries.
+**The renderer regression tests must also pass.** They cover soft/legacy scaling, active and scheduled foreground variants across all backgrounds, guide coverage for exactly 11 motif identifiers, opt-in named centers without changing legacy monograms, and three complete generated boards per active theme through matching and reset. The engine test proves solvability; browser checks are still needed for the animated photo reveal.
+
+Archived renderer cases intentionally remain available for reactivation, so orphan-case warnings are expected. Do not delete historical artwork merely to eliminate warnings; distinguish these from failed checks or missing coverage for an active theme.
 
 #### Step 6: Manual Verification (IMPORTANT — validator cannot judge the full board)
 
@@ -644,6 +693,8 @@ The validator catches structural errors and minimum match-color distance, but it
 9. **Center scale** — centers should be recognizable immediately and visually balanced with the rings. Check the renderer branch: high-contrast shapes normally use centered 1.15 scaling, or scale 1 with `softIllustration`; legacy Cute Light uses a different transform. Increase source geometry rather than adding fragile tiny details.
 
 10. **Illustrated guide** — scroll below the board and use **Explore this theme** / **Back to game** on mobile and desktop. Confirm all 13 cards appear, the 11 motif previews use the exact corresponding board artwork, and descriptions match the visible designs. Start a new game to check that the guide switches themes. Clear matches and complete a win/reset to confirm guide previews remain intact and gameplay still works. Check for horizontal overflow and browser errors.
+
+**Date-collection browser verification:** All five designs were exercised in Edge at 390×844 and 1280×900, including the personalized center, guide navigation, matching, photo reveal, and reset. For future automated checks, wait for the staggered tile entrance animation before measuring or taking screenshots; an early capture can make correctly sized tiles appear shrunken. Use an isolated test server with a mocked `/api/tiles/photo` response rather than advancing real photo-selection state. Confirm full center names fit within the SVG viewBox, no horizontal overflow occurs, and guide previews remain intact while board attributes disappear.
 
 #### Step 7: Commit & Deploy
 
@@ -922,10 +973,10 @@ The first approved reference implementation is `Stadium Stickers` in `engine.js`
 - `engine.js` exports a separate **`BIRTHDAY_THEMES`** array, structurally identical to a `THEMES` entry plus two extra fields:
   - `activeDate`: an exact `YYYY-MM-DD` string (UTC).
   - `countdownMessage`: short toast text shown alongside the theme name (optional).
-- `BIRTHDAY_THEMES` themes are **never added to `THEMES`** and never participate in the random `Math.floor(Math.random() * THEMES.length)` pick. The six existing active themes remain the only members of the normal rotation.
+- `BIRTHDAY_THEMES` themes are **never added to `THEMES`** and never participate in the random `Math.floor(Math.random() * THEMES.length)` pick. Only the current active themes belong to the normal rotation.
 - `getScheduledBirthdayTheme()` compares today's date against each `BIRTHDAY_THEMES[i].activeDate` using the **same UTC convention as the daily photo**: `new Date().toISOString().slice(0, 10)`. No timezone library, no local-time or Asia/Kolkata conversion — this keeps board theme and daily photo rotation on identical, predictable UTC-day boundaries.
-- `generateBoard()` checks the scheduled theme first: if today matches an `activeDate`, that theme is used for **every** board generated that day (including every "New Board" click) — it is deterministic, not random. Outside the 5 scheduled dates, `generateBoard()` falls back to the normal 6-theme random pick, unchanged.
-- Because they are date-gated rather than curated for permanent rotation, scheduled themes live in their own array instead of `THEMES` — this keeps the "existing six active themes" random pool exactly as-is before/after the scheduled window, and keeps `ARCHIVED_THEMES` (nonselectable, reference-only) conceptually separate from `BIRTHDAY_THEMES` (selectable, but only on their date).
+- `generateBoard()` checks the scheduled theme first: if today matches an `activeDate`, that theme is used for **every** board generated that day (including every "New Board" click) — it is deterministic, not random. Outside the 5 scheduled dates, `generateBoard()` falls back to the current `THEMES` random pick.
+- Because they are date-gated rather than curated for permanent rotation, scheduled themes live in their own array instead of `THEMES`. This keeps `ARCHIVED_THEMES` (nonselectable, reference-only) conceptually separate from `BIRTHDAY_THEMES` (selectable, but only on their date).
 
 #### Current schedule (2026 — Fatema's Birthday Countdown)
 
@@ -937,7 +988,7 @@ The first approved reference implementation is `Stadium Stickers` in `engine.js`
 | 2026-09-05 | Birthday Eve Wishes 🕯️ | Standard | "Tomorrow is Fatema's birthday" |
 | 2026-09-06 | Fatema's Birthday 🎂 | Bold Sticker | "Happy Birthday, Fatema! 💖" |
 
-Before 2026-09-02 and after 2026-09-06, the board goes back to picking randomly among exactly the six normal `THEMES` entries.
+Before 2026-09-02 and after 2026-09-06, the board picks randomly among the current `THEMES` entries.
 
 #### Toast behavior (app.js)
 

@@ -346,9 +346,6 @@ const ARCHIVED_THEMES = [
     accentShapes: ['gamedates-photo-pair', 'gamedates-halfway-heart', 'gamedates-ludo-pawn', 'gamedates-cipher-letters'],
     boardBg:      { pattern: 'gamedates-word-trails', color: '#A64E76' },
   },
-];
-
-const THEMES = [
   {
     name: 'Now Showing: Husein & Fatema', emoji: '🎬',
     showCoupleNames: true,
@@ -435,6 +432,95 @@ const THEMES = [
     shapeNames:   ['paintdate-palette', 'paintdate-easel', 'paintdate-swoosh-brush', 'paintdate-paint-tube'],
     accentShapes: ['paintdate-paint-blob', 'paintdate-tape-tab', 'paintdate-pencil', 'paintdate-bristle-fan'],
     boardBg:      { pattern: 'paintdate-brush-sweeps', color: '#6650A4' },
+  },
+];
+
+const THEMES = [
+  {
+    name: 'Auckland: A Chapter of You', emoji: '🥝',
+    style: 'cute-light',
+    showThemeName: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#C8E8AF', '#BCE7EE', '#FFDCBD'],
+      ring:   ['#9C124E', '#075B35', '#1646B0', '#684000'],
+      shape:  ['#9C124E', '#075B35', '#1646B0'],
+      accent: ['#9C124E', '#1646B0', '#684000'],
+    },
+    bgPatterns:   ['auckland-harbour-currents', 'auckland-notebook-rules', 'auckland-volcanic-contours', 'auckland-fern-veins', 'auckland-sail-stitches'],
+    ringStyles:   ['auckland-fern-fronds', 'auckland-study-pages', 'auckland-harbour-sails'],
+    shapeNames:   ['auckland-kiwi', 'auckland-sky-tower', 'auckland-study-books', 'auckland-sailboat'],
+    accentShapes: ['auckland-pencil', 'auckland-shell', 'auckland-bookmark', 'auckland-fern-tip'],
+    boardBg:      { pattern: 'auckland-harbour-currents', color: '#075B35' },
+  },
+  {
+    name: 'Seattle: My Side of the Map', emoji: '🌧️',
+    showThemeName: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#BFD9FF', '#FFD5F8', '#FFF0B8'],
+      ring:   ['#A40B42', '#035020', '#1646B0', '#614000'],
+      shape:  ['#A40B42', '#035020', '#1646B0'],
+      accent: ['#A40B42', '#1646B0', '#614000'],
+    },
+    bgPatterns:   ['seattle-slanting-rain', 'seattle-ferry-wakes', 'seattle-flight-trails', 'seattle-pier-planks', 'seattle-cloud-bands'],
+    ringStyles:   ['seattle-needle-supports', 'seattle-pier-railings', 'seattle-umbrella-canopy'],
+    shapeNames:   ['seattle-space-needle', 'seattle-ferry', 'seattle-umbrella', 'seattle-seaplane'],
+    accentShapes: ['seattle-raindrop', 'seattle-boarding-pass', 'seattle-pine', 'seattle-mooring-cleat'],
+    boardBg:      { pattern: 'seattle-slanting-rain', color: '#1646B0' },
+  },
+  {
+    name: 'Mumbai: Your Side of the Map', emoji: '🌆',
+    showThemeName: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#FFE0A0', '#C6E8D7', '#FBD4DE'],
+      ring:   ['#9D164D', '#00513D', '#4334A8', '#6B4100'],
+      shape:  ['#9D164D', '#00513D', '#4334A8'],
+      accent: ['#9D164D', '#4334A8', '#6B4100'],
+    },
+    bgPatterns:   ['mumbai-seafront-breeze', 'mumbai-rail-routes', 'mumbai-paving-joints', 'mumbai-snack-paper', 'mumbai-monsoon-streaks'],
+    ringStyles:   ['mumbai-gateway-arch', 'mumbai-train-handles', 'mumbai-seafront-parapet'],
+    shapeNames:   ['mumbai-gateway', 'mumbai-local-train', 'mumbai-rickshaw', 'mumbai-vada-pav'],
+    accentShapes: ['mumbai-train-ticket', 'mumbai-snack-plate', 'mumbai-direction-arrow', 'mumbai-seagull'],
+    boardBg:      { pattern: 'mumbai-seafront-breeze', color: '#9D164D' },
+  },
+  {
+    name: 'UK: Remember Us Here?', emoji: '🇬🇧',
+    showThemeName: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#FFCCBF', '#C9DDF4', '#FFF0AC'],
+      ring:   ['#9C1420', '#075B25', '#1646B0', '#604000'],
+      shape:  ['#9C1420', '#075B25', '#1646B0'],
+      accent: ['#9C1420', '#1646B0', '#604000'],
+    },
+    bgPatterns:   ['london-thames-flow', 'london-bus-route', 'london-stone-courses', 'london-clock-ticks', 'london-shop-awning'],
+    ringStyles:   ['london-eye-arc', 'london-bridge-spans', 'london-shopfront'],
+    shapeNames:   ['london-tour-bus', 'london-big-ben', 'london-harrods', 'london-london-bridge'],
+    accentShapes: ['london-tour-ticket', 'london-shopping-bag', 'london-eye-capsule', 'london-clock-hands'],
+    boardBg:      { pattern: 'london-thames-flow', color: '#1646B0' },
+  },
+  {
+    name: 'Egypt: You, Me & Ancient Wonders', emoji: '🇪🇬',
+    showThemeName: true,
+    highContrast: true,
+    softIllustration: true,
+    palette: {
+      bg:     ['#F6D69F', '#BFE5E4', '#FFD0D9'],
+      ring:   ['#A40B42', '#035020', '#1646B0', '#614000'],
+      shape:  ['#A40B42', '#035020', '#1646B0'],
+      accent: ['#A40B42', '#1646B0', '#614000'],
+    },
+    bgPatterns:   ['egypt-nile-currents', 'egypt-sand-ridges', 'egypt-limestone-joints', 'egypt-courtyard-paving', 'egypt-museum-linen'],
+    ringStyles:   ['egypt-zarih-lattice', 'egypt-anwar-arcade', 'egypt-museum-colonnade'],
+    shapeNames:   ['egypt-pyramids', 'egypt-museum', 'egypt-river-boat', 'egypt-al-jami-anwar'],
+    accentShapes: ['egypt-papyrus', 'egypt-museum-label', 'egypt-boat-pennant', 'egypt-arch-niche'],
+    boardBg:      { pattern: 'egypt-nile-currents', color: '#614000' },
   },
 ];
 

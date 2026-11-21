@@ -3610,6 +3610,58 @@ function renderBg(attr) {
     case 'paintdate-pencil-hatching':
       return renderShowTexture('M22 38L42 18 M29 38L49 18 M36 38L56 18 M43 38L63 18 M32 80L64 48 M39 80L71 48 M46 80L78 48 M53 80L85 48', c, o);
 
+    // Places: original textures, with a different visual grammar for each location.
+    case 'auckland-harbour-currents':
+      return renderShowTexture('M12 28Q32 39 52 28T88 28 M18 46Q38 57 58 46T88 46 M12 68Q32 79 52 68T88 68', c, o);
+    case 'auckland-notebook-rules':
+      return renderShowTexture('M25 12V88 M12 31H88 M12 45H88 M12 59H88 M12 73H88', c, o);
+    case 'auckland-volcanic-contours':
+      return renderShowTexture('M12 69Q50 9 88 69 M19 73Q50 24 81 73 M26 77Q50 39 74 77', c, o);
+    case 'auckland-fern-veins':
+      return renderShowTexture('M30 82L64 18 M37 68L23 54 M37 68L57 64 M46 51L32 37 M46 51L66 47 M55 34L43 22 M55 34L74 30', c, o);
+    case 'auckland-sail-stitches':
+      return renderShowTexture('M28 15L70 82 M23 24L28 32 M34 42L39 50 M45 60L50 68 M60 15L28 82 M61 33L57 41 M50 56L46 64', c, o);
+    case 'seattle-slanting-rain':
+      return renderShowTexture('M25 19L20 33 M49 13L44 27 M74 24L69 38 M37 44L32 58 M62 48L57 62 M24 71L19 85 M79 67L74 81', c, o);
+    case 'seattle-ferry-wakes':
+      return renderShowTexture('M50 18L18 82 M50 18L82 82 M50 36L33 80 M50 36L67 80 M50 56V82', c, o);
+    case 'seattle-flight-trails':
+      return renderShowTexture('M13 67C34 68 20 22 54 27S78 45 88 15 M16 76C43 80 31 42 68 50', c, o);
+    case 'seattle-pier-planks':
+      return renderShowTexture('M12 24H88 M12 42H88 M12 60H88 M12 78H88 M36 24V42 M65 42V60 M30 60V78', c, o);
+    case 'seattle-cloud-bands':
+      return renderShowTexture('M14 30Q22 22 37 28T66 28Q78 20 88 28 M22 52Q35 42 49 50T81 50 M12 73Q25 63 43 71T74 71', c, o);
+    case 'mumbai-seafront-breeze':
+      return renderShowTexture('M12 32C34 15 65 49 88 30 M12 39C34 22 65 56 88 37 M12 67C34 50 65 84 88 65', c, o);
+    case 'mumbai-rail-routes':
+      return renderShowTexture('M30 12V88 M35 12V88 M64 12V46L82 64V88 M69 12V44L87 62V88 M25 30H40 M25 62H40 M59 27H74', c, o);
+    case 'mumbai-paving-joints':
+      return renderShowTexture('M12 30H88 M12 55H88 M12 80H88 M28 12V30 M62 12V30 M45 30V55 M28 55V80 M62 55V80', c, o);
+    case 'mumbai-snack-paper':
+      return renderShowTexture('M15 30L66 15L85 70L34 85Z M15 30L50 48L66 15 M34 85L50 48L85 70 M26 35L39 31 M31 42L43 38 M59 59L73 55', c, o);
+    case 'mumbai-monsoon-streaks':
+      return renderShowTexture('M23 15L35 43 M45 13L57 41 M67 18L79 46 M19 52L31 80 M43 56L55 84 M67 53L79 81', c, o);
+    case 'london-thames-flow':
+      return renderShowTexture('M12 26C32 57 68 3 88 34 M12 41C32 72 68 18 88 49 M12 63C32 94 68 40 88 71', c, o);
+    case 'london-bus-route':
+      return renderShowTexture('M22 14V36H72V63H37V86 M28 14V30H78V69H43V86', c, o);
+    case 'london-stone-courses':
+      return renderShowTexture('M12 26H88 M12 44H88 M12 62H88 M12 80H88 M35 12V26 M65 26V44 M35 44V62 M65 62V80', c, o);
+    case 'london-clock-ticks':
+      return renderShowTexture('M29 23L34 29 M48 19V27 M67 23L62 29 M26 46H34 M66 46H74 M29 70L35 64 M48 74V66 M67 70L61 64', c, o);
+    case 'london-shop-awning':
+      return renderShowTexture('M20 12V88 M26 12V88 M44 12V88 M50 12V88 M68 12V88 M74 12V88 M20 40H26 M44 62H50 M68 30H74', c, o);
+    case 'egypt-nile-currents':
+      return renderShowTexture('M12 33Q30 19 50 33T88 33 M12 39Q30 25 50 39T88 39 M12 65Q30 51 50 65T88 65 M12 71Q30 57 50 71T88 71', c, o);
+    case 'egypt-sand-ridges':
+      return renderShowTexture('M12 39Q46 11 88 38 M12 47Q46 19 88 46 M12 55Q46 27 88 54 M12 72Q61 49 88 71', c, o);
+    case 'egypt-limestone-joints':
+      return renderShowTexture('M12 32H88 M12 65H88 M41 12V32 M68 32V65 M29 65V88', c, o);
+    case 'egypt-courtyard-paving':
+      return renderShowTexture('M12 27H88 M12 50H88 M12 73H88 M27 12L38 88 M50 12V88 M73 12L62 88', c, o);
+    case 'egypt-museum-linen':
+      return renderShowTexture('M20 12L24 88 M40 12L44 88 M60 12L64 88 M80 12L84 88 M12 28L88 24 M12 53L88 49 M12 78L88 74', c, o);
+
     default: return '';
   }
 }
@@ -4730,6 +4782,37 @@ function renderRing(attr) {
       return renderDramaFrame('M8 17L83 6L94 83L17 94Z M8 17L17 24L24 91 M83 6L77 17L91 82 M17 24L77 17 M22 84L88 75', c);
     case 'paintdate-taped-paper':
       return renderDramaFrame('M28 9H72 M91 28V72 M72 91H28 M9 72V28 M4 17L18 3L29 14L15 28Z M71 14L82 3L96 17L85 28Z M4 83L15 72L29 86L18 97Z M71 86L85 72L96 83L82 97Z', c);
+
+    case 'auckland-fern-fronds':
+      return renderDramaFrame('M7 91Q25 52 13 9 M12 27L5 20 M12 27L22 19 M14 44L5 36 M14 44L24 36 M12 63L4 55 M12 63L23 55 M93 91Q75 52 87 9 M88 27L78 19 M88 27L95 20 M86 44L76 36 M86 44L95 36 M88 63L77 55 M88 63L96 55 M34 8H66 M34 93H66', c);
+    case 'auckland-study-pages':
+      return renderDramaFrame('M7 12Q28 2 49 12Q71 2 93 12V91Q70 81 51 91Q29 81 7 91Z M50 7V20 M50 83V94 M12 29V74 M88 29V74', c);
+    case 'auckland-harbour-sails':
+      return renderDramaFrame('M7 85L23 8V85Z M93 85L77 8V85Z M7 92Q50 98 93 92 M35 8H65 M12 64H22 M78 64H88', c);
+    case 'seattle-needle-supports':
+      return renderDramaFrame('M5 94L25 27 M95 94L75 27 M6 20Q50 2 94 20L80 27H20Z M25 10H75 M50 4V9 M8 94H28 M72 94H92', c);
+    case 'seattle-pier-railings':
+      return renderDramaFrame('M8 7V93 M19 30V78 M8 39H19 M8 65H19 M92 7V93 M81 30V78 M81 39H92 M81 65H92 M8 93H92 M30 86V93 M50 86V93 M70 86V93 M35 7H65', c);
+    case 'seattle-umbrella-canopy':
+      return renderDramaFrame('M6 27Q50-9 94 27Q84 17 72 27Q61 17 50 27Q39 17 28 27Q16 17 6 27 M50 7Q33 11 28 27 M50 7Q67 11 72 27 M7 43V85Q7 94 17 94H28 M93 43V85Q93 94 83 94H72', c);
+    case 'mumbai-gateway-arch':
+      return renderDramaFrame('M8 92V29H20V17H80V29H92V92 M20 83V36Q50-7 80 36V83 M7 92H25 M75 92H93 M27 9H73 M12 42H18 M82 42H88', c);
+    case 'mumbai-train-handles':
+      return renderDramaFrame('M6 8H94 M27 8V17L20 27H34Z M73 8V17L66 27H80Z M8 38V92H30 M92 38V92H70 M39 93H61', c);
+    case 'mumbai-seafront-parapet':
+      return renderDramaFrame('M7 92V36L15 28L23 36V92 M77 92V36L85 28L93 36V92 M7 52H23 M77 52H93 M23 84H77 M31 84V93 M50 84V93 M69 84V93 M32 8Q50 15 68 8', c);
+    case 'london-eye-arc':
+      return renderDramaFrame('M9 80C-9 39 11 6 50 6S109 39 91 80 M11 50H20 M80 50H89 M25 16L30 24 M75 16L70 24 M50 6V16 M16 72L24 68 M84 72L76 68 M36 94L44 83 M64 94L56 83', c);
+    case 'london-bridge-spans':
+      return renderDramaFrame('M7 9H93V20H7Z M7 20V92 M93 20V92 M7 28Q19 28 23 42 M93 28Q81 28 77 42 M35 9V20 M65 9V20 M7 92H29 M71 92H93', c);
+    case 'london-shopfront':
+      return renderDramaFrame('M8 92V22H92V92 M6 22L15 7H85L94 22 M15 7L21 22 M35 7L38 22 M55 7L55 22 M75 7L72 22 M8 37H20V78H8 M80 37H92V78H80 M31 92H69', c);
+    case 'egypt-zarih-lattice':
+      return renderDramaFrame('M8 92V24H20V92 M80 92V24H92V92 M8 24V12H20V18H30V12H40V18H50V12H60V18H70V12H80V18H92V24 M8 36L20 48L8 60L20 72L8 84 M20 36L8 48L20 60L8 72L20 84 M80 36L92 48L80 60L92 72L80 84 M92 36L80 48L92 60L80 72L92 84 M8 92H92', c);
+    case 'egypt-anwar-arcade':
+      return renderDramaFrame('M7 92V29Q13 15 23 29V83 M77 83V29Q87 15 93 29V92 M28 19V14Q39 2 50 14Q61 2 72 14V19 M7 92H29 M71 92H93 M11 8H19 M81 8H89', c);
+    case 'egypt-museum-colonnade':
+      return renderDramaFrame('M7 24L50 5L93 24Z M8 30H23 M77 30H92 M12 30V83 M19 30V83 M81 30V83 M88 30V83 M8 85H23 M77 85H92 M7 94H93', c);
 
     default: return '';
   }
@@ -6512,6 +6595,65 @@ function renderShape(attr) {
       return `<g transform="rotate(24 50 50)">${renderDramaIllustration('M37 24H63L61 36L64 57Q64 63 56 67V74H44V67Q36 63 36 57L39 36Z M43 76H57V83H43Z',
         'M41 29H59 M41 35H59 M43 43H57V55H43Z M45 61H55 M47 78V81 M53 78V81', c, o)}</g>`;
 
+    case 'auckland-kiwi':
+      return renderDramaIllustration('M26 51Q23 30 45 29Q61 27 64 42Q74 36 77 46L88 54L76 53Q70 64 59 67Q42 75 27 63Z M38 66H43V77H33V73H38Z M56 66H61V77H51V73H56Z',
+        'M34 43Q49 34 55 48Q51 57 39 58 M72 45H73 M78 50L85 53', c, o);
+    case 'auckland-sky-tower':
+      return renderDramaIllustration('M47 18H53V32L68 37V44H55L58 78H42L45 44H32V37L47 32Z',
+        'M36 39H64 M47 50H53 M46 63H54 M48 23V29 M44 74H56', c, o);
+    case 'auckland-study-books':
+      return renderDramaIllustration('M25 32Q38 25 50 32Q62 25 75 32V58Q62 51 50 59Q38 51 25 58Z M28 64H73V71H28Z M24 74H69V81H24Z',
+        'M50 33V54 M31 38Q38 35 44 38 M56 38Q62 35 69 38 M31 45Q38 42 44 45 M56 45Q62 42 69 45 M34 67H65 M30 77H61', c, o);
+    case 'auckland-sailboat':
+      return renderDramaIllustration('M48 22H52V61H48Z M44 26V57H25Z M56 30L77 57H56Z M22 63H79L68 76H33Z',
+        'M35 51H42 M59 51H67 M32 68H68 M43 72H47 M53 72H59', c, o);
+    case 'seattle-space-needle':
+      return renderDramaIllustration('M48 17H52V29Q67 30 76 37L71 45H57L66 80H59L50 51L41 80H34L43 45H29L24 37Q33 30 48 29Z',
+        'M31 37H69 M34 42H66 M47 24H53 M42 71H58', c, o);
+    case 'seattle-ferry':
+      return renderDramaIllustration('M24 48H32V37H58V28H67V48H77V62H83L72 77H28L17 62H24Z',
+        'M28 55H73 M30 43H54 M62 33V41 M25 65H76 M36 70H44 M53 70H61', c, o);
+    case 'seattle-umbrella':
+      return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M21 48Q50 10 79 48Q69 40 60 48Q50 40 40 48Q30 40 21 48Z" fill="${c}"/><path d="M50 48V70Q50 82 39 78Q34 76 36 70" fill="none" stroke="${c}" stroke-width="4"/><path d="M50 25Q40 32 40 46 M50 25Q60 32 60 46" fill="none" stroke="#fffaf4" stroke-width="2.4"/></g>`;
+    case 'seattle-seaplane':
+      return `<g transform="rotate(-12 50 50)">${renderDramaIllustration('M24 43H53L61 29H68L66 43H77Q84 47 77 51H54L43 63H33L39 51H24L18 35H25Z M28 68H75V74H28Z',
+        'M36 45H43 M49 45H56 M61 45H68 M38 55V68 M66 54V68 M33 71H68', c, o)}</g>`;
+    case 'mumbai-gateway':
+      return renderDramaIllustration('M24 76V39H30V30H36V25H64V30H70V39H76V76H59V52Q50 39 41 52V76Z M21 78H79V83H21Z',
+        'M30 44H38 M62 44H70 M29 53V70 M71 53V70 M39 33H61 M36 39H64', c, o);
+    case 'mumbai-local-train':
+      return renderDramaIllustration('M30 24Q50 16 70 24V65L64 74H36L30 65Z M38 74H43L37 82H31Z M57 74H62L69 82H63Z',
+        'M37 29H63V45H37Z M50 30V44 M35 52H65 M38 60H43 M57 60H62 M40 68H60', c, o);
+    case 'mumbai-rickshaw':
+      return renderDramaIllustration('M25 38L33 25H64L73 40V64H80V73H21V59H25Z M30 76A6 6 0 1 0 42 76A6 6 0 1 0 30 76Z M62 76A6 6 0 1 0 74 76A6 6 0 1 0 62 76Z',
+        'M34 31H60L66 42H32Z M29 48H45V60H29Z M53 45V66 M59 49H67 M25 69H74', c, o);
+    case 'mumbai-vada-pav':
+      return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M25 45V38Q25 25 46 25Q67 25 67 38V45Z M24 49Q30 44 36 48Q46 41 56 48Q63 44 69 49L67 57Q61 61 55 57Q45 64 35 57Q28 61 24 56Z M25 62H67V68Q67 77 46 77Q25 77 25 68Z" fill="${c}"/><path d="M32 37Q44 30 58 36 M32 68Q46 73 60 68" fill="none" stroke="#fffaf4" stroke-width="2.4"/><path d="M75 45Q87 55 75 72Q78 58 72 52 M75 45L77 40" fill="none" stroke="${c}" stroke-width="3"/></g>`;
+    case 'london-tour-bus':
+      return renderDramaIllustration('M25 27H68Q77 27 77 38V70H23V36Q23 27 25 27Z M28 72A6 6 0 1 0 40 72A6 6 0 1 0 28 72Z M60 72A6 6 0 1 0 72 72A6 6 0 1 0 60 72Z',
+        'M29 34H69V44H29Z M43 34V44 M57 34V44 M29 51H52V61H29Z M60 51H70V66H60Z M25 48H74', c, o);
+    case 'london-big-ben':
+      return renderDramaIllustration('M50 16L61 30V37H66V78H34V37H39V30Z M30 78H70V83H30Z',
+        'M42 32H58 M39 40H61V57H39Z M50 43V49L56 52 M41 63V73 M50 63V73 M59 63V73', c, o);
+    case 'london-harrods':
+      return renderDramaIllustration('M23 38H30V30H42V24H58V30H70V38H77V78H23Z',
+        'M28 44H72 M29 50H35V59H29Z M43 50H49V59H43Z M57 50H63V59H57Z M29 66H37V75H29Z M45 66H55V78 M63 66H71V75H63Z M45 31H55', c, o);
+    case 'london-london-bridge':
+      return renderDramaIllustration('M21 39H79V49H73V66H65V49H54V69H46V49H35V66H27V49H21Z',
+        'M24 44H76 M28 34V38 M40 34V38 M52 34V38 M64 34V38 M76 34V38 M24 75Q36 70 48 75T76 75', c, o);
+    case 'egypt-pyramids':
+      return renderDramaIllustration('M20 73L45 28L69 73Z M56 73L71 44L86 73Z M14 73L27 49L40 73Z',
+        'M45 30L48 69 M30 58H43 M61 66H74 M25 68H38', c, o);
+    case 'egypt-museum':
+      return renderDramaIllustration('M23 37L50 21L77 37V42H23Z M26 46H34V73H26Z M40 46H48V73H40Z M54 46H62V73H54Z M68 46H76V73H68Z M22 76H79V82H22Z',
+        'M35 35H65 M29 50V68 M43 50V68 M57 50V68 M71 50V68 M28 79H73', c, o);
+    case 'egypt-river-boat':
+      return renderDramaIllustration('M21 60H80L70 76H31Z M29 48H73V57H29Z M34 29H38V48H34Z M64 29H68V48H64Z M27 26H75V31H27Z',
+        'M32 52H68 M36 63H66 M39 69H45 M54 69H60 M47 34V44 M56 34V44', c, o);
+    case 'egypt-al-jami-anwar':
+      return `<g opacity="${o}" stroke-linecap="round" stroke-linejoin="round"><path d="M23 56V32H77V56 M26 55V43Q31 32 36 43V55 M40 44V40Q45 29 50 40 M64 55V43Q69 32 74 43V55 M23 28L26 25L29 28L32 25L35 28 M65 28L68 25L71 28L74 25L77 28 M24 67L35 63 M66 63L78 67" fill="none" stroke="${c}" stroke-width="2.2"/>${renderDramaIllustration('M35 71V49Q35 40 41 37Q44 28 50 25Q56 28 59 37Q65 40 65 49V71Z M30 73H70V79H30Z',
+        'M38 45Q50 40 62 45 M39 66V56Q43 45 47 56V66 M53 66V56Q57 45 61 56V66 M43 38L47 32 M54 34L58 39 M48 48H52 M36 76H64', c, 1)}</g>`;
+
     default: return '';
   }
 }
@@ -7852,6 +7994,47 @@ function renderAccent(attr, motifScale = 1) {
       case 'paintdate-bristle-fan':
         out += `<g transform="translate(${cx} ${cy})"><path d="M-6-5L-3 2H3L6-5Z M-2 2H2V6H-2Z" fill="${c}"/><path d="M-2-3L-1 0 M2-3L1 0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
 
+      case 'auckland-pencil':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-35)"><path d="M-2-6H2V3L0 7L-2 3Z" fill="${c}"/><path d="M-2-3H2 M0 0V3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'auckland-shell':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6 1Q-8-6 0-6Q8-6 6 1L2 6H-2Z" fill="${c}"/><path d="M0-3V3 M-4-2L-1 3 M4-2L1 3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'auckland-bookmark':
+        out += `<g transform="translate(${cx} ${cy}) rotate(12)"><path d="M-4-6H4V6L0 3L-4 6Z" fill="${c}"/><path d="M-2-2H2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'auckland-fern-tip':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"><path d="M-3 6L3-6 M-1 2L-5-1 M-1 2L4 0 M1-2L-3-5 M1-2L5-4"/></g>`; break;
+      case 'seattle-raindrop':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M0-7Q9 3 3 6Q-7 10-5 1Z" fill="${c}"/><path d="M-2 1Q-4 4-1 4" fill="none" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'seattle-boarding-pass':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-15)"><path d="M-7-4H7V4H-7Z" fill="${c}"/><path d="M2-3V3 M-5-1H-1 M-5 2H-2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'seattle-pine':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M0-7L5-1H3L7 4H1V7H-1V4H-7L-3-1H-5Z" fill="${c}"/></g>`; break;
+      case 'seattle-mooring-cleat':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-7-3H7L4 0H2V4H6V6H-6V4H-2V0H-4Z" fill="${c}"/></g>`; break;
+      case 'mumbai-train-ticket':
+        out += `<g transform="translate(${cx} ${cy}) rotate(15)"><path d="M-5-6H5V6H-5Z" fill="${c}"/><path d="M-2-3H2 M-2 0H2 M-2 3H0" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'mumbai-snack-plate':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-4-1V-3Q0-8 4-3V-1Z M-4 1H4V3H-4Z M-7 5Q0 2 7 5Q0 9-7 5Z" fill="${c}"/><path d="M-2-3H2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'mumbai-direction-arrow':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-7-3H1V-6L7 0L1 6V3H-7Z" fill="${c}"/></g>`; break;
+      case 'mumbai-seagull':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><path d="M-7 2Q-4-4 0 1Q4-4 7 2"/></g>`; break;
+      case 'london-tour-ticket':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-20)"><path d="M-7-4H7V-1L5 0L7 1V4H-7V1L-5 0L-7-1Z" fill="${c}"/><path d="M-2-2V2 M2-2V2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'london-shopping-bag':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5-2H5L6 6H-6Z" fill="${c}"/><path d="M-3-2V-4Q0-8 3-4V-2" fill="none" stroke="${c}" stroke-width="1.8"/><path d="M-2 2H2" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'london-eye-capsule':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6-1Q-6-5 0-5Q6-5 6-1V3Q0 7-6 3Z" fill="${c}"/><path d="M-3-2V2 M1-2V2 M-3-1H3" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'london-clock-hands':
+        out += `<g transform="translate(${cx} ${cy})" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><path d="M0-6V0L5 3 M-6 0H-4 M0 5V7 M5-4L4-3"/></g>`; break;
+      case 'egypt-papyrus':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-6-5L0-1L6-5L3 1H1V7H-1V1H-3Z" fill="${c}"/><path d="M0-5V0" stroke="${c}" stroke-width="1.8"/></g>`; break;
+      case 'egypt-museum-label':
+        out += `<g transform="translate(${cx} ${cy}) rotate(-8)"><rect x="-6" y="-4" width="12" height="8" rx="1" fill="${c}"/><path d="M-3-1H3 M-3 2H1" stroke="#fffaf4" stroke-width="1.5"/></g>`; break;
+      case 'egypt-boat-pennant':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-3-5L7-2L-3 2Z" fill="${c}"/><path d="M-3-6V6L2 6" fill="none" stroke="${c}" stroke-width="1.8"/></g>`; break;
+      case 'egypt-arch-niche':
+        out += `<g transform="translate(${cx} ${cy})"><path d="M-5 6V-1Q0-10 5-1V6Z M-2 4V0Q0-4 2 0V4Z" fill="${c}" fill-rule="evenodd"/></g>`; break;
+
     }
     if (motifScale !== 1) out += '</g>';
   }
@@ -7951,7 +8134,22 @@ function createCenterHeartSVG(theme) {
   html += `<g class="center-heart" transform="translate(52,46) scale(0.22)"><path d="${heartPath}" fill="${heartColor}" opacity="0.85" stroke="white" stroke-width="3"/></g>`;
   html += `<text x="80" y="62" ${font} font-size="36" font-weight="bold" fill="${c2}" opacity="0.9" text-anchor="middle">f</text>`;
 
-  if (theme.showCoupleNames) {
+  if (theme.showThemeName) {
+    const escapeText = text => text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]);
+    const [place, ...subtitleParts] = theme.name.split(':');
+    const lines = [''];
+    for (const word of subtitleParts.join(':').trim().split(/\s+/).filter(Boolean)) {
+      const last = lines.length - 1;
+      if (lines[last] && `${lines[last]} ${word}`.length > 20) lines.push(word);
+      else lines[last] += `${lines[last] ? ' ' : ''}${word}`;
+    }
+    html += `<g font-family="Georgia, 'Times New Roman', serif" font-weight="bold" text-anchor="middle"><text x="50" y="21" font-size="14" fill="${c1}">${escapeText(place)}</text>`;
+    lines.forEach((line, index) => {
+      html += `<text x="50" y="${lines.length > 1 ? 81 + index * 10 : 86}" font-size="8" fill="${c2}">${escapeText(line)}</text>`;
+    });
+    html += '</g>';
+    svg.setAttribute('aria-label', `${theme.name}, h heart f`);
+  } else if (theme.showCoupleNames) {
     html += `<g font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="bold" text-anchor="middle"><text x="50" y="21" fill="${c1}">Husein</text><text x="50" y="86" fill="${c2}">Fatema</text></g>`;
     svg.setAttribute('aria-label', 'Husein and Fatema');
   }
