@@ -95,7 +95,7 @@ The center tile at grid position [2,2] shows an **h❤f** monogram:
 
 `showCoupleNames: true` opts into **Husein** above and **Fatema** below the existing monogram, using the first and second ring colors respectively. The renderer also sets the SVG label to "Husein and Fatema". These are fixed keepsake labels, not configurable text or matchable attributes. The guide reuses the same SVG and adds a personalized explanation. Omit the flag to preserve an older theme's original center; changing a title alone must not enable personalization.
 
-The current place themes instead use `showThemeName: true`: the place appears above the unchanged h❤f monogram and the rest of the theme title below, wrapping at word boundaries. The renderer splits `theme.name` at the first colon and wraps the subtitle at 20 characters per line. Text is XML-escaped, including the ampersand in Egypt's title, and the accessible SVG label includes the full theme name. Theme-title labels take precedence over legacy couple-name labels and are decorative, not matchable. The guide previews the same center tile. Recheck text bounds at phone tile size when changing a title; long place names or additional subtitle lines can require layout adjustments.
+`showThemeName: true` displays the title prefix above the unchanged h❤f monogram and the subtitle below, wrapping at word boundaries. The renderer splits `theme.name` at the first colon and wraps the subtitle at 20 characters per line. Text is XML-escaped, including ampersands and angle brackets, and the accessible SVG label includes the full theme name. Theme-title labels take precedence over legacy couple-name labels and are decorative, not matchable. The guide previews the same center tile. Recheck text bounds at phone tile size when changing a title; long prefixes or additional subtitle lines can require layout adjustments.
 
 ## Board Background System
 
@@ -153,8 +153,6 @@ The active rotation is five places connected to your story, not a generic countr
 
 All five retain `highContrast: true`, `softIllustration: true`, and use `showThemeName: true` around the unchanged H/F center. There are 80 new renderer cases and 55 authored motif explanations, rendered as 13 guide cards per theme. Backgrounds, frames, centers, and corners have location-specific geometry rather than numeric variations of one generic helper.
 
-Mumbai uses a vada pav center with a chilli, a snack-plate corner, and folded snack-paper texture. Chai was removed from all three parts of this active theme, not merely renamed in the guide. Existing archived Indian-food artwork remains unchanged.
-
 The UK guide includes the bus tour, Harrods, London Bridge, clock tower/Big Ben, and Ferris wheel references. The London Eye appears through an airy frame and capsule corners rather than recycling the archived fairground wheel center. London Bridge is drawn as a low deck on piers, not confused with Tower Bridge; Big Ben and the clock tower are one motif, not two landmarks.
 
 Egypt includes a respectful zari mubarak lattice frame and Al Jami al-Anwar arcade alongside a domed courtyard-fountain center based on the supplied reference photos. Sacred references are original, restrained architectural illustrations: no depiction of Imam Husain, tomb interior, invented sacred writing, or invented ritual. The museum is a general museum symbol, not a specific museum facade. The boat depicts the stated river tour, not an assumed sailing excursion.
@@ -163,7 +161,7 @@ Keep personal references grounded in supplied details. Auckland represents study
 
 The former five date themes below moved unchanged into `ARCHIVED_THEMES`, bringing the archive to 26 themes. Their renderer cases and authored guides remain available; all scheduled birthday themes are unchanged.
 
-**Verification completed November 20, 2026:** all 10 validator checks and all 6 renderer/gameplay regression tests pass. Isolated Edge checks covered all five place themes at 390px and 1280px viewport widths: 25 tiles, 13 guide cards, guide navigation, no horizontal overflow, complete matching, animated photo reveal, and reset. The browser checks used a mock photo endpoint and disposable browser contexts, without changing real photo state. After the artwork revisions, vada pav and the courtyard fountain were visually checked alone and with frames/corners; after the center-label revision, all five full titles were visually checked at 70px and 100px tile sizes and every text element passed browser SVG bounds checks. A deterministic comparison also confirmed historical artwork and guides were unchanged across 3,348 foreground/background combinations.
+**Verification completed November 20, 2026:** all 10 validator checks and all 6 renderer/gameplay regression tests pass. Isolated Edge checks covered all five active themes at 390px and 1280px viewport widths: 25 tiles, 13 guide cards, guide navigation, no horizontal overflow, complete matching, animated photo reveal, and reset. The browser checks used a mock photo endpoint and disposable browser contexts, without changing real photo state. Revised artwork was visually checked alone and with frames/corners; all five full center titles were visually checked at 70px and 100px tile sizes and every text element passed browser SVG bounds checks. A deterministic comparison also confirmed historical artwork and guides were unchanged across 3,348 foreground/background combinations.
 
 ### Archived Date-Ideas Collection
 
@@ -191,9 +189,17 @@ At the date collection's introduction, the previous five drama/game-date themes 
 
 ### Naming & Personalization Lessons
 
-The date artwork was approved, but repeating "Husein & Fatema" and "Date" in every title made the collection sound interchangeable. The archived date titles deliberately vary their rhythm: a cinema billing, a dinner invitation, a time of day, a fairground meeting point, and a playful painting phrase. Keep the activity recognizable without forcing every title into the same template. Seattle and Mumbai deliberately share a paired naming structure because they represent two sides of the map, not five interchangeable labels.
+Avoid repeating the couple's names or the same activity label in every title; that makes otherwise distinct themes sound interchangeable. Vary title rhythm while keeping the subject recognizable. Use a paired naming structure only when it expresses a deliberate relationship between themes, not as a default template for the whole collection.
 
-Use names selectively in titles, and carry the shared identity through the H/F heart, guide stories, and subject-specific initials. Current place centers show the theme title, not full couple names; the named centers remain part of the archived date collection. Full names on every matchable object would be unreadably small at phone tile size. The cinema's reserved seats, engraved cloche, seesaw support, bumper-car hood, and painted canvas add personal details without changing the objects' silhouettes or matching rules.
+Use names selectively in titles, and carry the shared identity through the H/F heart, grounded guide stories, and occasional subject-specific initials. Theme-title center labels should replace, not duplicate, full couple-name labels. Full names on every matchable object would be unreadably small at phone tile size. Personal details must preserve the objects' recognizable silhouettes and existing matching rules.
+
+**Revising personalized artwork:**
+
+1. Follow explicitly supplied preferences; do not infer that a person likes a food, drink, activity, or landmark simply because it fits the theme.
+2. When removing a motif, check its related accents, background textures, identifiers, guide explanations, and documentation. Replace the complete reference consistently, not just its title.
+3. Use supplied photos to identify the recognizable silhouette, structure, and setting for original SVG artwork. Avoid generic substitutes when a specific visual reference is available; do not invent inscriptions or unsupported personal experiences.
+4. Keep retired theme definitions, artwork, and guides intact unless explicitly asked to revise them.
+5. Verify revised motifs alone and with frames/corners at normal tile size. For center-label changes, preserve the H/F heart, escape text, update the guide, and check actual browser text bounds.
 
 **Renaming an existing theme is a label change, not a redesign:**
 
