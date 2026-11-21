@@ -16,6 +16,7 @@ This is a personal game portal built for Husein and Fatema — a romantic-themed
 
 **What a new session needs to know immediately:**
 - Photo Tiles currently rotates Auckland, Seattle, Mumbai, UK, and Egypt place themes. The previous collections are preserved as 26 archived themes; scheduled birthday themes remain separate. Each theme needs 16 SVG renderer cases and 11 authored motif explanations. Read the [current collection and creation playbook](public/tiles/DOCUMENTATION.md#theme-lifecycle--creation-guide) before theme work, including grounded place references, respectful sacred architecture, naming/personalization rules, and rendering flags.
+- The active Tiles center keeps the h❤f monogram with the place name above and theme subtitle below (`showThemeName: true`), not full couple names. Mumbai uses vada pav rather than chai; Al Jami al-Anwar uses the supplied courtyard-fountain references. Keep renderer artwork, guides, and collection documentation consistent when revising these details.
 - Ludo's server logic has **5 separate code paths** that complete a token move. Any change to post-move behavior (extra turns, win checks, captures) MUST be applied to all 5. This is the #1 source of Ludo bugs (see [Ludo docs](public/ludo/DOCUMENTATION.md)).
 - The site runs on Render free tier — no persistent storage, auto-deploys on push to `main`, 30s cold starts.
 - Git pushes use the **browser-based credential manager** (personal GitHub account `amzocean`). The `gh` CLI is linked to a work account — do NOT use it for this repo.

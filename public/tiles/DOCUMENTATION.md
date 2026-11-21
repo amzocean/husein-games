@@ -95,7 +95,7 @@ The center tile at grid position [2,2] shows an **h❤f** monogram:
 
 `showCoupleNames: true` opts into **Husein** above and **Fatema** below the existing monogram, using the first and second ring colors respectively. The renderer also sets the SVG label to "Husein and Fatema". These are fixed keepsake labels, not configurable text or matchable attributes. The guide reuses the same SVG and adds a personalized explanation. Omit the flag to preserve an older theme's original center; changing a title alone must not enable personalization.
 
-The current place themes instead use `showThemeName: true`: the place appears above the unchanged h❤f monogram and the rest of the theme title below, wrapping at word boundaries. Theme-title labels take precedence over legacy couple-name labels and are decorative, not matchable. The guide previews the same center tile.
+The current place themes instead use `showThemeName: true`: the place appears above the unchanged h❤f monogram and the rest of the theme title below, wrapping at word boundaries. The renderer splits `theme.name` at the first colon and wraps the subtitle at 20 characters per line. Text is XML-escaped, including the ampersand in Egypt's title, and the accessible SVG label includes the full theme name. Theme-title labels take precedence over legacy couple-name labels and are decorative, not matchable. The guide previews the same center tile. Recheck text bounds at phone tile size when changing a title; long place names or additional subtitle lines can require layout adjustments.
 
 ## Board Background System
 
@@ -153,6 +153,8 @@ The active rotation is five places connected to your story, not a generic countr
 
 All five retain `highContrast: true`, `softIllustration: true`, and use `showThemeName: true` around the unchanged H/F center. There are 80 new renderer cases and 55 authored motif explanations, rendered as 13 guide cards per theme. Backgrounds, frames, centers, and corners have location-specific geometry rather than numeric variations of one generic helper.
 
+Mumbai uses a vada pav center with a chilli, a snack-plate corner, and folded snack-paper texture. Chai was removed from all three parts of this active theme, not merely renamed in the guide. Existing archived Indian-food artwork remains unchanged.
+
 The UK guide includes the bus tour, Harrods, London Bridge, clock tower/Big Ben, and Ferris wheel references. The London Eye appears through an airy frame and capsule corners rather than recycling the archived fairground wheel center. London Bridge is drawn as a low deck on piers, not confused with Tower Bridge; Big Ben and the clock tower are one motif, not two landmarks.
 
 Egypt includes a respectful zari mubarak lattice frame and Al Jami al-Anwar arcade alongside a domed courtyard-fountain center based on the supplied reference photos. Sacred references are original, restrained architectural illustrations: no depiction of Imam Husain, tomb interior, invented sacred writing, or invented ritual. The museum is a general museum symbol, not a specific museum facade. The boat depicts the stated river tour, not an assumed sailing excursion.
@@ -160,6 +162,8 @@ Egypt includes a respectful zari mubarak lattice frame and Al Jami al-Anwar arca
 Keep personal references grounded in supplied details. Auckland represents studying, not an assumed graduation; Seattle and Mumbai are companion home-city themes, not claims about commutes or sightseeing. Guide copy distinguishes place symbols from confirmed shared trips. Harrods has no copied logo, wordmark, or claim about purchases.
 
 The former five date themes below moved unchanged into `ARCHIVED_THEMES`, bringing the archive to 26 themes. Their renderer cases and authored guides remain available; all scheduled birthday themes are unchanged.
+
+**Verification completed November 20, 2026:** all 10 validator checks and all 6 renderer/gameplay regression tests pass. Isolated Edge checks covered all five place themes at 390px and 1280px viewport widths: 25 tiles, 13 guide cards, guide navigation, no horizontal overflow, complete matching, animated photo reveal, and reset. The browser checks used a mock photo endpoint and disposable browser contexts, without changing real photo state. After the artwork revisions, vada pav and the courtyard fountain were visually checked alone and with frames/corners; after the center-label revision, all five full titles were visually checked at 70px and 100px tile sizes and every text element passed browser SVG bounds checks. A deterministic comparison also confirmed historical artwork and guides were unchanged across 3,348 foreground/background combinations.
 
 ### Archived Date-Ideas Collection
 
@@ -181,7 +185,7 @@ Each theme provides 5 quiet texture cases, 3 differently structured frames, 4 di
 
 **Keep the dates distinct:** Cinema uses ticket notches, perforated film rails, and screen curtains rather than remote controls or shared sofas. Dinner has a scalloped plate, bistro awning, and open cutlery setting. Park uses sloping swing supports, wandering rails, and picket posts instead of a generic flower/picnic collection. Fair has a peaked booth canopy, coaster rails, and splayed Ferris supports. Painting has broken brush edges, a tilted canvas stretcher, and taped paper. Do not reduce these to the same rounded rectangle with different dash patterns. Existing `renderShowTexture`, `renderDramaFrame`, and `renderDramaIllustration` helpers apply consistent treatment only; each case supplies its own subject-specific geometry.
 
-The previous five drama/game-date themes are preserved unchanged in `ARCHIVED_THEMES`, bringing the archive to 21 themes; their renderer cases and illustrated guides remain available for reactivation. Scheduled birthday themes are separate and unchanged. All new art is original SVG, with no copied film imagery, brands, or attraction logos.
+At the date collection's introduction, the previous five drama/game-date themes were preserved unchanged in `ARCHIVED_THEMES`, bringing the archive to 21 themes at that time. Archiving the date collection subsequently raised the total to 26. Their renderer cases and illustrated guides remain available for reactivation. Scheduled birthday themes are separate and unchanged. All new art is original SVG, with no copied film imagery, brands, or attraction logos.
 
 **Archived-theme boundaries still apply:** Our Little Game Dates refers to Photo Tiles, Hidaayat Ciphers, Ludo, Better Half, Wordle, Strands, Connections, and Pips, not H/F Deal or shared-TV assumptions. Dar-e-Nijaat remains episode-15-safe: an ordinary phone, plain non-wedding chadar, and original supporting lamp/hands illustrations, with no later gifts or plot outcomes.
 
@@ -189,7 +193,7 @@ The previous five drama/game-date themes are preserved unchanged in `ARCHIVED_TH
 
 The date artwork was approved, but repeating "Husein & Fatema" and "Date" in every title made the collection sound interchangeable. The archived date titles deliberately vary their rhythm: a cinema billing, a dinner invitation, a time of day, a fairground meeting point, and a playful painting phrase. Keep the activity recognizable without forcing every title into the same template. Seattle and Mumbai deliberately share a paired naming structure because they represent two sides of the map, not five interchangeable labels.
 
-Use names selectively in titles, and carry the shared identity through the named center, guide stories, and subject-specific initials. Full names on every matchable object would be unreadably small at phone tile size. The cinema's reserved seats, engraved cloche, seesaw support, bumper-car hood, and painted canvas add personal details without changing the objects' silhouettes or matching rules.
+Use names selectively in titles, and carry the shared identity through the H/F heart, guide stories, and subject-specific initials. Current place centers show the theme title, not full couple names; the named centers remain part of the archived date collection. Full names on every matchable object would be unreadably small at phone tile size. The cinema's reserved seats, engraved cloche, seesaw support, bumper-car hood, and painted canvas add personal details without changing the objects' silhouettes or matching rules.
 
 **Renaming an existing theme is a label change, not a redesign:**
 
@@ -666,7 +670,7 @@ node --test tools\tiles-renderer.test.js
 | boardBg validation | Missing boardBg property | Add `boardBg: { pattern: 'solid', color: '#hex' }` |
 | Orphan cases | Cases in renderer with no theme using them | Warning only — OK for archived themes. Ignore. |
 
-**The renderer regression tests must also pass.** They cover soft/legacy scaling, active and scheduled foreground variants across all backgrounds, guide coverage for exactly 11 motif identifiers, opt-in named centers without changing legacy monograms, and three complete generated boards per active theme through matching and reset. The engine test proves solvability; browser checks are still needed for the animated photo reveal.
+**The renderer regression tests must also pass.** They cover soft/legacy scaling, active and scheduled foreground variants across all backgrounds, guide coverage for exactly 11 motif identifiers, archived opt-in named centers, current theme-title centers with escaped text and unchanged H/F monograms, and three complete generated boards per active theme through matching and reset. The engine test proves solvability; browser checks are still needed for the animated photo reveal and actual title bounds.
 
 Archived renderer cases intentionally remain available for reactivation, so orphan-case warnings are expected. Do not delete historical artwork merely to eliminate warnings; distinguish these from failed checks or missing coverage for an active theme.
 
